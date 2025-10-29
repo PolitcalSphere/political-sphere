@@ -1,0 +1,13 @@
+
+> political-sphere-ai-assistant@1.0.0 build
+> tsc
+
+npm error Lifecycle script `build` failed with error:
+npm error code EAGAIN
+npm error syscall spawn sh
+npm error path /Users/morganlowman/politicial-sphere (V1)/apps/dev/ai/ai-assistant
+npm error errno -35
+npm error workspace political-sphere-ai-assistant@1.0.0
+npm error location /Users/morganlowman/politicial-sphere (V1)/apps/dev/ai/ai-assistant
+npm error spawn sh EAGAIN
+npm error command sh -c tsc

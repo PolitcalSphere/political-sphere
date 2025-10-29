@@ -1,0 +1,21 @@
+> node --test apps/api/tests/**/*.test.js
+
+[32m✔ creates a record and returns it from list() [90m(23.790478ms)[39m[39m
+[32m✔ filters records by category, tag, limit and search [90m(4.651306ms)[39m[39m
+[32m✔ update returns null when record missing [90m(2.189763ms)[39m[39m
+[32m✔ analytics summary aggregates categories and recency [90m(6.478287ms)[39m[39m
+[32m✔ create throws validation errors when required fields missing [90m(3.157752ms)[39m[39m
+[32m✔ GET /api/news returns seeded data [90m(129.550934ms)[39m[39m
+[32m✔ POST /api/news creates a record and persists it [90m(37.419512ms)[39m[39m
+[32m✔ POST /api/news validates required fields [90m(38.729551ms)[39m[39m
+[32m✔ PUT /api/news/{id} updates existing records [90m(25.917871ms)[39m[39m
+[32m✔ PUT /api/news/{id} returns 404 for unknown record [90m(17.976992ms)[39m[39m
+[32m✔ GET /metrics/news provides aggregate summary [90m(10.2601ms)[39m[39m
+[34mℹ tests 11[39m
+[34mℹ suites 0[39m
+[34mℹ pass 11[39m
+[34mℹ fail 0[39m
+[34mℹ cancelled 0[39m
+[34mℹ skipped 0[39m
+[34mℹ todo 0[39m
+[34mℹ duration_ms 619.695871[39m

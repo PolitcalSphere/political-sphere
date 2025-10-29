@@ -1,6 +1,0 @@
-apiVersion: v2
-name: api
-version: 0.1.0
-description: Political Sphere API deployment.
-type: application
-appVersion: "0.1.0"

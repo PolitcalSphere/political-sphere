@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Political Sphere Prototype</title>
+    <style>
+      :root {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #f5f7fb;
+        color: #121826;
+      }
+      body {
+        margin: 0;
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+      }
+      main {
+        width: min(720px, 100%);
+      }
+      header {
+        display: flex;
+        align-items: baseline;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+      section {
+        background: #fff;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 12px 24px rgba(18, 24, 38, 0.08);
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      li {
+        border-bottom: 1px solid #e6ebf5;
+        padding: 1rem 0;
+      }
+      li:last-of-type {
+        border-bottom: none;
+      }
+      h2 {
+        margin: 0 0 0.25rem;
+      }
+      p {
+        margin: 0;
+        color: #4d5d74;
+      }
+      .status {
+        font-size: 0.875rem;
+        color: #556987;
+      }
+      button {
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 8px;
+        background: #1d4ed8;
+        color: #fff;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      button:disabled {
+        background: #9aa5b1;
+        cursor: wait;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Political Sphere Platform</h1>
+        <span class="status" id="status">__STATUS_MESSAGE__</span>
+      </header>
+      <section>
+        <h2>Latest policy signals</h2>
+        <p class="status">
+          Tracking emerging narratives and transparency signals from civic data pipelines.
+        </p>
+        <ul id="news"></ul>
+        <button id="refresh">Refresh</button>
+      </section>
+      <section>
+        <h2>Coverage summary</h2>
+        <p class="status">Quick breakdown of categories and tags in the latest dataset.</p>
+        <div id="summary"></div>
+      </section>
+      <p class="status">Last updated: <span id="updated">__LAST_UPDATED__</span></p>
+    </main>
+
+    <script>
+      window.__INITIAL_NEWS__ = __INITIAL_NEWS__;
+      window.__NEWS_SUMMARY__ = __NEWS_SUMMARY__;
+    </script>
+    <script type="module">
+      const API_BASE_URL = '__API_BASE_URL__';
+      const statusEl = document.getElementById('status');
+      const listEl = document.getElementById('news');
+      const updatedEl = document.getElementById('updated');
+      const refreshBtn = document.getElementById('refresh');
+      const summaryEl = document.getElementById('summary');
+
+      const initialNews = window.__INITIAL_NEWS__ ?? [];
+      const initialSummary = window.__NEWS_SUMMARY__ ?? {
+        total: 0,
+        categories: {},
+        tags: {},
+        latest: null,
+      };
+
+      renderNews(initialNews);
+      renderSummary(initialSummary);
+
+      async function fetchNews() {
+        statusEl.textContent = 'Fetching updates…';
+        refreshBtn.disabled = true;
+        try {
+          const [newsResponse, summaryResponse] = await Promise.all([
+            fetch(new URL('/api/news', API_BASE_URL)),
+            fetch(new URL('/metrics/news', API_BASE_URL)),
+          ]);
+          if (!newsResponse.ok) throw new Error(`News responded with ${newsResponse.status}`);
+          if (!summaryResponse.ok) throw new Error(`Metrics responded with ${summaryResponse.status}`);
+
+          const newsPayload = await newsResponse.json();
+          const summaryPayload = await summaryResponse.json();
+
+          renderNews(newsPayload.data ?? []);
+          renderSummary(summaryPayload ?? initialSummary);
+          statusEl.textContent = 'In sync';
+          updatedEl.textContent = new Date().toLocaleString();
+        } catch (error) {
+          console.error(error);
+          statusEl.textContent = 'Failed to reach API';
+        } finally {
+          refreshBtn.disabled = false;
+        }
+      }
+
+      function renderNews(items) {
+        if (!Array.isArray(items) || items.length === 0) {
+          listEl.innerHTML = '<li>No stories yet. The data pipeline will populate this feed shortly.</li>';
+          return;
+        }
+        listEl.innerHTML = items
+          .map(
+            (item) => `
+              <li>
+                <h2>${item.title}</h2>
+                <p>${item.excerpt}</p>
+                <p class="status">Last updated: ${new Date(item.updatedAt).toLocaleString()}</p>
+              </li>
+            `,
+          )
+          .join('');
+      }
+
+      function renderSummary(summary) {
+        const categories = summary.categories ?? {};
+        const tags = summary.tags ?? {};
+        const latest = summary.latest
+          ? `<p class="status">Latest: <strong>${summary.latest.title}</strong> (${new Date(
+              summary.latest.updatedAt,
+            ).toLocaleString()})</p>`
+          : '<p class="status">No recent updates yet.</p>';
+
+        const categoriesMarkup =
+          Object.keys(categories).length === 0
+            ? '<li>No categories recorded.</li>'
+            : Object.entries(categories)
+                .map(([name, count]) => `<li><strong>${name}:</strong> ${count}</li>`)
+                .join('');
+
+        const tagsMarkup =
+          Object.keys(tags).length === 0
+            ? '<li>No tags recorded.</li>'
+            : Object.entries(tags)
+                .map(([name, count]) => `<li><strong>${name}:</strong> ${count}</li>`)
+                .join('');
+
+        const generatedAt = summary.generatedAt
+          ? new Date(summary.generatedAt).toLocaleString()
+          : 'n/a';
+
+        summaryEl.innerHTML = `
+          <p>Total stories: <strong>${summary.total ?? 0}</strong></p>
+          <p class="status">Summary generated at: ${generatedAt}</p>
+          ${latest}
+          <div style="display:grid; gap:1rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 1rem;">
+            <div>
+              <h3>By category</h3>
+              <ul>${categoriesMarkup}</ul>
+            </div>
+            <div>
+              <h3>By tag</h3>
+              <ul>${tagsMarkup}</ul>
+            </div>
+          </div>
+        `;
+      }
+
+      refreshBtn.addEventListener('click', fetchNews);
+      if (!initialNews.length) {
+        fetchNews();
+      }
+    </script>
+  </body>
+</html>

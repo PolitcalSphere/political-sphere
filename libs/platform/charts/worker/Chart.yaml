@@ -1,0 +1,6 @@
+apiVersion: v2
+name: worker
+version: 0.1.0
+description: Political Sphere background worker deployment.
+type: application
+appVersion: '0.1.0'

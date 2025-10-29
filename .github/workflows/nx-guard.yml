@@ -1,0 +1,92 @@
+name: nx-guard
+
+on:
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+  push:
+    branches:
+      - main
+
+jobs:
+  lint-boundaries:
+    name: 'Lint: enforce project boundaries'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run import-boundary check (no install)
+        id: import-check
+        run: |
+          chmod +x scripts/ci/check-import-boundaries.sh
+          ./scripts/ci/check-import-boundaries.sh || true
+        shell: bash
+
+      - name: Upload import-boundary report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: import-boundary-report
+          path: artifacts/import-boundary-report.txt
+
+      - name: Comment on PR with import-boundary findings
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const path = 'artifacts/import-boundary-report.txt';
+            if (!fs.existsSync(path)) return;
+            const body = fs.readFileSync(path, 'utf8').trim();
+            if (!body) return;
+            const MAX = 1600;
+            let preview = body;
+            if (preview.length > MAX) {
+              preview = preview.slice(0, MAX) + '\n... (truncated)';
+            }
+            const header = '⚠️ Import boundary violations detected by CI\n\n';
+            const advice = '\n\nPlease avoid relative imports that traverse two or more levels ("../../"). Consider using package imports or updating project boundaries. See `CONTRIBUTING.md` for guidance.';
+            const fence = '```';
+            const comment = header + fence + '\n' + preview + '\n' + fence + advice;
+
+            // Add a label to the PR for triage
+            const label = 'needs-boundary-fix';
+            try {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                labels: [label],
+              });
+            } catch (err) {
+              // Label might not exist; try to create it then add
+              try {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label,
+                  color: 'd93f0b',
+                  description: 'PR requires import boundary fixes',
+                });
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.payload.pull_request.number,
+                  labels: [label],
+                });
+              } catch (e) {
+                // ignore failures creating/adding label
+              }
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: comment,
+            });

@@ -1,0 +1,120 @@
+{
+  "run": {
+    "command": "nx run-many --target=build --all",
+    "startTime": "2025-10-29T14:26:46.017Z",
+    "endTime": "2025-10-29T14:45:47.417Z",
+    "inner": false
+  },
+  "tasks": [
+    {
+      "taskId": "political-sphere-ai-assistant:build",
+      "target": "build",
+      "projectName": "political-sphere-ai-assistant",
+      "hash": "1970741653205816836",
+      "startTime": "2025-10-29T14:26:46.126Z",
+      "endTime": "2025-10-29T14:26:46.175Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "api:build",
+      "target": "build",
+      "projectName": "api",
+      "hash": "7660526284004494925",
+      "startTime": "2025-10-29T14:26:46.179Z",
+      "endTime": "2025-10-29T14:26:46.213Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    },
+    {
+      "taskId": "remote:build",
+      "target": "build",
+      "projectName": "remote",
+      "hash": "13244592745314017134",
+      "startTime": "2025-10-29T14:26:46.215Z",
+      "endTime": "2025-10-29T14:26:46.218Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "host:build",
+      "target": "build",
+      "projectName": "host",
+      "hash": "4413802880880810979",
+      "startTime": "2025-10-29T14:26:46.218Z",
+      "endTime": "2025-10-29T14:26:46.222Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "shared:build",
+      "target": "build",
+      "projectName": "shared",
+      "hash": "15095571758147090589",
+      "startTime": "2025-10-29T14:26:46.222Z",
+      "endTime": "2025-10-29T14:26:46.248Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    },
+    {
+      "taskId": "ui:build",
+      "target": "build",
+      "projectName": "ui",
+      "hash": "17975447024020150902",
+      "startTime": "2025-10-29T14:26:46.250Z",
+      "endTime": "2025-10-29T14:26:46.251Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "worker:build",
+      "target": "build",
+      "projectName": "worker",
+      "hash": "3744215139017758437",
+      "startTime": "2025-10-29T14:26:46.251Z",
+      "endTime": "2025-10-29T14:26:46.253Z",
+      "params": "",
+      "cacheStatus": "local-cache-hit",
+      "status": 0
+    },
+    {
+      "taskId": "frontend:build",
+      "target": "build",
+      "projectName": "frontend",
+      "hash": "6089469640688592873",
+      "startTime": "2025-10-29T14:26:46.253Z",
+      "endTime": "2025-10-29T14:26:46.312Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    },
+    {
+      "taskId": "dev:build",
+      "target": "build",
+      "projectName": "dev",
+      "hash": "10233331898498745094",
+      "startTime": "2025-10-29T14:26:46.126Z",
+      "endTime": "2025-10-29T14:27:43.515Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 1
+    },
+    {
+      "taskId": "docs:build",
+      "target": "build",
+      "projectName": "docs",
+      "hash": "18400171966714963016",
+      "startTime": "2025-10-29T14:26:46.126Z",
+      "endTime": "2025-10-29T14:45:47.058Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 1
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+name: Frontend Performance & Lighthouse
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build frontend
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Start frontend service
+        run: |
+          npm run start:frontend &
+          timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 1; done'
+        env:
+          NODE_ENV: production
+
+      - name: Run Lighthouse CI
+        run: |
+          npm install -g lighthouse
+          lighthouse http://localhost:3000 \
+            --output json \
+            --output html \
+            --output-path ./lighthouse-results.json \
+            --chrome-flags="--headless --disable-gpu --no-sandbox --disable-dev-shm-usage"
+
+      - name: Upload Lighthouse results
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-results
+          path: lighthouse-results.*
+          retention-days: 30
+
+      - name: Lighthouse performance check
+        run: |
+          SCORE=$(jq '.categories.performance.score * 100' lighthouse-results.json)
+          if (( $(echo "$SCORE < 90" | bc -l) )); then
+            echo "❌ Performance score too low: $SCORE/100"
+            exit 1
+          else
+            echo "✅ Performance score: $SCORE/100"
+          fi
+
+      - name: Comment PR with Lighthouse results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const results = JSON.parse(fs.readFileSync('lighthouse-results.json', 'utf8'));
+
+            const comment = `## 📊 Lighthouse Performance Results
+
+            **Performance:** ${Math.round(results.categories.performance.score * 100)}/100
+            **Accessibility:** ${Math.round(results.categories.accessibility.score * 100)}/100
+            **Best Practices:** ${Math.round(results.categories['best-practices'].score * 100)}/100
+            **SEO:** ${Math.round(results.categories.seo.score * 100)}/100
+
+            [View detailed report](${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}})`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

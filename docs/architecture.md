@@ -1,108 +1,187 @@
-# Political Sphere Platform Architecture
+# Architecture Overview
 
-Political Sphere runs as an Nx monorepo with three delivery verticals:
+## System Architecture
 
-- **Infrastructure** – Terraform modules that provision the AWS foundation (VPC, EKS, RDS, Redis, Route53, ACM, KMS, IAM, ECR, S3).
-- **Platform** – Kubernetes Helm charts and Argo CD GitOps definitions for core cluster services and workloads.
-- **CI** – Reusable GitHub Actions workflows and composite actions that implement build, scan, IaC validation, and GitOps deployment automation.
-- **Dev Tooling** – Docker Compose / Tilt-based developer stack for local parity.
+The Political Sphere platform is built as a modern, scalable web application using microservices architecture with the following key components:
 
-## High-Level Diagram
+### Core Services
 
-```
-+--------------------+       +-------------------------+
-| GitHub Actions     |       | AWS Account             |
-| - build-and-test   |       | - VPC / Subnets         |
-| - iac-plan         |  OIDC | - EKS Cluster           |
-| - deploy-argocd    +------>+ - RDS / Redis / S3      |
-+--------------------+       | - Route53 / ACM / KMS   |
-                              | - ECR Repositories      |
-                              +-------------------------+
-                                         |
-                                         | IRSA / ArgoCD Sync
-                                         v
-                                +-------------------------+
-                                | Kubernetes (EKS)        |
-                                | - platform-core chart   |
-                                |   * ingress-nginx       |
-                                |   * cert-manager        |
-                                |   * external-dns        |
-                                |   * Argo CD             |
-                                |   * Monitoring Stack    |
-                                |   * Loki / Tempo / FB   |
-                                | - App charts (api, ... )|
-                                | - Namespaces (dev/prod) |
-                                +-------------------------+
-```
+#### Frontend Application (`apps/frontend`)
+- **Framework**: React 18 with TypeScript
+- **State Management**: Redux Toolkit + RTK Query
+- **Styling**: Tailwind CSS with custom design system
+- **Routing**: React Router v6
+- **Build Tool**: Vite
+- **Module Federation**: Webpack Module Federation for micro-frontends
 
-## Terraform Module Composition
+#### Backend API (`apps/api`)
+- **Framework**: Node.js with Express.js
+- **Language**: TypeScript
+- **Database**: PostgreSQL with Prisma ORM
+- **Authentication**: JWT with refresh tokens
+- **API Specification**: GraphQL with REST fallback
+- **Caching**: Redis for session and data caching
 
-`infrastructure/main.tf` wires together reusable modules:
+#### AI Assistant (`apps/dev/ai/ai-assistant`)
+- **Framework**: Node.js with MCP (Model Context Protocol)
+- **Purpose**: AI-powered code assistance and automation
+- **Features**: Code generation, review, testing, optimization
+- **Safety**: Built-in governance and ethical AI constraints
 
-| Module            | Responsibility                                               | Notes |
-|-------------------|--------------------------------------------------------------|-------|
-| `modules/vpc`     | VPC, subnets, NAT, route tables                              | Supports NAT toggle per env |
-| `modules/eks`     | Control plane, node groups, IRSA OIDC provider, SGs          | Accepts node group map |
-| `modules/rds`     | PostgreSQL instance, subnet group, parameter group           | Generates final snapshot suffix |
-| `modules/redis`   | ElastiCache replication group                                | Optional per env |
-| `modules/ecr`     | Repositories and optional replication                        | Enforces scanning |
-| `modules/route53` | Hosted zone + records                                         | Works for private/public |
-| `modules/acm`     | ACM certificate with optional DNS validation                 | Emits validation records |
-| `modules/kms`     | KMS key with admin/user principals                           | Used for RDS/S3 encryption |
-| `modules/s3`      | Secure S3 buckets with lifecycle, logging, replication       | Supports SSE/KMS |
-| `modules/iam`     | GitHub OIDC provider and per-repo roles                      | Allows custom inline policy |
+### Infrastructure Components
 
-Environment overlays (`envs/dev`, `envs/staging`, `envs/prod`) provide opinionated configurations: VPC CIDRs, nodegroup sizing, storage tiers, ACM SANs, bucket naming, and GitHub role policies. Each overlay uses the root module and stores state in S3 with DynamoDB locking (placeholder bucket/table names).
+#### Development Environment (`apps/dev`)
+- **Containerization**: Docker Compose for local development
+- **Infrastructure as Code**: Terraform for local AWS emulation
+- **Monitoring**: Prometheus + Grafana stack
+- **Database**: PostgreSQL + Redis
+- **Identity**: Keycloak for authentication
 
-## Kubernetes Platform
+#### Production Infrastructure (`libs/infrastructure`)
+- **Cloud Provider**: AWS
+- **Container Orchestration**: ECS Fargate
+- **Load Balancing**: Application Load Balancer with WAF
+- **Database**: Aurora PostgreSQL
+- **Caching**: ElastiCache Redis
+- **CDN**: CloudFront
+- **Secrets Management**: AWS Secrets Manager
 
-The `platform/charts/platform-core` umbrella chart bundles cluster add-ons:
+### Shared Libraries
 
-- **Ingress / Networking**: AWS NLB-backed ingress-nginx, cert-manager ClusterIssuers, external-dns with IRSA.
-- **GitOps**: Argo CD installed and exposed via ingress with Slack notifications enabled.
-- **Observability**: kube-prometheus-stack (Prometheus, Alertmanager, Grafana w/ Loki + Tempo data sources), Loki distributed logging, Tempo for traces, Fluent Bit DaemonSet shipping logs.
-- **Policy / Namespaces**: Namespace manifests with resource quotas, LimitRanges, default NetworkPolicies for `dev`, `staging`, `prod`, and `ci`.
+#### Platform Library (`libs/platform`)
+- **Purpose**: Common business logic and utilities
+- **Modules**: Authentication, authorization, data validation
+- **Framework**: Pure TypeScript/JavaScript
 
-Application charts (`api`, `frontend`, `worker`, `auth`, `db-proxy`) all follow the same pattern: Helm-managed Deployment + Service + HPA + optional ConfigMap/Ingress. Values files per environment set image tags and IRSA annotations. Argo CD Applications reference the charts with `values-[env].yaml` overlays.
+#### Shared UI Library (`libs/ui`)
+- **Purpose**: Reusable UI components
+- **Framework**: React with Storybook
+- **Design System**: Consistent styling and theming
 
-## CI/CD Flow
+#### CI/CD Library (`libs/ci`)
+- **Purpose**: Shared CI/CD configurations and scripts
+- **Tools**: GitHub Actions, Nx workflows
 
-1. **Build/Test** (`ci/workflows/build-and-test.yaml`)
-   - Run Nx lint/test/build targets.
-   - Build a container image, scan with Trivy, push to ECR (if AWS secrets provided).
-   - Publish built image URI as an artifact.
-2. **Release Orchestration** (`ci/workflows/application-release.yaml`)
-   - Calls the build workflow.
-   - Reads the pushed image tag and invokes `deploy-argocd` to sync the target application with the new tag.
-3. **IaC Validation** (`ci/workflows/iac-plan.yaml`)
-   - Uses composite action `setup-terraform` for consistent versions.
-   - Runs `terraform fmt`, `tflint`, `tfsec`, `checkov`, and optionally `terraform plan` under an OIDC-assumed role.
-4. **Argo CD Sync** (`ci/workflows/deploy-argocd.yaml`)
-   - Installs argocd-cli, logs in using API token, optionally applies parameter overrides, syncs & waits for health.
+## Architecture Patterns
 
-## Local Development
+### Microservices Architecture
+- **Service Boundaries**: Clear separation of concerns
+- **API Gateway**: Centralized entry point for all services
+- **Service Discovery**: Automatic service registration and discovery
+- **Circuit Breakers**: Fault tolerance and resilience
 
-- `dev/docker/docker-compose.dev.yaml` mirrors production services (API, frontend, worker, Keycloak-based auth, PostgreSQL, Redis, LocalStack, MailHog, pgAdmin).
-- `dev/scripts/dev-up.sh` / `dev-down.sh` manage the stack. `seed-data.sh` runs migrations/seeding using Prisma or fallback scripts.
-- `dev/templates/.env.example` and `.env.local.example` provide environment bootstrap.
-- Optional `dev/Tiltfile` runs compose via Tilt for better visibility.
+### Module Federation
+- **Purpose**: Enable micro-frontends and shared modules
+- **Benefits**: Independent deployment, code sharing, scalability
+- **Implementation**: Webpack Module Federation
 
-## Secrets & Identity
+### Infrastructure as Code
+- **Tool**: Terraform
+- **Benefits**: Version-controlled infrastructure, reproducibility
+- **Environments**: dev, staging, production with consistent setup
 
-- GitHub Actions assume AWS roles via OIDC (`modules/iam`).
-- Kubernetes workloads rely on IRSA (roles annotated in Helm values) and Vault / Secrets Manager integration (to be populated later).
-- S3 buckets default to private ACLs with SSE and optional KMS keys.
+### Observability
+- **Metrics**: Prometheus for system and application metrics
+- **Visualization**: Grafana dashboards
+- **Logging**: Centralized logging with correlation IDs
+- **Tracing**: Distributed tracing for request flows
 
-## Disaster Recovery & Backups
+## Data Architecture
 
-- RDS module enforces snapshots (`final_snapshot_identifier`) and supports Multi-AZ for upper environments.
-- S3 module allows lifecycle rules to tier/expire objects.
-- Compose stack includes `localstack` to validate infrastructure automation offline.
-- Future documentation (see `runbooks/incident.md`) details backup/restoration runbooks.
+### Database Design
+- **Primary Database**: PostgreSQL with Aurora for production
+- **Schema**: Normalized relational design
+- **Migrations**: Prisma for schema management
+- **Backup**: Automated backups with point-in-time recovery
 
-## Future Enhancements
+### Caching Strategy
+- **Session Store**: Redis for user sessions
+- **Data Cache**: Redis for frequently accessed data
+- **CDN**: CloudFront for static assets
 
-- Add GitOps policy enforcement (Kyverno/Gatekeeper) once admission policies are defined.
-- Extend Argo CD Applications to helmfile or app-of-apps pattern if repo splitting occurs.
-- Integrate Vault ExternalSecrets when secrets backend is selected.
+### Data Flow
+1. **Ingestion**: API receives requests
+2. **Validation**: Input validation and sanitization
+3. **Processing**: Business logic execution
+4. **Storage**: Data persistence to database
+5. **Caching**: Update cache layers
+6. **Response**: Formatted response to client
 
+## Security Architecture
+
+### Authentication & Authorization
+- **Identity Provider**: Keycloak for OAuth2/OIDC
+- **Token Management**: JWT with refresh token rotation
+- **Role-Based Access Control**: Hierarchical permissions
+- **Multi-Factor Authentication**: Optional 2FA
+
+### Network Security
+- **Web Application Firewall**: AWS WAF with OWASP rules
+- **SSL/TLS**: End-to-end encryption
+- **Network Segmentation**: VPC with security groups
+- **Secrets Management**: AWS Secrets Manager with rotation
+
+### Application Security
+- **Input Validation**: Comprehensive validation and sanitization
+- **SQL Injection Prevention**: Parameterized queries
+- **XSS Protection**: Content Security Policy headers
+- **CSRF Protection**: Anti-CSRF tokens
+
+## Deployment Architecture
+
+### CI/CD Pipeline
+- **Version Control**: Git with conventional commits
+- **Build**: Nx for monorepo builds
+- **Test**: Automated testing with coverage reporting
+- **Security**: SAST, DAST, and dependency scanning
+- **Deploy**: Blue-green deployments with health checks
+
+### Environment Strategy
+- **Development**: Local development with Docker
+- **Staging**: Mirror of production environment
+- **Production**: Highly available, multi-AZ deployment
+
+### Scaling Strategy
+- **Horizontal Scaling**: ECS tasks scale based on CPU/memory
+- **Database Scaling**: Aurora read replicas
+- **Caching**: ElastiCache cluster mode
+- **CDN**: Global content delivery
+
+## Performance Considerations
+
+### Frontend Optimization
+- **Code Splitting**: Dynamic imports and lazy loading
+- **Bundle Optimization**: Tree shaking and minification
+- **Caching**: Service worker for offline capability
+- **CDN**: Global asset delivery
+
+### Backend Optimization
+- **Database Indexing**: Optimized queries and indexes
+- **Caching Layers**: Multi-level caching strategy
+- **Async Processing**: Background job processing
+- **Connection Pooling**: Efficient database connections
+
+### Monitoring & Alerting
+- **System Metrics**: CPU, memory, disk usage
+- **Application Metrics**: Response times, error rates
+- **Business Metrics**: User engagement, conversion rates
+- **Alerting**: Proactive issue detection and notification
+
+## Compliance & Governance
+
+### Data Privacy
+- **GDPR Compliance**: Data minimization and consent management
+- **CCPA Compliance**: Privacy rights and data portability
+- **Audit Logging**: Comprehensive audit trails
+
+### Ethical AI
+- **Bias Mitigation**: Regular bias audits and monitoring
+- **Transparency**: Explainable AI decisions
+- **Governance**: AI usage policies and oversight
+
+### Content Moderation
+- **Automated Filtering**: AI-powered content analysis
+- **Human Oversight**: Escalation for complex cases
+- **Reporting**: Transparency in moderation decisions
+
+This architecture provides a solid foundation for a scalable, secure, and maintainable political discourse platform while ensuring high performance and user experience.

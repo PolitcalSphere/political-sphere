@@ -1,0 +1,26 @@
+Daemon process terminated and closed the connection
+
+Messages from the log:
+Time for 'build typescript dependencies' 0.9296920000342652
+[NX v22.0.1 Daemon Server] - 2025-10-29T13:05:59.529Z - [WATCHER]: apps/frontend/src/server.js was modified
+[NX v22.0.1 Daemon Server] - 2025-10-29T13:05:59.909Z - [REQUEST]: Responding to the client. File watch changed
+[NX v22.0.1 Daemon Server] - 2025-10-29T13:05:59.911Z - Done responding to the client File watch changed
+[NX v22.0.1 Daemon Server] - 2025-10-29T13:05:59.911Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 2.
+[NX v22.0.1 Daemon Server] - 2025-10-29T13:05:59.912Z - Time taken for 'changed-projects' 0.2848879999946803ms
+[NX v22.0.1 Daemon Server] - 2025-10-29T13:06:00.031Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v22.0.1 Daemon Server] - 2025-10-29T13:06:00.309Z - [REQUEST]: libs/shared/src/logger.js,apps/frontend/src/server.js
+[NX v22.0.1 Daemon Server] - 2025-10-29T13:06:00.309Z - [REQUEST]: 
+[NX v22.0.1 Daemon Server] - 2025-10-29T13:06:00.791Z - Time taken for 'hash changed files from watcher' 19.294395999982953ms
+Time for 'nx/core/package-json:createNodes' 1.2916059999261051
+Time for 'nx/core/project-json:createNodes' 1.1636970000108704
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 925.9515930000925
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 58.38983300002292
+[NX v22.0.1 Daemon Server] - 2025-10-29T13:06:02.315Z - Wrote project graph cache to /Users/morganlowman/politicial-sphere (V1)/.nx/workspace-data/project-graph.json
+[NX v22.0.1 Daemon Server] - 2025-10-29T13:06:02.315Z - [SYNC]: collect registered sync generators
+[NX v22.0.1 Daemon Server] - 2025-10-29T13:06:02.315Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v22.0.1 Daemon Server] - 2025-10-29T13:06:02.315Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v22.0.1 Daemon Server] - 2025-10-29T13:06:02.316Z - Time taken for 'total execution time for createProjectGraph()' 4974.931782ms
+
+
+
+More information: /Users/morganlowman/politicial-sphere (V1)/.nx/workspace-data/d/daemon.log

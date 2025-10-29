@@ -1,0 +1,23 @@
+name: Lint Module Boundaries
+
+on:
+  pull_request:
+    paths:
+      - '**/*.ts'
+      - '**/*.tsx'
+      - '.eslintrc.json'
+      - 'tools/**'
+
+jobs:
+  lint-boundaries:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install
+        run: npm ci
+      - name: Run import boundary lint
+        run: npm run lint:boundaries

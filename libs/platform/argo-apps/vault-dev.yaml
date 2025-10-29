@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault-dev
+  namespace: argocd
+spec:
+  project: platform
+  source:
+    repoURL: https://helm.releases.hashicorp.com
+    chart: vault
+    # targetRevision left intentionally blank to allow selecting chart in Argo UI; consider pinning before prod
+    targetRevision: ""
+    helm:
+      values: |
+        server:
+          # DEV MODE: single server useful for local development only. DO NOT USE IN PRODUCTION.
+          dev:
+            enabled: true
+        # Tune storage, tls, and auto-unseal in production values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: vault-dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
+# Notes:
+# - This application intentionally deploys Vault in dev mode for safe developer testing.
+# - Before promoting to staging/production, replace `helm.values.server.dev.enabled` with
+#   production-grade configuration (storage backend, TLS, auto-unseal, HA settings).

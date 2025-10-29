@@ -2,30 +2,30 @@
 
 Thanks for contributing to Political Sphere! This quickstart helps you open a low-friction PR.
 
-1) Branching
-	- Create a topic branch from `main`: `git checkout -b feat/your-change`
+1. Branching
+   - Create a topic branch from `main`: `git checkout -b feat/your-change`
 
-2) Commit messages
-	- Use Conventional Commits: `type(scope): short description` (e.g., `fix(api): handle 500 on login`).
-	- We use these messages for automated changelogs and release tooling.
+2. Commit messages
+   - Use Conventional Commits: `type(scope): short description` (e.g., `fix(api): handle 500 on login`).
+   - We use these messages for automated changelogs and release tooling.
 
-3) Run tests & lint locally
-	- Install and prepare: `npm ci`
-	- Run linters: `npm run lint`
-	- Run tests: `npm test`
+3. Run tests & lint locally
+   - Install and prepare: `npm ci`
+   - Run linters: `npm run lint`
+   - Run tests: `npm test`
 
-4) PR labels and size
-	- Path-based labels are applied automatically by the labeler action (see `.github/labeler.yml`).
-	- A size label (XS/S/M/L/XL) is applied to PRs so reviewers can triage quickly.
+4. PR labels and size
+   - Path-based labels are applied automatically by the labeler action (see `.github/labeler.yml`).
+   - A size label (XS/S/M/L/XL) is applied to PRs so reviewers can triage quickly.
 
-5) CI & checks
-	- CI runs tests, lint, docs checks and security gates. Fix any failing checks before requesting review.
+5. CI & checks
+   - CI runs tests, lint, docs checks and security gates. Fix any failing checks before requesting review.
 
-6) Good first contributions
-	- Use the "Good first issue" issue form in `.github/ISSUE_TEMPLATE` to help onboard contributors; it will add `good first issue` label.
+6. Good first contributions
+   - Use the "Good first issue" issue form in `.github/ISSUE_TEMPLATE` to help onboard contributors; it will add `good first issue` label.
 
-7) Questions & support
-	- If you need help, open an issue labeled `triage` or contact the maintainers listed in `CODEOWNERS`.
+7. Questions & support
+   - If you need help, open an issue labeled `triage` or contact the maintainers listed in `CODEOWNERS`.
 
 ---
 

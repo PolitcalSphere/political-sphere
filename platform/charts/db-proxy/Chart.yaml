@@ -1,6 +1,0 @@
-apiVersion: v2
-name: db-proxy
-version: 0.1.0
-description: Deploys a lightweight connection pooler (pgBouncer) for Political Sphere workloads.
-type: application
-appVersion: "1.22.1"

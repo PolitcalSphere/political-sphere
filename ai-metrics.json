@@ -1,0 +1,14 @@
+{
+  "totalRequests": 0,
+  "successfulRequests": 0,
+  "failedRequests": 0,
+  "averageResponseTime": 0,
+  "usageByType": {},
+  "userSatisfaction": [],
+  "qualityMetrics": {
+    "compilationSuccess": 0,
+    "testPassRate": 0,
+    "securityScanPass": 0
+  },
+  "lastUpdated": "2025-10-28T17:34:28.019Z"
+}

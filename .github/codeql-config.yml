@@ -1,0 +1,24 @@
+name: "CodeQL Configuration"
+
+disable-default-queries: false
+
+queries:
+  - uses: security-and-quality
+  - uses: security-experimental
+
+paths-ignore:
+  - node_modules
+  - dist
+  - coverage
+  - .nx
+  - playwright-report
+  - test-results
+  - ai-cache
+  - ai-logs
+  - ai-metrics
+
+paths:
+  - apps
+  - libs
+  - scripts
+  - tools

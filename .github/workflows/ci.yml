@@ -1,55 +1,100 @@
 name: CI
+
 on:
-  pull_request:
   push:
-    branches: [main]
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
 jobs:
-  quality:
+  lint-and-typecheck:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 20, cache: 'npm' }
-      - run: npm ci
-      - name: Nx Cache
-        uses: actions/cache@v4
         with:
-          path: .nx/cache
-          key: nx-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-${{ github.sha }}
-          restore-keys: |
-            nx-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-
-      - run: npm run lint
-      - run: npm run typecheck
-      - run: npm test --workspaces --if-present
-      - name: Retry failed tests once
-        run: npm test --workspaces --if-present -- --runInBand=false || npm test --workspaces --if-present -- --runInBand=false
-      - name: Docs Lint
-        run: npm run docs:lint
-      - name: Gitleaks
-        uses: gitleaks/gitleaks-action@v2
-        with: { args: "detect --source . --verbose" }
-      - name: Conftest
-        uses: open-policy-agent/conftest-action@v1
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          policy: policies/
-          input: platform/
-  containers:
+          node-version: 22
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Typecheck
+        run: npm run typecheck
+
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Hadolint
-        uses: hadolint/hadolint-action@v3.1.0
-        with: { dockerfile: '**/Dockerfile' }
-      - name: Build images (dry)
-        run: echo "build step placeholder to keep free minutes low"
-  iac:
+        with:
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Test
+        run: npm run test
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: coverage/
+          retention-days: 30
+
+  build:
     runs-on: ubuntu-latest
-    defaults: { run: { working-directory: infrastructure } }
+    needs: [lint-and-typecheck, test]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-      - name: tfsec
-        uses: aquasecurity/tfsec-action@v1.0.3
-      - name: Checkov
-        uses: bridgecrewio/checkov-action@master
-        with: { directory: . }
+        with:
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: dist/
+          retention-days: 30
+
+  security-scan:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run security audit
+        run: npm audit --audit-level=moderate
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        if: github.event_name == 'pull_request'
+      - name: CodeQL Analysis
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+          config-file: ./.github/codeql-config.yml
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3

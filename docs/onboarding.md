@@ -1,86 +1,180 @@
-# Political Sphere Engineering Onboarding
+# Developer Onboarding Guide
 
-Welcome aboard! This guide walks you through the first day tasks to become productive on the Political Sphere platform.
+Welcome to the Political Sphere project! This guide will help you get started with the development environment and understand the project structure.
 
-## Accounts & Access
+## 🚀 Quick Start
 
-1. **GitHub** – join the `political-sphere` organization and ensure 2FA is enabled.
-2. **AWS** – request enrollment in the `political-sphere-dev` AWS account; you will receive an IAM Identity Center assignment that maps to least-privilege roles.
-3. **Argo CD** – accounts are provisioned via SSO (Okta). Ask the platform team to grant read access to the `platform` AppProject.
-4. **Slack** – join `#platform`, `#dev-core`, and `#alerts` channels.
-
-## Local Environment Setup
-
-1. **Clone Repo**
+1. **Clone the repository**
    ```bash
-   git clone git@github.com:political-sphere/political-sphere.git
+   git clone <repository-url>
    cd political-sphere
    ```
 
-2. **Install Tooling**
-   - Node.js 20.x (use Volta or nvm)
-   - Docker Desktop (or colima/podman)
-   - Tilt (optional) `brew install tilt`
-   - AWS CLI v2 + `aws eks` dependencies
-
-3. **Bootstrap Env Files**
+2. **Run the setup script**
    ```bash
-   cp dev/templates/.env.example .env
-   cp dev/templates/.env.local.example .env.local
+   ./scripts/setup.sh
    ```
 
-4. **Start Local Stack**
+   This script will:
+   - Install dependencies
+   - Set up environment variables
+   - Initialize Terraform for local AWS services
+   - Start all development services with Docker Compose
+   - Run initial tests
+
+3. **Open the application**
+   - Frontend: http://localhost:3000
+   - API Documentation: http://localhost:4000/docs
+   - Keycloak Admin: http://localhost:8080 (admin/admin123)
+   - Grafana: http://localhost:3001 (admin/admin123)
+
+## 📁 Project Structure
+
+```
+political-sphere/
+├── apps/                          # Applications
+│   ├── dev/                       # Development environment
+│   │   ├── ai/                    # AI assistants and tools
+│   │   ├── docker/                # Docker configurations
+│   │   ├── monitoring/            # Prometheus/Grafana configs
+│   │   └── terraform/             # Local infrastructure as code
+│   └── docs/                      # Documentation site
+├── libs/                          # Shared libraries
+│   ├── ci/                        # CI/CD configurations
+│   ├── infrastructure/            # Production infrastructure
+│   └── platform/                  # Platform services
+├── scripts/                       # Utility scripts
+├── docs/                          # Documentation
+└── tools/                         # Development tools
+```
+
+## 🛠️ Development Workflow
+
+### Daily Development
+
+1. **Start the environment**
    ```bash
-   npm install
-   npm run docker:up
-   npm run dev:all
+   cd apps/dev/docker
+   docker-compose -f docker-compose.dev.yaml up -d
    ```
-   Visit http://localhost:3000 for the frontend, http://localhost:4000 for the API, and http://localhost:8025 for MailHog.
 
-5. **Seed Database** (optional sample data)
+2. **Run tests**
    ```bash
-   npm run docker:seed
+   npm run test
+   npm run test:e2e
    ```
 
-## Daily Development Flow
-
-- Commit messages follow Conventional Commits (`feat:`, `fix:`, etc.).
-- Use Nx to execute scoped tasks (e.g., `npx nx test api`, `npx nx lint frontend`).
-- Run `npm run lint` before submitting pull requests; CI performs lint/test/build/scan steps automatically.
-- Pull requests require at least one reviewer from `@political-sphere/platform-admins` for infrastructure and `@political-sphere/security` for prod-impacting changes.
-
-## Infrastructure Changes
-
-1. Navigate to the desired environment folder (e.g., `infrastructure/envs/dev`).
-2. Export AWS credentials (recommended: use `aws sso login`).
-3. Run Terraform validation:
+3. **Lint and format code**
    ```bash
-   terraform init
-   terraform plan -var="rds_password=$(pass show political/rds/dev)"
+   npm run lint
+   npm run format
    ```
-4. Commit changes and open a PR. GitHub Actions will run `iac-plan` with tfsec/checkov/tflint.
 
-## Deployment Workflow
+4. **Build for production**
+   ```bash
+   npx nx build <project-name>
+   ```
 
-- Merge to `main` automatically triggers build/test workflows for application repositories.
-- Release pipelines (see `ci/workflows/application-release.yaml`) push images to ECR and sync the relevant Argo CD Application.
-- Production deploys require manual approval in GitHub (environment protection) and notification in `#deployments` channel.
+### Using Nx
 
-## Useful Commands
+This project uses Nx for monorepo management:
 
-| Command | Description |
-|---------|-------------|
-| `npm run docker:up` | Launch local infrastructure stack |
-| `npm run docker:down` | Tear down local stack and volumes |
-| `npm run dev:all` | Run API + frontend + worker Nx dev servers |
-| `npm run docker:seed` | Apply DB migrations and seed fixtures |
-| `npx nx graph` | Visualize dependency graph |
+```bash
+# Run a specific target for all projects
+npx nx run-many --target=build
 
-## Getting Help
+# Run a target for a specific project
+npx nx run dev:build
 
-- **Platform Team** – `@political-sphere/platform-admins`
-- **Incident Response** – see `docs/runbooks/incident.md`
-- **Security** – `security@political-sphere.example`
-- **Knowledge Base** – Confluence space `POLSPH` (coming soon)
+# View dependency graph
+npx nx graph
+```
 
-Happy shipping! 🚀
+## 🔧 Available Services
+
+| Service | URL | Purpose |
+|---------|-----|---------|
+| Frontend | http://localhost:3000 | React application |
+| API | http://localhost:4000 | GraphQL/REST API |
+| Keycloak | http://localhost:8080 | Identity and access management |
+| PostgreSQL | localhost:5432 | Primary database |
+| Redis | localhost:6379 | Caching and sessions |
+| LocalStack | localhost:4566 | AWS services emulation |
+| Prometheus | http://localhost:9090 | Metrics collection |
+| Grafana | http://localhost:3001 | Monitoring dashboards |
+| MailHog | http://localhost:8025 | Email testing |
+| pgAdmin | http://localhost:5050 | Database administration |
+
+## 🧪 Testing
+
+### Unit Tests
+```bash
+npm run test
+```
+
+### End-to-End Tests
+```bash
+npm run test:e2e
+```
+
+### Performance Testing
+```bash
+npm run test:performance
+```
+
+## 📊 Monitoring
+
+The development environment includes comprehensive monitoring:
+
+- **Prometheus**: Metrics collection from all services
+- **Grafana**: Dashboards for system and application metrics
+- **Node Exporter**: System-level metrics
+
+Access Grafana at http://localhost:3001 with admin/admin123.
+
+## 🔒 Security
+
+- All services run in isolated Docker containers
+- Secrets are managed through environment variables
+- LocalStack provides AWS service emulation
+- Keycloak handles authentication and authorization
+
+## 🤝 Contributing
+
+1. Create a feature branch from `main`
+2. Make your changes
+3. Run tests and linting
+4. Submit a pull request
+5. Wait for CI/CD pipeline to pass
+
+### Code Standards
+
+- Use TypeScript for all new code
+- Follow ESLint and Prettier configurations
+- Write comprehensive tests
+- Update documentation for API changes
+
+## 📚 Additional Resources
+
+- [Architecture Overview](./architecture.md)
+- [API Documentation](./api.md)
+- [Deployment Guide](./deployment.md)
+- [Troubleshooting](./troubleshooting.md)
+
+## 🆘 Getting Help
+
+- Check the [troubleshooting guide](./troubleshooting.md)
+- Review existing issues on GitHub
+- Ask questions in the development Slack channel
+- Contact the tech lead for architectural questions
+
+## 🎯 Next Steps
+
+After completing this onboarding:
+
+1. Explore the codebase and understand the domain
+2. Set up your IDE with the recommended extensions
+3. Review the current sprint goals
+4. Start working on your first task
+
+Welcome aboard! 🚀

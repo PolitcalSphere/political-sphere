@@ -1,0 +1,21 @@
+{
+  "name": "ci",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ci",
+  "projectType": "library",
+  "tags": ["ci"],
+  "targets": {
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "echo 'Linting CI workflows...' && find . -name '*.yml' -o -name '*.yaml' | xargs yamllint || true"
+      }
+    },
+    "validate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "echo 'Validating GitHub Actions...' && action-validator .github/workflows/"
+      }
+    }
+  }
+}

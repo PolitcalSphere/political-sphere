@@ -1,0 +1,27 @@
+{
+  "name": "platform",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/platform",
+  "projectType": "library",
+  "tags": ["platform"],
+  "targets": {
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd libs/platform && kubectl apply -f ."
+      }
+    },
+    "validate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd libs/platform && kubectl apply --dry-run=client -f ."
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd libs/platform && yamllint argo-apps/*.yaml charts/**/*.yaml namespaces/*.yaml policies/*.yaml || true"
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+[2m> [22mdocker compose -f apps/dev/docker/docker-compose.dev.yaml build
+
+time="2025-10-29T12:12:06Z" level=warning msg="/Users/morganlowman/politicial-sphere (V1)/apps/dev/docker/docker-compose.dev.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.56kB done
+#1 DONE 0.0s
+resolve : lstat /Users/morganlowman/politicial-sphere (V1)/apps/apps: no such file or directory
+
+[2m> [22mdocker compose -f apps/dev/docker/docker-compose.dev.yaml build
+
+time="2025-10-29T12:12:06Z" level=warning msg="/Users/morganlowman/politicial-sphere (V1)/apps/dev/docker/docker-compose.dev.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.56kB done
+#1 DONE 0.0s
+resolve : lstat /Users/morganlowman/politicial-sphere (V1)/apps/apps: no such file or directory
+
+Warning: command "docker compose -f apps/dev/docker/docker-compose.dev.yaml build" exited with non-zero status code

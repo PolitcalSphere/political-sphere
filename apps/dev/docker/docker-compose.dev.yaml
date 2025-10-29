@@ -1,0 +1,207 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-political}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_DB: ${POSTGRES_DB:-political_dev}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-political}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    command:
+      [
+        'redis-server',
+        '--appendonly',
+        'yes',
+        '--requirepass',
+        '${REDIS_PASSWORD:-changeme}',
+      ]
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  localstack:
+    image: localstack/localstack:2.3
+    environment:
+      - SERVICES=s3,sqs,sts,iam,secretsmanager
+      - AWS_DEFAULT_REGION=${AWS_REGION:-us-east-1}
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    ports:
+      - '4566:4566'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - localstack-data:/var/lib/localstack
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - '${MAILHOG_SMTP_PORT:-1025}:1025'
+      - '${MAILHOG_HTTP_PORT:-8025}:8025'
+
+  pgadmin:
+    image: dpage/pgadmin4:8.6
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@example.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+    ports:
+      - '5050:80'
+    depends_on:
+      - postgres
+
+  auth:
+    image: quay.io/keycloak/keycloak:23.0
+    command: ['start-dev', '--http-port=${AUTH_PORT:-8080}']
+    environment:
+      KEYCLOAK_ADMIN: ${AUTH_ADMIN_USER:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${AUTH_ADMIN_PASSWORD:-admin123}
+      KC_DB: postgres
+      KC_DB_URL_HOST: postgres
+      KC_DB_USERNAME: ${POSTGRES_USER:-political}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      KC_DB_DATABASE: ${POSTGRES_DB:-political_dev}
+    ports:
+      - '${AUTH_PORT:-8080}:8080'
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    build:
+      context: ../..
+      dockerfile: apps/api/Dockerfile
+      target: dev
+    environment:
+      API_PORT: ${API_PORT:-4000}
+      DATABASE_URL: postgres://${POSTGRES_USER:-political}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-political_dev}
+      REDIS_URL: redis://default:${REDIS_PASSWORD:-changeme}@redis:6379/0
+      AUTH_URL: http://auth:8080
+      NODE_ENV: development
+      LOG_LEVEL: debug
+    ports:
+      - '${API_PORT:-4000}:4000'
+    volumes:
+      - ../../apps/api:/app/apps/api
+      - ../../libs:/app/libs
+      - api-node-modules:/app/node_modules
+    command: ['npm', 'run', 'start:api']
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ../..
+      dockerfile: apps/frontend/Dockerfile
+      target: dev
+    environment:
+      API_BASE_URL: http://api:4000
+      NODE_ENV: development
+    ports:
+      - '${FRONTEND_PORT:-3000}:3000'
+    volumes:
+      - ../../apps/frontend:/app/apps/frontend
+      - ../../libs:/app/libs
+      - frontend-node-modules:/app/node_modules
+    command: ['npm', 'run', 'start:frontend']
+    depends_on:
+      api:
+        condition: service_started
+
+  worker:
+    build:
+      context: ../..
+      dockerfile: apps/worker/Dockerfile
+      target: dev
+    environment:
+      QUEUE_URL: http://localstack:4566/000000000000/political-sphere
+      API_URL: http://api:4000
+      DATABASE_URL: postgres://${POSTGRES_USER:-political}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-political_dev}
+      REDIS_URL: redis://default:${REDIS_PASSWORD:-changeme}@redis:6379/0
+      NODE_ENV: development
+      WORKER_INTERVAL_MS: ${WORKER_INTERVAL_MS:-15000}
+    volumes:
+      - ../../apps/worker:/app/apps/worker
+      - ../../libs:/app/libs
+      - worker-node-modules:/app/node_modules
+    command: ['npm', 'run', 'start:worker']
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  prometheus:
+    image: prom/prometheus:v2.48.1
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+
+  grafana:
+    image: grafana/grafana:10.2.3
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin123}
+      GF_USERS_ALLOW_SIGN_UP: 'false'
+    ports:
+      - '3001:3000'
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - prometheus
+
+  node-exporter:
+    image: prom/node-exporter:v1.7.0
+    ports:
+      - '9100:9100'
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    depends_on:
+      - prometheus
+
+volumes:
+  postgres-data:
+  redis-data:
+  localstack-data:
+  api-node-modules:
+  frontend-node-modules:
+  worker-node-modules:
+  prometheus-data:
+  grafana-data:

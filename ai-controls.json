@@ -1,0 +1,32 @@
+{
+  "rateLimits": {
+    "codeGeneration": {
+      "maxPerHour": 100,
+      "maxPerDay": 500
+    },
+    "codeReview": {
+      "maxPerHour": 50,
+      "maxPerDay": 200
+    },
+    "testing": {
+      "maxPerHour": 30,
+      "maxPerDay": 150
+    }
+  },
+  "qualityGates": {
+    "requireLinting": true,
+    "requireSecurityScan": true,
+    "requireTesting": true,
+    "minTestCoverage": 80
+  },
+  "contentFilters": {
+    "blockHardcodedSecrets": true,
+    "blockInsecurePatterns": true,
+    "requireErrorHandling": true
+  },
+  "auditSettings": {
+    "logAllInteractions": true,
+    "retainLogsDays": 90,
+    "anonymizeUserData": true
+  }
+}

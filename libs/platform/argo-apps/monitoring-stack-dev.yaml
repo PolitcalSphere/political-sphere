@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring-stack-dev
+  namespace: argocd
+spec:
+  project: platform
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: ""
+    helm:
+      values: |
+        grafana:
+          enabled: true
+          adminPassword: "changeme" # dev-only; replace with Vault-sourced password for staging/prod
+          service:
+            type: ClusterIP
+        prometheus:
+          prometheusSpec:
+            serviceMonitorSelectorNilUsesHelmValues: false
+        kubeApiServer:
+          enabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
+# Dev-only: installs Prometheus + Grafana via kube-prometheus-stack. Do not use the
+# default adminPassword in production; instead, source Grafana credentials from Vault and
+# secure access with ingress + TLS.

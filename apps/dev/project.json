@@ -1,0 +1,33 @@
+{
+  "name": "dev",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/dev",
+  "projectType": "application",
+  "tags": ["app"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker compose -f apps/dev/docker/docker-compose.dev.yaml build"
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "./apps/dev/scripts/dev-up.sh"
+      }
+    },
+    "stop": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "./apps/dev/scripts/dev-down.sh"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run test:e2e"
+      }
+    }
+  }
+}

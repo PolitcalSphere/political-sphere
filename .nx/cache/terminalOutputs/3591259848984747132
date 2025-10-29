@@ -1,0 +1,101 @@
+> npm run test:e2e
+
+
+> political-sphere-monorepo@0.0.0 test:e2e
+> npx playwright test --reporter=html
+
+TAP version 13
+# Subtest: API integration tests skipped. Set RUN_API_INTEGRATION=true to enable.
+ok 1 - API integration tests skipped. Set RUN_API_INTEGRATION=true to enable. # SKIP
+  ---
+  duration_ms: 1.241815
+  type: 'test'
+  ...
+# Subtest: example unit test - arithmetic
+ok 2 - example unit test - arithmetic
+  ---
+  duration_ms: 15.227802
+  type: 'test'
+  ...
+# Subtest: unit: example - basic arithmetic sanity
+ok 3 - unit: example - basic arithmetic sanity
+  ---
+  duration_ms: 0.679167
+  type: 'test'
+  ...
+# Subtest: summarizeNews aggregates totals, categories, tags and latest item
+ok 4 - summarizeNews aggregates totals, categories, tags and latest item
+  ---
+  duration_ms: 4.155436
+  type: 'test'
+  ...
+# Subtest: summarizeNews handles empty or malformed input gracefully
+ok 5 - summarizeNews handles empty or malformed input gracefully
+  ---
+  duration_ms: 0.275215
+  type: 'test'
+  ...
+Error: Cannot find package '@political-sphere/shared' imported from /Users/morganlowman/politicial-sphere (V1)/apps/api/src/newsService.js
+
+Error: Cannot find package '@jest/globals' imported from /Users/morganlowman/politicial-sphere (V1)/apps/api/tests/security.test.js
+
+Error: Cannot find package '@political-sphere/shared' imported from /Users/morganlowman/politicial-sphere (V1)/apps/api/src/server.js
+
+Error: Cannot find package '@jest/globals' imported from /Users/morganlowman/politicial-sphere (V1)/libs/shared/tests/security.test.js
+
+[1A[2K
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m
+> npm run test:e2e
+
+
+> political-sphere-monorepo@0.0.0 test:e2e
+> npx playwright test --reporter=html
+
+TAP version 13
+# Subtest: API integration tests skipped. Set RUN_API_INTEGRATION=true to enable.
+ok 1 - API integration tests skipped. Set RUN_API_INTEGRATION=true to enable. # SKIP
+  ---
+  duration_ms: 1.241815
+  type: 'test'
+  ...
+# Subtest: example unit test - arithmetic
+ok 2 - example unit test - arithmetic
+  ---
+  duration_ms: 15.227802
+  type: 'test'
+  ...
+# Subtest: unit: example - basic arithmetic sanity
+ok 3 - unit: example - basic arithmetic sanity
+  ---
+  duration_ms: 0.679167
+  type: 'test'
+  ...
+# Subtest: summarizeNews aggregates totals, categories, tags and latest item
+ok 4 - summarizeNews aggregates totals, categories, tags and latest item
+  ---
+  duration_ms: 4.155436
+  type: 'test'
+  ...
+# Subtest: summarizeNews handles empty or malformed input gracefully
+ok 5 - summarizeNews handles empty or malformed input gracefully
+  ---
+  duration_ms: 0.275215
+  type: 'test'
+  ...
+Error: Cannot find package '@political-sphere/shared' imported from /Users/morganlowman/politicial-sphere (V1)/apps/api/src/newsService.js
+
+Error: Cannot find package '@jest/globals' imported from /Users/morganlowman/politicial-sphere (V1)/apps/api/tests/security.test.js
+
+Error: Cannot find package '@political-sphere/shared' imported from /Users/morganlowman/politicial-sphere (V1)/apps/api/src/server.js
+
+Error: Cannot find package '@jest/globals' imported from /Users/morganlowman/politicial-sphere (V1)/libs/shared/tests/security.test.js
+
+[1A[2K
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m
+Warning: command "npm run test:e2e" exited with non-zero status code

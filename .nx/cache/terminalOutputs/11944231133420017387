@@ -1,0 +1,78 @@
+> node --test apps/api/tests/**/*.test.js
+
+TAP version 13
+# Subtest: creates a record and returns it from list()
+ok 1 - creates a record and returns it from list()
+  ---
+  duration_ms: 120.427454
+  type: 'test'
+  ...
+# Subtest: filters records by category, tag, limit and search
+ok 2 - filters records by category, tag, limit and search
+  ---
+  duration_ms: 85.228009
+  type: 'test'
+  ...
+# Subtest: update returns null when record missing
+ok 3 - update returns null when record missing
+  ---
+  duration_ms: 13.414037
+  type: 'test'
+  ...
+# Subtest: analytics summary aggregates categories and recency
+ok 4 - analytics summary aggregates categories and recency
+  ---
+  duration_ms: 14.206614
+  type: 'test'
+  ...
+# Subtest: create throws validation errors when required fields missing
+ok 5 - create throws validation errors when required fields missing
+  ---
+  duration_ms: 9.763746
+  type: 'test'
+  ...
+# Subtest: GET /api/news returns seeded data
+ok 6 - GET /api/news returns seeded data
+  ---
+  duration_ms: 135.660583
+  type: 'test'
+  ...
+# Subtest: POST /api/news creates a record and persists it
+ok 7 - POST /api/news creates a record and persists it
+  ---
+  duration_ms: 50.704694
+  type: 'test'
+  ...
+# Subtest: POST /api/news validates required fields
+ok 8 - POST /api/news validates required fields
+  ---
+  duration_ms: 53.478147
+  type: 'test'
+  ...
+# Subtest: PUT /api/news/{id} updates existing records
+ok 9 - PUT /api/news/{id} updates existing records
+  ---
+  duration_ms: 11.166018
+  type: 'test'
+  ...
+# Subtest: PUT /api/news/{id} returns 404 for unknown record
+ok 10 - PUT /api/news/{id} returns 404 for unknown record
+  ---
+  duration_ms: 53.563269
+  type: 'test'
+  ...
+# Subtest: GET /metrics/news provides aggregate summary
+ok 11 - GET /metrics/news provides aggregate summary
+  ---
+  duration_ms: 18.489353
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 993.709723

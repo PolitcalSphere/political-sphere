@@ -1,6 +1,0 @@
-apiVersion: v2
-name: auth
-version: 0.1.0
-description: Authentication service deployment for Political Sphere (e.g., Keycloak/Auth0 proxy).
-type: application
-appVersion: "0.1.0"
