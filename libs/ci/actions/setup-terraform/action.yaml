@@ -1,0 +1,35 @@
+name: 'Setup Terraform'
+description: 'Install Terraform and configure plugin cache'
+author: 'Political Sphere Platform Team'
+runs:
+  using: 'composite'
+  steps:
+    - id: install
+      name: Install Terraform
+      shell: bash
+      run: |
+        TERRAFORM_VERSION="${{ inputs.terraform_version }}"
+        if [[ -z "$TERRAFORM_VERSION" ]]; then
+          echo "terraform_version input is required" >&2
+          exit 1
+        fi
+        echo "Installing Terraform ${TERRAFORM_VERSION}"
+        curl -fsSL "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" -o terraform.zip
+        unzip terraform.zip
+        sudo mv terraform /usr/local/bin/terraform
+        rm terraform.zip
+    - id: configure
+      name: Configure plugin cache
+      shell: bash
+      run: |
+        mkdir -p $HOME/.terraform.d/plugin-cache
+        echo "export TF_PLUGIN_CACHE_DIR=$HOME/.terraform.d/plugin-cache" >> $GITHUB_ENV
+        echo "plugin_cache_dir=$HOME/.terraform.d/plugin-cache" >> $GITHUB_OUTPUT
+inputs:
+  terraform_version:
+    description: 'Terraform version to install'
+    required: true
+outputs:
+  plugin_cache_dir:
+    description: 'Path to Terraform plugin cache'
+    value: ${{ steps.configure.outputs.plugin_cache_dir }}

@@ -1,0 +1,73 @@
+nameOverride: 'worker'
+fullnameOverride: ''
+
+image:
+  repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/political-sphere/worker
+  tag: latest
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ''
+
+podAnnotations:
+  sidecar.opentelemetry.io/inject: 'true'
+
+podSecurityContext: {}
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  allowPrivilegeEscalation: false
+
+service:
+  enabled: false
+  type: ClusterIP
+  port: 80
+
+http:
+  containerPort: 8080
+  livenessCommand:
+    - /bin/sh
+    - -c
+    - 'test -f /tmp/healthy'
+  readinessCommand:
+    - /bin/sh
+    - -c
+    - 'test -f /tmp/ready'
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 70
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+env:
+  - name: NODE_ENV
+    value: production
+  - name: QUEUE_URL
+    value: sqs://political-sphere-default
+
+config: {}
+secrets: []
+extraVolumes: []
+extraVolumeMounts: []
+
+cronJobs: []

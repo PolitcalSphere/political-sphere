@@ -1,0 +1,35 @@
+{{- range .Values.cronJobs }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ printf "%s-%s" $.Release.Name .name | trunc 63 | trimSuffix "-" }}
+  labels:
+    app.kubernetes.io/managed-by: {{ $.Release.Service }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/component: worker-cron
+spec:
+  schedule: {{ .schedule | quote }}
+  successfulJobsHistoryLimit: {{ .successfulJobsHistoryLimit | default 1 }}
+  failedJobsHistoryLimit: {{ .failedJobsHistoryLimit | default 3 }}
+  jobTemplate:
+    spec:
+      backoffLimit: {{ .backoffLimit | default 1 }}
+      template:
+        spec:
+          serviceAccountName: {{ include "worker.serviceAccountName" $ }}
+          containers:
+            - name: {{ .name }}
+              image: "{{ .image | default (printf "%s:%s" $.Values.image.repository $.Values.image.tag) }}"
+              imagePullPolicy: {{ $.Values.image.pullPolicy }}
+              command: {{ toYaml .command | nindent 14 }}
+              env:
+                {{- if .env }}
+                {{- toYaml .env | nindent 16 }}
+                {{- else }}
+                {{- toYaml $.Values.env | nindent 16 }}
+                {{- end }}
+              resources:
+                {{- toYaml (default $.Values.resources .resources) | nindent 16 }}
+          restartPolicy: OnFailure
+---
+{{- end }}

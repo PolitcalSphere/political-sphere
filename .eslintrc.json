@@ -1,0 +1,45 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "@nrwl/nx"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    
+    "prettier"
+  ],
+  "env": {
+    "node": true,
+    "es2021": true
+  },
+  "rules": {
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": ["*../..*", "../../**"]
+      }
+    ],
+    "@nrwl/nx/enforce-module-boundaries": [
+      "error",
+      {
+        "allow": [],
+        "enforceBuildableLibDependency": true,
+        "allowCircularSelfDependency": false,
+        "depConstraints": [
+          {
+            "sourceTag": "app",
+            "onlyDependOnLibsWithTags": ["platform", "shared", "ui", "docs"]
+          },
+          {
+            "sourceTag": "platform",
+            "onlyDependOnLibsWithTags": ["platform", "shared"]
+          },
+          {
+            "sourceTag": "infra",
+            "onlyDependOnLibsWithTags": ["infra", "platform"]
+          }
+        ]
+      }
+    ]
+  }
+}

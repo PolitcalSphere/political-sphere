@@ -1,0 +1,24 @@
+xs:
+  lines:
+    max: 10
+    message: 'XS: Tiny change'
+
+s:
+  lines:
+    max: 100
+    message: 'S: Small change'
+
+m:
+  lines:
+    max: 500
+    message: 'M: Medium change'
+
+l:
+  lines:
+    max: 1000
+    message: 'L: Large change'
+
+xl:
+  lines:
+    min: 1001
+    message: 'XL: Huge change'

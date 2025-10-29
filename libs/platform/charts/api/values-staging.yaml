@@ -1,0 +1,23 @@
+image:
+  tag: staging
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/political-sphere-staging-api
+ingress:
+  hosts:
+    - host: api.staging.political-sphere.example
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - hosts:
+        - api.staging.political-sphere.example
+      secretName: api-staging-tls
+env:
+  - name: NODE_ENV
+    value: staging
+  - name: DATABASE_URL
+    valueFrom:
+      secretKeyRef:
+        name: api-database
+        key: url

@@ -1,0 +1,40 @@
+region        = "us-east-1"
+environment   = "staging"
+
+availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
+
+vpc_cidr_block      = "10.20.0.0/16"
+public_subnet_cidrs = ["10.20.0.0/24", "10.20.1.0/24", "10.20.2.0/24"]
+private_subnet_cidrs = ["10.20.10.0/24", "10.20.11.0/24", "10.20.12.0/24"]
+enable_nat_gateway  = true
+
+primary_domain     = "staging.political-sphere.example"
+additional_domains = [
+  "api.staging.political-sphere.example",
+  "frontend.staging.political-sphere.example"
+]
+route53_zone_name = "staging.political-sphere.example"
+
+rds_username = "staging_admin"
+# rds_password = "set-me-securely"
+
+enable_redis     = true
+redis_auth_token = ""
+
+kms_administrators = [
+  "arn:aws:iam::123456789012:role/platform-admin"
+]
+
+kms_users = [
+  "arn:aws:iam::123456789012:role/app-runtime"
+]
+
+github_org = "political-sphere"
+github_repositories = [
+  "infrastructure",
+  "platform",
+  "ci",
+  "dev"
+]
+
+# github_permissions_boundary = "arn:aws:iam::123456789012:policy/GitHubBoundary"

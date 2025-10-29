@@ -1,0 +1,89 @@
+name: iac-plan
+
+on:
+  workflow_call:
+    inputs:
+      working_directory:
+        description: Terraform working directory
+        type: string
+        default: 'infrastructure/envs/dev'
+      terraform_version:
+        description: Terraform version to install
+        type: string
+        default: '1.6.6'
+      aws_region:
+        description: AWS region
+        type: string
+        default: 'us-east-1'
+      run_plan:
+        description: Execute terraform plan (true/false)
+        type: boolean
+        default: true
+    secrets:
+      aws_role_to_assume:
+        required: true
+        description: IAM role ARN for OIDC assumption
+
+jobs:
+  validate:
+    name: Terraform Validate & Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    defaults:
+      run:
+        working-directory: ${{ inputs.working_directory }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.aws_role_to_assume }}
+          aws-region: ${{ inputs.aws_region }}
+
+      - name: Setup tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip python3-pip
+          pip3 install checkov==3.2.53
+          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+          curl -sL https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+
+      - id: terraform
+        name: Setup Terraform
+        uses: ./ci/actions/setup-terraform
+        with:
+          terraform_version: ${{ inputs.terraform_version }}
+
+      - name: Terraform fmt check
+        run: terraform fmt -check -recursive
+
+      - name: Terraform init
+        env:
+          TF_PLUGIN_CACHE_DIR: ${{ steps.terraform.outputs.plugin_cache_dir }}
+        run: terraform init -backend=false
+
+      - name: Terraform validate
+        run: terraform validate
+
+      - name: tflint
+        run: |
+          tflint --init
+          tflint
+
+      - name: tfsec
+        run: tfsec --soft-fail
+
+      - name: checkov
+        run: checkov -d .
+
+      - name: Terraform plan
+        if: inputs.run_plan
+        env:
+          TF_PLUGIN_CACHE_DIR: ${{ steps.terraform.outputs.plugin_cache_dir }}
+        run: terraform plan -input=false

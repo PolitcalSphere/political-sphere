@@ -1,0 +1,15 @@
+image:
+  tag: staging
+ingress:
+  hosts:
+    - host: auth.staging.political-sphere.example
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - hosts:
+        - auth.staging.political-sphere.example
+      secretName: auth-staging-tls
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/political-sphere-staging-auth

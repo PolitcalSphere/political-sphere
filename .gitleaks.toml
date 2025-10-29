@@ -1,0 +1,21 @@
+title = "gitleaks config"
+
+[allowlist]
+  description = "global allow lists"
+  paths = [
+    '''go\.sum$''',
+    '''go\.mod$''',
+    '''vendor/''',
+    '''\.git/''',
+    '''node_modules/''',
+    '''package-lock\.json$''',
+    '''yarn\.lock$''',
+    '''pnpm-lock\.yaml$''',
+    '''Cargo\.lock$''',
+    '''Pipfile\.lock$''',
+    '''poetry\.lock$''',
+    '''Gemfile\.lock$''',
+    '''composer\.lock$''',
+    '''\.terraform\.lock\.hcl$''',
+    '''\.lock$''',
+  ]

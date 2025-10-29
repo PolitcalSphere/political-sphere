@@ -1,0 +1,4 @@
+* @political-sphere/platform-admins
+modules/eks/* @political-sphere/kubernetes
+modules/rds/* @political-sphere/data
+envs/prod/* @political-sphere/security

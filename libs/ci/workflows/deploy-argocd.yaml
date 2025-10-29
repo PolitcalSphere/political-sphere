@@ -1,0 +1,103 @@
+tname: deploy-argocd
+
+on:
+  workflow_call:
+    inputs:
+      application_name:
+        description: Argo CD application name
+        type: string
+      run_migrations:
+        description: "If true, run database migrations before syncing the Argo app"
+        type: boolean
+        default: false
+      database_url:
+        description: "Optional DATABASE_URL to use for migrations (if run_migrations=true)"
+        type: string
+        default: ''
+      argocd_server:
+        description: Argo CD server URL (e.g. https://argocd.example.com)
+        type: string
+      sync_options:
+        description: Additional sync options (comma-separated)
+        type: string
+        default: ''
+      refresh:
+        description: Force refresh before sync
+        type: boolean
+        default: true
+      parameter_overrides:
+        description: Newline-delimited list of Argo CD parameter overrides (key=value)
+        type: string
+        default: ''
+    secrets:
+      argocd_token:
+        required: true
+        description: Argo CD API token (bearer token)
+      DATABASE_URL:
+        required: false
+        description: "Optional DATABASE_URL secret (if not provided via input)
+
+jobs:
+  migrate:
+    name: Run DB Migrations (if requested)
+    if: ${{ inputs.run_migrations == true && (inputs.database_url != '') }}
+    uses: ./.github/workflows/migrate.yml
+    with:
+      database_url: ${{ inputs.database_url }}
+
+  deploy:
+    name: Trigger Argo CD Sync
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Argo CD CLI
+        run: |
+          VERSION="2.10.8"
+          curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/download/v${VERSION}/argocd-linux-amd64
+          chmod +x argocd
+          sudo mv argocd /usr/local/bin/argocd
+
+      - name: Sync application
+        env:
+          ARGOCD_SERVER: ${{ inputs.argocd_server }}
+          ARGOCD_APP: ${{ inputs.application_name }}
+          ARGOCD_OPTS: ${{ inputs.sync_options }}
+          ARGOCD_REFRESH: ${{ inputs.refresh }}
+          ARGOCD_PARAMS: ${{ inputs.parameter_overrides }}
+          ARGOCD_TOKEN: ${{ secrets.argocd_token }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$ARGOCD_SERVER" ]]; then
+            echo "argocd_server input is required" >&2
+            exit 1
+          fi
+          if [[ -z "$ARGOCD_APP" ]]; then
+            echo "application_name input is required" >&2
+            exit 1
+          fi
+          LOGIN_OPTS="--grpc-web"
+          if ! echo "$ARGOCD_SERVER" | grep -q '^https://'; then
+            LOGIN_OPTS="$LOGIN_OPTS --plaintext"
+          fi
+          argocd login "$ARGOCD_SERVER" --username token --password "$ARGOCD_TOKEN" $LOGIN_OPTS --skip-test-tls
+          if [[ "$ARGOCD_REFRESH" == "true" ]]; then
+            argocd app get "$ARGOCD_APP" --refresh || true
+          fi
+          if [[ -n "$ARGOCD_PARAMS" ]]; then
+            while IFS= read -r line; do
+              [[ -z "$line" ]] && continue
+              if [[ "$line" != *=* ]]; then
+                echo "Skipping invalid parameter override: $line" >&2
+                continue
+              fi
+              argocd app set "$ARGOCD_APP" --parameter "$line"
+            done <<< "$ARGOCD_PARAMS"
+          fi
+          SYNC_ARGS=()
+          if [[ -n "$ARGOCD_OPTS" ]]; then
+            IFS=',' read -ra OPTS <<< "$ARGOCD_OPTS"
+            for opt in "${OPTS[@]}"; do
+              SYNC_ARGS+=("--sync-option" "$opt")
+            done
+          fi
+          argocd app sync "$ARGOCD_APP" "${SYNC_ARGS[@]}"
+          argocd app wait "$ARGOCD_APP" --health --timeout 600

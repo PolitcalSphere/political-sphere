@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "worker.fullname" . }}
+  labels:
+    {{- include "worker.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "worker.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+      labels:
+        {{- include "worker.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "worker.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          ports:
+            - containerPort: {{ .Values.http.containerPort | default 8080 }}
+              name: http
+          env:
+            {{- toYaml .Values.env | nindent 12 }}
+          {{- if or .Values.config (gt (len .Values.secrets) 0) }}
+          envFrom:
+            {{- if .Values.config }}
+            - configMapRef:
+                name: {{ include "worker.fullname" . }}-config
+            {{- end }}
+            {{- range .Values.secrets }}
+            - secretRef:
+                name: {{ . }}
+            {{- end }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- $http := .Values.http }}
+          {{- if hasKey $http "readinessPath" }}
+          readinessProbe:
+            httpGet:
+              path: {{ $http.readinessPath }}
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          {{- else if hasKey $http "readinessCommand" }}
+          readinessProbe:
+            exec:
+              command:
+                {{- toYaml $http.readinessCommand | nindent 16 }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          {{- end }}
+          {{- if hasKey $http "livenessPath" }}
+          livenessProbe:
+            httpGet:
+              path: {{ $http.livenessPath }}
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          {{- else if hasKey $http "livenessCommand" }}
+          livenessProbe:
+            exec:
+              command:
+                {{- toYaml $http.livenessCommand | nindent 16 }}
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          {{- end }}
+          {{- if .Values.extraVolumeMounts }}
+          volumeMounts:
+            {{- toYaml .Values.extraVolumeMounts | nindent 12 }}
+          {{- end }}
+      {{- if .Values.extraVolumes }}
+      volumes:
+        {{- toYaml .Values.extraVolumes | nindent 8 }}
+      {{- end }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+      {{- end }}
+      {{- if .Values.affinity }}
+      affinity:
+        {{- toYaml .Values.affinity | nindent 8 }}
+      {{- end }}

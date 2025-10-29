@@ -1,0 +1,21 @@
+
+> political-sphere-ai-assistant@1.0.0 build
+> tsc
+
+src/index.ts(126,26): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'Record<string, unknown>'.
+src/index.ts(134,29): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'Record<string, unknown>'.
+src/index.ts(141,44): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'Record<string, unknown>'.
+src/index.ts(148,34): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/index.ts(160,40): error TS2345: Argument of type 'unknown' is not assignable to parameter of type '{ requirement: string; language?: string | undefined; context?: string | undefined; }'.
+src/index.ts(162,38): error TS2345: Argument of type 'unknown' is not assignable to parameter of type '{ code: string; language?: string | undefined; }'.
+src/index.ts(164,47): error TS2345: Argument of type 'unknown' is not assignable to parameter of type '{ code: string; context?: string | undefined; }'.
+src/index.ts(166,41): error TS2345: Argument of type 'unknown' is not assignable to parameter of type '{ code: string; }'.
+src/index.ts(168,44): error TS2345: Argument of type 'unknown' is not assignable to parameter of type '{ scenario: string; parameters?: Record<string, unknown> | undefined; }'.
+npm error Lifecycle script `build` failed with error:
+npm error code 2
+npm error path /Users/morganlowman/politicial-sphere (V1)/apps/dev/ai/ai-assistant
+npm error workspace political-sphere-ai-assistant@1.0.0
+npm error location /Users/morganlowman/politicial-sphere (V1)/apps/dev/ai/ai-assistant
+npm error command failed
+npm error command sh -c tsc

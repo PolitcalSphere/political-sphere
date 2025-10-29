@@ -1,0 +1,35 @@
+name: Run DB Migrations (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      database_url:
+        description: "Database URL the migrations should target"
+        required: true
+        type: string
+    secrets:
+      postgres_password:
+        required: false
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install repo dependencies
+        run: |
+          npm ci --workspaces --ignore-scripts
+
+      - name: Run migrations
+        env:
+          DATABASE_URL: ${{ inputs.database_url }}
+        run: |
+          set -euo pipefail
+          ./scripts/migrate/run-migrations.sh

@@ -1,0 +1,8 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "ci-app",
+  "root": "ci",
+  "projectType": "application",
+  "targets": {},
+  "tags": ["ci"]
+}

@@ -1,0 +1,12 @@
+> node --test apps/worker/tests/**/*.test.js
+
+[32m✔ summarizeNews aggregates totals, categories, tags and latest item [90m(6.770979ms)[39m[39m
+[32m✔ summarizeNews handles empty or malformed input gracefully [90m(0.839297ms)[39m[39m
+[34mℹ tests 2[39m
+[34mℹ suites 0[39m
+[34mℹ pass 2[39m
+[34mℹ fail 0[39m
+[34mℹ cancelled 0[39m
+[34mℹ skipped 0[39m
+[34mℹ todo 0[39m
+[34mℹ duration_ms 214.327081[39m

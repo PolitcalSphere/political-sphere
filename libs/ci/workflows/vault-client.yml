@@ -1,0 +1,60 @@
+# Reusable workflow: Fetch secrets from Vault (development example)
+name: Vault - fetch secret (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      secret_path:
+        description: "Vault KV path (e.g. secret/data/myapp/config)"
+        required: true
+        type: string
+    secrets:
+      vault_token:
+        required: true
+      vault_addr:
+        required: false
+
+jobs:
+  fetch:
+    name: Fetch secret from Vault (dev-safe)
+    runs-on: ubuntu-latest
+    outputs:
+      secret_value: ${{ steps.get.outputs.secret_value }}
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y unzip jq
+
+      - name: Install Vault CLI
+        run: |
+          VERSION="1.15.3"
+          curl -sSL -o vault.zip https://releases.hashicorp.com/vault/${VERSION}/vault_${VERSION}_linux_amd64.zip
+          unzip -o vault.zip
+          chmod +x vault
+          sudo mv vault /usr/local/bin/
+
+      - name: Fetch secret
+        id: get
+        env:
+          VAULT_ADDR: ${{ secrets.vault_addr }}
+          VAULT_TOKEN: ${{ secrets.vault_token }}
+        run: |
+          set -euo pipefail
+          # default VAULT_ADDR to localhost if not provided (useful for dev clusters / port-forward)
+          VAULT_ADDR=${VAULT_ADDR:-http://127.0.0.1:8200}
+          export VAULT_ADDR
+          # Attempt to read the KV v2 secret at inputs.secret_path
+          out=$(vault kv get -format=json "${{ inputs.secret_path }}" 2>/dev/null || true)
+          if [[ -z "$out" ]]; then
+            echo "error=secret_not_found" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          # Extract the first value (adjust extraction to your shape)
+          secret_value=$(echo "$out" | jq -r '.data.data | to_entries[0].value')
+          echo "secret_value=$secret_value" >> $GITHUB_OUTPUT
+
+# Security notes:
+# - This reusable workflow is intended for development and testing with short-lived tokens.
+# - Do NOT store long-lived Vault root tokens as repository secrets. Prefer OIDC or ephemeral tokens.
+# - In production, authenticate CI to Vault using a secure auth method (OIDC, AppRole with rotation, or cloud IAM).

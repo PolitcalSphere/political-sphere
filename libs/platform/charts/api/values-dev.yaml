@@ -1,0 +1,23 @@
+image:
+  tag: dev
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/political-sphere-dev-api
+ingress:
+  hosts:
+    - host: api.dev.political-sphere.example
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - hosts:
+        - api.dev.political-sphere.example
+      secretName: api-dev-tls
+env:
+  - name: NODE_ENV
+    value: development
+  - name: DATABASE_URL
+    valueFrom:
+      secretKeyRef:
+        name: api-database
+        key: url

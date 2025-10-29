@@ -1,0 +1,10 @@
+image:
+  tag: dev
+env:
+  - name: NODE_ENV
+    value: development
+  - name: QUEUE_URL
+    value: sqs://political-sphere-dev
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/political-sphere-dev-worker

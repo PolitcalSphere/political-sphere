@@ -1,0 +1,155 @@
+global:
+  clusterDomain: cluster.local
+  defaultIssuerName: letsencrypt-staging
+  defaultIssuerKind: ClusterIssuer
+
+ingress-nginx:
+  controller:
+    replicaCount: 2
+    service:
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
+        service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+        service.beta.kubernetes.io/aws-load-balancer-ssl-ports: 'https'
+        service.beta.kubernetes.io/aws-load-balancer-ssl-cert: '${ACM_CERT_ARN}'
+        service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: monitoring
+    podAnnotations:
+      prometheus.io/scrape: 'true'
+      prometheus.io/port: '10254'
+    extraArgs:
+      enable-ssl-passthrough: ''
+
+cert-manager:
+  installCRDs: true
+  extraArgs:
+    - --enable-certificate-owner-ref=true
+  prometheus:
+    enabled: true
+  webhook:
+    replicaCount: 2
+
+external-dns:
+  provider: aws
+  policy: upsert-only
+  interval: 1m
+  txtOwnerId: political-sphere
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/political-sphere-external-dns
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+argo-cd:
+  installCRDs: true
+  global:
+    image:
+      tag: v2.10.8
+    domain: argocd.political-sphere.example
+  server:
+    extraArgs:
+      - --insecure
+    service:
+      type: ClusterIP
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      hosts:
+        - argocd.political-sphere.example
+      tls:
+        - hosts:
+            - argocd.political-sphere.example
+          secretName: argocd-tls
+  configs:
+    params:
+      server.insecure: 'true'
+    cm:
+      application.instanceLabelKey: argocd.argoproj.io/instance
+      kustomize.buildOptions: --enable-alpha-plugins
+    rbac:
+      policy.default: role:readonly
+  notifications:
+    enabled: true
+    notifiers:
+      service.slack: |
+        token: $slack-token
+    subscriptions:
+      - recipients:
+          - slack:#platform-alerts
+        triggers:
+          - on-sync-status-unknown
+          - on-health-degraded
+
+monitoring:
+  prometheus:
+    prometheusSpec:
+      retention: 15d
+      replicas: 1
+      scrapeInterval: 30s
+  grafana:
+    adminUser: admin
+    adminPassword: changeme
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      hosts:
+        - grafana.political-sphere.example
+      tls:
+        - secretName: grafana-tls
+          hosts:
+            - grafana.political-sphere.example
+    additionalDataSources:
+      - name: Loki
+        type: loki
+        access: proxy
+        url: http://loki-stack:3100
+      - name: Tempo
+        type: tempo
+        access: proxy
+        url: http://tempo:3100
+  kubeControllerManager:
+    enabled: true
+  kubeScheduler:
+    enabled: true
+  alertmanager:
+    enabled: true
+
+loki-stack:
+  grafana:
+    enabled: false
+  promtail:
+    enabled: false
+  loki:
+    auth_enabled: false
+    persistence:
+      enabled: false
+
+fluent-bit:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/political-sphere-fluent-bit
+  config:
+    outputs: |
+      [OUTPUT]
+          Name                   loki
+          Match                  *
+          Url                    http://loki-stack:3100/loki/api/v1/push
+          BatchWait              1
+          BatchSize              102400
+
+tempo:
+  persistence:
+    enabled: false
+  traces:
+    otlp:
+      http:
+        enabled: true
+      grpc:
+        enabled: true

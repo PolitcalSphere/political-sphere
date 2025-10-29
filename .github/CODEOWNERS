@@ -1,0 +1,9 @@
+# Default code owners for the entire repository
+* @political-sphere/core-team
+
+# Specific ownership for directories
+infrastructure/ @political-sphere/infrastructure-team
+platform/ @political-sphere/platform-team
+ci/ @political-sphere/ci-team
+dev/ @political-sphere/dev-team
+docs/ @political-sphere/docs-team

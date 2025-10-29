@@ -1,0 +1,282 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+        - staging
+        - production
+
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: 
+      name: ${{ github.event.inputs.environment || 'staging' }}
+      url: ${{ github.event.inputs.environment == 'production' && 'https://political-sphere.com' || 'https://staging.political-sphere.com' }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run linting
+        run: npm run lint
+      
+      - name: Run tests
+        run: npm run test
+      
+      - name: Build
+        run: npm run build
+      
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActionsRole
+          role-session-name: GitHubActions-${{ github.run_id }}
+          aws-region: us-east-1
+      
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker images with cache
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: apps/api/Dockerfile
+          push: false
+          load: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/political-sphere/api:${{ github.sha }}
+            ${{ steps.login-ecr.outputs.registry }}/political-sphere/api:latest
+          build-args: |
+            BUILD_DATE=${{ github.event.head_commit.timestamp || github.event.repository.updated_at }}
+            VCS_REF=${{ github.sha }}
+            VERSION=${{ github.ref_name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build Frontend Docker image with cache
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: apps/frontend/Dockerfile
+          push: false
+          load: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/political-sphere/frontend:${{ github.sha }}
+            ${{ steps.login-ecr.outputs.registry }}/political-sphere/frontend:latest
+          build-args: |
+            BUILD_DATE=${{ github.event.head_commit.timestamp || github.event.repository.updated_at }}
+            VCS_REF=${{ github.sha }}
+            VERSION=${{ github.ref_name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      
+      - name: Scan API Docker image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.login-ecr.outputs.registry }}/political-sphere/api:${{ github.sha }}
+          format: 'sarif'
+          output: 'trivy-api-results.sarif'
+          severity: 'CRITICAL,HIGH,MEDIUM'
+
+      - name: Scan Frontend Docker image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.login-ecr.outputs.registry }}/political-sphere/frontend:${{ github.sha }}
+          format: 'sarif'
+          output: 'trivy-frontend-results.sarif'
+          severity: 'CRITICAL,HIGH,MEDIUM'
+      
+      - name: Upload Trivy scan results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: '.'
+      
+      - name: Generate SBOM for API
+        uses: anchore/sbom-action@v0
+        with:
+          image: ${{ steps.login-ecr.outputs.registry }}/political-sphere/api:${{ github.sha }}
+          format: cyclonedx-json
+          output-file: sbom-api.json
+      
+      - name: Generate SBOM for Frontend  
+        uses: anchore/sbom-action@v0
+        with:
+          image: ${{ steps.login-ecr.outputs.registry }}/political-sphere/frontend:${{ github.sha }}
+          format: cyclonedx-json
+          output-file: sbom-frontend.json
+      
+      - name: Upload SBOMs as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sboms-${{ github.sha }}
+          path: sbom-*.json
+          retention-days: 90
+      
+      - name: Push Docker images
+        run: |
+          docker push ${{ steps.login-ecr.outputs.registry }}/political-sphere/api:${{ github.sha }}
+          docker push ${{ steps.login-ecr.outputs.registry }}/political-sphere/api:latest
+          docker push ${{ steps.login-ecr.outputs.registry }}/political-sphere/frontend:${{ github.sha }}
+          docker push ${{ steps.login-ecr.outputs.registry }}/political-sphere/frontend:latest
+      
+      - name: Deploy to ECS (Blue-Green)
+        id: deploy
+        run: |
+          # Get current task definition
+          CURRENT_TASK_DEF=$(aws ecs describe-services \
+            --cluster political-sphere-${{ github.event.inputs.environment || 'staging' }} \
+            --services api \
+            --query 'services[0].taskDefinition' \
+            --output text)
+          
+          # Create new task definition with new image
+          NEW_TASK_DEF=$(aws ecs register-task-definition \
+            --family political-sphere-api-${{ github.event.inputs.environment || 'staging' }} \
+            --container-definitions '[
+              {
+                "name": "api",
+                "image": "${{ steps.login-ecr.outputs.registry }}/political-sphere/api:${{ github.sha }}",
+                "essential": true,
+                "portMappings": [
+                  {
+                    "containerPort": 4000,
+                    "protocol": "tcp"
+                  }
+                ],
+                "environment": [
+                  {
+                    "name": "NODE_ENV",
+                    "value": "production"
+                  }
+                ],
+                "logConfiguration": {
+                  "logDriver": "awslogs",
+                  "options": {
+                    "awslogs-group": "/ecs/political-sphere-api",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs"
+                  }
+                }
+              }
+            ]' \
+            --requires-compatibilities FARGATE \
+            --network-mode awsvpc \
+            --cpu 256 \
+            --memory 512 \
+            --execution-role-arn arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskExecutionRole \
+            --task-role-arn arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/ecsTaskRole \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
+
+          # Deploy API with new task definition
+          aws ecs update-service \
+            --cluster political-sphere-${{ github.event.inputs.environment || 'staging' }} \
+            --service api \
+            --task-definition $NEW_TASK_DEF \
+            --force-new-deployment \
+            --desired-count 2
+
+          # Deploy Frontend (stateless, can deploy immediately)
+          aws ecs update-service \
+            --cluster political-sphere-${{ github.event.inputs.environment || 'staging' }} \
+            --service frontend \
+            --force-new-deployment \
+            --desired-count 2
+
+      - name: Wait for deployment and health checks
+        run: |
+          # Wait for services to stabilize
+          aws ecs wait services-stable \
+            --cluster political-sphere-${{ github.event.inputs.environment || 'staging' }} \
+            --services api frontend
+
+          # Additional health check wait
+          sleep 60
+
+          # Verify deployment health
+          API_HEALTH=$(aws ecs describe-services \
+            --cluster political-sphere-${{ github.event.inputs.environment || 'staging' }} \
+            --services api \
+            --query 'services[0].runningCount' \
+            --output text)
+
+          FRONTEND_HEALTH=$(aws ecs describe-services \
+            --cluster political-sphere-${{ github.event.inputs.environment || 'staging' }} \
+            --services frontend \
+            --query 'services[0].runningCount' \
+            --output text)
+
+          if [[ "$API_HEALTH" -lt 2 ]] || [[ "$FRONTEND_HEALTH" -lt 2 ]]; then
+            echo "❌ Deployment failed - services not healthy"
+            exit 1
+          fi
+
+      - name: Run smoke tests
+        run: |
+          # Simple smoke test against deployed services
+          API_URL="https://api-${{ github.event.inputs.environment || 'staging' }}.political-sphere.com/healthz"
+          FRONTEND_URL="https://www-${{ github.event.inputs.environment || 'staging' }}.political-sphere.com"
+
+          # Test API health endpoint
+          if curl -f -s "$API_URL" > /dev/null; then
+            echo "✅ API smoke test passed"
+          else
+            echo "❌ API smoke test failed"
+            exit 1
+          fi
+
+          # Test Frontend availability
+          if curl -f -s -I "$FRONTEND_URL" > /dev/null; then
+            echo "✅ Frontend smoke test passed"
+          else
+            echo "❌ Frontend smoke test failed"
+            exit 1
+          fi
+
+      - name: Notify deployment success
+        if: success()
+        run: |
+          echo "✅ Deployment to ${{ github.event.inputs.environment || 'staging' }} completed successfully"
+          echo "Image SHA: ${{ github.sha }}"
+          echo "Deployed at: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          echo "API Health: ✅"
+          echo "Frontend Health: ✅"
+          echo "Smoke Tests: ✅"
+
+      - name: Rollback on failure
+        if: failure()
+        run: |
+          echo "❌ Deployment failed, initiating rollback..."
+
+          # Rollback API to previous task definition
+          if [[ -n "$CURRENT_TASK_DEF" ]]; then
+            aws ecs update-service \
+              --cluster political-sphere-${{ github.event.inputs.environment || 'staging' }} \
+              --service api \
+              --task-definition $CURRENT_TASK_DEF \
+              --force-new-deployment \
+              --desired-count 2

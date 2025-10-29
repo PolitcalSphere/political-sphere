@@ -1,0 +1,15 @@
+image:
+  tag: dev
+ingress:
+  hosts:
+    - host: dev.political-sphere.example
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - hosts:
+        - dev.political-sphere.example
+      secretName: frontend-dev-tls
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/political-sphere-dev-frontend

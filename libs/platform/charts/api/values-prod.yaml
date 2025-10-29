@@ -1,0 +1,23 @@
+image:
+  tag: prod
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/political-sphere-prod-api
+ingress:
+  hosts:
+    - host: api.political-sphere.example
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - hosts:
+        - api.political-sphere.example
+      secretName: api-prod-tls
+env:
+  - name: NODE_ENV
+    value: production
+  - name: DATABASE_URL
+    valueFrom:
+      secretKeyRef:
+        name: api-database
+        key: url

@@ -1,0 +1,50 @@
+> npm run test:e2e
+
+
+> political-sphere-monorepo@0.0.0 test:e2e
+> npx playwright test --reporter=html
+
+[1G[0K[1G[0K⠙[1G[0K[32m✔ creates a record and returns it from list() [90m(15.519857ms)[39m[39m
+[32m✔ filters records by category, tag, limit and search [90m(7.653075ms)[39m[39m
+[32m✔ update returns null when record missing [90m(2.658042ms)[39m[39m
+[32m✔ analytics summary aggregates categories and recency [90m(3.770774ms)[39m[39m
+[32m✔ create throws validation errors when required fields missing [90m(1.941536ms)[39m[39m
+[32m✔ GET /api/news returns seeded data [90m(62.294053ms)[39m[39m
+[32m✔ POST /api/news creates a record and persists it [90m(36.354337ms)[39m[39m
+[32m✔ POST /api/news validates required fields [90m(8.310535ms)[39m[39m
+[32m✔ PUT /api/news/{id} updates existing records [90m(17.014053ms)[39m[39m
+[32m✔ PUT /api/news/{id} returns 404 for unknown record [90m(10.411094ms)[39m[39m
+[32m✔ GET /metrics/news provides aggregate summary [90m(6.215191ms)[39m[39m
+
+[2mRunning [22m2[2m tests using [22m2[2m workers[22m
+
+
+> political-sphere-monorepo@0.0.0 dev:api
+> ./apps/dev/scripts/dev-service.sh api
+
+[1G[0K[1A[2K[1/2] ….spec.ts:8:3 › Auth - demo user › login with seeded demo user (if supported)
+[1A[2K[2/2] apps/dev/e2e/tests/home.spec.ts:4:3 › Smoke - homepage › loads the homepage
+[31m✖ should respond to health check [90m(5008.061629ms)[39m[39m
+[31m✖ should handle user authentication [90m(2.549624ms)[39m[39m
+[31m✖ should access protected endpoints with token [90m(3.211314ms)[39m[39m
+[32m✔ example unit test - arithmetic [90m(0.159284ms)[39m[39m
+[32m✔ unit: example - basic arithmetic sanity [90m(0.108018ms)[39m[39m
+[32m✔ summarizeNews aggregates totals, categories, tags and latest item [90m(0.656155ms)[39m[39m
+[32m✔ summarizeNews handles empty or malformed input gracefully [90m(0.1592ms)[39m[39m
+[1A[2K[31m  1) apps/dev/e2e/tests/home.spec.ts:4:3 › Smoke - homepage › loads the homepage [2m──[22m[39m
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/
+    Call log:
+    [2m  - navigating to "http://localhost:3000/", waiting until "networkidle"[22m
+
+    [2m    at /Users/morganlowman/politicial-sphere (V1)/apps/dev/e2e/tests/home.spec.ts:6:29)[22m
+    [2m    at /Users/morganlowman/politicial-sphere (V1)/node_modules/playwright/lib/worker/workerMain.js:310:15)[22m
+    [2m    at /Users/morganlowman/politicial-sphere (V1)/node_modules/playwright/lib/worker/testInfo.js:305:17)[22m
+    [2m    at /Users/morganlowman/politicial-sphere (V1)/node_modules/playwright/lib/worker/workerMain.js:308:22)[22m
+
+
+[1A[2K[31m  1 failed[39m
+[31m    apps/dev/e2e/tests/home.spec.ts:4:3 › Smoke - homepage › loads the homepage [2m───[22m[39m
+[33m  1 skipped[39m
+
+[36m  Serving HTML report at http://localhost:9323. Press Ctrl+C to quit.[39m

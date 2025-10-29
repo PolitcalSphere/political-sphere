@@ -1,0 +1,39 @@
+# Copy to terraform.tfvars and adjust values before applying.
+region        = "us-east-1"
+environment   = "dev"
+
+availability_zones = ["us-east-1a", "us-east-1b"]
+
+vpc_cidr_block      = "10.10.0.0/16"
+public_subnet_cidrs = ["10.10.0.0/24", "10.10.1.0/24"]
+private_subnet_cidrs = ["10.10.10.0/24", "10.10.11.0/24"]
+enable_nat_gateway  = true
+
+primary_domain      = "dev.political-sphere.example"
+additional_domains  = ["api.dev.political-sphere.example", "frontend.dev.political-sphere.example"]
+route53_zone_name   = "dev.political-sphere.example"
+
+rds_username = "dev_admin"
+# Sensitive: provide via environment variable TF_VAR_rds_password or secure secrets manager.
+# rds_password = "set-me"
+
+enable_redis     = true
+redis_auth_token = ""
+
+kms_administrators = [
+  "arn:aws:iam::123456789012:role/platform-admin"
+]
+
+kms_users = [
+  "arn:aws:iam::123456789012:role/app-runtime"
+]
+
+github_org = "political-sphere"
+github_repositories = [
+  "infrastructure",
+  "platform",
+  "ci",
+  "dev"
+]
+
+# github_permissions_boundary = "arn:aws:iam::123456789012:policy/GitHubBoundary"

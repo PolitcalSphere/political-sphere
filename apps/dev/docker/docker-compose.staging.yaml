@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  api:
+    image: political-sphere/api:staging
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=staging
+    depends_on:
+      - db
+    networks:
+      - political-sphere-staging
+
+  frontend:
+    image: political-sphere/frontend:staging
+    ports:
+      - "81:80"
+    depends_on:
+      - api
+    networks:
+      - political-sphere-staging
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=political_sphere_staging
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - db_data_staging:/var/lib/postgresql/data
+    networks:
+      - political-sphere-staging
+
+  redis:
+    image: redis:7-alpine
+    networks:
+      - political-sphere-staging
+
+volumes:
+  db_data_staging:
+
+networks:
+  political-sphere-staging:
+    driver: bridge

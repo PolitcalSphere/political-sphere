@@ -1,0 +1,10 @@
+image:
+  tag: staging
+env:
+  - name: NODE_ENV
+    value: staging
+  - name: QUEUE_URL
+    value: sqs://political-sphere-staging
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/political-sphere-staging-worker

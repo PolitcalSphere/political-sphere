@@ -1,0 +1,40 @@
+region        = "us-east-1"
+environment   = "prod"
+
+availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
+
+vpc_cidr_block      = "10.30.0.0/16"
+public_subnet_cidrs = ["10.30.0.0/24", "10.30.1.0/24", "10.30.2.0/24"]
+private_subnet_cidrs = ["10.30.10.0/24", "10.30.11.0/24", "10.30.12.0/24"]
+enable_nat_gateway  = true
+
+primary_domain     = "political-sphere.example"
+additional_domains = [
+  "api.political-sphere.example",
+  "frontend.political-sphere.example"
+]
+route53_zone_name = "political-sphere.example"
+
+rds_username = "prod_admin"
+# rds_password = "set-me-securely"
+
+enable_redis     = true
+redis_auth_token = ""
+
+kms_administrators = [
+  "arn:aws:iam::123456789012:role/platform-admin"
+]
+
+kms_users = [
+  "arn:aws:iam::123456789012:role/app-runtime"
+]
+
+github_org = "political-sphere"
+github_repositories = [
+  "infrastructure",
+  "platform",
+  "ci",
+  "dev"
+]
+
+# github_permissions_boundary = "arn:aws:iam::123456789012:policy/GitHubBoundary"

@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: platform
+  namespace: argocd
+spec:
+  description: Political Sphere platform components and workloads.
+  sourceRepos:
+    - https://github.com/political-sphere/platform.git
+  destinations:
+    - namespace: '*'
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  roles:
+    - name: readonly
+      description: Read-only access for developers
+      policies:
+        - p, proj:platform:readonly, applications, get, platform/*, allow
+      groups:
+        - political-sphere:developers

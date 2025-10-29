@@ -1,0 +1,38 @@
+
+> political-sphere-ai-assistant@1.0.0 build
+> tsc
+
+src/index.ts(135,3): error TS1434: Unexpected keyword or identifier.
+src/index.ts(135,26): error TS1005: ',' expected.
+src/index.ts(136,24): error TS1005: ',' expected.
+src/index.ts(137,22): error TS1005: ',' expected.
+src/index.ts(138,21): error TS1005: ',' expected.
+src/index.ts(139,6): error TS1005: ';' expected.
+src/index.ts(204,3): error TS1434: Unexpected keyword or identifier.
+src/index.ts(204,24): error TS1005: ',' expected.
+src/index.ts(204,40): error TS1005: ',' expected.
+src/index.ts(204,63): error TS1005: ';' expected.
+src/index.ts(242,3): error TS1434: Unexpected keyword or identifier.
+src/index.ts(242,33): error TS1005: ',' expected.
+src/index.ts(242,49): error TS1005: ',' expected.
+src/index.ts(242,71): error TS1005: ';' expected.
+src/index.ts(276,3): error TS1434: Unexpected keyword or identifier.
+src/index.ts(276,27): error TS1005: ',' expected.
+src/index.ts(276,47): error TS1005: ';' expected.
+src/index.ts(328,3): error TS1434: Unexpected keyword or identifier.
+src/index.ts(328,30): error TS1005: ',' expected.
+src/index.ts(328,50): error TS1005: ',' expected.
+src/index.ts(328,92): error TS1005: ';' expected.
+src/index.ts(356,3): error TS1434: Unexpected keyword or identifier.
+src/index.ts(356,31): error TS1005: ';' expected.
+src/index.ts(381,3): error TS1434: Unexpected keyword or identifier.
+src/index.ts(381,35): error TS1005: ',' expected.
+src/index.ts(381,81): error TS1005: ';' expected.
+src/index.ts(456,3): error TS1128: Declaration or statement expected.
+npm error Lifecycle script `build` failed with error:
+npm error code 2
+npm error path /Users/morganlowman/politicial-sphere (V1)/apps/dev/ai/ai-assistant
+npm error workspace political-sphere-ai-assistant@1.0.0
+npm error location /Users/morganlowman/politicial-sphere (V1)/apps/dev/ai/ai-assistant
+npm error command failed
+npm error command sh -c tsc

@@ -1,0 +1,81 @@
+name: application-release
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: Deployment environment (dev/staging/prod)
+        type: string
+      services:
+        description: Comma separated Nx projects to build
+        type: string
+        default: 'api'
+      dockerfile:
+        description: Path to Dockerfile
+        type: string
+        default: 'apps/api/Dockerfile'
+      image_name:
+        description: Image repository name (e.g. api)
+        type: string
+        default: 'api'
+      argocd_application:
+        description: Target Argo CD application name
+        type: string
+      argocd_server:
+        description: Argo CD server URL
+        type: string
+      working_directory:
+        description: Repository working directory
+        type: string
+        default: '.'
+      node_version:
+        description: Node.js version
+        type: string
+        default: '20'
+    secrets:
+      aws_role_to_assume:
+        required: true
+      aws_region:
+        required: true
+      ecr_registry:
+        required: true
+      argocd_token:
+        required: true
+
+jobs:
+  build-and-push:
+    uses: political-sphere/ci/.github/workflows/build-and-test.yaml@main
+    with:
+      node_version: ${{ inputs.node_version }}
+      services: ${{ inputs.services }}
+      dockerfile: ${{ inputs.dockerfile }}
+      image_name: ${{ inputs.image_name }}
+      working_directory: ${{ inputs.working_directory }}
+    secrets:
+      aws_role_to_assume: ${{ secrets.aws_role_to_assume }}
+      aws_region: ${{ secrets.aws_region }}
+      ecr_registry: ${{ secrets.ecr_registry }}
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: image-uri
+      - name: Extract image metadata
+        id: image
+        run: |
+          IMAGE_URI=$(cat image-uri/image-uri.txt)
+          echo "image_uri=${IMAGE_URI}" >> $GITHUB_OUTPUT
+          echo "image_tag=${IMAGE_URI##*:}" >> $GITHUB_OUTPUT
+      - name: Deploy via Argo CD
+        uses: political-sphere/ci/.github/workflows/deploy-argocd.yaml@main
+        with:
+          application_name: ${{ inputs.argocd_application }}
+          argocd_server: ${{ inputs.argocd_server }}
+          parameter_overrides: |
+            image.tag=${{ steps.image.outputs.image_tag }}
+        secrets:
+          argocd_token: ${{ secrets.argocd_token }}

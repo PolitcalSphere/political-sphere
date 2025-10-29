@@ -1,0 +1,10 @@
+image:
+  tag: prod
+env:
+  - name: NODE_ENV
+    value: production
+  - name: QUEUE_URL
+    value: sqs://political-sphere-prod
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/political-sphere-prod-worker

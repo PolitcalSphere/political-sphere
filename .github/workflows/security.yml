@@ -1,0 +1,45 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * 1'  # Weekly on Mondays
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run security audit
+        run: npm audit --audit-level=moderate
+      - name: Run SAST with CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript, typescript
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+      - name: Compliance Check
+        run: |
+          # Check for GDPR/CCPA compliance markers
+          echo "Checking for GDPR compliance markers..."
+          grep -r "GDPR\|CCPA\|privacy\|consent" docs/ || echo "No GDPR/CCPA references found in docs"
+
+          # Check for security headers in code
+          echo "Checking for security headers..."
+          grep -r "Content-Security-Policy\|X-Frame-Options\|X-Content-Type-Options" apps/ || echo "Security headers not found"
+
+          # Check for data encryption
+          echo "Checking for encryption implementations..."
+          grep -r "encrypt\|decrypt\|cipher" apps/ || echo "Encryption not implemented"

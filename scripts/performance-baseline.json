@@ -1,0 +1,30 @@
+{
+  "version": "1.0",
+  "timestamp": "2024-01-01T00:00:00Z",
+  "metrics": {
+    "api": {
+      "response_time_p95": 200,
+      "requests_per_second": 100,
+      "error_rate": 0.01
+    },
+    "frontend": {
+      "performance_score": 95,
+      "accessibility_score": 95,
+      "best_practices_score": 95,
+      "seo_score": 90
+    }
+  },
+  "thresholds": {
+    "api": {
+      "response_time_p95_max": 250,
+      "requests_per_second_min": 80,
+      "error_rate_max": 0.05
+    },
+    "frontend": {
+      "performance_score_min": 90,
+      "accessibility_score_min": 90,
+      "best_practices_score_min": 90,
+      "seo_score_min": 85
+    }
+  }
+}

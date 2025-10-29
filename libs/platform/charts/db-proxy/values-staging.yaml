@@ -1,0 +1,9 @@
+backend:
+  host: political-sphere-staging.abcdefg.us-east-1.rds.amazonaws.com
+  port: 5432
+authSecret:
+  name: pgbouncer-auth
+  key: userlist.txt
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/political-sphere-staging-db-proxy

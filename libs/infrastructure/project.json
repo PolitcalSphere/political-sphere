@@ -1,0 +1,33 @@
+{
+  "name": "infrastructure",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/infrastructure",
+  "projectType": "library",
+  "tags": ["infra"],
+  "targets": {
+    "plan": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd libs/infrastructure && terraform plan"
+      }
+    },
+    "apply": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd libs/infrastructure && terraform apply"
+      }
+    },
+    "validate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd libs/infrastructure && terraform validate"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd libs/infrastructure && tflint"
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+image:
+  tag: prod
+ingress:
+  hosts:
+    - host: political-sphere.example
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - hosts:
+        - political-sphere.example
+      secretName: frontend-prod-tls
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/political-sphere-prod-frontend
