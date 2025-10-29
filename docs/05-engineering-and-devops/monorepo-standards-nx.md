@@ -1,0 +1,1 @@
+# Monorepo Standards (Nx)
