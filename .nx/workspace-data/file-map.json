@@ -27,198 +27,34 @@
           "hash": "7998047955333333517"
         }
       ],
-      "shared": [
+      "worker": [
         {
-          "file": "libs/shared/README.md",
-          "hash": "10200723888682019118"
+          "file": "apps/worker/Dockerfile",
+          "hash": "638141978963269899"
         },
         {
-          "file": "libs/shared/jest.config.js",
-          "hash": "12839521940875294147"
+          "file": "apps/worker/README.md",
+          "hash": "3576762772905421248"
         },
         {
-          "file": "libs/shared/project.json",
-          "hash": "4483334915276053237"
+          "file": "apps/worker/output/.gitignore",
+          "hash": "18238160553113635636"
         },
         {
-          "file": "libs/shared/src/index.ts",
-          "hash": "14765642943770303996"
+          "file": "apps/worker/project.json",
+          "hash": "8697333627487323065"
         },
         {
-          "file": "libs/shared/src/logger.d.ts",
-          "hash": "2401997627077690322"
+          "file": "apps/worker/src/aggregator.js",
+          "hash": "3874775163007397219"
         },
         {
-          "file": "libs/shared/src/logger.js",
-          "hash": "14226035449217494136"
+          "file": "apps/worker/src/index.js",
+          "hash": "15658284801827971924"
         },
         {
-          "file": "libs/shared/src/security.d.ts",
-          "hash": "5677691564956981450"
-        },
-        {
-          "file": "libs/shared/src/security.js",
-          "hash": "7238662953830549381"
-        },
-        {
-          "file": "libs/shared/tests/security.test.js",
-          "hash": "17494033806142267745"
-        }
-      ],
-      "docs": [
-        {
-          "file": "apps/docs/.vitepress/cache/deps_temp_e07a905f/chunk-QAXAIFA7.js",
-          "hash": "1398820070538979638"
-        },
-        {
-          "file": "apps/docs/.vitepress/cache/deps_temp_e07a905f/chunk-QAXAIFA7.js.map",
-          "hash": "6004849464876339960"
-        },
-        {
-          "file": "apps/docs/.vitepress/cache/deps_temp_e07a905f/package.json",
-          "hash": "8630294688235076505"
-        },
-        {
-          "file": "apps/docs/.vitepress/cache/deps_temp_e07a905f/vitepress___@vue_devtools-api.js",
-          "hash": "7255766381817982934"
-        },
-        {
-          "file": "apps/docs/.vitepress/cache/deps_temp_e07a905f/vitepress___@vue_devtools-api.js.map",
-          "hash": "6652298274088186207"
-        },
-        {
-          "file": "apps/docs/.vitepress/cache/deps_temp_e07a905f/vitepress___@vueuse_core.js",
-          "hash": "12696528716083278143"
-        },
-        {
-          "file": "apps/docs/.vitepress/cache/deps_temp_e07a905f/vitepress___@vueuse_core.js.map",
-          "hash": "15278077490113582041"
-        },
-        {
-          "file": "apps/docs/.vitepress/cache/deps_temp_e07a905f/vue.js",
-          "hash": "3226929011064258800"
-        },
-        {
-          "file": "apps/docs/.vitepress/cache/deps_temp_e07a905f/vue.js.map",
-          "hash": "9947606979680686569"
-        },
-        {
-          "file": "apps/docs/.vitepress/config.mjs",
-          "hash": "2326943085738562015"
-        },
-        {
-          "file": "apps/docs/AUDIT-REPORT.md",
-          "hash": "17020048416961031357"
-        },
-        {
-          "file": "apps/docs/adr/0000-template-record-decision.md",
-          "hash": "17087479443272550398"
-        },
-        {
-          "file": "apps/docs/adr/0001-enable-renovate.md",
-          "hash": "8588320589680890577"
-        },
-        {
-          "file": "apps/docs/adr/README.md",
-          "hash": "14160383516940221152"
-        },
-        {
-          "file": "apps/docs/ai-enhancement-framework.md",
-          "hash": "2539129859133416236"
-        },
-        {
-          "file": "apps/docs/ai-ethics-policy.md",
-          "hash": "5419834807284222337"
-        },
-        {
-          "file": "apps/docs/ai-on-dev.md",
-          "hash": "6675585202593087029"
-        },
-        {
-          "file": "apps/docs/architecture.md",
-          "hash": "15090737592584685064"
-        },
-        {
-          "file": "apps/docs/compliance/eu-ai-act.md",
-          "hash": "11487546507908537814"
-        },
-        {
-          "file": "apps/docs/contract-testing.md",
-          "hash": "8628391999015125838"
-        },
-        {
-          "file": "apps/docs/delivery-report.md",
-          "hash": "1519357692845323371"
-        },
-        {
-          "file": "apps/docs/dev-autopilot.md",
-          "hash": "4896919028890889063"
-        },
-        {
-          "file": "apps/docs/eu-ai-act-compliance.md",
-          "hash": "4050633267281800130"
-        },
-        {
-          "file": "apps/docs/module-federation.md",
-          "hash": "1133927779426733816"
-        },
-        {
-          "file": "apps/docs/onboarding.md",
-          "hash": "17691814544908961002"
-        },
-        {
-          "file": "apps/docs/project.json",
-          "hash": "15395791247870581169"
-        },
-        {
-          "file": "apps/docs/risk-register.md",
-          "hash": "4837478537794619354"
-        },
-        {
-          "file": "apps/docs/runbooks/dr-plan.md",
-          "hash": "2349298754712863668"
-        },
-        {
-          "file": "apps/docs/runbooks/incident.md",
-          "hash": "14117869538076355155"
-        },
-        {
-          "file": "apps/docs/secrets-inventory.md",
-          "hash": "11627220797026302869"
-        },
-        {
-          "file": "apps/docs/security.md",
-          "hash": "12181518783130671280"
-        },
-        {
-          "file": "apps/docs/templates/postmortem.md",
-          "hash": "12204224967423793714"
-        },
-        {
-          "file": "apps/docs/templates/smoke-test-checklist.md",
-          "hash": "13775826700683363132"
-        }
-      ],
-      "political-sphere-ai-assistant": [
-        {
-          "file": "apps/dev/ai/ai-assistant/package.json",
-          "hash": "5005475628442841593",
-          "deps": [
-            "npm:@types/node@20.19.24",
-            "npm:tsx",
-            "npm:typescript",
-            "npm:@modelcontextprotocol/sdk",
-            "npm:openai",
-            "npm:zod"
-          ]
-        },
-        {
-          "file": "apps/dev/ai/ai-assistant/src/index.ts",
-          "hash": "11409677820906056100"
-        },
-        {
-          "file": "apps/dev/ai/ai-assistant/tsconfig.json",
-          "hash": "9513696985106221781"
+          "file": "apps/worker/tests/aggregator.test.js",
+          "hash": "4862894492488048325"
         }
       ],
       "ci": [
@@ -293,198 +129,166 @@
           "hash": "8559437132706440067"
         }
       ],
-      "dev": [
+      "api": [
         {
-          "file": "apps/dev/README.md",
-          "hash": "9570443806440292404"
+          "file": "apps/api/Dockerfile",
+          "hash": "2855126950408141431"
         },
         {
-          "file": "apps/dev/Tiltfile",
-          "hash": "9725074424613854822"
+          "file": "apps/api/README.md",
+          "hash": "6117523241885452917"
         },
         {
-          "file": "apps/dev/ai/blackbox-review.mjs",
-          "hash": "16280634654725341326"
+          "file": "apps/api/data/news.json",
+          "hash": "2850613287664466091"
         },
         {
-          "file": "apps/dev/ai/commit-msg.mjs",
-          "hash": "16887480062203029055"
+          "file": "apps/api/project.json",
+          "hash": "8541043791256006971"
         },
         {
-          "file": "apps/dev/ai/governance.js",
-          "hash": "17043640467527099638"
+          "file": "apps/api/src/auth.js",
+          "hash": "16406000614225479943"
         },
         {
-          "file": "apps/dev/ai/knowledge-base.md",
-          "hash": "6675991634796752219"
+          "file": "apps/api/src/httpUtils.js",
+          "hash": "1821397520345496802"
         },
         {
-          "file": "apps/dev/ai/learning.js",
-          "hash": "479444583891075513"
+          "file": "apps/api/src/index.js",
+          "hash": "2111424647101068011"
         },
         {
-          "file": "apps/dev/ai/ml-pipeline.js",
-          "hash": "8159234239371377646"
+          "file": "apps/api/src/newsService.js",
+          "hash": "18353053814410369454"
         },
         {
-          "file": "apps/dev/ai/performance-monitor.js",
-          "hash": "9342375817020461044"
+          "file": "apps/api/src/newsStore.js",
+          "hash": "17716726573345761485"
         },
         {
-          "file": "apps/dev/ai/pr-desc.mjs",
-          "hash": "13298724294062764320"
+          "file": "apps/api/src/server.js",
+          "hash": "7479947488442251314"
         },
         {
-          "file": "apps/dev/ai/predictive-analytics.js",
-          "hash": "8429359001249954577"
+          "file": "apps/api/tests/newsService.test.js",
+          "hash": "4616243651106379163"
         },
         {
-          "file": "apps/dev/ai/prompt-standards.md",
-          "hash": "15647930235370340080"
+          "file": "apps/api/tests/security.test.js",
+          "hash": "8501369820035877633"
         },
         {
-          "file": "apps/dev/ai/review-pr.mjs",
-          "hash": "7694784373498979180"
+          "file": "apps/api/tests/server.test.js",
+          "hash": "2707100583321415444"
+        }
+      ],
+      "host": [
+        {
+          "file": "apps/host/README.md",
+          "hash": "7647808013037863641"
         },
         {
-          "file": "apps/dev/docker/docker-compose.dev.yaml",
-          "hash": "4771122703472394793"
+          "file": "apps/host/project.json",
+          "hash": "1007567755219256079"
         },
         {
-          "file": "apps/dev/docker/docker-compose.prod.yaml",
-          "hash": "12792964927564420305"
+          "file": "apps/host/public/index.html",
+          "hash": "8822495874131422781"
         },
         {
-          "file": "apps/dev/docker/docker-compose.staging.yaml",
-          "hash": "12291443432771378486"
+          "file": "apps/host/src/index.js",
+          "hash": "6768869270960612571"
         },
         {
-          "file": "apps/dev/e2e/README.md",
-          "hash": "11472979944234497429"
+          "file": "apps/host/webpack.config.cjs",
+          "hash": "16953561547662600198"
         },
         {
-          "file": "apps/dev/e2e/playwright.config.ts",
-          "hash": "7684134352357443155"
+          "file": "apps/host/webpack.config.js",
+          "hash": "2944078289341261036"
+        }
+      ],
+      "frontend": [
+        {
+          "file": "apps/frontend/Dockerfile",
+          "hash": "13923148897020434044"
         },
         {
-          "file": "apps/dev/e2e/tests/home.spec.ts",
-          "hash": "6065218271435436959"
+          "file": "apps/frontend/README.md",
+          "hash": "14653493906540287185"
         },
         {
-          "file": "apps/dev/e2e/tests/login.spec.ts",
-          "hash": "3810880609454700899"
+          "file": "apps/frontend/project.json",
+          "hash": "12528297710339016493"
         },
         {
-          "file": "apps/dev/k3d/create-cluster.sh",
-          "hash": "543413369766751832"
+          "file": "apps/frontend/public/index.html",
+          "hash": "15126979427157438876"
         },
         {
-          "file": "apps/dev/k3d/port-forward-vault.sh",
-          "hash": "9227632697256067181"
+          "file": "apps/frontend/src/server.js",
+          "hash": "3125211695313429102"
+        }
+      ],
+      "political-sphere-ai-assistant": [
+        {
+          "file": "apps/dev/ai/ai-assistant/package.json",
+          "hash": "5005475628442841593",
+          "deps": [
+            "npm:@types/node@20.19.24",
+            "npm:tsx",
+            "npm:typescript",
+            "npm:@modelcontextprotocol/sdk",
+            "npm:openai",
+            "npm:zod"
+          ]
         },
         {
-          "file": "apps/dev/monitoring/grafana/dashboards/kpi-dashboard.json",
-          "hash": "5698974191683958261"
+          "file": "apps/dev/ai/ai-assistant/src/index.ts",
+          "hash": "11409677820906056100"
         },
         {
-          "file": "apps/dev/monitoring/grafana/dashboards/political-sphere-overview.json",
-          "hash": "10798897517033044189"
+          "file": "apps/dev/ai/ai-assistant/tsconfig.json",
+          "hash": "9513696985106221781"
+        }
+      ],
+      "shared": [
+        {
+          "file": "libs/shared/README.md",
+          "hash": "10200723888682019118"
         },
         {
-          "file": "apps/dev/monitoring/grafana/provisioning/alerting/alerts.yml",
-          "hash": "3001204206024850291"
+          "file": "libs/shared/jest.config.js",
+          "hash": "12839521940875294147"
         },
         {
-          "file": "apps/dev/monitoring/grafana/provisioning/dashboards/dashboard.yml",
-          "hash": "5411998854122275720"
+          "file": "libs/shared/project.json",
+          "hash": "4483334915276053237"
         },
         {
-          "file": "apps/dev/monitoring/grafana/provisioning/datasources/prometheus.yml",
-          "hash": "1411148898683889608"
+          "file": "libs/shared/src/index.ts",
+          "hash": "14765642943770303996"
         },
         {
-          "file": "apps/dev/monitoring/prometheus.yml",
-          "hash": "18325121230849632544"
+          "file": "libs/shared/src/logger.d.ts",
+          "hash": "2401997627077690322"
         },
         {
-          "file": "apps/dev/monitoring/prometheus/rules.yml",
-          "hash": "8615800303522122651"
+          "file": "libs/shared/src/logger.js",
+          "hash": "14226035449217494136"
         },
         {
-          "file": "apps/dev/project.json",
-          "hash": "13252439522757258942"
+          "file": "libs/shared/src/security.d.ts",
+          "hash": "5677691564956981450"
         },
         {
-          "file": "apps/dev/scripts/dev-down.sh",
-          "hash": "3836074156399511405"
+          "file": "libs/shared/src/security.js",
+          "hash": "7238662953830549381"
         },
         {
-          "file": "apps/dev/scripts/dev-service.sh",
-          "hash": "2220441559042796553"
-        },
-        {
-          "file": "apps/dev/scripts/dev-up.sh",
-          "hash": "8221685979336411912"
-        },
-        {
-          "file": "apps/dev/scripts/seed-data.sh",
-          "hash": "1627919644922326736"
-        },
-        {
-          "file": "apps/dev/templates/.env.example",
-          "hash": "13775714581316638942"
-        },
-        {
-          "file": "apps/dev/templates/.env.local.example",
-          "hash": "9595703343338985847"
-        },
-        {
-          "file": "apps/dev/terraform/main.tf",
-          "hash": "13944547948508486376"
-        },
-        {
-          "file": "apps/dev/terraform/outputs.tf",
-          "hash": "1314490971125785402"
-        },
-        {
-          "file": "apps/dev/terraform/variables.tf",
-          "hash": "13744074197593913990"
-        },
-        {
-          "file": "apps/dev/testing/accessibility-testing.js",
-          "hash": "978433328685559556"
-        },
-        {
-          "file": "apps/dev/testing/chaos-engineering.js",
-          "hash": "4714518625719637450"
-        },
-        {
-          "file": "apps/dev/testing/integration-tests.js",
-          "hash": "18203477950568943454"
-        },
-        {
-          "file": "apps/dev/testing/performance-benchmarking.js",
-          "hash": "6678850517516197570"
-        },
-        {
-          "file": "apps/dev/testing/ui-visual-testing.js",
-          "hash": "1243581069366026681"
-        },
-        {
-          "file": "apps/dev/tests/integration/api.test.mjs",
-          "hash": "11335666461658458536"
-        },
-        {
-          "file": "apps/dev/tests/unit/broken-test.mjs",
-          "hash": "6638369761619048415"
-        },
-        {
-          "file": "apps/dev/tests/unit/example.test.cjs",
-          "hash": "11683453143770268411"
-        },
-        {
-          "file": "apps/dev/tests/unit/example.test.mjs",
-          "hash": "10971746250214565585"
+          "file": "libs/shared/tests/security.test.js",
+          "hash": "17494033806142267745"
         }
       ],
       "platform": [
@@ -857,82 +661,14 @@
           "hash": "13467575759250076933"
         }
       ],
-      "frontend": [
+      "ui": [
         {
-          "file": "apps/frontend/Dockerfile",
-          "hash": "13923148897020434044"
+          "file": "libs/ui/README.md",
+          "hash": "6926340928892188572"
         },
         {
-          "file": "apps/frontend/README.md",
-          "hash": "14653493906540287185"
-        },
-        {
-          "file": "apps/frontend/project.json",
-          "hash": "12528297710339016493"
-        },
-        {
-          "file": "apps/frontend/public/index.html",
-          "hash": "15126979427157438876"
-        },
-        {
-          "file": "apps/frontend/src/server.js",
-          "hash": "3125211695313429102"
-        }
-      ],
-      "host": [
-        {
-          "file": "apps/host/README.md",
-          "hash": "7647808013037863641"
-        },
-        {
-          "file": "apps/host/project.json",
-          "hash": "1007567755219256079"
-        },
-        {
-          "file": "apps/host/public/index.html",
-          "hash": "8822495874131422781"
-        },
-        {
-          "file": "apps/host/src/index.js",
-          "hash": "6768869270960612571"
-        },
-        {
-          "file": "apps/host/webpack.config.cjs",
-          "hash": "16953561547662600198"
-        },
-        {
-          "file": "apps/host/webpack.config.js",
-          "hash": "2944078289341261036"
-        }
-      ],
-      "worker": [
-        {
-          "file": "apps/worker/Dockerfile",
-          "hash": "638141978963269899"
-        },
-        {
-          "file": "apps/worker/README.md",
-          "hash": "3576762772905421248"
-        },
-        {
-          "file": "apps/worker/output/.gitignore",
-          "hash": "18238160553113635636"
-        },
-        {
-          "file": "apps/worker/project.json",
-          "hash": "8697333627487323065"
-        },
-        {
-          "file": "apps/worker/src/aggregator.js",
-          "hash": "3874775163007397219"
-        },
-        {
-          "file": "apps/worker/src/index.js",
-          "hash": "15658284801827971924"
-        },
-        {
-          "file": "apps/worker/tests/aggregator.test.js",
-          "hash": "4862894492488048325"
+          "file": "libs/ui/project.json",
+          "hash": "14482594747917426574"
         }
       ],
       "infrastructure": [
@@ -1133,68 +869,332 @@
           "hash": "14942550358144895253"
         }
       ],
-      "api": [
+      "dev": [
         {
-          "file": "apps/api/Dockerfile",
-          "hash": "2855126950408141431"
+          "file": "apps/dev/README.md",
+          "hash": "9570443806440292404"
         },
         {
-          "file": "apps/api/README.md",
-          "hash": "6117523241885452917"
+          "file": "apps/dev/Tiltfile",
+          "hash": "9725074424613854822"
         },
         {
-          "file": "apps/api/data/news.json",
-          "hash": "2850613287664466091"
+          "file": "apps/dev/ai/blackbox-review.mjs",
+          "hash": "16280634654725341326"
         },
         {
-          "file": "apps/api/project.json",
-          "hash": "8541043791256006971"
+          "file": "apps/dev/ai/commit-msg.mjs",
+          "hash": "16887480062203029055"
         },
         {
-          "file": "apps/api/src/auth.js",
-          "hash": "16406000614225479943"
+          "file": "apps/dev/ai/governance.js",
+          "hash": "17043640467527099638"
         },
         {
-          "file": "apps/api/src/httpUtils.js",
-          "hash": "1821397520345496802"
+          "file": "apps/dev/ai/knowledge-base.md",
+          "hash": "6675991634796752219"
         },
         {
-          "file": "apps/api/src/index.js",
-          "hash": "2111424647101068011"
+          "file": "apps/dev/ai/learning.js",
+          "hash": "479444583891075513"
         },
         {
-          "file": "apps/api/src/newsService.js",
-          "hash": "18353053814410369454"
+          "file": "apps/dev/ai/ml-pipeline.js",
+          "hash": "8159234239371377646"
         },
         {
-          "file": "apps/api/src/newsStore.js",
-          "hash": "17716726573345761485"
+          "file": "apps/dev/ai/performance-monitor.js",
+          "hash": "9342375817020461044"
         },
         {
-          "file": "apps/api/src/server.js",
-          "hash": "7479947488442251314"
+          "file": "apps/dev/ai/pr-desc.mjs",
+          "hash": "13298724294062764320"
         },
         {
-          "file": "apps/api/tests/newsService.test.js",
-          "hash": "4616243651106379163"
+          "file": "apps/dev/ai/predictive-analytics.js",
+          "hash": "8429359001249954577"
         },
         {
-          "file": "apps/api/tests/security.test.js",
-          "hash": "8501369820035877633"
+          "file": "apps/dev/ai/prompt-standards.md",
+          "hash": "15647930235370340080"
         },
         {
-          "file": "apps/api/tests/server.test.js",
-          "hash": "2707100583321415444"
+          "file": "apps/dev/ai/review-pr.mjs",
+          "hash": "7694784373498979180"
+        },
+        {
+          "file": "apps/dev/docker/docker-compose.dev.yaml",
+          "hash": "4771122703472394793"
+        },
+        {
+          "file": "apps/dev/docker/docker-compose.prod.yaml",
+          "hash": "12792964927564420305"
+        },
+        {
+          "file": "apps/dev/docker/docker-compose.staging.yaml",
+          "hash": "12291443432771378486"
+        },
+        {
+          "file": "apps/dev/e2e/README.md",
+          "hash": "11472979944234497429"
+        },
+        {
+          "file": "apps/dev/e2e/playwright.config.ts",
+          "hash": "7684134352357443155"
+        },
+        {
+          "file": "apps/dev/e2e/tests/home.spec.ts",
+          "hash": "6065218271435436959"
+        },
+        {
+          "file": "apps/dev/e2e/tests/login.spec.ts",
+          "hash": "3810880609454700899"
+        },
+        {
+          "file": "apps/dev/k3d/create-cluster.sh",
+          "hash": "543413369766751832"
+        },
+        {
+          "file": "apps/dev/k3d/port-forward-vault.sh",
+          "hash": "9227632697256067181"
+        },
+        {
+          "file": "apps/dev/monitoring/grafana/dashboards/kpi-dashboard.json",
+          "hash": "5698974191683958261"
+        },
+        {
+          "file": "apps/dev/monitoring/grafana/dashboards/political-sphere-overview.json",
+          "hash": "10798897517033044189"
+        },
+        {
+          "file": "apps/dev/monitoring/grafana/provisioning/alerting/alerts.yml",
+          "hash": "3001204206024850291"
+        },
+        {
+          "file": "apps/dev/monitoring/grafana/provisioning/dashboards/dashboard.yml",
+          "hash": "5411998854122275720"
+        },
+        {
+          "file": "apps/dev/monitoring/grafana/provisioning/datasources/prometheus.yml",
+          "hash": "1411148898683889608"
+        },
+        {
+          "file": "apps/dev/monitoring/prometheus.yml",
+          "hash": "18325121230849632544"
+        },
+        {
+          "file": "apps/dev/monitoring/prometheus/rules.yml",
+          "hash": "8615800303522122651"
+        },
+        {
+          "file": "apps/dev/project.json",
+          "hash": "13252439522757258942"
+        },
+        {
+          "file": "apps/dev/scripts/dev-down.sh",
+          "hash": "3836074156399511405"
+        },
+        {
+          "file": "apps/dev/scripts/dev-service.sh",
+          "hash": "2220441559042796553"
+        },
+        {
+          "file": "apps/dev/scripts/dev-up.sh",
+          "hash": "8221685979336411912"
+        },
+        {
+          "file": "apps/dev/scripts/seed-data.sh",
+          "hash": "1627919644922326736"
+        },
+        {
+          "file": "apps/dev/templates/.env.example",
+          "hash": "13775714581316638942"
+        },
+        {
+          "file": "apps/dev/templates/.env.local.example",
+          "hash": "9595703343338985847"
+        },
+        {
+          "file": "apps/dev/terraform/main.tf",
+          "hash": "13944547948508486376"
+        },
+        {
+          "file": "apps/dev/terraform/outputs.tf",
+          "hash": "1314490971125785402"
+        },
+        {
+          "file": "apps/dev/terraform/variables.tf",
+          "hash": "13744074197593913990"
+        },
+        {
+          "file": "apps/dev/testing/accessibility-testing.js",
+          "hash": "978433328685559556"
+        },
+        {
+          "file": "apps/dev/testing/chaos-engineering.js",
+          "hash": "4714518625719637450"
+        },
+        {
+          "file": "apps/dev/testing/integration-tests.js",
+          "hash": "18203477950568943454"
+        },
+        {
+          "file": "apps/dev/testing/performance-benchmarking.js",
+          "hash": "6678850517516197570"
+        },
+        {
+          "file": "apps/dev/testing/ui-visual-testing.js",
+          "hash": "1243581069366026681"
+        },
+        {
+          "file": "apps/dev/tests/integration/api.test.mjs",
+          "hash": "11335666461658458536"
+        },
+        {
+          "file": "apps/dev/tests/unit/broken-test.mjs",
+          "hash": "6638369761619048415"
+        },
+        {
+          "file": "apps/dev/tests/unit/example.test.cjs",
+          "hash": "11683453143770268411"
+        },
+        {
+          "file": "apps/dev/tests/unit/example.test.mjs",
+          "hash": "10971746250214565585"
         }
       ],
-      "ui": [
+      "docs": [
         {
-          "file": "libs/ui/README.md",
-          "hash": "6926340928892188572"
+          "file": "apps/docs/.vitepress/cache/deps_temp_e07a905f/chunk-QAXAIFA7.js",
+          "hash": "1398820070538979638"
         },
         {
-          "file": "libs/ui/project.json",
-          "hash": "14482594747917426574"
+          "file": "apps/docs/.vitepress/cache/deps_temp_e07a905f/chunk-QAXAIFA7.js.map",
+          "hash": "6004849464876339960"
+        },
+        {
+          "file": "apps/docs/.vitepress/cache/deps_temp_e07a905f/package.json",
+          "hash": "8630294688235076505"
+        },
+        {
+          "file": "apps/docs/.vitepress/cache/deps_temp_e07a905f/vitepress___@vue_devtools-api.js",
+          "hash": "7255766381817982934"
+        },
+        {
+          "file": "apps/docs/.vitepress/cache/deps_temp_e07a905f/vitepress___@vue_devtools-api.js.map",
+          "hash": "6652298274088186207"
+        },
+        {
+          "file": "apps/docs/.vitepress/cache/deps_temp_e07a905f/vitepress___@vueuse_core.js",
+          "hash": "12696528716083278143"
+        },
+        {
+          "file": "apps/docs/.vitepress/cache/deps_temp_e07a905f/vitepress___@vueuse_core.js.map",
+          "hash": "15278077490113582041"
+        },
+        {
+          "file": "apps/docs/.vitepress/cache/deps_temp_e07a905f/vue.js",
+          "hash": "3226929011064258800"
+        },
+        {
+          "file": "apps/docs/.vitepress/cache/deps_temp_e07a905f/vue.js.map",
+          "hash": "9947606979680686569"
+        },
+        {
+          "file": "apps/docs/.vitepress/config.mjs",
+          "hash": "2326943085738562015"
+        },
+        {
+          "file": "apps/docs/AUDIT-REPORT.md",
+          "hash": "17020048416961031357"
+        },
+        {
+          "file": "apps/docs/adr/0000-template-record-decision.md",
+          "hash": "17087479443272550398"
+        },
+        {
+          "file": "apps/docs/adr/0001-enable-renovate.md",
+          "hash": "8588320589680890577"
+        },
+        {
+          "file": "apps/docs/adr/README.md",
+          "hash": "14160383516940221152"
+        },
+        {
+          "file": "apps/docs/ai-enhancement-framework.md",
+          "hash": "2539129859133416236"
+        },
+        {
+          "file": "apps/docs/ai-ethics-policy.md",
+          "hash": "5419834807284222337"
+        },
+        {
+          "file": "apps/docs/ai-on-dev.md",
+          "hash": "6675585202593087029"
+        },
+        {
+          "file": "apps/docs/architecture.md",
+          "hash": "15090737592584685064"
+        },
+        {
+          "file": "apps/docs/compliance/eu-ai-act.md",
+          "hash": "11487546507908537814"
+        },
+        {
+          "file": "apps/docs/contract-testing.md",
+          "hash": "8628391999015125838"
+        },
+        {
+          "file": "apps/docs/delivery-report.md",
+          "hash": "1519357692845323371"
+        },
+        {
+          "file": "apps/docs/dev-autopilot.md",
+          "hash": "4896919028890889063"
+        },
+        {
+          "file": "apps/docs/eu-ai-act-compliance.md",
+          "hash": "4050633267281800130"
+        },
+        {
+          "file": "apps/docs/module-federation.md",
+          "hash": "1133927779426733816"
+        },
+        {
+          "file": "apps/docs/onboarding.md",
+          "hash": "17691814544908961002"
+        },
+        {
+          "file": "apps/docs/project.json",
+          "hash": "15395791247870581169"
+        },
+        {
+          "file": "apps/docs/risk-register.md",
+          "hash": "4837478537794619354"
+        },
+        {
+          "file": "apps/docs/runbooks/dr-plan.md",
+          "hash": "2349298754712863668"
+        },
+        {
+          "file": "apps/docs/runbooks/incident.md",
+          "hash": "14117869538076355155"
+        },
+        {
+          "file": "apps/docs/secrets-inventory.md",
+          "hash": "11627220797026302869"
+        },
+        {
+          "file": "apps/docs/security.md",
+          "hash": "12181518783130671280"
+        },
+        {
+          "file": "apps/docs/templates/postmortem.md",
+          "hash": "12204224967423793714"
+        },
+        {
+          "file": "apps/docs/templates/smoke-test-checklist.md",
+          "hash": "13775826700683363132"
         }
       ]
     },
