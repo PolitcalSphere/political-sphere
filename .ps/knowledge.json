@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "generatedAt": 1761751797859,
+  "generatedAt": 1761751884106,
   "embeddingDim": 256,
   "stopWords": [
     "the",
@@ -54,35 +54,12 @@
     "status": 5.132496328186477,
     "failed": 5.537961436294641,
     "failedtests": 5.537961436294641,
-    "foundation": 5.537961436294641,
-    "business": 4.844814255734696,
-    "model": 4.151667075174751,
-    "overview": 4.844814255734696,
-    "core": 5.537961436294641,
-    "values": 5.537961436294641,
-    "ethics": 4.844814255734696,
-    "domain": 4.844814255734696,
-    "concepts": 5.537961436294641,
-    "market": 5.132496328186477,
-    "brief": 5.132496328186477,
-    "personas": 5.537961436294641,
-    "use": 4.844814255734696,
-    "cases": 5.132496328186477,
-    "product": 4.844814255734696,
-    "principles": 5.537961436294641,
-    "stakeholder": 5.132496328186477,
-    "map": 4.844814255734696,
-    "success": 4.844814255734696,
-    "metrics": 4.844814255734696,
-    "north": 5.537961436294641,
-    "star": 5.537961436294641,
-    "vision": 5.537961436294641,
-    "mission": 5.537961436294641,
     "governance": 4.439349147626531,
     "change": 4.621670704420486,
     "management": 3.7462019670665865,
     "policy": 3.5230584157523768,
     "compliance": 4.621670704420486,
+    "model": 4.151667075174751,
     "decision": 4.844814255734696,
     "rights": 4.844814255734696,
     "matrix": 4.621670704420486,
@@ -107,6 +84,7 @@
     "simulation": 4.844814255734696,
     "pricing": 5.132496328186477,
     "packaging": 5.537961436294641,
+    "product": 4.844814255734696,
     "risked": 5.537961436294641,
     "assumptions": 5.537961436294641,
     "bets": 5.537961436294641,
@@ -115,6 +93,7 @@
     "months": 5.537961436294641,
     "legal": 5.132496328186477,
     "acceptable": 5.537961436294641,
+    "use": 4.844814255734696,
     "community": 5.132496328186477,
     "standards": 4.621670704420486,
     "accessibility": 4.844814255734696,
@@ -132,6 +111,27 @@
     "analysis": 5.132496328186477,
     "terms": 5.132496328186477,
     "service": 5.132496328186477,
+    "foundation": 5.537961436294641,
+    "business": 4.844814255734696,
+    "overview": 4.844814255734696,
+    "core": 5.537961436294641,
+    "values": 5.537961436294641,
+    "ethics": 4.844814255734696,
+    "domain": 4.844814255734696,
+    "concepts": 5.537961436294641,
+    "market": 5.132496328186477,
+    "brief": 5.132496328186477,
+    "personas": 5.537961436294641,
+    "cases": 5.132496328186477,
+    "principles": 5.537961436294641,
+    "stakeholder": 5.132496328186477,
+    "map": 4.844814255734696,
+    "success": 4.844814255734696,
+    "metrics": 4.844814255734696,
+    "north": 5.537961436294641,
+    "star": 5.537961436294641,
+    "vision": 5.537961436294641,
+    "mission": 5.537961436294641,
     "architecture": 4.151667075174751,
     "context": 5.132496328186477,
     "diagrams": 5.537961436294641,
@@ -181,33 +181,6 @@
     "modeling": 5.132496328186477,
     "stride": 5.132496328186477,
     "vulnerability": 5.537961436294641,
-    "alignment": 5.537961436294641,
-    "constraints": 5.132496328186477,
-    "bias": 5.132496328186477,
-    "fairness": 5.537961436294641,
-    "harms": 5.537961436294641,
-    "assessment": 4.621670704420486,
-    "data": 3.7462019670665865,
-    "sources": 5.537961436294641,
-    "dataset": 5.537961436294641,
-    "statements": 5.537961436294641,
-    "evaluation": 5.537961436294641,
-    "benchmarking": 5.537961436294641,
-    "human": 5.132496328186477,
-    "loop": 5.537961436294641,
-    "oversight": 5.132496328186477,
-    "multi": 5.132496328186477,
-    "agent": 5.132496328186477,
-    "orchestration": 5.132496328186477,
-    "red": 5.537961436294641,
-    "teaming": 5.537961436294641,
-    "adversarial": 5.537961436294641,
-    "testing": 4.033884039518368,
-    "rollback": 5.132496328186477,
-    "kill": 5.537961436294641,
-    "switches": 5.537961436294641,
-    "telemetry": 5.537961436294641,
-    "systems": 5.132496328186477,
     "game": 4.844814255734696,
     "mechanics": 4.844814255734696,
     "harm": 5.537961436294641,
@@ -260,6 +233,33 @@
     "slas": 5.132496328186477,
     "sli": 5.132496328186477,
     "catalog": 5.132496328186477,
+    "alignment": 5.537961436294641,
+    "constraints": 5.132496328186477,
+    "bias": 5.132496328186477,
+    "fairness": 5.537961436294641,
+    "harms": 5.537961436294641,
+    "assessment": 4.621670704420486,
+    "data": 3.7462019670665865,
+    "sources": 5.537961436294641,
+    "dataset": 5.537961436294641,
+    "statements": 5.537961436294641,
+    "evaluation": 5.537961436294641,
+    "benchmarking": 5.537961436294641,
+    "human": 5.132496328186477,
+    "loop": 5.537961436294641,
+    "oversight": 5.132496328186477,
+    "multi": 5.132496328186477,
+    "agent": 5.132496328186477,
+    "orchestration": 5.132496328186477,
+    "red": 5.537961436294641,
+    "teaming": 5.537961436294641,
+    "adversarial": 5.537961436294641,
+    "testing": 4.033884039518368,
+    "rollback": 5.132496328186477,
+    "kill": 5.537961436294641,
+    "switches": 5.537961436294641,
+    "telemetry": 5.537961436294641,
+    "systems": 5.132496328186477,
     "people": 5.537961436294641,
     "conduct": 5.537961436294641,
     "hotline": 5.537961436294641,
@@ -1008,24 +1008,24 @@
     "lawful": 5.537961436294641,
     "ropa": 5.537961436294641,
     "dsar": 5.537961436294641,
+    "conventions": 5.132496328186477,
+    "openapi": 5.537961436294641,
+    "specs": 5.537961436294641,
     "licensing": 5.537961436294641,
     "source": 5.537961436294641,
     "license": 5.537961436294641,
     "sbom": 5.537961436294641,
     "licenses": 5.537961436294641,
     "trademark": 5.537961436294641,
-    "conventions": 5.132496328186477,
-    "openapi": 5.537961436294641,
-    "specs": 5.537961436294641,
+    "hardening": 5.537961436294641,
+    "gates": 5.537961436294641,
+    "blockers": 5.537961436294641,
     "backups": 5.537961436294641,
     "erd": 5.537961436294641,
     "eventing": 5.537961436294641,
     "streams": 5.537961436294641,
     "pii": 5.537961436294641,
     "tokenization": 5.537961436294641,
-    "hardening": 5.537961436294641,
-    "gates": 5.537961436294641,
-    "blockers": 5.537961436294641,
     "dev": 5.132496328186477,
     "containers": 5.537961436294641,
     "local": 5.537961436294641,
@@ -1055,7 +1055,7 @@
         "overview": 1
       },
       "contentHash": "469b93532e3f467a792d2ed6623bef8e017a9e3bcdc045a33f377ceb93d1ef21",
-      "lastIndexedAt": 1761751797802,
+      "lastIndexedAt": 1761751884048,
       "vector": {
         "business": 1.6149380852448987,
         "model": 1.38388902505825,
@@ -1330,7 +1330,7 @@
         "ethics": 1
       },
       "contentHash": "710f9c98b195e8f6ccab29f42fd34e744a7d9ed6bd96446dd96ebdd68f1346ac",
-      "lastIndexedAt": 1761751797802,
+      "lastIndexedAt": 1761751884048,
       "vector": {
         "core": 1.845987145431547,
         "values": 1.845987145431547,
@@ -1605,7 +1605,7 @@
         "concepts": 1
       },
       "contentHash": "80b2ad8795fd432cbd1e4cf2372609ba3688b395918bbcc3e46f17859c7056a7",
-      "lastIndexedAt": 1761751797802,
+      "lastIndexedAt": 1761751884048,
       "vector": {
         "glossary": 1.7108321093954921,
         "domain": 1.6149380852448987,
@@ -1879,7 +1879,7 @@
         "brief": 1
       },
       "contentHash": "d7f3049efe0fa3f6faf8a1a7f119935786df487b75f0a69b63815e5c06521a09",
-      "lastIndexedAt": 1761751797802,
+      "lastIndexedAt": 1761751884049,
       "vector": {
         "market": 2.5662481640932384,
         "brief": 2.5662481640932384
@@ -2153,7 +2153,7 @@
         "cases": 1
       },
       "contentHash": "d1b474e4429f1ff6d9fd298ec5704a589af3ab3bdd618dd14970d55824aabf4d",
-      "lastIndexedAt": 1761751797803,
+      "lastIndexedAt": 1761751884049,
       "vector": {
         "personas": 1.845987145431547,
         "use": 1.6149380852448987,
@@ -2427,7 +2427,7 @@
         "principles": 1
       },
       "contentHash": "97d6becceb727f7667b7a251b2623a301eb842859765457c9a03ec4f23faee3f",
-      "lastIndexedAt": 1761751797803,
+      "lastIndexedAt": 1761751884049,
       "vector": {
         "product": 2.422407127867348,
         "principles": 2.7689807181473207
@@ -2699,7 +2699,7 @@
         "foundation": 1
       },
       "contentHash": "66c26ff7037f051dee07c467162620116c56f6ac46ccfe65c281b7e2d9965949",
-      "lastIndexedAt": 1761751797802,
+      "lastIndexedAt": 1761751884048,
       "vector": {
         "foundation": 5.537961436294641
       },
@@ -2971,7 +2971,7 @@
         "map": 1
       },
       "contentHash": "50ca050324685df2d6901fa3580325b291ae05e7bc97429a4eb6d1932271e804",
-      "lastIndexedAt": 1761751797803,
+      "lastIndexedAt": 1761751884049,
       "vector": {
         "stakeholder": 2.5662481640932384,
         "map": 2.422407127867348
@@ -3246,7 +3246,7 @@
         "star": 1
       },
       "contentHash": "e1cfc5ec9d741ca5c827fd7d94528adff67a8765a11795bc6f5ea204a9271a81",
-      "lastIndexedAt": 1761751797803,
+      "lastIndexedAt": 1761751884049,
       "vector": {
         "success": 1.211203563933674,
         "metrics": 1.211203563933674,
@@ -3521,7 +3521,7 @@
         "mission": 1
       },
       "contentHash": "2be6580c01efe9afbfc501394e5dc069a88ee7c2ab0ae41fc7e230d8bb51652f",
-      "lastIndexedAt": 1761751797804,
+      "lastIndexedAt": 1761751884050,
       "vector": {
         "vision": 2.7689807181473207,
         "mission": 2.7689807181473207
@@ -3794,7 +3794,7 @@
         "differentiation": 1
       },
       "contentHash": "20e2c30002e61dff133bcc157d0ba9d24fd95af81ca09f26fe2c973e5936472d",
-      "lastIndexedAt": 1761751797805,
+      "lastIndexedAt": 1761751884044,
       "vector": {
         "strategy": 1.916606672028108,
         "differentiation": 2.7689807181473207
@@ -4068,7 +4068,7 @@
         "strategy": 1
       },
       "contentHash": "63777f11ec38525a8dab9d67bb52e27201f757c628e4866ffe2a4d624da80c58",
-      "lastIndexedAt": 1761751797806,
+      "lastIndexedAt": 1761751884045,
       "vector": {
         "internationalization": 1.7108321093954921,
         "localization": 1.845987145431547,
@@ -4344,7 +4344,7 @@
         "okrs": 1
       },
       "contentHash": "203c5437f78d0b12faf97a6a4977ec5e11be06ab5ae67c3582ebf220bb2fc744",
-      "lastIndexedAt": 1761751797806,
+      "lastIndexedAt": 1761751884045,
       "vector": {
         "objectives": 1.3844903590736604,
         "key": 1.2831240820466192,
@@ -4620,7 +4620,7 @@
         "strategy": 1
       },
       "contentHash": "3ba7a550b76e53812c6250747b93e113ba4fcef64f44e80ae5955bd197adbd46",
-      "lastIndexedAt": 1761751797806,
+      "lastIndexedAt": 1761751884045,
       "vector": {
         "partnerships": 1.845987145431547,
         "education": 1.845987145431547,
@@ -4896,7 +4896,7 @@
         "simulation": 1
       },
       "contentHash": "d7ae8ec7145a88d13f9523c0f1e21bd1f05177de44e16458cc31339093968be3",
-      "lastIndexedAt": 1761751797806,
+      "lastIndexedAt": 1761751884045,
       "vector": {
         "platform": 1.3844903590736604,
         "strategy": 0.958303336014054,
@@ -5172,7 +5172,7 @@
         "strategy": 1
       },
       "contentHash": "436bd22a0db0f90fc08a84764c870d5798834b9aa8a5b362c5ce3e4048477538",
-      "lastIndexedAt": 1761751797806,
+      "lastIndexedAt": 1761751884046,
       "vector": {
         "pricing": 1.7108321093954921,
         "packaging": 1.845987145431547,
@@ -5446,7 +5446,7 @@
         "strategy": 1
       },
       "contentHash": "e4052c3fe4e074ae4d5c4889e80d0ce95aad2b00f8e6da911473c5283ca3f429",
-      "lastIndexedAt": 1761751797807,
+      "lastIndexedAt": 1761751884046,
       "vector": {
         "product": 2.422407127867348,
         "strategy": 1.916606672028108
@@ -5718,7 +5718,7 @@
         "strategy": 1
       },
       "contentHash": "193717050f4d2faa51befbbcc8423193ce6b33c7e10c5edf77f5fbf9aa834d3f",
-      "lastIndexedAt": 1761751797806,
+      "lastIndexedAt": 1761751884044,
       "vector": {
         "strategy": 3.833213344056216
       },
@@ -5991,7 +5991,7 @@
         "bets": 1
       },
       "contentHash": "564a301563ce66c24662bec40f2a7a5558e5140e59977b182ea5008eb5610264",
-      "lastIndexedAt": 1761751797807,
+      "lastIndexedAt": 1761751884046,
       "vector": {
         "risked": 1.845987145431547,
         "assumptions": 1.845987145431547,
@@ -6266,7 +6266,7 @@
         "months": 1
       },
       "contentHash": "895937c0e612ef412ac11cd2db23c479c441603769a0e18de12f43f8c1f801bf",
-      "lastIndexedAt": 1761751797807,
+      "lastIndexedAt": 1761751884046,
       "vector": {
         "strategic": 1.845987145431547,
         "roadmap": 1.7108321093954921,
@@ -6541,7 +6541,7 @@
         "stack": 1
       },
       "contentHash": "eb62cd0662b69119836c2b5a4bc2f3f238a99420dacfb61f9eb4e1d6dad39cea",
-      "lastIndexedAt": 1761751797836,
+      "lastIndexedAt": 1761751884084,
       "vector": {
         "adr": 1.6149380852448987,
         "initial": 1.7108321093954921,
@@ -6815,7 +6815,7 @@
         "template": 1
       },
       "contentHash": "205290c4cba1aad81a571b7da44de98331edb3625c90b4d850f70205b82967ca",
-      "lastIndexedAt": 1761751797836,
+      "lastIndexedAt": 1761751884084,
       "vector": {
         "adr": 2.422407127867348,
         "template": 2.0758335375873753
@@ -7089,7 +7089,7 @@
         "records": 1
       },
       "contentHash": "4576236db46db1725674a0e56516446d28df4257a065bdc223d1c52af8df6d9e",
-      "lastIndexedAt": 1761751797835,
+      "lastIndexedAt": 1761751884084,
       "vector": {
         "architectural": 1.7108321093954921,
         "decision": 1.6149380852448987,
@@ -7364,7 +7364,7 @@
         "policy": 1
       },
       "contentHash": "ec33b0a850dd999795522f3868a7ebe7cb6c798342413145980fc39803c44ba7",
-      "lastIndexedAt": 1761751797804,
+      "lastIndexedAt": 1761751884043,
       "vector": {
         "change": 1.5405569014734954,
         "management": 1.2487339890221953,
@@ -7639,7 +7639,7 @@
         "model": 1
       },
       "contentHash": "336313935322df5e051afedc575c817afa3a414c996d63e92050f8bd400046e6",
-      "lastIndexedAt": 1761751797804,
+      "lastIndexedAt": 1761751884044,
       "vector": {
         "compliance": 1.5405569014734954,
         "governance": 1.4797830492088437,
@@ -7914,7 +7914,7 @@
         "matrix": 1
       },
       "contentHash": "893cf9ce173bc2efeb949b9cbfb71fa5d5d71f525159354721fad912b724ca3a",
-      "lastIndexedAt": 1761751797805,
+      "lastIndexedAt": 1761751884044,
       "vector": {
         "decision": 1.6149380852448987,
         "rights": 1.6149380852448987,
@@ -8188,7 +8188,7 @@
         "charter": 1
       },
       "contentHash": "6a4a9756ee820e2feeb904f521267c586ec3002222be74c6d14d1f5afe8bd58a",
-      "lastIndexedAt": 1761751797805,
+      "lastIndexedAt": 1761751884044,
       "vector": {
         "governance": 2.2196745738132657,
         "charter": 2.7689807181473207
@@ -8460,7 +8460,7 @@
         "governance": 1
       },
       "contentHash": "ded2021b8f9184f09c4d3e3d2efba1db0b3186933d2df52b2fef02d2f3684c40",
-      "lastIndexedAt": 1761751797804,
+      "lastIndexedAt": 1761751884043,
       "vector": {
         "governance": 4.439349147626531
       },
@@ -8733,7 +8733,7 @@
         "comments": 1
       },
       "contentHash": "3f5d33ed4a80aec54192dc5130376fc51f725b11dc20f146f20235975eddca08",
-      "lastIndexedAt": 1761751797836,
+      "lastIndexedAt": 1761751884086,
       "vector": {
         "rfcs": 1.7108321093954921,
         "requests": 1.7108321093954921,
@@ -9007,7 +9007,7 @@
         "template": 1
       },
       "contentHash": "66a3960516df0fbae5e321c70e0427db4f543b638058fcb87f60b627fa0ce476",
-      "lastIndexedAt": 1761751797836,
+      "lastIndexedAt": 1761751884086,
       "vector": {
         "rfc": 2.5662481640932384,
         "template": 2.0758335375873753
@@ -9281,7 +9281,7 @@
         "framework": 1
       },
       "contentHash": "8621e30a4eb38869caa6d2acf782ba1972a7fa54e2cf6747da893b58ffd6e10b",
-      "lastIndexedAt": 1761751797805,
+      "lastIndexedAt": 1761751884044,
       "vector": {
         "risk": 1.4797830492088437,
         "management": 1.2487339890221953,
@@ -9556,7 +9556,7 @@
         "raci": 1
       },
       "contentHash": "2589562b6793bbfec69be5edda18fda41fcf9ab0096d33935b317d1985115b24",
-      "lastIndexedAt": 1761751797805,
+      "lastIndexedAt": 1761751884044,
       "vector": {
         "roles": 1.6149380852448987,
         "responsibilities": 1.845987145431547,
@@ -9832,7 +9832,7 @@
         "standards": 1
       },
       "contentHash": "a438bf020048815854fb77edb6c6ec9f53ad1a2e5bc60e2fd637d85bd08962d0",
-      "lastIndexedAt": 1761751797807,
+      "lastIndexedAt": 1761751884047,
       "vector": {
         "acceptable": 1.3844903590736604,
         "use": 1.211203563933674,
@@ -10108,7 +10108,7 @@
         "wcag": 1
       },
       "contentHash": "5008dc9f3ee0d0783896c3672ca2c01b5253390ed30cdc38093bec6bf9f0073a",
-      "lastIndexedAt": 1761751797808,
+      "lastIndexedAt": 1761751884047,
       "vector": {
         "accessibility": 1.6149380852448987,
         "statement": 1.7108321093954921,
@@ -10384,7 +10384,7 @@
         "safety": 1
       },
       "contentHash": "3212282e71005a35ad4ba2bba64a9733fdb0da64f6ab56d9fb5b336462000f63",
-      "lastIndexedAt": 1761751797808,
+      "lastIndexedAt": 1761751884047,
       "vector": {
         "age": 1.3844903590736604,
         "assurance": 1.3844903590736604,
@@ -10660,7 +10660,7 @@
         "aia": 1
       },
       "contentHash": "70ca4005959ff48de60cd0449e20307d2ebcd7c2ac797d981f433b1b6f4dee29",
-      "lastIndexedAt": 1761751797837,
+      "lastIndexedAt": 1761751884085,
       "vector": {
         "impact": 1.6149380852448987,
         "assessment": 1.5405569014734954,
@@ -10935,7 +10935,7 @@
         "matrix": 1
       },
       "contentHash": "5e0372397145614995f86e73c1e619978832522a0ffa8a2f8b058206e7a6bebf",
-      "lastIndexedAt": 1761751797837,
+      "lastIndexedAt": 1761751884085,
       "vector": {
         "act": 1.7108321093954921,
         "readiness": 1.845987145431547,
@@ -11210,7 +11210,7 @@
         "intervention": 1
       },
       "contentHash": "0c4f9a0fd69efe2d25de4e7a2b2244d7892f6a5aa4841190d9a287fa0ef98c5a",
-      "lastIndexedAt": 1761751797837,
+      "lastIndexedAt": 1761751884085,
       "vector": {
         "human": 1.7108321093954921,
         "oversight": 1.7108321093954921,
@@ -11486,7 +11486,7 @@
         "index": 1
       },
       "contentHash": "ce7366b13b1e252aa954f17408015e9fde30bb8c18c5f248cebafbb09c1c7190",
-      "lastIndexedAt": 1761751797838,
+      "lastIndexedAt": 1761751884085,
       "vector": {
         "model": 1.0379167687936877,
         "system": 1.0712996169498183,
@@ -11760,7 +11760,7 @@
         "compliance": 1
       },
       "contentHash": "327eddb058093ec23d7fc0e8d871082a57ca5a224c3f3bf6afc5fad24ed309e6",
-      "lastIndexedAt": 1761751797837,
+      "lastIndexedAt": 1761751884084,
       "vector": {
         "compliance": 4.621670704420486
       },
@@ -12033,7 +12033,7 @@
         "policy": 1
       },
       "contentHash": "f88c0924f84be66945d79a5218d6d181c48961b66388dfbe3f899601284fdb97",
-      "lastIndexedAt": 1761751797838,
+      "lastIndexedAt": 1761751884086,
       "vector": {
         "transparency": 1.7108321093954921,
         "disclosure": 1.845987145431547,
@@ -12307,7 +12307,7 @@
         "policy": 1
       },
       "contentHash": "b1d182588e5a2e0377fb0534034b610df0b236ae42b22dc1b81b0138c2ed9fc4",
-      "lastIndexedAt": 1761751797808,
+      "lastIndexedAt": 1761751884047,
       "vector": {
         "cookie": 2.7689807181473207,
         "policy": 1.7615292078761884
@@ -12582,7 +12582,7 @@
         "transfers": 1
       },
       "contentHash": "3b161f87c211aa93e0b211d15a337499de7293d69c94956da359c869195e1ade",
-      "lastIndexedAt": 1761751797838,
+      "lastIndexedAt": 1761751884086,
       "vector": {
         "cross": 1.2831240820466192,
         "border": 1.3844903590736604,
@@ -12859,7 +12859,7 @@
         "procedure": 1
       },
       "contentHash": "c47b5a0d060b8837a6299fd36c72ad5b8f0764373ebeb123b7ee515de75a1b4b",
-      "lastIndexedAt": 1761751797839,
+      "lastIndexedAt": 1761751884086,
       "vector": {
         "data": 0.9365504917666466,
         "breach": 1.3844903590736604,
@@ -13137,7 +13137,7 @@
         "dpia": 1
       },
       "contentHash": "893b03aa3c6c9dccc74184e50e07d4e3ce1e67d17ef2cfc833999eebe9d5ff83",
-      "lastIndexedAt": 1761751797839,
+      "lastIndexedAt": 1761751884087,
       "vector": {
         "data": 0.7492403934133174,
         "protection": 0.9689628511469393,
@@ -13415,7 +13415,7 @@
         "policy": 1
       },
       "contentHash": "17fd4cb06022a52c667f672f71e61e00a401b6f4c85f31af2a991c4a62c8fb52",
-      "lastIndexedAt": 1761751797839,
+      "lastIndexedAt": 1761751884087,
       "vector": {
         "data": 0.9365504917666466,
         "retention": 1.211203563933674,
@@ -13691,7 +13691,7 @@
         "register": 1
       },
       "contentHash": "243910567f0df4e5d231316fd3344a7ba621e1b713e0e9b7243a86658faa7dd2",
-      "lastIndexedAt": 1761751797839,
+      "lastIndexedAt": 1761751884087,
       "vector": {
         "lawful": 1.845987145431547,
         "basis": 1.7108321093954921,
@@ -13965,7 +13965,7 @@
         "protection": 1
       },
       "contentHash": "4692907d0f2a079b712d1ca47e469649a66a484013bd5371f66618c57143e767",
-      "lastIndexedAt": 1761751797838,
+      "lastIndexedAt": 1761751884086,
       "vector": {
         "data": 1.8731009835332932,
         "protection": 2.422407127867348
@@ -14240,7 +14240,7 @@
         "ropa": 1
       },
       "contentHash": "c8c29b7f727b43718c081a7e57cc155720cee66cb58790c37cd8f2d20c66bc62",
-      "lastIndexedAt": 1761751797839,
+      "lastIndexedAt": 1761751884087,
       "vector": {
         "records": 1.211203563933674,
         "processing": 1.2831240820466192,
@@ -14518,7 +14518,7 @@
         "dsar": 1
       },
       "contentHash": "2b788de77acafbbce0ab6a3241cc50d2c641f3e4966904c11524f402b6694021",
-      "lastIndexedAt": 1761751797840,
+      "lastIndexedAt": 1761751884088,
       "vector": {
         "subject": 1.0264992656372953,
         "rights": 0.9689628511469393,
@@ -14797,7 +14797,7 @@
         "sbom": 1
       },
       "contentHash": "8e6a2c55c3f7e981da929671dc6b38e31424b29fcf1c1e76d1b70a828832975d",
-      "lastIndexedAt": 1761751797840,
+      "lastIndexedAt": 1761751884089,
       "vector": {
         "open": 1.0264992656372953,
         "source": 1.1075922872589283,
@@ -15072,7 +15072,7 @@
         "licensing": 1
       },
       "contentHash": "de00e8ed6867ddcca55473126889f03be480cb73e14e3c63a145c316cf01bf1a",
-      "lastIndexedAt": 1761751797840,
+      "lastIndexedAt": 1761751884089,
       "vector": {
         "licensing": 5.537961436294641
       },
@@ -15345,7 +15345,7 @@
         "licenses": 1
       },
       "contentHash": "acb63101a171f77425df45d03c185fd02d800f1513dde965e03c8730b7d9a183",
-      "lastIndexedAt": 1761751797840,
+      "lastIndexedAt": 1761751884089,
       "vector": {
         "third": 1.7108321093954921,
         "party": 1.7108321093954921,
@@ -15620,7 +15620,7 @@
         "usage": 1
       },
       "contentHash": "2c5c5f45b3c0e6a1c10b546cd20aa226b1a97fef2f25b19060181e710a517cfc",
-      "lastIndexedAt": 1761751797841,
+      "lastIndexedAt": 1761751884089,
       "vector": {
         "trademark": 1.845987145431547,
         "brand": 1.6149380852448987,
@@ -15894,7 +15894,7 @@
         "policy": 1
       },
       "contentHash": "c244e05ed3a60c7a52bfc748c271be70efa965938fb6e954bbe8efad415b4fc1",
-      "lastIndexedAt": 1761751797808,
+      "lastIndexedAt": 1761751884047,
       "vector": {
         "privacy": 2.5662481640932384,
         "policy": 1.7615292078761884
@@ -16167,7 +16167,7 @@
         "compliance": 1
       },
       "contentHash": "9d53a624a63757bb3e340d5551d283a38f1098d7dbd82d52538ed70eda523159",
-      "lastIndexedAt": 1761751797807,
+      "lastIndexedAt": 1761751884046,
       "vector": {
         "legal": 2.5662481640932384,
         "compliance": 2.310835352210243
@@ -16442,7 +16442,7 @@
         "analysis": 1
       },
       "contentHash": "37170346d76e309aec7fc09ec00b7a9a9882c27084ba7b1d5ddf26ea3dc582f0",
-      "lastIndexedAt": 1761751797809,
+      "lastIndexedAt": 1761751884047,
       "vector": {
         "regulatory": 1.2831240820466192,
         "mapping": 1.2831240820466192,
@@ -16717,7 +16717,7 @@
         "service": 1
       },
       "contentHash": "8c726938cb528cd42ecce6b86c35eb9174e0617cf33b63375b4232e276e4613e",
-      "lastIndexedAt": 1761751797809,
+      "lastIndexedAt": 1761751884047,
       "vector": {
         "terms": 2.5662481640932384,
         "service": 2.5662481640932384
@@ -16991,7 +16991,7 @@
         "conventions": 1
       },
       "contentHash": "e63ed286255453df4e221c7857873215e3305cfe1db389d3cc47150b15844a93",
-      "lastIndexedAt": 1761751797841,
+      "lastIndexedAt": 1761751884088,
       "vector": {
         "graphql": 1.7108321093954921,
         "schema": 1.7108321093954921,
@@ -17265,7 +17265,7 @@
         "architecture": 1
       },
       "contentHash": "5ed46efa56c2ffd868dffcd5670c2b8835385499aa21f0ef293ac6d5c2471eed",
-      "lastIndexedAt": 1761751797841,
+      "lastIndexedAt": 1761751884088,
       "vector": {
         "api": 2.422407127867348,
         "architecture": 2.0758335375873753
@@ -17539,7 +17539,7 @@
         "specs": 1
       },
       "contentHash": "1a632833e91c506e2f81a35879a6a0140c14dd19827814333011e7ce2f6f7278",
-      "lastIndexedAt": 1761751797841,
+      "lastIndexedAt": 1761751884088,
       "vector": {
         "rest": 1.7108321093954921,
         "openapi": 1.845987145431547,
@@ -17814,7 +17814,7 @@
         "policy": 1
       },
       "contentHash": "6c27e97e55e128f595e243469f51d9210a997addb94bc50baf89f12df5d6a922",
-      "lastIndexedAt": 1761751797842,
+      "lastIndexedAt": 1761751884088,
       "vector": {
         "versioning": 1.6149380852448987,
         "deprecation": 1.7108321093954921,
@@ -18088,7 +18088,7 @@
         "diagrams": 1
       },
       "contentHash": "fa900581286bf56be8df31785f03600d58acb4877d562d091301c99ec775e718",
-      "lastIndexedAt": 1761751797809,
+      "lastIndexedAt": 1761751884050,
       "vector": {
         "context": 2.5662481640932384,
         "diagrams": 2.7689807181473207
@@ -18362,7 +18362,7 @@
         "finops": 1
       },
       "contentHash": "61a42d934fa1f3d52bf45757f4c87e2b5dacdcc63e6410e51e1f99a1fb85d8f4",
-      "lastIndexedAt": 1761751797809,
+      "lastIndexedAt": 1761751884050,
       "vector": {
         "cost": 1.845987145431547,
         "architecture": 1.38388902505825,
@@ -18637,7 +18637,7 @@
         "backups": 1
       },
       "contentHash": "22b62c6fa8f5c7409eecf0a283fbe480e63e69105ab66cce945154f17ea82096",
-      "lastIndexedAt": 1761751797842,
+      "lastIndexedAt": 1761751884091,
       "vector": {
         "data": 1.2487339890221953,
         "lifecycle": 1.6149380852448987,
@@ -18912,7 +18912,7 @@
         "erd": 1
       },
       "contentHash": "3d2709601e8c11b6c071e36d6587248c4acfd4f74a93edc64f20c9aa3853f4e5",
-      "lastIndexedAt": 1761751797842,
+      "lastIndexedAt": 1761751884091,
       "vector": {
         "data": 1.2487339890221953,
         "models": 1.7108321093954921,
@@ -19186,7 +19186,7 @@
         "streams": 1
       },
       "contentHash": "20873e94316494524b88753f647581d2b6b73fd94209e9d7c31a02122abbf35f",
-      "lastIndexedAt": 1761751797842,
+      "lastIndexedAt": 1761751884091,
       "vector": {
         "eventing": 2.7689807181473207,
         "streams": 2.7689807181473207
@@ -19460,7 +19460,7 @@
         "tokenization": 1
       },
       "contentHash": "42318279e5bdd1a6aee16fd938edaa7a50f1935bd3715df7fc244f944fce8ade",
-      "lastIndexedAt": 1761751797842,
+      "lastIndexedAt": 1761751884091,
       "vector": {
         "pii": 1.845987145431547,
         "classification": 1.5405569014734954,
@@ -19734,7 +19734,7 @@
         "architecture": 1
       },
       "contentHash": "549d40ccfb113d87f5cc3cc63b9e3b93dad3a8c5539f1b103189c7267027b3c6",
-      "lastIndexedAt": 1761751797842,
+      "lastIndexedAt": 1761751884090,
       "vector": {
         "data": 1.8731009835332932,
         "architecture": 2.0758335375873753
@@ -20009,7 +20009,7 @@
         "map": 1
       },
       "contentHash": "8a5d6a0169bbea5abbc7b6faf85058559d7bc2325aafffca5cd8f304b7c9bca4",
-      "lastIndexedAt": 1761751797809,
+      "lastIndexedAt": 1761751884050,
       "vector": {
         "domain": 1.211203563933674,
         "driven": 1.3844903590736604,
@@ -20284,7 +20284,7 @@
         "architecture": 1
       },
       "contentHash": "b520a0ff6528aea765dd73690cf3e3c4c43f4daf12ee96879bab9c62f51952b6",
-      "lastIndexedAt": 1761751797810,
+      "lastIndexedAt": 1761751884050,
       "vector": {
         "observability": 2.422407127867348,
         "architecture": 2.0758335375873753
@@ -20556,7 +20556,7 @@
         "architecture": 1
       },
       "contentHash": "2e7cb38229f7877e569cc05dd9c8fb71b30954ad2c9978328d69f5d377f81505",
-      "lastIndexedAt": 1761751797809,
+      "lastIndexedAt": 1761751884049,
       "vector": {
         "architecture": 4.151667075174751
       },
@@ -20828,7 +20828,7 @@
         "resilience": 1
       },
       "contentHash": "331a0e753fc034accb21d505612773808212508a732aa590bb3b1012d824805c",
-      "lastIndexedAt": 1761751797810,
+      "lastIndexedAt": 1761751884050,
       "vector": {
         "reliability": 2.5662481640932384,
         "resilience": 2.5662481640932384
@@ -21101,7 +21101,7 @@
         "performance": 1
       },
       "contentHash": "442bf6736de8f2b7fa9fbf0484569233359a6324208a0174245e98912608956f",
-      "lastIndexedAt": 1761751797810,
+      "lastIndexedAt": 1761751884051,
       "vector": {
         "scalability": 2.7689807181473207,
         "performance": 2.310835352210243
@@ -21374,7 +21374,7 @@
         "overview": 1
       },
       "contentHash": "e54266a393e050b8217f608b874b72d12e53e4e4e2c75a9a5a66c4b89c4e9f64",
-      "lastIndexedAt": 1761751797810,
+      "lastIndexedAt": 1761751884051,
       "vector": {
         "system": 2.1425992338996367,
         "overview": 2.422407127867348
@@ -21648,7 +21648,7 @@
         "strategy": 1
       },
       "contentHash": "81fa9476f43504172120906407515aeed335bf8c048d5626cf992251bfed227f",
-      "lastIndexedAt": 1761751797811,
+      "lastIndexedAt": 1761751884051,
       "vector": {
         "branching": 1.845987145431547,
         "release": 1.6149380852448987,
@@ -21924,7 +21924,7 @@
         "notes": 1
       },
       "contentHash": "7c32d0920f8064d0bf3e2aea8a927188e9b06628bccc6203d6fbf6cf448d5230",
-      "lastIndexedAt": 1761751797843,
+      "lastIndexedAt": 1761751884090,
       "vector": {
         "artifact": 1.2831240820466192,
         "management": 0.9365504917666466,
@@ -22199,7 +22199,7 @@
         "hardening": 1
       },
       "contentHash": "820088890a8eb55ba0d839fd83adf00d3e3d1d8b7b1af2a7482dd513e1db6cb2",
-      "lastIndexedAt": 1761751797843,
+      "lastIndexedAt": 1761751884090,
       "vector": {
         "secrets": 2.422407127867348,
         "hardening": 2.7689807181473207
@@ -22472,7 +22472,7 @@
         "architecture": 1
       },
       "contentHash": "518c98e86bf0a0fb53350031d749cf4156fc8d32c5d238a42c280c0632ecab45",
-      "lastIndexedAt": 1761751797843,
+      "lastIndexedAt": 1761751884090,
       "vector": {
         "pipeline": 2.5662481640932384,
         "architecture": 2.0758335375873753
@@ -22746,7 +22746,7 @@
         "blockers": 1
       },
       "contentHash": "6c6b37ad2da2e968dafff75687d8eadd848790ec48be5ebc5201189db7d27cde",
-      "lastIndexedAt": 1761751797843,
+      "lastIndexedAt": 1761751884090,
       "vector": {
         "quality": 1.7108321093954921,
         "gates": 1.845987145431547,
@@ -23017,7 +23017,7 @@
       "length": 8,
       "tokens": {},
       "contentHash": "b017ad77d160d4c1d29e5b75d7c8c0ccd93411a10ba16d59bb7626908ec72f34",
-      "lastIndexedAt": 1761751797842,
+      "lastIndexedAt": 1761751884089,
       "vector": {},
       "embedding": [
         0,
@@ -23288,7 +23288,7 @@
         "guidelines": 1
       },
       "contentHash": "d2ff30bb0d76a62bf1189882232f4c4bf575b68da66cc16d7b853f8cec387b8d",
-      "lastIndexedAt": 1761751797811,
+      "lastIndexedAt": 1761751884052,
       "vector": {
         "code": 1.5405569014734954,
         "review": 1.6149380852448987,
@@ -23564,7 +23564,7 @@
         "react": 1
       },
       "contentHash": "69d6f963388ff810a4bd763623e9f3bc85c9de42db1bee06c538257ea9aba24c",
-      "lastIndexedAt": 1761751797811,
+      "lastIndexedAt": 1761751884052,
       "vector": {
         "coding": 1.3844903590736604,
         "standards": 1.1554176761051216,
@@ -23840,7 +23840,7 @@
         "tooling": 1
       },
       "contentHash": "71aff0ba9fe4aa06e5092e78ddda2c3d7afebefdd192eb2adc58afdb87460c27",
-      "lastIndexedAt": 1761751797844,
+      "lastIndexedAt": 1761751884092,
       "vector": {
         "dev": 1.7108321093954921,
         "containers": 1.845987145431547,
@@ -24115,7 +24115,7 @@
         "setup": 1
       },
       "contentHash": "d52e4530545d18cdc9ad5146a448fd88e64af67ed161e7600e8440aee5f77360",
-      "lastIndexedAt": 1761751797844,
+      "lastIndexedAt": 1761751884092,
       "vector": {
         "local": 1.845987145431547,
         "dev": 1.7108321093954921,
@@ -24389,7 +24389,7 @@
         "playbook": 1
       },
       "contentHash": "c3fb064d90b18589cfeefb0be67cf81ff24d7b7fb46998b7c36ee347946b0f64",
-      "lastIndexedAt": 1761751797844,
+      "lastIndexedAt": 1761751884092,
       "vector": {
         "productivity": 2.7689807181473207,
         "playbook": 2.5662481640932384
@@ -24662,7 +24662,7 @@
         "experience": 1
       },
       "contentHash": "dfa4b7192dc3a8e049ac2a02d83c7900625cfebf25de3dbda5a217b384bb69f2",
-      "lastIndexedAt": 1761751797844,
+      "lastIndexedAt": 1761751884091,
       "vector": {
         "developer": 2.5662481640932384,
         "experience": 2.5662481640932384
@@ -24936,7 +24936,7 @@
         "generators": 1
       },
       "contentHash": "043d998b7b8a6ce19df0dce892a9ec1bcf142922d2b2481963232384dbcd9c70",
-      "lastIndexedAt": 1761751797844,
+      "lastIndexedAt": 1761751884092,
       "vector": {
         "repo": 1.7108321093954921,
         "scripts": 1.7108321093954921,
@@ -25210,7 +25210,7 @@
         "config": 1
       },
       "contentHash": "e73d7e9196e2085d697aa70c5993eb70160232fb383e84be47770a21f37e07b3",
-      "lastIndexedAt": 1761751797811,
+      "lastIndexedAt": 1761751884052,
       "vector": {
         "environments": 2.7689807181473207,
         "config": 2.7689807181473207
@@ -25483,7 +25483,7 @@
         "baseline": 1
       },
       "contentHash": "0c96bcb5c498d7e8a8234c8845d47d1122880322f21447a12b443d886ef5b684",
-      "lastIndexedAt": 1761751797845,
+      "lastIndexedAt": 1761751884093,
       "vector": {
         "kubernetes": 2.7689807181473207,
         "baseline": 2.7689807181473207
@@ -25756,7 +25756,7 @@
         "code": 1
       },
       "contentHash": "b334a85eaf126e699a8ec531fa203d3dfc9342fc3eb5aa1ae72bc49d6322ef4c",
-      "lastIndexedAt": 1761751797845,
+      "lastIndexedAt": 1761751884093,
       "vector": {
         "infrastructure": 2.5662481640932384,
         "code": 2.310835352210243
@@ -26030,7 +26030,7 @@
         "secrets": 1
       },
       "contentHash": "00c486918162f186b4a0c9bc0d4401788ff8ce3118455cd6051aeb9db74b65d9",
-      "lastIndexedAt": 1761751797845,
+      "lastIndexedAt": 1761751884093,
       "vector": {
         "runtime": 1.845987145431547,
         "parameters": 1.845987145431547,
@@ -26304,7 +26304,7 @@
         "conventions": 1
       },
       "contentHash": "5590bac462ed6b68ae39b96451e7f227d017ddc6de03381abbd2e6b18c73dc51",
-      "lastIndexedAt": 1761751797845,
+      "lastIndexedAt": 1761751884093,
       "vector": {
         "terraform": 2.7689807181473207,
         "conventions": 2.5662481640932384
@@ -26577,7 +26577,7 @@
         "standards": 1
       },
       "contentHash": "03bf8f6c0195ab2a00fb946edfd780ad650199e164b4a3f6ada4bf6b9724d469",
-      "lastIndexedAt": 1761751797811,
+      "lastIndexedAt": 1761751884052,
       "vector": {
         "monorepo": 2.7689807181473207,
         "standards": 2.310835352210243
@@ -26850,7 +26850,7 @@
         "devops": 1
       },
       "contentHash": "17725783b412f98857e2d2af82794de5fec10933bfc3d53d3b19c332a35272aa",
-      "lastIndexedAt": 1761751797810,
+      "lastIndexedAt": 1761751884051,
       "vector": {
         "engineering": 2.5662481640932384,
         "devops": 2.5662481640932384
@@ -27124,7 +27124,7 @@
         "testing": 1
       },
       "contentHash": "d1f6cf5daa536ce3b11e6e2c321d9729515059db6976d3f81da2fcb000d14fec",
-      "lastIndexedAt": 1761751797846,
+      "lastIndexedAt": 1761751884093,
       "vector": {
         "chaos": 1.845987145431547,
         "resilience": 1.7108321093954921,
@@ -27399,7 +27399,7 @@
         "testing": 1
       },
       "contentHash": "0782a0ecfa83fa2f24a7fce5b1e842f105ef1ef8e97647462441d415a7b7336e",
-      "lastIndexedAt": 1761751797846,
+      "lastIndexedAt": 1761751884094,
       "vector": {
         "contract": 1.845987145431547,
         "api": 1.6149380852448987,
@@ -27674,7 +27674,7 @@
         "testing": 1
       },
       "contentHash": "d89a783b257196cf12b9b0bf4bdea061e718fc80215b82a2a43af60002174a00",
-      "lastIndexedAt": 1761751797846,
+      "lastIndexedAt": 1761751884094,
       "vector": {
         "performance": 1.5405569014734954,
         "load": 1.7108321093954921,
@@ -27947,7 +27947,7 @@
         "testing": 1
       },
       "contentHash": "fc4d37a91334bce20185870eeafdfd09e2e341573b8031fa09de25688cf5fdc7",
-      "lastIndexedAt": 1761751797846,
+      "lastIndexedAt": 1761751884093,
       "vector": {
         "testing": 4.033884039518368
       },
@@ -28222,7 +28222,7 @@
         "sca": 1
       },
       "contentHash": "53b3cf58154e2c28f0dfbf4c4abef852cf531a534da32ea8f075355a049f1042",
-      "lastIndexedAt": 1761751797847,
+      "lastIndexedAt": 1761751884094,
       "vector": {
         "security": 0.9243341408840973,
         "testing": 0.8067768079036736,
@@ -28499,7 +28499,7 @@
         "management": 1
       },
       "contentHash": "78a23ce4a2827713f2d2f56da0d6ec7eb6270521e740c5106b9cc52f0db9bd0c",
-      "lastIndexedAt": 1761751797847,
+      "lastIndexedAt": 1761751884094,
       "vector": {
         "test": 1.7108321093954921,
         "data": 1.2487339890221953,
@@ -28773,7 +28773,7 @@
         "strategy": 1
       },
       "contentHash": "67015c67a84004404e182e18f898cff4751936f85632ee96e12164efe946da30",
-      "lastIndexedAt": 1761751797847,
+      "lastIndexedAt": 1761751884095,
       "vector": {
         "testing": 2.016942019759184,
         "strategy": 1.916606672028108
@@ -29049,7 +29049,7 @@
         "bcdr": 1
       },
       "contentHash": "60900f2da11922237e6310244ecf8e6866967ee514fd38a425ab6f4fd50d20c3",
-      "lastIndexedAt": 1761751797812,
+      "lastIndexedAt": 1761751884053,
       "vector": {
         "business": 0.9689628511469393,
         "continuity": 1.1075922872589283,
@@ -29326,7 +29326,7 @@
         "management": 1
       },
       "contentHash": "82bfe113cc4955a8e4b72c8f31421a9f48a5bcb8508f7943d7e5ad5dceca4ef0",
-      "lastIndexedAt": 1761751797812,
+      "lastIndexedAt": 1761751884053,
       "vector": {
         "encryption": 1.845987145431547,
         "key": 1.7108321093954921,
@@ -29601,7 +29601,7 @@
         "management": 1
       },
       "contentHash": "6b059765c8e3f24d00b44d8675a04e53c068ca5043403a88f87087c5360a4164",
-      "lastIndexedAt": 1761751797812,
+      "lastIndexedAt": 1761751884053,
       "vector": {
         "identity": 1.845987145431547,
         "access": 1.7108321093954921,
@@ -29876,7 +29876,7 @@
         "plan": 1
       },
       "contentHash": "c1431b34e9ee8ef7cef4eeff176225e7a2f9b080b67a2927b83ea581ae1f9adb",
-      "lastIndexedAt": 1761751797848,
+      "lastIndexedAt": 1761751884095,
       "vector": {
         "incident": 1.4797830492088437,
         "response": 1.6149380852448987,
@@ -30150,7 +30150,7 @@
         "template": 1
       },
       "contentHash": "524023868a32402d15829456109220f5618238b9eb59f15ad119e003b78cad68",
-      "lastIndexedAt": 1761751797848,
+      "lastIndexedAt": 1761751884095,
       "vector": {
         "postmortem": 2.5662481640932384,
         "template": 2.0758335375873753
@@ -30423,7 +30423,7 @@
         "response": 1
       },
       "contentHash": "1cf4117e60a9749ac520818ae2a843965ec8651f5822d327c9b01b7090c53ccf",
-      "lastIndexedAt": 1761751797847,
+      "lastIndexedAt": 1761751884095,
       "vector": {
         "incident": 2.2196745738132657,
         "response": 2.422407127867348
@@ -30697,7 +30697,7 @@
         "playbooks": 1
       },
       "contentHash": "d25dac21e0037059d7009fd0fb45e96c07b963fd25b535278f50b3c12d4b1e27",
-      "lastIndexedAt": 1761751797848,
+      "lastIndexedAt": 1761751884095,
       "vector": {
         "severity": 1.7108321093954921,
         "classification": 1.5405569014734954,
@@ -30973,7 +30973,7 @@
         "iso": 1
       },
       "contentHash": "866afc780d572a513300635cfe6932ba02a0b66cfd5586ba2e1c4fbf2a43430f",
-      "lastIndexedAt": 1761751797813,
+      "lastIndexedAt": 1761751884053,
       "vector": {
         "information": 1.2831240820466192,
         "security": 1.1554176761051216,
@@ -31248,7 +31248,7 @@
         "forensics": 1
       },
       "contentHash": "23575ff65505a8d829babe94b19f269c5b3edfc42c83c1f61af610a8049c872f",
-      "lastIndexedAt": 1761751797813,
+      "lastIndexedAt": 1761751884053,
       "vector": {
         "logging": 2.7689807181473207,
         "forensics": 2.7689807181473207
@@ -31521,7 +31521,7 @@
         "risk": 1
       },
       "contentHash": "58ff92ec5e81a51ad123fcda6a70ac6bbd875c46a3cc0f73e024c1360f48a8b2",
-      "lastIndexedAt": 1761751797812,
+      "lastIndexedAt": 1761751884053,
       "vector": {
         "security": 2.310835352210243,
         "risk": 2.2196745738132657
@@ -31795,7 +31795,7 @@
         "matrix": 1
       },
       "contentHash": "85c1c171b5e5e29200064542b061689281b63e79322155c12c00e31a203501b4",
-      "lastIndexedAt": 1761751797813,
+      "lastIndexedAt": 1761751884053,
       "vector": {
         "risk": 1.4797830492088437,
         "appetite": 1.845987145431547,
@@ -32069,7 +32069,7 @@
         "register": 1
       },
       "contentHash": "5ba13fd58d88b96f64ced7866404e58768a92903bdeac230d2b6c02efaaccc01",
-      "lastIndexedAt": 1761751797813,
+      "lastIndexedAt": 1761751884054,
       "vector": {
         "risk": 2.2196745738132657,
         "register": 2.5662481640932384
@@ -32342,7 +32342,7 @@
         "management": 1
       },
       "contentHash": "7f1557b745fd5ba6e697938571093752c8b9e9227b78903f51a833dd15b48eb0",
-      "lastIndexedAt": 1761751797814,
+      "lastIndexedAt": 1761751884054,
       "vector": {
         "secrets": 2.422407127867348,
         "management": 1.8731009835332932
@@ -32617,7 +32617,7 @@
         "sdl": 1
       },
       "contentHash": "e98578db1576639e3228db85be70b850d658f2b42c7d80f834e86677f8746fc9",
-      "lastIndexedAt": 1761751797814,
+      "lastIndexedAt": 1761751884054,
       "vector": {
         "secure": 1.3844903590736604,
         "development": 1.2831240820466192,
@@ -32893,7 +32893,7 @@
         "stride": 1
       },
       "contentHash": "fc033c5db6bcac5d31b894defb66dd5303b726ea1b2f7426b6b91ede71a6902d",
-      "lastIndexedAt": 1761751797814,
+      "lastIndexedAt": 1761751884054,
       "vector": {
         "threat": 1.7108321093954921,
         "modeling": 1.7108321093954921,
@@ -33167,7 +33167,7 @@
         "management": 1
       },
       "contentHash": "3b0564b108211002bec8cfc346244c29bf2d726985270f6d44212010785451d4",
-      "lastIndexedAt": 1761751797814,
+      "lastIndexedAt": 1761751884054,
       "vector": {
         "vulnerability": 2.7689807181473207,
         "management": 1.8731009835332932
@@ -33440,7 +33440,7 @@
         "framework": 1
       },
       "contentHash": "5f0796b34df8628becbd3932e6af193c1a1b6b3a4d43cc3a1efb270edba46899",
-      "lastIndexedAt": 1761751797815,
+      "lastIndexedAt": 1761751884059,
       "vector": {
         "governance": 2.2196745738132657,
         "framework": 2.5662481640932384
@@ -33714,7 +33714,7 @@
         "constraints": 1
       },
       "contentHash": "1575beea22c4ea7591031dfccb69da6f223709d024f4c87d7248f20349ec608a",
-      "lastIndexedAt": 1761751797815,
+      "lastIndexedAt": 1761751884059,
       "vector": {
         "alignment": 1.845987145431547,
         "safety": 1.6149380852448987,
@@ -33990,7 +33990,7 @@
         "assessment": 1
       },
       "contentHash": "935d2d7353250c45960c46c897ec382e1d58f701e06e7e1075d7fc6dccd6bd0f",
-      "lastIndexedAt": 1761751797815,
+      "lastIndexedAt": 1761751884060,
       "vector": {
         "bias": 1.2831240820466192,
         "fairness": 1.3844903590736604,
@@ -34267,7 +34267,7 @@
         "statements": 1
       },
       "contentHash": "b36a44de93343440ba5e06cb90e4c1cc4d819bbfbddbc9b0cb85b1b9400c73df",
-      "lastIndexedAt": 1761751797815,
+      "lastIndexedAt": 1761751884060,
       "vector": {
         "data": 0.9365504917666466,
         "sources": 1.3844903590736604,
@@ -34542,7 +34542,7 @@
         "benchmarking": 1
       },
       "contentHash": "7244ce455b8e06ab7daf585baa53992c2cd7a5b0f4a06d1e9218b3e2d0364380",
-      "lastIndexedAt": 1761751797815,
+      "lastIndexedAt": 1761751884060,
       "vector": {
         "evaluation": 2.7689807181473207,
         "benchmarking": 2.7689807181473207
@@ -34816,7 +34816,7 @@
         "oversight": 1
       },
       "contentHash": "02480f822d3d9a393c6996503ecd6283382b8aa0439fa238992b4b85f9b7586d",
-      "lastIndexedAt": 1761751797815,
+      "lastIndexedAt": 1761751884060,
       "vector": {
         "human": 1.7108321093954921,
         "loop": 1.845987145431547,
@@ -35091,7 +35091,7 @@
         "template": 1
       },
       "contentHash": "7a14bb1c78c31a8ce5c8321830cd2757a7693e633991800df0bfd9e9e90988e5",
-      "lastIndexedAt": 1761751797849,
+      "lastIndexedAt": 1761751884096,
       "vector": {
         "model": 1.38388902505825,
         "card": 1.6149380852448987,
@@ -35367,7 +35367,7 @@
         "cards": 1
       },
       "contentHash": "2096148caf89575a0e4be2c9bf5ea551e76232fef99f8f415a3dc035204e3343",
-      "lastIndexedAt": 1761751797849,
+      "lastIndexedAt": 1761751884096,
       "vector": {
         "model": 1.0379167687936877,
         "inventory": 1.211203563933674,
@@ -35643,7 +35643,7 @@
         "template": 1
       },
       "contentHash": "eb43b7d9709f2facdd9264e99c75822d4e62261a0a9cc1c98ab5c7d48dd052c2",
-      "lastIndexedAt": 1761751797849,
+      "lastIndexedAt": 1761751884096,
       "vector": {
         "system": 1.4283994892664245,
         "card": 1.6149380852448987,
@@ -35918,7 +35918,7 @@
         "orchestration": 1
       },
       "contentHash": "a349a7e19c7537617fe5512990a8960e32159ba0c135d19b4b593dfd0646678a",
-      "lastIndexedAt": 1761751797816,
+      "lastIndexedAt": 1761751884060,
       "vector": {
         "multi": 1.7108321093954921,
         "agent": 1.7108321093954921,
@@ -36191,7 +36191,7 @@
         "simulation": 1
       },
       "contentHash": "0e1e1fed2c1f31bbe87aaea73224fc34917d6fcdf83693fc6cbe3033b2080229",
-      "lastIndexedAt": 1761751797814,
+      "lastIndexedAt": 1761751884059,
       "vector": {
         "simulation": 4.844814255734696
       },
@@ -36465,7 +36465,7 @@
         "testing": 1
       },
       "contentHash": "90ea2d4c1c775adf416f36b6fcf1517b67bd260b84c6d2aa6958c955feb39bc2",
-      "lastIndexedAt": 1761751797816,
+      "lastIndexedAt": 1761751884061,
       "vector": {
         "red": 1.3844903590736604,
         "teaming": 1.3844903590736604,
@@ -36741,7 +36741,7 @@
         "switches": 1
       },
       "contentHash": "93eadad46e22618daafdff73a2b780b670c43817d200a894a34209311cb94a61",
-      "lastIndexedAt": 1761751797816,
+      "lastIndexedAt": 1761751884061,
       "vector": {
         "rollback": 1.7108321093954921,
         "kill": 1.845987145431547,
@@ -37015,7 +37015,7 @@
         "systems": 1
       },
       "contentHash": "a84a95ca9b217a5eb57f1464fa3c2151222885c7bdc5e66a0e7414126782aaac",
-      "lastIndexedAt": 1761751797816,
+      "lastIndexedAt": 1761751884061,
       "vector": {
         "telemetry": 2.7689807181473207,
         "systems": 2.5662481640932384
@@ -37289,7 +37289,7 @@
         "minimisation": 1
       },
       "contentHash": "6736aab2d7ffcd426f10c270ed0f47ae5e78b286f4c99184d2426bc3f23feba0",
-      "lastIndexedAt": 1761751797817,
+      "lastIndexedAt": 1761751884055,
       "vector": {
         "accessibility": 1.6149380852448987,
         "harm": 1.845987145431547,
@@ -37564,7 +37564,7 @@
         "tuning": 1
       },
       "contentHash": "1790271b6fa81712117da1dc83db693b3187d4550d1b6315c8149b315f550d44",
-      "lastIndexedAt": 1761751797817,
+      "lastIndexedAt": 1761751884055,
       "vector": {
         "npc": 1.845987145431547,
         "behaviours": 1.845987145431547,
@@ -37840,7 +37840,7 @@
         "design": 1
       },
       "contentHash": "0cbbeb57ea8ddc6ca7981691fbf3d9da22965469f2c74ddf46f21f070ba18757",
-      "lastIndexedAt": 1761751797817,
+      "lastIndexedAt": 1761751884055,
       "vector": {
         "balancing": 1.3844903590736604,
         "anti": 1.2831240820466192,
@@ -38116,7 +38116,7 @@
         "enforcement": 1
       },
       "contentHash": "3e213f4662efe32bdaf6862bc16975072a2f85dc5e2f5b45e5ed552a1eeb782f",
-      "lastIndexedAt": 1761751797817,
+      "lastIndexedAt": 1761751884056,
       "vector": {
         "content": 1.845987145431547,
         "moderation": 1.845987145431547,
@@ -38390,7 +38390,7 @@
         "budgets": 1
       },
       "contentHash": "a11a289af015d87efbec23ff3110d84ba873326c77ced8eb3214c7a7f0b88b13",
-      "lastIndexedAt": 1761751797817,
+      "lastIndexedAt": 1761751884056,
       "vector": {
         "economy": 2.7689807181473207,
         "budgets": 2.7689807181473207
@@ -38664,7 +38664,7 @@
         "mechanics": 1
       },
       "contentHash": "032cac210d46db7eccb44c8650ca9283b751b57035604c4fc756ab53addbe89d",
-      "lastIndexedAt": 1761751797818,
+      "lastIndexedAt": 1761751884056,
       "vector": {
         "elections": 1.845987145431547,
         "policy": 1.174352805250792,
@@ -38940,7 +38940,7 @@
         "gdd": 1
       },
       "contentHash": "0e7dffd44e0e0ba4679a879c10e156d5cfcb72f0d32468d247132ebbd3dda967",
-      "lastIndexedAt": 1761751797818,
+      "lastIndexedAt": 1761751884056,
       "vector": {
         "game": 1.211203563933674,
         "design": 1.1098372869066329,
@@ -39216,7 +39216,7 @@
         "engine": 1
       },
       "contentHash": "325d6b3dd18a457993e073e38bbe5b3d56e65a32b16fdfde550559ca152fe12b",
-      "lastIndexedAt": 1761751797818,
+      "lastIndexedAt": 1761751884056,
       "vector": {
         "lawmaking": 1.845987145431547,
         "procedure": 1.5405569014734954,
@@ -39493,7 +39493,7 @@
         "system": 1
       },
       "contentHash": "20f7454d566e7c6e96c1bb9d4a4b993303f9fb5a45c99f5b6959fa09bbcd2efc",
-      "lastIndexedAt": 1761751797818,
+      "lastIndexedAt": 1761751884057,
       "vector": {
         "media": 1.1075922872589283,
         "press": 1.1075922872589283,
@@ -39770,7 +39770,7 @@
         "factions": 1
       },
       "contentHash": "fbca84b967e8452f8bc3ce3c8545f7fbfaac9563168800465389654aa7066422",
-      "lastIndexedAt": 1761751797818,
+      "lastIndexedAt": 1761751884057,
       "vector": {
         "parties": 1.845987145431547,
         "caucuses": 1.845987145431547,
@@ -40045,7 +40045,7 @@
         "mechanics": 1
       },
       "contentHash": "37cb389461131557f18a3206f34382dbe92e7493536cbdc0cb4817df330f6b9d",
-      "lastIndexedAt": 1761751797816,
+      "lastIndexedAt": 1761751884055,
       "vector": {
         "game": 1.6149380852448987,
         "design": 1.4797830492088437,
@@ -40319,7 +40319,7 @@
         "progressions": 1
       },
       "contentHash": "1c258fdd040523c97ad71e1904bfaea22c066c4becfed2585932ff25c38f2498",
-      "lastIndexedAt": 1761751797818,
+      "lastIndexedAt": 1761751884057,
       "vector": {
         "roles": 2.422407127867348,
         "progressions": 2.7689807181473207
@@ -40593,7 +40593,7 @@
         "blueprint": 1
       },
       "contentHash": "d0478277c6518b10079d56c4e331fc0a412158cd44ff60d2df786ae13af25df6",
-      "lastIndexedAt": 1761751797819,
+      "lastIndexedAt": 1761751884057,
       "vector": {
         "world": 1.845987145431547,
         "institutions": 1.845987145431547,
@@ -40868,7 +40868,7 @@
         "management": 1
       },
       "contentHash": "529fe075d322663d880a9b4795e2fa411a6ced57dd80451bc4cddd941d78f03f",
-      "lastIndexedAt": 1761751797819,
+      "lastIndexedAt": 1761751884058,
       "vector": {
         "capacity": 1.845987145431547,
         "demand": 1.845987145431547,
@@ -41145,7 +41145,7 @@
         "metrics": 1
       },
       "contentHash": "b945999c2040f24c1b5e69cb1de64b7bad7d40fdad403e79dda8c807c30fe794",
-      "lastIndexedAt": 1761751797819,
+      "lastIndexedAt": 1761751884057,
       "vector": {
         "change": 0.9243341408840973,
         "failure": 1.1075922872589283,
@@ -41421,7 +41421,7 @@
         "alerts": 1
       },
       "contentHash": "768e8c4b30878d3819663c88e51d919116096145806ba75aa163ca6b9c0bc79d",
-      "lastIndexedAt": 1761751797819,
+      "lastIndexedAt": 1761751884058,
       "vector": {
         "dashboards": 2.7689807181473207,
         "alerts": 2.7689807181473207
@@ -41695,7 +41695,7 @@
         "handbook": 1
       },
       "contentHash": "566f10eb72f0e740aa571d6f871e242900de2792fd88dde555e41e31734c15ca",
-      "lastIndexedAt": 1761751797820,
+      "lastIndexedAt": 1761751884058,
       "vector": {
         "call": 1.7108321093954921,
         "incident": 1.4797830492088437,
@@ -41971,7 +41971,7 @@
         "reporting": 1
       },
       "contentHash": "ab0c9306d6b019cd5165c0bc20d95d80f485d9ea01b5b96ad3fbafd04693f2f8",
-      "lastIndexedAt": 1761751797820,
+      "lastIndexedAt": 1761751884058,
       "vector": {
         "ops": 1.211203563933674,
         "kpis": 1.3844903590736604,
@@ -42246,7 +42246,7 @@
         "ops": 1
       },
       "contentHash": "a21a5caee0ff02b477a869c8ef13d98e3050959d8766d50b3a935d5ea23d1cb5",
-      "lastIndexedAt": 1761751797819,
+      "lastIndexedAt": 1761751884057,
       "vector": {
         "observability": 2.422407127867348,
         "ops": 2.422407127867348
@@ -42519,7 +42519,7 @@
         "index": 1
       },
       "contentHash": "a1b273f3e111ddd1137e51141508f50dc79e118fbdfa1231d3292ab3995a5f94",
-      "lastIndexedAt": 1761751797820,
+      "lastIndexedAt": 1761751884058,
       "vector": {
         "runbooks": 2.5662481640932384,
         "index": 2.422407127867348
@@ -42794,7 +42794,7 @@
         "catalog": 1
       },
       "contentHash": "f2a792f0f915a146a35d64c33227a2a63f8f4e21bb7dc9f6ddae43233be8c3fc",
-      "lastIndexedAt": 1761751797820,
+      "lastIndexedAt": 1761751884059,
       "vector": {
         "slos": 1.2831240820466192,
         "slas": 1.2831240820466192,
@@ -43069,7 +43069,7 @@
         "conduct": 1
       },
       "contentHash": "889aac833b315ccb390e4d8d99c771924b6dae35009344098504f7ce31a1757a",
-      "lastIndexedAt": 1761751797821,
+      "lastIndexedAt": 1761751884061,
       "vector": {
         "code": 2.310835352210243,
         "conduct": 2.7689807181473207
@@ -43343,7 +43343,7 @@
         "reporting": 1
       },
       "contentHash": "9594246efbfcb733bc8475ca06b47996d6f4bfd269d6afc6eca00909346847cf",
-      "lastIndexedAt": 1761751797821,
+      "lastIndexedAt": 1761751884061,
       "vector": {
         "ethics": 1.6149380852448987,
         "hotline": 1.845987145431547,
@@ -43617,7 +43617,7 @@
         "feedback": 1
       },
       "contentHash": "ff5f3e936ee0cfc0b2fab62d09855b86e44f69c874ae3826a4a547cfe7cbd178",
-      "lastIndexedAt": 1761751797821,
+      "lastIndexedAt": 1761751884061,
       "vector": {
         "performance": 2.310835352210243,
         "feedback": 2.5662481640932384
@@ -43890,7 +43890,7 @@
         "policy": 1
       },
       "contentHash": "736a45cd37414b81ebe421566fcd03c501562d80eeefcc1e991251b8eb8fb15f",
-      "lastIndexedAt": 1761751797821,
+      "lastIndexedAt": 1761751884061,
       "vector": {
         "people": 2.7689807181473207,
         "policy": 1.7615292078761884
@@ -44163,7 +44163,7 @@
         "onboarding": 1
       },
       "contentHash": "f8b60be7d9352b6c5f55d2c7fae6e926da6ff5c33f5e7d74618e4ac969ae4df2",
-      "lastIndexedAt": 1761751797821,
+      "lastIndexedAt": 1761751884062,
       "vector": {
         "recruiting": 2.7689807181473207,
         "onboarding": 2.5662481640932384
@@ -44437,7 +44437,7 @@
         "management": 1
       },
       "contentHash": "a8de36e99305c74575d33b6714696012664f0a6e49d31d23ceaa0ace99549ced",
-      "lastIndexedAt": 1761751797822,
+      "lastIndexedAt": 1761751884062,
       "vector": {
         "supplier": 1.845987145431547,
         "vendor": 1.845987145431547,
@@ -44712,7 +44712,7 @@
         "learning": 1
       },
       "contentHash": "db63245aa6c6ace29c36d5a8c751204908189f46fece086044f7a4a8eb1708d8",
-      "lastIndexedAt": 1761751797822,
+      "lastIndexedAt": 1761751884062,
       "vector": {
         "training": 1.7108321093954921,
         "continuous": 1.845987145431547,
@@ -44988,7 +44988,7 @@
         "commitments": 1
       },
       "contentHash": "17bbb36603484731071ccf35c751e31e3322bce0432302f49eff76717d22e82e",
-      "lastIndexedAt": 1761751797822,
+      "lastIndexedAt": 1761751884063,
       "vector": {
         "customer": 1.3844903590736604,
         "success": 1.211203563933674,
@@ -45265,7 +45265,7 @@
         "economics": 1
       },
       "contentHash": "939c03b1e69deb0ddd7f62980faeb18ea68bae58834f99a093591b007c2ef7cf",
-      "lastIndexedAt": 1761751797822,
+      "lastIndexedAt": 1761751884063,
       "vector": {
         "financial": 1.3844903590736604,
         "model": 1.0379167687936877,
@@ -45540,7 +45540,7 @@
         "plan": 1
       },
       "contentHash": "89ac06c02198b45efde1f1bd74cd8c4d96c171c1858f190d12b5b8f433e9c7f0",
-      "lastIndexedAt": 1761751797823,
+      "lastIndexedAt": 1761751884063,
       "vector": {
         "market": 2.5662481640932384,
         "plan": 2.422407127867348
@@ -45815,7 +45815,7 @@
         "policy": 1
       },
       "contentHash": "57cd715b6ad8a5c2c880e6bec556c9f5f81fdac2dd621babe6f55d4be7e1ec4f",
-      "lastIndexedAt": 1761751797823,
+      "lastIndexedAt": 1761751884063,
       "vector": {
         "pricing": 1.2831240820466192,
         "tiers": 1.3844903590736604,
@@ -46090,7 +46090,7 @@
         "finance": 1
       },
       "contentHash": "9b5ccdad37b6a419f454c6fe4057c10c52a270f1cd46a23438d78020474abb77",
-      "lastIndexedAt": 1761751797822,
+      "lastIndexedAt": 1761751884062,
       "vector": {
         "commercial": 2.7689807181473207,
         "finance": 2.7689807181473207
@@ -46365,7 +46365,7 @@
         "faq": 1
       },
       "contentHash": "46ed110c2249a7d7fc1b0454dcf86ca8edfd4fcae286149c49dab1c5959f0c9b",
-      "lastIndexedAt": 1761751797823,
+      "lastIndexedAt": 1761751884064,
       "vector": {
         "sales": 1.3844903590736604,
         "playbook": 1.2831240820466192,
@@ -46640,7 +46640,7 @@
         "guidelines": 1
       },
       "contentHash": "0b301743d2757bb7588f1dccb73b8aae0061483ff3d031b317b1b498bb3f4ce4",
-      "lastIndexedAt": 1761751797823,
+      "lastIndexedAt": 1761751884064,
       "vector": {
         "brand": 2.422407127867348,
         "guidelines": 2.422407127867348
@@ -46916,7 +46916,7 @@
         "template": 1
       },
       "contentHash": "96e8e0e490ce91c0373f9ea39451a148c22fbc49a39647f1bd5c29385cc7b671",
-      "lastIndexedAt": 1761751797824,
+      "lastIndexedAt": 1761751884064,
       "vector": {
         "crisis": 1.1075922872589283,
         "comms": 1.1075922872589283,
@@ -47192,7 +47192,7 @@
         "positioning": 1
       },
       "contentHash": "85db0c8de48fd544e240dfd2e8e654bd25139813ecae0135157302df64b821ca",
-      "lastIndexedAt": 1761751797824,
+      "lastIndexedAt": 1761751884065,
       "vector": {
         "messaging": 2.7689807181473207,
         "positioning": 2.7689807181473207
@@ -47466,7 +47466,7 @@
         "changelog": 1
       },
       "contentHash": "0a9db5396d49266c68a1273e9fcdf26024807bfab427b1b0ac65a1e5893d6552",
-      "lastIndexedAt": 1761751797824,
+      "lastIndexedAt": 1761751884065,
       "vector": {
         "public": 1.6149380852448987,
         "roadmap": 1.7108321093954921,
@@ -47740,7 +47740,7 @@
         "brand": 1
       },
       "contentHash": "8c5d801883f9faf2d060f7bbafd959efc212e19ad08805650e15a1d9493f82b8",
-      "lastIndexedAt": 1761751797823,
+      "lastIndexedAt": 1761751884064,
       "vector": {
         "communications": 2.7689807181473207,
         "brand": 2.422407127867348
@@ -48013,7 +48013,7 @@
         "reports": 1
       },
       "contentHash": "b4125168dda636fee644e2aedacd345ac06853d4825a3e60f6bcc21b0636a3ff",
-      "lastIndexedAt": 1761751797824,
+      "lastIndexedAt": 1761751884065,
       "vector": {
         "transparency": 2.5662481640932384,
         "reports": 2.7689807181473207
@@ -48285,7 +48285,7 @@
         "contributing": 1
       },
       "contentHash": "98b2a75ce0f3f7d540bdaf0de6b37043c741b9e6ce5474b5b4ab5e787614309a",
-      "lastIndexedAt": 1761751797801,
+      "lastIndexedAt": 1761751884042,
       "vector": {
         "contributing": 5.537961436294641
       },
@@ -48557,7 +48557,7 @@
         "log": 1
       },
       "contentHash": "ed45cfa370d6d66b6d70c82b6aa072b4788804dd0c8afff0346c0f4fc6d3c55c",
-      "lastIndexedAt": 1761751797825,
+      "lastIndexedAt": 1761751884065,
       "vector": {
         "change": 2.310835352210243,
         "log": 2.5662481640932384
@@ -48831,7 +48831,7 @@
         "policy": 1
       },
       "contentHash": "58fb3a69c7f3a9934b1196e5b61d63f708476e27724d8b5812615da4c5cfd702",
-      "lastIndexedAt": 1761751797825,
+      "lastIndexedAt": 1761751884066,
       "vector": {
         "document": 1.5405569014734954,
         "classification": 1.5405569014734954,
@@ -49105,7 +49105,7 @@
         "control": 1
       },
       "contentHash": "b996a4c137046e91bc36bdc2fd47976c4c565b0fc133b505f6403e7483a599de",
-      "lastIndexedAt": 1761751797825,
+      "lastIndexedAt": 1761751884065,
       "vector": {
         "document": 2.310835352210243,
         "control": 2.5662481640932384
@@ -49379,7 +49379,7 @@
         "policy": 1
       },
       "contentHash": "fcadfb7ba5ede14c0b74d54c38f8239a1b172bd03c436afe93638218247af5c8",
-      "lastIndexedAt": 1761751797825,
+      "lastIndexedAt": 1761751884066,
       "vector": {
         "retention": 1.6149380852448987,
         "archiving": 1.7108321093954921,
@@ -49654,7 +49654,7 @@
         "workflow": 1
       },
       "contentHash": "5bfda7e569dfa6bc05525fccec91d9b44c6f6f9e2a6db280f2e3b2170440ea60",
-      "lastIndexedAt": 1761751797825,
+      "lastIndexedAt": 1761751884066,
       "vector": {
         "review": 1.6149380852448987,
         "approval": 1.7108321093954921,
@@ -50727,7 +50727,7 @@
         "score": 1
       },
       "contentHash": "2cd409871aa3c61a4f433f95cd806fc7e10e13f8e5a18be8d2b8e971e8dba862",
-      "lastIndexedAt": 1761751797835,
+      "lastIndexedAt": 1761751884075,
       "vector": {
         "templates": 0.07478412742686438,
         "index": 0.015495141542861501,
@@ -51799,7 +51799,7 @@
         "policy": 1
       },
       "contentHash": "77a64f30028ca15aa611da2d11bc61700902744d6eead1062a1bd8b3f81d1d0d",
-      "lastIndexedAt": 1761751797835,
+      "lastIndexedAt": 1761751884083,
       "vector": {
         "versioning": 2.422407127867348,
         "policy": 1.7615292078761884
@@ -52071,7 +52071,7 @@
         "glossary": 1
       },
       "contentHash": "2cc714cd8dc8ed3bacf17816666f88b860422a769b8592dd3042f64323e77046",
-      "lastIndexedAt": 1761751797801,
+      "lastIndexedAt": 1761751884043,
       "vector": {
         "glossary": 5.132496328186477
       },
@@ -52342,7 +52342,7 @@
         "documentation": 1
       },
       "contentHash": "9f6639bac642224885675abc3e4aa73007b7be2ab6b661523c8969551f6a58b0",
-      "lastIndexedAt": 1761751797801,
+      "lastIndexedAt": 1761751884042,
       "vector": {
         "documentation": 5.132496328186477
       },
@@ -52614,7 +52614,7 @@
         "contents": 1
       },
       "contentHash": "fbc40e88d3dda23e701825a34b1acab84a0b336f82584ed4dceb26e016d4fc19",
-      "lastIndexedAt": 1761751797801,
+      "lastIndexedAt": 1761751884043,
       "vector": {
         "table": 2.5662481640932384,
         "contents": 2.7689807181473207
@@ -52887,7 +52887,7 @@
         "sphere": 1
       },
       "contentHash": "f6e05c8e6a0ea5cf996e23b3fe0d95b76b01b62ccc3a8dad0cf5d8e601ea2e67",
-      "lastIndexedAt": 1761751797801,
+      "lastIndexedAt": 1761751884042,
       "vector": {
         "political": 2.5662481640932384,
         "sphere": 2.5662481640932384
@@ -53161,7 +53161,7 @@
         "failedtests": 1
       },
       "contentHash": "e22df5d0991eb28c09093b1e678b3fa8cd1fab48185d38e67cf79fb6e63ad5ea",
-      "lastIndexedAt": 1761751797801,
+      "lastIndexedAt": 1761751884043,
       "vector": {
         "status": 1.7108321093954921,
         "failed": 1.845987145431547,
@@ -53432,7 +53432,7 @@
       "length": 0,
       "tokens": {},
       "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "lastIndexedAt": 1761751797801,
+      "lastIndexedAt": 1761751884042,
       "vector": {},
       "embedding": [
         0,
