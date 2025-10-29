@@ -34,37 +34,30 @@
       "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
       "cache": true
     },
-    "test:e2e": {
-      "inputs": ["default", "^production"],
-      "cache": true
-    },
+    "test:e2e": { "inputs": ["default", "^production"], "cache": true },
     "lint:boundaries": {
-      "inputs": [
-        "default",
-        "{workspaceRoot}/.eslintrc.json"
-      ],
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"],
       "cache": true
     }
   },
   "generators": {
-    "@nx/next": {
-      "application": {
-        "style": "css",
-        "linter": "eslint"
-      }
-    },
-    "@nx/react": {
-      "library": {
-        "linter": "eslint"
-      }
-    }
+    "@nx/next": { "application": { "style": "css", "linter": "eslint" } },
+    "@nx/react": { "library": { "linter": "eslint" } }
   },
   "tasksRunnerOptions": {
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e", "test:e2e", "lint:boundaries"]
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e",
+          "test:e2e",
+          "lint:boundaries"
+        ]
       }
     }
-  }
+  },
+  "nxCloudId": "690298b92b74acd1e02e8ff0"
 }
