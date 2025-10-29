@@ -1,0 +1,715 @@
+[2m> [22mcd apps/docs && npm run build
+
+
+> political-sphere-monorepo@0.0.0 build
+> nx run-many --target=build --all
+
+
+[0m[7m[1m[36m NX [39m[22m[27m[0m  [36mRunning target [1mbuild[22m for 16 projects:[39m
+
+[2m-[22m political-sphere-mcp-political-sphere
+[2m-[22m political-sphere-mcp-filesystem
+[2m-[22m political-sphere-mcp-puppeteer
+[2m-[22m political-sphere-mcp-github
+[2m-[22m political-sphere-mcp-sqlite
+[2m-[22m political-sphere-ai-assistant
+[2m-[22m political-sphere-mcp-git
+[2m-[22m frontend
+[2m-[22m @political-sphere/shared
+[2m-[22m remote
+[2m-[22m worker
+[2m-[22m docs
+[2m-[22m host
+[2m-[22m api
+[2m-[22m dev
+[2m-[22m ui
+
+
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-puppeteer:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-puppeteer"...
+Done compiling TypeScript files for project "political-sphere-mcp-puppeteer".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-sqlite:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-sqlite"...
+Done compiling TypeScript files for project "political-sphere-mcp-sqlite".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-political-sphere:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-political-sphere"...
+Done compiling TypeScript files for project "political-sphere-mcp-political-sphere".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-github:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-github"...
+Done compiling TypeScript files for project "political-sphere-mcp-github".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-git:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-git"...
+Done compiling TypeScript files for project "political-sphere-mcp-git".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-filesystem:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-filesystem"...
+Done compiling TypeScript files for project "political-sphere-mcp-filesystem".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-ai-assistant:build  [2m[existing outputs match the cache, left as is][22m
+
+
+> political-sphere-ai-assistant@1.0.0 build
+> tsc
+
+
+[2m> [22m[2mnx run[22m @political-sphere/shared:build  [2m[existing outputs match the cache, left as is][22m
+
+> nx run @political-sphere/shared:build
+
+Compiling TypeScript files for project "@political-sphere/shared"...
+Done compiling TypeScript files for project "@political-sphere/shared".
+
+[2m> [22m[2mnx run[22m api:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "api"...
+Done compiling TypeScript files for project "api".
+
+[2m> [22m[2mnx run[22m remote:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Build remote app (copy Module Federation config into your builder)'
+
+Build remote app (copy Module Federation config into your builder)
+
+[2m> [22m[2mnx run[22m ui:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Build UI library'
+
+Build UI library
+
+[2m> [22m[2mnx run[22m frontend:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo "No build pipeline for frontend yet; skipping."
+
+No build pipeline for frontend yet; skipping.
+
+[2m> [22m[2mnx run[22m worker:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo "No build pipeline for worker yet; skipping."
+
+No build pipeline for worker yet; skipping.
+
+[2m> [22m[2mnx run[22m dev:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Dev environment does not require build (Docker-based)'
+
+Dev environment does not require build (Docker-based)
+
+[2m> [22m[2mnx run[22m host:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Build host app (copy Module Federation config into your builder)'
+
+Build host app (copy Module Federation config into your builder)
+
+[2m> [22m[2mnx run[22m docs:build
+
+[2m> [22mcd apps/docs && npm run build
+
+
+> political-sphere-monorepo@0.0.0 build
+> nx run-many --target=build --all
+
+
+[0m[7m[1m[36m NX [39m[22m[27m[0m  [36mRunning target [1mbuild[22m for 16 projects:[39m
+
+[2m-[22m political-sphere-mcp-political-sphere
+[2m-[22m political-sphere-mcp-filesystem
+[2m-[22m political-sphere-mcp-puppeteer
+[2m-[22m political-sphere-mcp-github
+[2m-[22m political-sphere-mcp-sqlite
+[2m-[22m political-sphere-ai-assistant
+[2m-[22m political-sphere-mcp-git
+[2m-[22m frontend
+[2m-[22m @political-sphere/shared
+[2m-[22m remote
+[2m-[22m worker
+[2m-[22m docs
+[2m-[22m host
+[2m-[22m api
+[2m-[22m dev
+[2m-[22m ui
+
+
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-puppeteer:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-puppeteer"...
+Done compiling TypeScript files for project "political-sphere-mcp-puppeteer".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-sqlite:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-sqlite"...
+Done compiling TypeScript files for project "political-sphere-mcp-sqlite".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-political-sphere:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-political-sphere"...
+Done compiling TypeScript files for project "political-sphere-mcp-political-sphere".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-github:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-github"...
+Done compiling TypeScript files for project "political-sphere-mcp-github".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-git:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-git"...
+Done compiling TypeScript files for project "political-sphere-mcp-git".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-filesystem:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-filesystem"...
+Done compiling TypeScript files for project "political-sphere-mcp-filesystem".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-ai-assistant:build  [2m[existing outputs match the cache, left as is][22m
+
+
+> political-sphere-ai-assistant@1.0.0 build
+> tsc
+
+
+[2m> [22m[2mnx run[22m @political-sphere/shared:build  [2m[existing outputs match the cache, left as is][22m
+
+> nx run @political-sphere/shared:build
+
+Compiling TypeScript files for project "@political-sphere/shared"...
+Done compiling TypeScript files for project "@political-sphere/shared".
+
+[2m> [22m[2mnx run[22m api:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "api"...
+Done compiling TypeScript files for project "api".
+
+[2m> [22m[2mnx run[22m remote:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Build remote app (copy Module Federation config into your builder)'
+
+Build remote app (copy Module Federation config into your builder)
+
+[2m> [22m[2mnx run[22m ui:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Build UI library'
+
+Build UI library
+
+[2m> [22m[2mnx run[22m frontend:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo "No build pipeline for frontend yet; skipping."
+
+No build pipeline for frontend yet; skipping.
+
+[2m> [22m[2mnx run[22m worker:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo "No build pipeline for worker yet; skipping."
+
+No build pipeline for worker yet; skipping.
+
+[2m> [22m[2mnx run[22m dev:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Dev environment does not require build (Docker-based)'
+
+Dev environment does not require build (Docker-based)
+
+[2m> [22m[2mnx run[22m host:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Build host app (copy Module Federation config into your builder)'
+
+Build host app (copy Module Federation config into your builder)
+[2m> [22mcd apps/docs && npm run build
+
+
+> political-sphere-monorepo@0.0.0 build
+> nx run-many --target=build --all
+
+
+[0m[7m[1m[36m NX [39m[22m[27m[0m  [36mRunning target [1mbuild[22m for 16 projects:[39m
+
+[2m-[22m political-sphere-mcp-political-sphere
+[2m-[22m political-sphere-mcp-filesystem
+[2m-[22m political-sphere-mcp-puppeteer
+[2m-[22m political-sphere-mcp-github
+[2m-[22m political-sphere-mcp-sqlite
+[2m-[22m political-sphere-ai-assistant
+[2m-[22m political-sphere-mcp-git
+[2m-[22m frontend
+[2m-[22m @political-sphere/shared
+[2m-[22m remote
+[2m-[22m worker
+[2m-[22m docs
+[2m-[22m host
+[2m-[22m api
+[2m-[22m dev
+[2m-[22m ui
+
+
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-puppeteer:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-puppeteer"...
+Done compiling TypeScript files for project "political-sphere-mcp-puppeteer".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-sqlite:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-sqlite"...
+Done compiling TypeScript files for project "political-sphere-mcp-sqlite".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-political-sphere:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-political-sphere"...
+Done compiling TypeScript files for project "political-sphere-mcp-political-sphere".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-github:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-github"...
+Done compiling TypeScript files for project "political-sphere-mcp-github".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-git:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-git"...
+Done compiling TypeScript files for project "political-sphere-mcp-git".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-filesystem:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-filesystem"...
+Done compiling TypeScript files for project "political-sphere-mcp-filesystem".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-ai-assistant:build  [2m[existing outputs match the cache, left as is][22m
+
+
+> political-sphere-ai-assistant@1.0.0 build
+> tsc
+
+
+[2m> [22m[2mnx run[22m @political-sphere/shared:build  [2m[existing outputs match the cache, left as is][22m
+
+> nx run @political-sphere/shared:build
+
+Compiling TypeScript files for project "@political-sphere/shared"...
+Done compiling TypeScript files for project "@political-sphere/shared".
+
+[2m> [22m[2mnx run[22m api:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "api"...
+Done compiling TypeScript files for project "api".
+
+[2m> [22m[2mnx run[22m remote:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Build remote app (copy Module Federation config into your builder)'
+
+Build remote app (copy Module Federation config into your builder)
+
+[2m> [22m[2mnx run[22m ui:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Build UI library'
+
+Build UI library
+
+[2m> [22m[2mnx run[22m frontend:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo "No build pipeline for frontend yet; skipping."
+
+No build pipeline for frontend yet; skipping.
+
+[2m> [22m[2mnx run[22m worker:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo "No build pipeline for worker yet; skipping."
+
+No build pipeline for worker yet; skipping.
+
+[2m> [22m[2mnx run[22m dev:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Dev environment does not require build (Docker-based)'
+
+Dev environment does not require build (Docker-based)
+
+[2m> [22m[2mnx run[22m host:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Build host app (copy Module Federation config into your builder)'
+
+Build host app (copy Module Federation config into your builder)
+Warning: command "cd apps/docs && npm run build" exited with non-zero status code[2m> [22mcd apps/docs && npm run build
+
+
+> political-sphere-monorepo@0.0.0 build
+> nx run-many --target=build --all
+
+
+[0m[7m[1m[36m NX [39m[22m[27m[0m  [36mRunning target [1mbuild[22m for 16 projects:[39m
+
+[2m-[22m political-sphere-mcp-political-sphere
+[2m-[22m political-sphere-mcp-filesystem
+[2m-[22m political-sphere-mcp-puppeteer
+[2m-[22m political-sphere-mcp-github
+[2m-[22m political-sphere-mcp-sqlite
+[2m-[22m political-sphere-ai-assistant
+[2m-[22m political-sphere-mcp-git
+[2m-[22m frontend
+[2m-[22m @political-sphere/shared
+[2m-[22m remote
+[2m-[22m worker
+[2m-[22m docs
+[2m-[22m host
+[2m-[22m api
+[2m-[22m dev
+[2m-[22m ui
+
+
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-puppeteer:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-puppeteer"...
+Done compiling TypeScript files for project "political-sphere-mcp-puppeteer".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-sqlite:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-sqlite"...
+Done compiling TypeScript files for project "political-sphere-mcp-sqlite".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-political-sphere:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-political-sphere"...
+Done compiling TypeScript files for project "political-sphere-mcp-political-sphere".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-github:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-github"...
+Done compiling TypeScript files for project "political-sphere-mcp-github".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-git:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-git"...
+Done compiling TypeScript files for project "political-sphere-mcp-git".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-filesystem:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-filesystem"...
+Done compiling TypeScript files for project "political-sphere-mcp-filesystem".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-ai-assistant:build  [2m[existing outputs match the cache, left as is][22m
+
+
+> political-sphere-ai-assistant@1.0.0 build
+> tsc
+
+
+[2m> [22m[2mnx run[22m @political-sphere/shared:build  [2m[existing outputs match the cache, left as is][22m
+
+> nx run @political-sphere/shared:build
+
+Compiling TypeScript files for project "@political-sphere/shared"...
+Done compiling TypeScript files for project "@political-sphere/shared".
+
+[2m> [22m[2mnx run[22m api:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "api"...
+Done compiling TypeScript files for project "api".
+
+[2m> [22m[2mnx run[22m remote:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Build remote app (copy Module Federation config into your builder)'
+
+Build remote app (copy Module Federation config into your builder)
+
+[2m> [22m[2mnx run[22m ui:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Build UI library'
+
+Build UI library
+
+[2m> [22m[2mnx run[22m frontend:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo "No build pipeline for frontend yet; skipping."
+
+No build pipeline for frontend yet; skipping.
+
+[2m> [22m[2mnx run[22m worker:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo "No build pipeline for worker yet; skipping."
+
+No build pipeline for worker yet; skipping.
+
+[2m> [22m[2mnx run[22m dev:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Dev environment does not require build (Docker-based)'
+
+Dev environment does not require build (Docker-based)
+
+[2m> [22m[2mnx run[22m host:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Build host app (copy Module Federation config into your builder)'
+
+Build host app (copy Module Federation config into your builder)
+
+[2m> [22m[2mnx run[22m docs:build
+
+[2m> [22mcd apps/docs && npm run build
+
+
+> political-sphere-monorepo@0.0.0 build
+> nx run-many --target=build --all
+
+
+[0m[7m[1m[36m NX [39m[22m[27m[0m  [36mRunning target [1mbuild[22m for 16 projects:[39m
+
+[2m-[22m political-sphere-mcp-political-sphere
+[2m-[22m political-sphere-mcp-filesystem
+[2m-[22m political-sphere-mcp-puppeteer
+[2m-[22m political-sphere-mcp-github
+[2m-[22m political-sphere-mcp-sqlite
+[2m-[22m political-sphere-ai-assistant
+[2m-[22m political-sphere-mcp-git
+[2m-[22m frontend
+[2m-[22m @political-sphere/shared
+[2m-[22m remote
+[2m-[22m worker
+[2m-[22m docs
+[2m-[22m host
+[2m-[22m api
+[2m-[22m dev
+[2m-[22m ui
+
+
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-puppeteer:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-puppeteer"...
+Done compiling TypeScript files for project "political-sphere-mcp-puppeteer".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-sqlite:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-sqlite"...
+Done compiling TypeScript files for project "political-sphere-mcp-sqlite".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-political-sphere:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-political-sphere"...
+Done compiling TypeScript files for project "political-sphere-mcp-political-sphere".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-github:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-github"...
+Done compiling TypeScript files for project "political-sphere-mcp-github".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-git:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-git"...
+Done compiling TypeScript files for project "political-sphere-mcp-git".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-filesystem:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-filesystem"...
+Done compiling TypeScript files for project "political-sphere-mcp-filesystem".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-ai-assistant:build  [2m[existing outputs match the cache, left as is][22m
+
+
+> political-sphere-ai-assistant@1.0.0 build
+> tsc
+
+
+[2m> [22m[2mnx run[22m @political-sphere/shared:build  [2m[existing outputs match the cache, left as is][22m
+
+> nx run @political-sphere/shared:build
+
+Compiling TypeScript files for project "@political-sphere/shared"...
+Done compiling TypeScript files for project "@political-sphere/shared".
+
+[2m> [22m[2mnx run[22m api:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "api"...
+Done compiling TypeScript files for project "api".
+
+[2m> [22m[2mnx run[22m remote:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Build remote app (copy Module Federation config into your builder)'
+
+Build remote app (copy Module Federation config into your builder)
+
+[2m> [22m[2mnx run[22m ui:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Build UI library'
+
+Build UI library
+
+[2m> [22m[2mnx run[22m frontend:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo "No build pipeline for frontend yet; skipping."
+
+No build pipeline for frontend yet; skipping.
+
+[2m> [22m[2mnx run[22m worker:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo "No build pipeline for worker yet; skipping."
+
+No build pipeline for worker yet; skipping.
+
+[2m> [22m[2mnx run[22m dev:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Dev environment does not require build (Docker-based)'
+
+Dev environment does not require build (Docker-based)
+
+[2m> [22m[2mnx run[22m host:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Build host app (copy Module Federation config into your builder)'
+
+Build host app (copy Module Federation config into your builder)
+[2m> [22mcd apps/docs && npm run build
+
+
+> political-sphere-monorepo@0.0.0 build
+> nx run-many --target=build --all
+
+
+[0m[7m[1m[36m NX [39m[22m[27m[0m  [36mRunning target [1mbuild[22m for 16 projects:[39m
+
+[2m-[22m political-sphere-mcp-political-sphere
+[2m-[22m political-sphere-mcp-filesystem
+[2m-[22m political-sphere-mcp-puppeteer
+[2m-[22m political-sphere-mcp-github
+[2m-[22m political-sphere-mcp-sqlite
+[2m-[22m political-sphere-ai-assistant
+[2m-[22m political-sphere-mcp-git
+[2m-[22m frontend
+[2m-[22m @political-sphere/shared
+[2m-[22m remote
+[2m-[22m worker
+[2m-[22m docs
+[2m-[22m host
+[2m-[22m api
+[2m-[22m dev
+[2m-[22m ui
+
+
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-puppeteer:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-puppeteer"...
+Done compiling TypeScript files for project "political-sphere-mcp-puppeteer".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-sqlite:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-sqlite"...
+Done compiling TypeScript files for project "political-sphere-mcp-sqlite".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-political-sphere:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-political-sphere"...
+Done compiling TypeScript files for project "political-sphere-mcp-political-sphere".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-github:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-github"...
+Done compiling TypeScript files for project "political-sphere-mcp-github".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-git:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-git"...
+Done compiling TypeScript files for project "political-sphere-mcp-git".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-mcp-filesystem:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "political-sphere-mcp-filesystem"...
+Done compiling TypeScript files for project "political-sphere-mcp-filesystem".
+[1m[33mPackage type is set to "module" but "cjs" format is included. Going to use "esm" format instead. You can change the package type to "commonjs" or remove type in the package.json file.[39m[22m
+
+[2m> [22m[2mnx run[22m political-sphere-ai-assistant:build  [2m[existing outputs match the cache, left as is][22m
+
+
+> political-sphere-ai-assistant@1.0.0 build
+> tsc
+
+
+[2m> [22m[2mnx run[22m @political-sphere/shared:build  [2m[existing outputs match the cache, left as is][22m
+
+> nx run @political-sphere/shared:build
+
+Compiling TypeScript files for project "@political-sphere/shared"...
+Done compiling TypeScript files for project "@political-sphere/shared".
+
+[2m> [22m[2mnx run[22m api:build  [2m[existing outputs match the cache, left as is][22m
+
+Compiling TypeScript files for project "api"...
+Done compiling TypeScript files for project "api".
+
+[2m> [22m[2mnx run[22m remote:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Build remote app (copy Module Federation config into your builder)'
+
+Build remote app (copy Module Federation config into your builder)
+
+[2m> [22m[2mnx run[22m ui:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Build UI library'
+
+Build UI library
+
+[2m> [22m[2mnx run[22m frontend:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo "No build pipeline for frontend yet; skipping."
+
+No build pipeline for frontend yet; skipping.
+
+[2m> [22m[2mnx run[22m worker:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo "No build pipeline for worker yet; skipping."
+
+No build pipeline for worker yet; skipping.
+
+[2m> [22m[2mnx run[22m dev:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Dev environment does not require build (Docker-based)'
+
+Dev environment does not require build (Docker-based)
+
+[2m> [22m[2mnx run[22m host:build  [2m[existing outputs match the cache, left as is][22m
+
+> echo 'Build host app (copy Module Federation config into your builder)'
+
+Build host app (copy Module Federation config into your builder)
+Warning: command "cd apps/docs && npm run build" exited with non-zero status codeWarning: command "cd apps/docs && npm run build" exited with non-zero status code

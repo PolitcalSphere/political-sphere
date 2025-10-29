@@ -1,0 +1,26 @@
+
+[0m[7m[1m[31m NX [39m[22m[27m[0m  [31m[31m[1m[1m● [22m[1mValidation Error[22m:[39m[31m[39m
+
+[31m[39m
+[31m  An unknown error occurred in [1m../../jest.preset.js[22m:[39m
+[31m[39m
+[31m  require is not defined in ES module scope, you can use import instead[39m
+[31mThis file is being treated as an ES module because it has a '.js' file extension and '/Users/morganlowman/politicial-sphere (V1)/package.json' contains "type": "module". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.[39m
+[31m  ReferenceError: require is not defined in ES module scope, you can use import instead[39m
+[31mThis file is being treated as an ES module because it has a '.js' file extension and '/Users/morganlowman/politicial-sphere (V1)/package.json' contains "type": "module". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.[39m
+[31m    at file:///Users/morganlowman/politicial-sphere%20(V1)/jest.preset.js:1:29[39m
+[31m    at ModuleJobSync.runSync (node:internal/modules/esm/module_job:458:37)[39m
+[31m    at ModuleLoader.importSyncForRequire (node:internal/modules/esm/loader:435:47)[39m
+[31m    at loadESMFromCJS (node:internal/modules/cjs/loader:1537:24)[39m
+[31m    at Module._compile (node:internal/modules/cjs/loader:1688:5)[39m
+[31m    at Object..js (node:internal/modules/cjs/loader:1839:10)[39m
+[31m    at Module.load (node:internal/modules/cjs/loader:1441:32)[39m
+[31m    at Function._load (node:internal/modules/cjs/loader:1263:12)[39m
+[31m    at TracingChannel.traceSync (node:diagnostics_channel:322:14)[39m
+[31m    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)[39m
+[31m[39m
+[31m  [1mConfiguration Documentation:[22m[39m
+[31m  https://jestjs.io/docs/configuration[39m
+[31m[39m
+Pass --verbose to see the stacktrace.
+

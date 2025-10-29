@@ -1,0 +1,18 @@
+Compiling TypeScript files for project "@political-sphere/shared"...
+[1m[31m[96mlibs/shared/src/telemetry.ts[0m:[93m52[0m:[93m31[0m - [91merror[0m[90m TS4111: [0mProperty 'NODE_ENV' comes from an index signature, so it must be accessed with ['NODE_ENV'].[39m[22m
+[1m[31m[39m[22m
+[1m[31m[7m52[0m     environment = process.env.NODE_ENV || 'development',[39m[22m
+[1m[31m[7m  [0m [91m                              ~~~~~~~~[0m[39m[22m
+[1m[31m[96mlibs/shared/src/telemetry.ts[0m:[93m53[0m:[93m33[0m - [91merror[0m[90m TS4111: [0mProperty 'OTEL_EXPORTER_OTLP_TRACES_ENDPOINT' comes from an index signature, so it must be accessed with ['OTEL_EXPORTER_OTLP_TRACES_ENDPOINT'].[39m[22m
+[1m[31m[39m[22m
+[1m[31m[7m53[0m     traceEndpoint = process.env.OTEL_EXPORTER_OTLP_TRACES_ENDPOINT || 'http://localhost:4318/v1/traces',[39m[22m
+[1m[31m[7m  [0m [91m                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[31m[96mlibs/shared/src/telemetry.ts[0m:[93m54[0m:[93m35[0m - [91merror[0m[90m TS4111: [0mProperty 'OTEL_EXPORTER_OTLP_METRICS_ENDPOINT' comes from an index signature, so it must be accessed with ['OTEL_EXPORTER_OTLP_METRICS_ENDPOINT'].[39m[22m
+[1m[31m[39m[22m
+[1m[31m[7m54[0m     metricsEndpoint = process.env.OTEL_EXPORTER_OTLP_METRICS_ENDPOINT || 'http://localhost:4318/v1/metrics',[39m[22m
+[1m[31m[7m  [0m [91m                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[39m[22m
+[1m[31m[96mlibs/shared/src/telemetry.ts[0m:[93m59[0m:[93m24[0m - [91merror[0m[90m TS2693: [0m'Resource' only refers to a type, but is being used as a value here.[39m[22m
+[1m[31m[39m[22m
+[1m[31m[7m59[0m   const resource = new Resource({[39m[22m
+[1m[31m[7m  [0m [91m                       ~~~~~~~~[0m[39m[22m
+[1m[31m[39m[22m

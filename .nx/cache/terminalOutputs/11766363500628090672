@@ -1,0 +1,4 @@
+> nx run political-sphere-mcp-git:build
+
+Compiling TypeScript files for project "political-sphere-mcp-git"...
+Done compiling TypeScript files for project "political-sphere-mcp-git".
