@@ -1,0 +1,167 @@
+[1m[2mDetermining test suites to run...[22m[22m[999D[K
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A  [1m● [22mTest suite failed to run
+
+    TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+        at Function.from (<anonymous>)
+
+    [0m [90m 31 |[39m [36mconst[39m [33mDEFAULT_CATEGORY[39m [33m=[39m [32m'general'[39m[33m;[39m
+     [90m 32 |[39m [36mconst[39m [33mDEFAULT_STATUS[39m [33m=[39m [32m'published'[39m[33m;[39m
+    [31m[1m>[22m[39m[90m 33 |[39m [36mconst[39m [33mALLOWED_STATUSES[39m [33m=[39m [33mArray[39m[33m.[39m[36mfrom[39m([33mNEWS_ALLOWED_STATUSES[39m)[33m;[39m
+     [90m    |[39m                                [31m[1m^[22m[39m
+     [90m 34 |[39m
+     [90m 35 |[39m [36mfunction[39m createValidationError(message[33m,[39m details) {
+     [90m 36 |[39m   [36mconst[39m error [33m=[39m [36mnew[39m [33mError[39m(message)[33m;[39m[0m
+
+      [2mat Object.from (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../apps/api/src/newsService.js[2m:33:32)[22m
+      [2mat Object.<anonymous> (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../apps/api/tests/newsService.test.js[2m:12:22)[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A  [1m● [22mTest suite failed to run
+
+    TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+        at Function.from (<anonymous>)
+
+    [0m [90m 31 |[39m [36mconst[39m [33mDEFAULT_CATEGORY[39m [33m=[39m [32m'general'[39m[33m;[39m
+     [90m 32 |[39m [36mconst[39m [33mDEFAULT_STATUS[39m [33m=[39m [32m'published'[39m[33m;[39m
+    [31m[1m>[22m[39m[90m 33 |[39m [36mconst[39m [33mALLOWED_STATUSES[39m [33m=[39m [33mArray[39m[33m.[39m[36mfrom[39m([33mNEWS_ALLOWED_STATUSES[39m)[33m;[39m
+     [90m    |[39m                                [31m[1m^[22m[39m
+     [90m 34 |[39m
+     [90m 35 |[39m [36mfunction[39m createValidationError(message[33m,[39m details) {
+     [90m 36 |[39m   [36mconst[39m error [33m=[39m [36mnew[39m [33mError[39m(message)[33m;[39m[0m
+
+      [2mat Object.from (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../apps/api/src/newsService.js[2m:33:32)[22m
+      [2mat Object.<anonymous> (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../apps/api/tests/security.test.js[2m:7:22)[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A  [1m● [22mTest suite failed to run
+
+    TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+        at Function.from (<anonymous>)
+
+    [0m [90m 31 |[39m [36mconst[39m [33mDEFAULT_CATEGORY[39m [33m=[39m [32m'general'[39m[33m;[39m
+     [90m 32 |[39m [36mconst[39m [33mDEFAULT_STATUS[39m [33m=[39m [32m'published'[39m[33m;[39m
+    [31m[1m>[22m[39m[90m 33 |[39m [36mconst[39m [33mALLOWED_STATUSES[39m [33m=[39m [33mArray[39m[33m.[39m[36mfrom[39m([33mNEWS_ALLOWED_STATUSES[39m)[33m;[39m
+     [90m    |[39m                                [31m[1m^[22m[39m
+     [90m 34 |[39m
+     [90m 35 |[39m [36mfunction[39m createValidationError(message[33m,[39m details) {
+     [90m 36 |[39m   [36mconst[39m error [33m=[39m [36mnew[39m [33mError[39m(message)[33m;[39m[0m
+
+      [2mat Object.from (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../apps/api/src/newsService.js[2m:33:32)[22m
+      [2mat Object.<anonymous> (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../apps/api/tests/server.test.js[2m:8:22)[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A  [1m● [22mTest suite failed to run
+
+    SECURITY: JWT_SECRET and JWT_REFRESH_SECRET environment variables must be set. Generate secrets with: node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+
+    [0m [90m 18 |[39m     hasRefreshSecret[33m:[39m [33m![39m[33m![39m[33mJWT_REFRESH_SECRET[39m
+     [90m 19 |[39m   })[33m;[39m
+    [31m[1m>[22m[39m[90m 20 |[39m   [36mthrow[39m [36mnew[39m [33mError[39m(
+     [90m    |[39m         [31m[1m^[22m[39m
+     [90m 21 |[39m     [32m'SECURITY: JWT_SECRET and JWT_REFRESH_SECRET environment variables must be set. '[39m [33m+[39m
+     [90m 22 |[39m     [32m'Generate secrets with: node -e "console.log(require(\'crypto\').randomBytes(64).toString(\'hex\'))"'[39m
+     [90m 23 |[39m   )[33m;[39m[0m
+
+      [2mat Object.<anonymous> (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../apps/api/src/auth.js[2m:20:9)[22m
+      [2mat Object.<anonymous> (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../apps/api/tests/auth.test.js[2m:11:15)[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[999D[K[1mTest Suites: [22m[1m[31m4 failed[39m[22m, 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0.92 s
+[2mRan all test suites[22m[2m.[22m

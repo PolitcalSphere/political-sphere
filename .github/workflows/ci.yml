@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, docs/observability-improvements ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, docs/observability-improvements ]
 
 jobs:
   lint-and-typecheck:

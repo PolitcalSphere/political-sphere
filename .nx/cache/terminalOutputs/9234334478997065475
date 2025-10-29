@@ -1,0 +1,523 @@
+[1m[2mDetermining test suites to run...[22m[22m[999D[K
+[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:10.911Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/healthz","statusCode":200,"duration":"8ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:10.998Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/healthz","statusCode":200,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.006Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/healthz","statusCode":200,"duration":"0ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.019Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/healthz","statusCode":200,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.028Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/healthz","statusCode":200,"duration":"3ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.046Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/healthz","statusCode":200,"duration":"0ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.057Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/api/news","statusCode":200,"duration":"3ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.063Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"OPTIONS","url":"/api/news","statusCode":204,"duration":"0ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.072Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/api/news","statusCode":200,"duration":"2ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.080Z","level":"WARN","service":"api","environment":"test","message":"HTTP client error","method":"GET","url":"/api/news?search=%3Cscript%3Ealert(%27xss%27)%3C/script%3E","statusCode":400,"duration":"2ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.088Z","level":"WARN","service":"api","environment":"test","message":"HTTP client error","method":"GET","url":"/api/news?search=%27%20OR%20%271%27=%271","statusCode":400,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.091Z","level":"WARN","service":"api","environment":"test","message":"HTTP client error","method":"GET","url":"/api/news?category=invalid_category","statusCode":400,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.095Z","level":"WARN","service":"api","environment":"test","message":"HTTP client error","method":"GET","url":"/api/news?tag=%3Cscript%3Ealert()%3C/script%3E","statusCode":400,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.099Z","level":"WARN","service":"api","environment":"test","message":"HTTP client error","method":"GET","url":"/api/news?limit=99999","statusCode":400,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.115Z","level":"WARN","service":"api","environment":"test","message":"HTTP client error","method":"POST","url":"/api/news","statusCode":400,"duration":"2ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.119Z","level":"WARN","service":"api","environment":"test","message":"HTTP client error","method":"POST","url":"/api/news","statusCode":400,"duration":"0ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.128Z","level":"WARN","service":"api","environment":"test","message":"HTTP client error","method":"POST","url":"/api/news","statusCode":400,"duration":"3ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.147Z","level":"WARN","service":"api","environment":"test","message":"HTTP client error","method":"POST","url":"/api/news","statusCode":400,"duration":"15ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.163Z","level":"WARN","service":"api","environment":"test","message":"HTTP client error","method":"GET","url":"/api/news/nonexistent-id","statusCode":404,"duration":"9ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.172Z","level":"WARN","service":"api","environment":"test","message":"HTTP client error","method":"GET","url":"/nonexistent-endpoint","statusCode":404,"duration":"0ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.189Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/healthz","statusCode":200,"duration":"11ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.197Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/healthz","statusCode":200,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.213Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/healthz","statusCode":200,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.220Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/healthz","statusCode":200,"duration":"2ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.222Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/healthz","statusCode":200,"duration":"0ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.229Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/healthz","statusCode":200,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.234Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/healthz","statusCode":200,"duration":"3ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.237Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/healthz","statusCode":200,"duration":"0ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.240Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/healthz","statusCode":200,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.248Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/healthz","statusCode":200,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.254Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/healthz","statusCode":200,"duration":"0ms","ip":"127.0.0.1","userAgent":"node"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A  API Security Tests
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A    Security Headers
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mincludes Strict-Transport-Security header (142 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mincludes X-Content-Type-Options header (11 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mincludes X-Frame-Options header (9 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mincludes Content-Security-Policy header (8 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mincludes X-XSS-Protection header (8 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mincludes Referrer-Policy header (21 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A    Rate Limiting
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mincludes rate limit headers (6 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2menforces rate limits[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A    CORS
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mhandles OPTIONS preflight requests (7 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mrejects unauthorized origins in production (9 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A    Input Validation
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mrejects XSS attempts in search query (9 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mrejects SQL injection attempts (3 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mvalidates category parameter (3 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mvalidates tag parameter format (4 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mvalidates limit parameter range (9 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A    POST Validation
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2msanitizes HTML in title (11 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mrejects title exceeding max length (4 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mvalidates category against whitelist (8 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mlimits number of tags (22 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A    Error Handling
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mdoes not leak stack traces in production (19 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mreturns proper error codes (6 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A    Health Check
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mhealth check endpoint works (15 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A      [32m✓[39m [2mhealth check does not count against rate limit (61 ms)[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[K[1A[K[1A[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[K[1A[K[1A  [1m● [22mTest suite failed to run
+
+    Your test suite must contain at least one test.
+
+      [2mat onResult (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/@jest/core/build/TestScheduler.js[2m:133:18)[22m
+      [2mat /Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/@jest/core/build/TestScheduler.js[2m:254:19[22m
+      [2mat /Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/emittery/index.js[2m:363:13[22m
+          at Array.map (<anonymous>)
+      [2mat Emittery.emit (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/emittery/index.js[2m:361:23)[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+[K[1A[K[1A
+  [1m● [22m [31m[1mCannot log after tests are done.[22m Did you forget to wait for something async in your test?[39m
+    Attempted to log "{"timestamp":"2025-10-29T20:27:11.436Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/api/news","statusCode":200,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}".
+
+    [0m [90m 93 |[39m         console[33m.[39mlog([32m`${colors[level as keyof typeof colors]}${formatted}${reset}`[39m)[33m;[39m
+     [90m 94 |[39m       } [36melse[39m {
+    [31m[1m>[22m[39m[90m 95 |[39m         console[33m.[39mlog(formatted)[33m;[39m
+     [90m    |[39m                 [31m[1m^[22m[39m
+     [90m 96 |[39m       }
+     [90m 97 |[39m     }
+     [90m 98 |[39m[0m
+
+      [2mat console.log (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/jest-runner/node_modules/@jest/console/build/CustomConsole.js[2m:141:10)[22m
+      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m
+      [2mat Logger.info (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:110:10)[22m
+      [2mat Logger.logRequest (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:142:12)[22m
+      [2mat Server.logRequest (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../apps/api/src/server.js[2m:85:14)[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+[K[1A[K[1A[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+[K[1A[K[1A  [1m● [22mTest suite failed to run
+
+    Your test suite must contain at least one test.
+
+      [2mat onResult (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/@jest/core/build/TestScheduler.js[2m:133:18)[22m
+      [2mat /Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/@jest/core/build/TestScheduler.js[2m:254:19[22m
+      [2mat /Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/emittery/index.js[2m:363:13[22m
+          at Array.map (<anonymous>)
+      [2mat Emittery.emit (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/emittery/index.js[2m:361:23)[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[K[1A[K[1A[999D[K
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[K[1A[K[1A  [2mconsole.log[22m
+    {"timestamp":"2025-10-29T20:27:11.562Z","level":"FATAL","service":"auth","environment":"test","message":"SECURITY: JWT secrets not configured","hasJwtSecret":false,"hasRefreshSecret":false}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[K[1A[K[1A[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[K[1A[K[1A  [1m● [22mTest suite failed to run
+
+    SECURITY: JWT_SECRET and JWT_REFRESH_SECRET environment variables must be set. Generate secrets with: node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+
+    [0m [90m 18 |[39m     hasRefreshSecret[33m:[39m [33m![39m[33m![39m[33mJWT_REFRESH_SECRET[39m
+     [90m 19 |[39m   })[33m;[39m
+    [31m[1m>[22m[39m[90m 20 |[39m   [36mthrow[39m [36mnew[39m [33mError[39m(
+     [90m    |[39m         [31m[1m^[22m[39m
+     [90m 21 |[39m     [32m'SECURITY: JWT_SECRET and JWT_REFRESH_SECRET environment variables must be set. '[39m [33m+[39m
+     [90m 22 |[39m     [32m'Generate secrets with: node -e "console.log(require(\'crypto\').randomBytes(64).toString(\'hex\'))"'[39m
+     [90m 23 |[39m   )[33m;[39m[0m
+
+      [2mat Object.<anonymous> (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../apps/api/src/auth.js[2m:20:9)[22m
+      [2mat Object.<anonymous> (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../apps/api/tests/auth.test.js[2m:10:15)[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[K[1A[K[1A[999D[K[1mTest Suites: [22m[1m[31m3 failed[39m[22m, [1m[32m1 passed[39m[22m, 4 total
+[1mTests:       [22m[1m[32m23 passed[39m[22m, 23 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        1.713 s
+[2mRan all test suites[22m[2m matching [22m/a|u|t|h|.|t|e|s|t|.|j|s/i[2m.[22m

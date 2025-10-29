@@ -20982,6 +20982,684 @@
     ]
   },
   "version": "6.0",
-  "errors": [],
-  "computedAt": 1761751137127
+  "errors": [
+    {
+      "stack": " - apps/dev/mcp-servers/filesystem/package.json: Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/filesystem/package.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at createNodeFromPackageJson (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:87:47)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:44:20\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:37:51)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)\n - apps/dev/mcp-servers/git/package.json: Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/git/package.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at createNodeFromPackageJson (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:87:47)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:44:20\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:37:51)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)\n - apps/dev/mcp-servers/github/package.json: Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/github/package.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at createNodeFromPackageJson (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:87:47)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:44:20\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:37:51)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)\n - apps/dev/mcp-servers/political-sphere/package.json: Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/political-sphere/package.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at createNodeFromPackageJson (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:87:47)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:44:20\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:37:51)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)\n - apps/dev/mcp-servers/puppeteer/package.json: Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/puppeteer/package.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at createNodeFromPackageJson (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:87:47)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:44:20\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:37:51)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)\n - apps/dev/mcp-servers/sqlite/package.json: Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/sqlite/package.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at createNodeFromPackageJson (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:87:47)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:44:20\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:37:51)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)\n - libs/shared/package.json: Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/libs/shared/package.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at createNodeFromPackageJson (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:87:47)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:44:20\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:37:51)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)",
+      "message": "7 errors occurred while processing files for the nx/core/package-json plugin\n.\n  - apps/dev/mcp-servers/filesystem/package.json: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/filesystem/package.json'\n  - apps/dev/mcp-servers/git/package.json: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/git/package.json'\n  - apps/dev/mcp-servers/github/package.json: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/github/package.json'\n  - apps/dev/mcp-servers/political-sphere/package.json: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/political-sphere/package.json'\n  - apps/dev/mcp-servers/puppeteer/package.json: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/puppeteer/package.json'\n  - apps/dev/mcp-servers/sqlite/package.json: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/sqlite/package.json'\n  - libs/shared/package.json: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/libs/shared/package.json'",
+      "errors": [
+        [
+          "apps/dev/mcp-servers/filesystem/package.json",
+          {
+            "stack": "Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/filesystem/package.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at createNodeFromPackageJson (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:87:47)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:44:20\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:37:51)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)",
+            "message": "ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/filesystem/package.json'",
+            "errno": -2,
+            "code": "ENOENT",
+            "syscall": "open",
+            "path": "/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/filesystem/package.json"
+          }
+        ],
+        [
+          "apps/dev/mcp-servers/git/package.json",
+          {
+            "stack": "Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/git/package.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at createNodeFromPackageJson (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:87:47)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:44:20\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:37:51)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)",
+            "message": "ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/git/package.json'",
+            "errno": -2,
+            "code": "ENOENT",
+            "syscall": "open",
+            "path": "/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/git/package.json"
+          }
+        ],
+        [
+          "apps/dev/mcp-servers/github/package.json",
+          {
+            "stack": "Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/github/package.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at createNodeFromPackageJson (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:87:47)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:44:20\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:37:51)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)",
+            "message": "ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/github/package.json'",
+            "errno": -2,
+            "code": "ENOENT",
+            "syscall": "open",
+            "path": "/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/github/package.json"
+          }
+        ],
+        [
+          "apps/dev/mcp-servers/political-sphere/package.json",
+          {
+            "stack": "Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/political-sphere/package.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at createNodeFromPackageJson (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:87:47)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:44:20\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:37:51)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)",
+            "message": "ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/political-sphere/package.json'",
+            "errno": -2,
+            "code": "ENOENT",
+            "syscall": "open",
+            "path": "/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/political-sphere/package.json"
+          }
+        ],
+        [
+          "apps/dev/mcp-servers/puppeteer/package.json",
+          {
+            "stack": "Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/puppeteer/package.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at createNodeFromPackageJson (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:87:47)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:44:20\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:37:51)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)",
+            "message": "ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/puppeteer/package.json'",
+            "errno": -2,
+            "code": "ENOENT",
+            "syscall": "open",
+            "path": "/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/puppeteer/package.json"
+          }
+        ],
+        [
+          "apps/dev/mcp-servers/sqlite/package.json",
+          {
+            "stack": "Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/sqlite/package.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at createNodeFromPackageJson (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:87:47)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:44:20\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:37:51)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)",
+            "message": "ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/sqlite/package.json'",
+            "errno": -2,
+            "code": "ENOENT",
+            "syscall": "open",
+            "path": "/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/sqlite/package.json"
+          }
+        ],
+        [
+          "libs/shared/package.json",
+          {
+            "stack": "Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/libs/shared/package.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at createNodeFromPackageJson (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:87:47)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:44:20\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/package-json/create-nodes.js:37:51)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)",
+            "message": "ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/libs/shared/package.json'",
+            "errno": -2,
+            "code": "ENOENT",
+            "syscall": "open",
+            "path": "/Users/morganlowman/politicial-sphere (V1)/libs/shared/package.json"
+          }
+        ]
+      ],
+      "partialResults": [
+        [
+          "apps/dev/ai/ai-assistant/package.json",
+          {
+            "projects": {
+              "apps/dev/ai/ai-assistant": {
+                "root": "apps/dev/ai/ai-assistant",
+                "name": "political-sphere-ai-assistant",
+                "targets": {
+                  "build": {
+                    "executor": "nx:run-script",
+                    "options": {
+                      "script": "build"
+                    },
+                    "metadata": {
+                      "scriptContent": "tsc",
+                      "runCommand": "npm run build"
+                    }
+                  },
+                  "start": {
+                    "executor": "nx:run-script",
+                    "options": {
+                      "script": "start"
+                    },
+                    "metadata": {
+                      "scriptContent": "node dist/index.js",
+                      "runCommand": "npm run start"
+                    }
+                  },
+                  "dev": {
+                    "executor": "nx:run-script",
+                    "options": {
+                      "script": "dev"
+                    },
+                    "metadata": {
+                      "scriptContent": "tsx src/index.ts",
+                      "runCommand": "npm run dev"
+                    }
+                  },
+                  "nx-release-publish": {
+                    "executor": "@nx/js:release-publish",
+                    "dependsOn": [
+                      "^nx-release-publish"
+                    ],
+                    "options": {}
+                  }
+                },
+                "tags": [
+                  "npm:public"
+                ],
+                "metadata": {
+                  "targetGroups": {
+                    "NPM Scripts": [
+                      "build",
+                      "start",
+                      "dev"
+                    ]
+                  },
+                  "description": "MCP Server for AI-powered development assistance in Political Sphere",
+                  "js": {
+                    "packageName": "political-sphere-ai-assistant",
+                    "packageVersion": "1.0.0",
+                    "packageMain": "dist/index.js",
+                    "isInPackageManagerWorkspaces": true
+                  }
+                }
+              }
+            }
+          }
+        ]
+      ],
+      "name": "AggregateCreateNodesError"
+    },
+    {
+      "stack": " - apps/dev/mcp-servers/filesystem/project.json: Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/filesystem/project.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:14:59\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.ProjectJsonProjectsPlugin.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:13:55)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)\n    at LoadedNxPlugin.createNodes.<computed> (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:34:34)\n - apps/dev/mcp-servers/git/project.json: Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/git/project.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:14:59\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.ProjectJsonProjectsPlugin.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:13:55)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)\n    at LoadedNxPlugin.createNodes.<computed> (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:34:34)\n - apps/dev/mcp-servers/github/project.json: Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/github/project.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:14:59\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.ProjectJsonProjectsPlugin.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:13:55)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)\n    at LoadedNxPlugin.createNodes.<computed> (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:34:34)\n - apps/dev/mcp-servers/political-sphere/project.json: Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/political-sphere/project.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:14:59\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.ProjectJsonProjectsPlugin.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:13:55)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)\n    at LoadedNxPlugin.createNodes.<computed> (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:34:34)\n - apps/dev/mcp-servers/puppeteer/project.json: Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/puppeteer/project.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:14:59\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.ProjectJsonProjectsPlugin.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:13:55)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)\n    at LoadedNxPlugin.createNodes.<computed> (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:34:34)\n - apps/dev/mcp-servers/sqlite/project.json: Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/sqlite/project.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:14:59\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.ProjectJsonProjectsPlugin.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:13:55)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)\n    at LoadedNxPlugin.createNodes.<computed> (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:34:34)",
+      "message": "6 errors occurred while processing files for the nx/core/project-json plugin\n.\n  - apps/dev/mcp-servers/filesystem/project.json: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/filesystem/project.json'\n  - apps/dev/mcp-servers/git/project.json: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/git/project.json'\n  - apps/dev/mcp-servers/github/project.json: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/github/project.json'\n  - apps/dev/mcp-servers/political-sphere/project.json: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/political-sphere/project.json'\n  - apps/dev/mcp-servers/puppeteer/project.json: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/puppeteer/project.json'\n  - apps/dev/mcp-servers/sqlite/project.json: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/sqlite/project.json'",
+      "errors": [
+        [
+          "apps/dev/mcp-servers/filesystem/project.json",
+          {
+            "stack": "Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/filesystem/project.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:14:59\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.ProjectJsonProjectsPlugin.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:13:55)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)\n    at LoadedNxPlugin.createNodes.<computed> (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:34:34)",
+            "message": "ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/filesystem/project.json'",
+            "errno": -2,
+            "code": "ENOENT",
+            "syscall": "open",
+            "path": "/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/filesystem/project.json"
+          }
+        ],
+        [
+          "apps/dev/mcp-servers/git/project.json",
+          {
+            "stack": "Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/git/project.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:14:59\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.ProjectJsonProjectsPlugin.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:13:55)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)\n    at LoadedNxPlugin.createNodes.<computed> (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:34:34)",
+            "message": "ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/git/project.json'",
+            "errno": -2,
+            "code": "ENOENT",
+            "syscall": "open",
+            "path": "/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/git/project.json"
+          }
+        ],
+        [
+          "apps/dev/mcp-servers/github/project.json",
+          {
+            "stack": "Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/github/project.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:14:59\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.ProjectJsonProjectsPlugin.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:13:55)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)\n    at LoadedNxPlugin.createNodes.<computed> (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:34:34)",
+            "message": "ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/github/project.json'",
+            "errno": -2,
+            "code": "ENOENT",
+            "syscall": "open",
+            "path": "/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/github/project.json"
+          }
+        ],
+        [
+          "apps/dev/mcp-servers/political-sphere/project.json",
+          {
+            "stack": "Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/political-sphere/project.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:14:59\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.ProjectJsonProjectsPlugin.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:13:55)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)\n    at LoadedNxPlugin.createNodes.<computed> (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:34:34)",
+            "message": "ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/political-sphere/project.json'",
+            "errno": -2,
+            "code": "ENOENT",
+            "syscall": "open",
+            "path": "/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/political-sphere/project.json"
+          }
+        ],
+        [
+          "apps/dev/mcp-servers/puppeteer/project.json",
+          {
+            "stack": "Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/puppeteer/project.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:14:59\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.ProjectJsonProjectsPlugin.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:13:55)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)\n    at LoadedNxPlugin.createNodes.<computed> (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:34:34)",
+            "message": "ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/puppeteer/project.json'",
+            "errno": -2,
+            "code": "ENOENT",
+            "syscall": "open",
+            "path": "/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/puppeteer/project.json"
+          }
+        ],
+        [
+          "apps/dev/mcp-servers/sqlite/project.json",
+          {
+            "stack": "Error: ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/sqlite/project.json'\n    at readFileSync (node:fs:442:20)\n    at t.readFileSync (node:electron/js2c/node_init:2:11013)\n    at readJsonFile (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/utils/fileutils.js:27:48)\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:14:59\n    at /Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:10:33\n    at Array.map (<anonymous>)\n    at createNodesFromFiles (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/utils.js:8:35)\n    at exports.ProjectJsonProjectsPlugin.createNodesV2 (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/plugins/project-json/build-nodes/project-json.js:13:55)\n    at LoadedNxPlugin.createNodes (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:20:62)\n    at LoadedNxPlugin.createNodes.<computed> (/Users/morganlowman/politicial-sphere (V1)/node_modules/nx/src/project-graph/plugins/loaded-nx-plugin.js:34:34)",
+            "message": "ENOENT: no such file or directory, open '/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/sqlite/project.json'",
+            "errno": -2,
+            "code": "ENOENT",
+            "syscall": "open",
+            "path": "/Users/morganlowman/politicial-sphere (V1)/apps/dev/mcp-servers/sqlite/project.json"
+          }
+        ]
+      ],
+      "partialResults": [
+        [
+          "apps/api/project.json",
+          {
+            "projects": {
+              "apps/api": {
+                "name": "api",
+                "root": "apps/api",
+                "$schema": "../../node_modules/nx/schemas/project-schema.json",
+                "sourceRoot": "apps/api/src",
+                "projectType": "application",
+                "tags": [
+                  "scope:api",
+                  "type:service",
+                  "app"
+                ],
+                "targets": {
+                  "build": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "echo \"No build pipeline for api yet; skipping.\""
+                    }
+                  },
+                  "serve": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "npm run start:api"
+                    }
+                  },
+                  "lint": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "eslint apps/api/src --ext .js"
+                    }
+                  },
+                  "test": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "node --test apps/api/tests/**/*.test.js"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        [
+          "apps/dev/project.json",
+          {
+            "projects": {
+              "apps/dev": {
+                "name": "dev",
+                "root": "apps/dev",
+                "$schema": "../../node_modules/nx/schemas/project-schema.json",
+                "sourceRoot": "apps/dev",
+                "projectType": "application",
+                "tags": [
+                  "app"
+                ],
+                "targets": {
+                  "build": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "docker compose -f apps/dev/docker/docker-compose.dev.yaml build"
+                    }
+                  },
+                  "start": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "./apps/dev/scripts/dev-up.sh"
+                    }
+                  },
+                  "stop": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "./apps/dev/scripts/dev-down.sh"
+                    }
+                  },
+                  "test": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "npm run test:e2e"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        [
+          "apps/docs/project.json",
+          {
+            "projects": {
+              "apps/docs": {
+                "name": "docs",
+                "root": "apps/docs",
+                "$schema": "../../node_modules/nx/schemas/project-schema.json",
+                "sourceRoot": "apps/docs",
+                "projectType": "application",
+                "tags": [
+                  "docs"
+                ],
+                "targets": {
+                  "build": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "cd apps/docs && npm run build"
+                    }
+                  },
+                  "serve": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "cd apps/docs && npm run serve"
+                    }
+                  },
+                  "lint": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "npm run docs:lint"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        [
+          "apps/frontend/project.json",
+          {
+            "projects": {
+              "apps/frontend": {
+                "name": "frontend",
+                "root": "apps/frontend",
+                "$schema": "../../node_modules/nx/schemas/project-schema.json",
+                "sourceRoot": "apps/frontend/src",
+                "projectType": "application",
+                "tags": [
+                  "scope:frontend",
+                  "type:ui"
+                ],
+                "targets": {
+                  "build": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "echo \"No build pipeline for frontend yet; skipping.\""
+                    }
+                  },
+                  "serve": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "npm run start:frontend"
+                    }
+                  },
+                  "lint": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "eslint apps/frontend/src --ext .js"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        [
+          "apps/host/project.json",
+          {
+            "projects": {
+              "apps/host": {
+                "name": "host",
+                "root": "apps/host",
+                "$schema": "../../node_modules/nx/schemas/project-schema.json",
+                "sourceRoot": "apps/host",
+                "projectType": "application",
+                "tags": [
+                  "app"
+                ],
+                "targets": {
+                  "build": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "echo 'Build host app (copy Module Federation config into your builder)'"
+                    }
+                  },
+                  "serve": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "echo 'Serve host app (configure webpack-dev-server with MF)'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        [
+          "apps/remote/project.json",
+          {
+            "projects": {
+              "apps/remote": {
+                "name": "remote",
+                "root": "apps/remote",
+                "$schema": "../../node_modules/nx/schemas/project-schema.json",
+                "sourceRoot": "apps/remote",
+                "projectType": "application",
+                "tags": [
+                  "app"
+                ],
+                "targets": {
+                  "build": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "echo 'Build remote app (copy Module Federation config into your builder)'"
+                    }
+                  },
+                  "serve": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "echo 'Serve remote app (configure webpack-dev-server with MF)'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        [
+          "apps/worker/project.json",
+          {
+            "projects": {
+              "apps/worker": {
+                "name": "worker",
+                "root": "apps/worker",
+                "$schema": "../../node_modules/nx/schemas/project-schema.json",
+                "sourceRoot": "apps/worker/src",
+                "projectType": "application",
+                "tags": [
+                  "scope:worker",
+                  "type:service"
+                ],
+                "targets": {
+                  "build": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "echo \"No build pipeline for worker yet; skipping.\""
+                    }
+                  },
+                  "serve": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "npm run start:worker"
+                    }
+                  },
+                  "lint": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "eslint apps/worker/src --ext .js"
+                    }
+                  },
+                  "test": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "node --test apps/worker/tests/**/*.test.js"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        [
+          "ci/project.json",
+          {
+            "projects": {
+              "ci": {
+                "name": "ci-app",
+                "root": "ci",
+                "$schema": "../../node_modules/nx/schemas/project-schema.json",
+                "projectType": "application",
+                "targets": {},
+                "tags": [
+                  "ci"
+                ]
+              }
+            }
+          }
+        ],
+        [
+          "libs/ci/project.json",
+          {
+            "projects": {
+              "libs/ci": {
+                "name": "ci",
+                "root": "libs/ci",
+                "$schema": "../../node_modules/nx/schemas/project-schema.json",
+                "sourceRoot": "libs/ci",
+                "projectType": "library",
+                "tags": [
+                  "ci"
+                ],
+                "targets": {
+                  "lint": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "echo 'Linting CI workflows...' && find . -name '*.yml' -o -name '*.yaml' | xargs yamllint || true"
+                    }
+                  },
+                  "validate": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "echo 'Validating GitHub Actions...' && action-validator .github/workflows/"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        [
+          "libs/infrastructure/project.json",
+          {
+            "projects": {
+              "libs/infrastructure": {
+                "name": "infrastructure",
+                "root": "libs/infrastructure",
+                "$schema": "../../node_modules/nx/schemas/project-schema.json",
+                "sourceRoot": "libs/infrastructure",
+                "projectType": "library",
+                "tags": [
+                  "infra"
+                ],
+                "targets": {
+                  "plan": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "cd libs/infrastructure && terraform plan"
+                    }
+                  },
+                  "apply": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "cd libs/infrastructure && terraform apply"
+                    }
+                  },
+                  "validate": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "cd libs/infrastructure && terraform validate"
+                    }
+                  },
+                  "lint": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "cd libs/infrastructure && tflint"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        [
+          "libs/platform/project.json",
+          {
+            "projects": {
+              "libs/platform": {
+                "name": "platform",
+                "root": "libs/platform",
+                "$schema": "../../node_modules/nx/schemas/project-schema.json",
+                "sourceRoot": "libs/platform",
+                "projectType": "library",
+                "tags": [
+                  "platform"
+                ],
+                "targets": {
+                  "deploy": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "cd libs/platform && kubectl apply -f ."
+                    }
+                  },
+                  "validate": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "cd libs/platform && kubectl apply --dry-run=client -f ."
+                    }
+                  },
+                  "lint": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "cd libs/platform && yamllint argo-apps/*.yaml charts/**/*.yaml namespaces/*.yaml policies/*.yaml || true"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        [
+          "libs/shared/project.json",
+          {
+            "projects": {
+              "libs/shared": {
+                "name": "shared",
+                "root": "libs/shared",
+                "$schema": "../../node_modules/nx/schemas/project-schema.json",
+                "sourceRoot": "libs/shared",
+                "projectType": "library",
+                "tags": [
+                  "shared"
+                ],
+                "targets": {
+                  "build": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "echo 'Build shared library'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        [
+          "libs/ui/project.json",
+          {
+            "projects": {
+              "libs/ui": {
+                "name": "ui",
+                "root": "libs/ui",
+                "$schema": "../../node_modules/nx/schemas/project-schema.json",
+                "sourceRoot": "libs/ui",
+                "projectType": "library",
+                "tags": [
+                  "ui"
+                ],
+                "targets": {
+                  "build": {
+                    "executor": "nx:run-commands",
+                    "options": {
+                      "command": "echo 'Build UI library'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      ],
+      "name": "AggregateCreateNodesError"
+    }
+  ],
+  "computedAt": 1761779780719
 }

@@ -1,0 +1,878 @@
+[1m[2mDetermining test suites to run...[22m[22m[999D[K
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s, estimated 16 s
+[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnews-service.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s, estimated 16 s
+[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnews-service.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        1 s, estimated 16 s
+[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnews-service.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        1 s, estimated 16 s
+[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A  [1m● [22mTest suite failed to run
+
+    [1m[31mJest encountered an unexpected token[39m[22m
+
+    Jest failed to parse a file. This happens e.g. when your code or its dependencies use non-standard JavaScript syntax, or when Jest is not configured to support such syntax.
+
+    Out of the box Jest supports Babel, which will be used to transform your files into valid JS based on your Babel configuration.
+
+    By default "node_modules" folder is ignored by transformers.
+
+    Here's what you can do:
+     • If you are trying to use ECMAScript Modules, see [4mhttps://jestjs.io/docs/ecmascript-modules[24m for how to enable it.
+     • If you are trying to use TypeScript, see [4mhttps://jestjs.io/docs/getting-started#using-typescript[24m
+     • To have some of your "node_modules" files transformed, you can specify a custom [1m"transformIgnorePatterns"[22m in your config.
+     • If you need a custom transformation specify a [1m"transform"[22m option in your config.
+     • If you simply want to mock your non-JS modules (e.g. binary assets) you can stub them out with the [1m"moduleNameMapper"[22m config option.
+
+    You'll find more details and examples of these config options in the docs:
+    [36mhttps://jestjs.io/docs/configuration[39m
+    For information about custom transformations, see:
+    [36mhttps://jestjs.io/docs/code-transformation[39m
+
+    [1m[31mDetails:[39m[22m
+
+    /Users/morganlowman/politicial-sphere (V1)/apps/api/tests/security.test.js:63
+        const undici = await Promise.resolve().then(()=>/*#__PURE__*/ _interop_require_wildcard(require("undici")));
+                       ^^^^^
+
+    SyntaxError: await is only valid in async functions and the top level bodies of modules
+
+      [2mat Runtime.createScriptFromCode (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/jest-runtime/build/index.js[2m:1505:14)[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnews-service.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        1 s, estimated 16 s
+[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnews-service.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        1 s, estimated 16 s
+[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnews-service.test.js[22m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        1 s, estimated 16 s
+[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnews-service.test.js[22m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        2 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnews-service.test.js[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnews-service.test.js[22m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, 1 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        2 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, [1m[32m1 passed[39m[22m, 2 of 4 total
+[1mTests:       [22m[1m[31m2 failed[39m[22m, [1m[32m5 passed[39m[22m, 7 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        2 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, [1m[32m1 passed[39m[22m, 2 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m10 passed[39m[22m, 18 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        3 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m���[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, [1m[32m1 passed[39m[22m, 2 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m10 passed[39m[22m, 18 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        3 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A  [1m● [22mConsole
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:24.910Z","level":"INFO","service":"api","environment":"development","message":"HTTP request","method":"GET","url":"/api/news","statusCode":200,"duration":"5ms","ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [31m{"timestamp":"2025-10-29T22:06:24.987Z","level":"ERROR","service":"api","environment":"development","message":"Application error","errorName":"Error","errorMessage":"Store does not support write/save APIs","stack":"Error: Store does not support write/save APIs\n    at NewsService._writeItems (/Users/morganlowman/politicial-sphere (V1)/apps/api/src/newsService.js:219:11)\n    at NewsService._writeItems [as create] (/Users/morganlowman/politicial-sphere (V1)/apps/api/src/newsService.js:256:16)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at handleRequest (/Users/morganlowman/politicial-sphere (V1)/apps/api/src/server.js:219:24)\n    at Server.<anonymous> (/Users/morganlowman/politicial-sphere (V1)/apps/api/src/server.js:75:7)","url":"/api/news","method":"POST","ip":"127.0.0.1"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [31m{"timestamp":"2025-10-29T22:06:24.988Z","level":"ERROR","service":"api","environment":"development","message":"HTTP request failed","method":"POST","url":"/api/news","statusCode":500,"duration":"16ms","ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [31m{"timestamp":"2025-10-29T22:06:25.000Z","level":"ERROR","service":"api","environment":"development","message":"Application error","errorName":"Error","errorMessage":"Missing required fields","stack":"Error: Missing required fields\n    at NewsService._validateCreatePayload (/Users/morganlowman/politicial-sphere (V1)/apps/api/src/newsService.js:234:13)\n    at NewsService._validateCreatePayload [as create] (/Users/morganlowman/politicial-sphere (V1)/apps/api/src/newsService.js:239:10)\n    at create (/Users/morganlowman/politicial-sphere (V1)/apps/api/src/server.js:219:42)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at Server.<anonymous> (/Users/morganlowman/politicial-sphere (V1)/apps/api/src/server.js:75:7)","url":"/api/news","method":"POST","ip":"127.0.0.1"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [31m{"timestamp":"2025-10-29T22:06:25.002Z","level":"ERROR","service":"api","environment":"development","message":"HTTP request failed","method":"POST","url":"/api/news","statusCode":500,"duration":"5ms","ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [33m{"timestamp":"2025-10-29T22:06:25.008Z","level":"WARN","service":"api","environment":"development","message":"HTTP client error","method":"PUT","url":"/api/news/abc","statusCode":404,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [33m{"timestamp":"2025-10-29T22:06:25.024Z","level":"WARN","service":"api","environment":"development","message":"HTTP client error","method":"PUT","url":"/api/news/unknown","statusCode":404,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:25.031Z","level":"INFO","service":"api","environment":"development","message":"HTTP request","method":"GET","url":"/metrics/news","statusCode":200,"duration":"0ms","ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:25.036Z","level":"INFO","service":"api","environment":"development","message":"HTTP request","method":"GET","url":"/api/news","statusCode":200,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:25.041Z","level":"INFO","service":"api","environment":"development","message":"HTTP request","method":"OPTIONS","url":"/api/news","statusCode":204,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:25.049Z","level":"INFO","service":"api","environment":"development","message":"HTTP request","method":"GET","url":"/api/news","statusCode":200,"duration":"0ms","ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:25.052Z","level":"INFO","service":"api","environment":"development","message":"HTTP request","method":"GET","url":"/api/news","statusCode":200,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:25.054Z","level":"INFO","service":"api","environment":"development","message":"HTTP request","method":"GET","url":"/api/news","statusCode":200,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:25.055Z","level":"INFO","service":"api","environment":"development","message":"HTTP request","method":"GET","url":"/api/news","statusCode":200,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:25.055Z","level":"INFO","service":"api","environment":"development","message":"HTTP request","method":"GET","url":"/api/news","statusCode":200,"duration":"0ms","ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:25.060Z","level":"INFO","service":"api","environment":"development","message":"HTTP request","method":"GET","url":"/api/news","statusCode":200,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [33m{"timestamp":"2025-10-29T22:06:25.065Z","level":"WARN","service":"api","environment":"development","message":"HTTP client error","method":"POST","url":"/api/news","statusCode":400,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [33m{"timestamp":"2025-10-29T22:06:25.087Z","level":"WARN","service":"api","environment":"development","message":"SECURITY_EVENT","event":"payload_too_large","limit":1048576,"ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [33m{"timestamp":"2025-10-29T22:06:25.087Z","level":"WARN","service":"api","environment":"development","message":"HTTP client error","method":"POST","url":"/api/news","statusCode":413,"duration":"5ms","ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [33m{"timestamp":"2025-10-29T22:06:25.098Z","level":"WARN","service":"api","environment":"development","message":"SECURITY_EVENT","event":"unsupported_media_type","contentType":"text/plain","ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [33m{"timestamp":"2025-10-29T22:06:25.098Z","level":"WARN","service":"api","environment":"development","message":"HTTP client error","method":"POST","url":"/api/news","statusCode":415,"duration":"0ms","ip":"127.0.0.1","userAgent":"node"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, [1m[32m1 passed[39m[22m, 2 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m10 passed[39m[22m, 18 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        3 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[1m[31m  [1m● [22m[1mServer API Tests › GET /api/news returns seeded data[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected length: [32m1[39m
+    Received length: [31m0[39m
+    Received array:  [31m[][39m
+[2m[22m
+[2m    [0m [90m 38 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m[22m
+[2m     [90m 39 |[39m       [36mconst[39m payload [33m=[39m [36mawait[39m response[33m.[39mjson()[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 40 |[39m       expect(payload[33m.[39mdata)[33m.[39mtoHaveLength([35m1[39m)[33m;[39m[22m
+[2m     [90m    |[39m                            [31m[1m^[22m[2m[39m[22m
+[2m     [90m 41 |[39m       expect(payload[33m.[39mdata[[35m0[39m][33m.[39mid)[33m.[39mtoBe([32m'abc'[39m)[33m;[39m[22m
+[2m     [90m 42 |[39m     } [36mfinally[39m {[22m
+[2m     [90m 43 |[39m       [36mawait[39m close()[33m;[39m[0m[22m
+[2m[22m
+[2m      [2mat Object.toHaveLength (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../apps/api/tests/server.test.js[2m:40:28)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mServer API Tests › POST /api/news creates a record and persists it[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m201[39m
+    Received: [31m500[39m
+[2m[22m
+[2m    [0m [90m 63 |[39m       })[33m;[39m[22m
+[2m     [90m 64 |[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 65 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m201[39m)[33m;[39m[22m
+[2m     [90m    |[39m                               [31m[1m^[22m[2m[39m[22m
+[2m     [90m 66 |[39m       [36mconst[39m body [33m=[39m [36mawait[39m response[33m.[39mjson()[33m;[39m[22m
+[2m     [90m 67 |[39m       expect(body[33m.[39mdata[33m.[39mid)[33m.[39mtoBeDefined()[33m;[39m[22m
+[2m     [90m 68 |[39m[0m[22m
+[2m[22m
+[2m      [2mat Object.toBe (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../apps/api/tests/server.test.js[2m:65:31)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mServer API Tests › POST /api/news validates required fields[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m400[39m
+    Received: [31m500[39m
+[2m[22m
+[2m    [0m [90m 90 |[39m       })[33m;[39m[22m
+[2m     [90m 91 |[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 92 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m400[39m)[33m;[39m[22m
+[2m     [90m    |[39m                               [31m[1m^[22m[2m[39m[22m
+[2m     [90m 93 |[39m       [36mconst[39m body [33m=[39m [36mawait[39m response[33m.[39mjson()[33m;[39m[22m
+[2m     [90m 94 |[39m       expect(body[33m.[39merror)[33m.[39mtoMatch([35m/^Missing required fields/[39m)[33m;[39m[22m
+[2m     [90m 95 |[39m     } [36mfinally[39m {[0m[22m
+[2m[22m
+[2m      [2mat Object.toBe (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../apps/api/tests/server.test.js[2m:92:31)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mServer API Tests › PUT /api/news/{id} updates existing records[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m404[39m
+[2m[22m
+[2m    [0m [90m 123 |[39m       })[33m;[39m[22m
+[2m     [90m 124 |[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 125 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m[22m
+[2m     [90m     |[39m                               [31m[1m^[22m[2m[39m[22m
+[2m     [90m 126 |[39m       [36mconst[39m body [33m=[39m [36mawait[39m response[33m.[39mjson()[33m;[39m[22m
+[2m     [90m 127 |[39m       expect(body[33m.[39mdata[33m.[39mtitle)[33m.[39mtoBe([32m'Updated Title'[39m)[33m;[39m[22m
+[2m     [90m 128 |[39m       expect(body[33m.[39mdata[33m.[39mstatus)[33m.[39mtoBe([32m'published'[39m)[33m;[39m[0m[22m
+[2m[22m
+[2m      [2mat Object.toBe (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../apps/api/tests/server.test.js[2m:125:31)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mServer API Tests › GET /metrics/news provides aggregate summary[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m2[39m
+    Received: [31m0[39m
+[2m[22m
+[2m    [0m [90m 181 |[39m       expect(response[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m[22m
+[2m     [90m 182 |[39m       [36mconst[39m body [33m=[39m [36mawait[39m response[33m.[39mjson()[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 183 |[39m       expect(body[33m.[39mtotal)[33m.[39mtoBe([35m2[39m)[33m;[39m[22m
+[2m     [90m     |[39m                          [31m[1m^[22m[2m[39m[22m
+[2m     [90m 184 |[39m       expect(body[33m.[39mcategories[33m.[39mfinance)[33m.[39mtoBe([35m1[39m)[33m;[39m[22m
+[2m     [90m 185 |[39m       expect([33mArray[39m[33m.[39misArray(body[33m.[39mrecent))[33m.[39mtoBe([36mtrue[39m)[33m;[39m[22m
+[2m     [90m 186 |[39m     } [36mfinally[39m {[0m[22m
+[2m[22m
+[2m      [2mat Object.toBe (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../apps/api/tests/server.test.js[2m:183:26)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mServer API Tests › Server Middleware Tests › server handles malformed JSON gracefully[39m[22m
+
+    ReferenceError: safeJson is not defined
+[2m[22m
+[2m    [0m [90m 271 |[39m         [90m// Server should not crash; accept 400 or 422 depending on implementation[39m[22m
+[2m     [90m 272 |[39m         expect([[35m400[39m[33m,[39m [35m422[39m])[33m.[39mtoContain(response[33m.[39mstatus)[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 273 |[39m         [36mconst[39m data [33m=[39m [36mawait[39m safeJson(response)[33m;[39m[22m
+[2m     [90m     |[39m                      [31m[1m^[22m[2m[39m[22m
+[2m     [90m 274 |[39m         [36mif[39m (data [33m&&[39m data[33m.[39merror) {[22m
+[2m     [90m 275 |[39m           expect([33mString[39m(data[33m.[39merror))[33m.[39mtoMatch([35m/Invalid JSON|Unexpected token|Malformed/i[39m)[33m;[39m[22m
+[2m     [90m 276 |[39m         }[0m[22m
+[2m[22m
+[2m      [2mat Object.<anonymous> (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../apps/api/tests/server.test.js[2m:273:22)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mServer API Tests › Server Middleware Tests › server rejects oversized payloads[39m[22m
+
+    TypeError: fetch failed
+[2m[22m
+[2m    [0m [90m 286 |[39m         [90m// Make payload definitely larger than 1MB after JSON escaping/wrapping[39m[22m
+[2m     [90m 287 |[39m         [36mconst[39m largePayload [33m=[39m [32m'x'[39m[33m.[39mrepeat([35m2[39m [33m*[39m [35m1024[39m [33m*[39m [35m1024[39m)[33m;[39m [90m// 2MB[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 288 |[39m         [36mconst[39m response [33m=[39m [36mawait[39m fetch([32m`${baseUrl}/api/news`[39m[33m,[39m {[22m
+[2m     [90m     |[39m                          [31m[1m^[22m[2m[39m[22m
+[2m     [90m 289 |[39m           method[33m:[39m [32m'POST'[39m[33m,[39m[22m
+[2m     [90m 290 |[39m           headers[33m:[39m { [32m'Content-Type'[39m[33m:[39m [32m'application/json'[39m }[33m,[39m[22m
+[2m     [90m 291 |[39m           body[33m:[39m [33mJSON[39m[33m.[39mstringify({ content[33m:[39m largePayload })[33m,[39m[0m[22m
+[2m[22m
+[2m      [2mat Object.<anonymous> (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../apps/api/tests/server.test.js[2m:288:26)[22m[2m[22m
+
+    Cause:
+    write EPIPE
+[2m[22m
+[2m[22m
+
+[1m[31m  [1m● [22m[1mServer API Tests › Server Middleware Tests › server rejects unsupported content types[39m[22m
+
+    ReferenceError: safeJson is not defined
+[2m[22m
+[2m    [0m [90m 315 |[39m         [90m// Some servers respond 415, others 400 — accept either but assert an error message if JSON is returned.[39m[22m
+[2m     [90m 316 |[39m         expect([[35m415[39m[33m,[39m [35m400[39m])[33m.[39mtoContain(response[33m.[39mstatus)[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 317 |[39m         [36mconst[39m data [33m=[39m [36mawait[39m safeJson(response)[33m;[39m[22m
+[2m     [90m     |[39m                      [31m[1m^[22m[2m[39m[22m
+[2m     [90m 318 |[39m         [36mif[39m (data [33m&&[39m data[33m.[39merror) {[22m
+[2m     [90m 319 |[39m           expect([33mString[39m(data[33m.[39merror))[33m.[39mtoMatch([35m/Unsupported content type|Unsupported media type|Invalid content type/i[39m)[33m;[39m[22m
+[2m     [90m 320 |[39m         }[0m[22m
+[2m[22m
+[2m      [2mat Object.<anonymous> (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../apps/api/tests/server.test.js[2m:317:22)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, [1m[32m1 passed[39m[22m, 2 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m10 passed[39m[22m, 18 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        3 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m���[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m11 passed[39m[22m, 19 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        3 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m12 passed[39m[22m, 20 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        3 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m12 passed[39m[22m, 20 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        4 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m13 passed[39m[22m, 21 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        4 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m14 passed[39m[22m, 22 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        5 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m25 passed[39m[22m, 33 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        5 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m25 passed[39m[22m, 33 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        6 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m26 passed[39m[22m, 34 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        6 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m27 passed[39m[22m, 35 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        6 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m28 passed[39m[22m, 36 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        7 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m30 passed[39m[22m, 38 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        7 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m30 passed[39m[22m, 38 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        8 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m31 passed[39m[22m, 39 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        8 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m32 passed[39m[22m, 40 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        8 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m33 passed[39m[22m, 41 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        8 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m35 passed[39m[22m, 43 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        9 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m37 passed[39m[22m, 45 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        9 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m37 passed[39m[22m, 45 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        10 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m38 passed[39m[22m, 46 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        10 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m45 passed[39m[22m, 53 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        10 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m47 passed[39m[22m, 55 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        11 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m48 passed[39m[22m, 56 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        11 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m49 passed[39m[22m, 57 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        11 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m49 passed[39m[22m, 57 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        12 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m51 passed[39m[22m, 59 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        13 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m53 passed[39m[22m, 61 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        13 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m54 passed[39m[22m, 62 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        14 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m55 passed[39m[22m, 63 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        14 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m55 passed[39m[22m, 63 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        15 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m56 passed[39m[22m, 64 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        15 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m ([0m[1m[41m14.783 s[49m[22m[0m)
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m56 passed[39m[22m, 64 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        15 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A  [1m● [22mConsole
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:27.876Z","level":"INFO","service":"auth","environment":"development","message":"JWT authentication configured","accessTokenExpiry":"15m","refreshTokenExpiry":"7d"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:28.174Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"f7d4744d-c8e6-41da-84c6-1f838cefdc7a","email":"test-1761775587907@example.com","role":"viewer"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:28.440Z","level":"INFO","service":"auth","environment":"development","message":"User authenticated","userId":"f7d4744d-c8e6-41da-84c6-1f838cefdc7a","email":"test-1761775587907@example.com"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:28.712Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"9cb2748d-cd41-4475-9fee-b88fc8b6117d","email":"viewer-1761775588442@example.com","role":"viewer"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:28.984Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"0b4882fa-0f03-422f-a259-5e47dbf1bacf","email":"duplicate-1761775588713@example.com","role":"viewer"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:29.273Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"2a16bfb6-540e-43c0-b79e-582f6601af86","email":"auth-1761775589001@example.com","role":"editor"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:29.541Z","level":"INFO","service":"auth","environment":"development","message":"User authenticated","userId":"2a16bfb6-540e-43c0-b79e-582f6601af86","email":"auth-1761775589001@example.com"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [33m{"timestamp":"2025-10-29T22:06:29.543Z","level":"WARN","service":"auth","environment":"development","message":"Authentication failed - user not found or inactive","email":"nonexistent@example.com"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:29.923Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"b326e5f1-2c64-442c-9804-e92a90258e6d","email":"wrong-pass-1761775589543@example.com","role":"viewer"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [33m{"timestamp":"2025-10-29T22:06:30.231Z","level":"WARN","service":"auth","environment":"development","message":"Authentication failed - invalid password","email":"wrong-pass-1761775589543@example.com"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:30.510Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"5a09e91c-fd2f-47be-b907-07c8f9d7f196","email":"admin-1761775590232@example.com","role":"admin"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:30.801Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"3c67cbf3-ff43-4657-97c4-a20b082279b3","email":"editor-1761775590510@example.com","role":"editor"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:31.074Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"ed0dc328-ce95-4260-b412-b59a2d8a0220","email":"viewer-1761775590802@example.com","role":"viewer"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:31.354Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"9566d640-8c3c-4e96-aa4f-822f14e83e6b","email":"reset-1761775591075@example.com","role":"viewer"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:31.354Z","level":"INFO","service":"auth","environment":"development","message":"Password reset token generated","userId":"9566d640-8c3c-4e96-aa4f-822f14e83e6b","email":"reset-1761775591075@example.com"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:31.355Z","level":"INFO","service":"auth","environment":"development","message":"Password reset requested for unknown email","email":"nonexistent@example.com"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:31.636Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"e413ffc5-6421-49aa-a57e-7658e9276a42","email":"reset-valid-1761775591356@example.com","role":"viewer"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:31.636Z","level":"INFO","service":"auth","environment":"development","message":"Password reset token generated","userId":"e413ffc5-6421-49aa-a57e-7658e9276a42","email":"reset-valid-1761775591356@example.com"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:31.912Z","level":"INFO","service":"auth","environment":"development","message":"Password reset successful","userId":"e413ffc5-6421-49aa-a57e-7658e9276a42"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [33m{"timestamp":"2025-10-29T22:06:32.187Z","level":"WARN","service":"auth","environment":"development","message":"Authentication failed - invalid password","email":"reset-valid-1761775591356@example.com"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:32.468Z","level":"INFO","service":"auth","environment":"development","message":"User authenticated","userId":"e413ffc5-6421-49aa-a57e-7658e9276a42","email":"reset-valid-1761775591356@example.com"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:32.751Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"d972893b-6960-4b20-b9e7-d9c55989d13a","email":"reset-expired-1761775592469@example.com","role":"viewer"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:32.754Z","level":"INFO","service":"auth","environment":"development","message":"Session destroyed","sessionId":"7008ae36-331d-4376-be0e-5426c7b09dbb"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:33.038Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"e6ae15f7-8c2d-4a63-bae6-429927beb3b0","email":"lookup-1761775592756@example.com","role":"editor"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:33.316Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"7393d582-adf1-44fd-83cb-ffab681e1aa4","email":"sensitive-1761775593039@example.com","role":"viewer"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:33.598Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"16387a32-e553-40f6-a08c-77ba13c6d08e","email":"revoke-1761775593317@example.com","role":"viewer"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:33.879Z","level":"INFO","service":"auth","environment":"development","message":"User authenticated","userId":"16387a32-e553-40f6-a08c-77ba13c6d08e","email":"revoke-1761775593317@example.com"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:33.880Z","level":"INFO","service":"auth","environment":"development","message":"Refresh token revoked"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:34.160Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"a72275ce-c826-4691-a73f-09389f99cf0f","email":"revoke-all-1-1761775593881@example.com","role":"viewer"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:34.437Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"df978cdc-dede-4043-8eb4-7428be37a8a8","email":"revoke-all-2-1761775593881@example.com","role":"viewer"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:34.717Z","level":"INFO","service":"auth","environment":"development","message":"User authenticated","userId":"a72275ce-c826-4691-a73f-09389f99cf0f","email":"revoke-all-1-1761775593881@example.com"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:34.994Z","level":"INFO","service":"auth","environment":"development","message":"User authenticated","userId":"df978cdc-dede-4043-8eb4-7428be37a8a8","email":"revoke-all-2-1761775593881@example.com"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:34.995Z","level":"INFO","service":"auth","environment":"development","message":"All refresh tokens revoked for user","userId":"some-user-id"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [33m{"timestamp":"2025-10-29T22:06:34.996Z","level":"WARN","service":"auth","environment":"development","message":"Missing or invalid authorization header","ip":"127.0.0.1"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:35.281Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"71276694-f4b2-48c4-be1d-73df58107b24","email":"middleware-1761775594998@example.com","role":"viewer"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:35.557Z","level":"INFO","service":"auth","environment":"development","message":"User authenticated","userId":"71276694-f4b2-48c4-be1d-73df58107b24","email":"middleware-1761775594998@example.com"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [33m{"timestamp":"2025-10-29T22:06:35.558Z","level":"WARN","service":"auth","environment":"development","message":"Invalid access token","ip":"127.0.0.1"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:35.844Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"609cc92f-faeb-4a08-b3be-806d3ac3c9ba","email":"role-test-1761775595559@example.com","role":"viewer"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:36.126Z","level":"INFO","service":"auth","environment":"development","message":"User authenticated","userId":"609cc92f-faeb-4a08-b3be-806d3ac3c9ba","email":"role-test-1761775595559@example.com"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [33m{"timestamp":"2025-10-29T22:06:36.127Z","level":"WARN","service":"auth","environment":"development","message":"Insufficient permissions","userId":"609cc92f-faeb-4a08-b3be-806d3ac3c9ba","requiredRoles":["admin"],"userRole":"viewer"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:36.409Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"811a9492-4a4f-474b-9bce-3e97276b6934","email":"admin-access-1761775596128@example.com","role":"admin"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:36.688Z","level":"INFO","service":"auth","environment":"development","message":"User authenticated","userId":"811a9492-4a4f-474b-9bce-3e97276b6934","email":"admin-access-1761775596128@example.com"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:36.966Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"9a49488d-f1fd-4e7f-9e01-a43a5ba0d6d6","email":"security-1761775596689@example.com","role":"viewer"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:37.245Z","level":"INFO","service":"auth","environment":"development","message":"User authenticated","userId":"9a49488d-f1fd-4e7f-9e01-a43a5ba0d6d6","email":"security-1761775596689@example.com"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:37.529Z","level":"INFO","service":"auth","environment":"development","message":"User created","userId":"9c4168fd-f19e-4405-a026-6483063ccfac","email":"no-expose-1761775597246@example.com","role":"viewer"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+    [2mconsole.log[22m
+      [32m{"timestamp":"2025-10-29T22:06:37.812Z","level":"INFO","service":"auth","environment":"development","message":"User authenticated","userId":"9c4168fd-f19e-4405-a026-6483063ccfac","email":"no-expose-1761775597246@example.com"}[0m
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:93:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m56 passed[39m[22m, 64 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        15 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m2 passed[39m[22m, 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m59 passed[39m[22m, 67 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        15 s, estimated 16 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m2 passed[39m[22m, 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m59 passed[39m[22m, 67 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        16 s[K[1A[K[1A[K[1A[K[1A[K[1A[33mA worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks. Active timers can also cause this, ensure that .unref() was called on them.[39m
+
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m2 passed[39m[22m, 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m59 passed[39m[22m, 67 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        16 s[K[1A[K[1A[K[1A[K[1A[K[1A[999D[K
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[32m2 passed[39m[22m, 4 total
+[1mTests:       [22m[1m[31m8 failed[39m[22m, [1m[32m59 passed[39m[22m, 67 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        16.285 s
+[2mRan all test suites[22m[2m matching [22m/s|e|c|u|r|i|t|y|.|t|e|s|t|.|j|s/i[2m.[22m

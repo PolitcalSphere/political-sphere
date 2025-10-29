@@ -1,0 +1,381 @@
+[1m[2mDetermining test suites to run...[22m[22m[999D[K
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s, estimated 10 s
+[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s, estimated 10 s
+[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s, estimated 10 s
+[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s, estimated 10 s
+[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A  [1m● [22mTest suite failed to run
+
+    Your test suite must contain at least one test.
+
+      [2mat onResult (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/@jest/core/build/TestScheduler.js[2m:133:18)[22m
+      [2mat /Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/@jest/core/build/TestScheduler.js[2m:254:19[22m
+      [2mat /Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/emittery/index.js[2m:363:13[22m
+          at Array.map (<anonymous>)
+      [2mat Emittery.emit (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/emittery/index.js[2m:361:23)[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s, estimated 10 s
+[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[0m[7m[1m[31m FAIL [39m[22m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s, estimated 10 s
+[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A  [1m● [22mTest suite failed to run
+
+    Your test suite must contain at least one test.
+
+      [2mat onResult (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/@jest/core/build/TestScheduler.js[2m:133:18)[22m
+      [2mat /Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/@jest/core/build/TestScheduler.js[2m:254:19[22m
+      [2mat /Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/emittery/index.js[2m:363:13[22m
+          at Array.map (<anonymous>)
+      [2mat Emittery.emit (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/emittery/index.js[2m:361:23)[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s, estimated 10 s
+[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+  [1m● [22m [31m[1mCannot log after tests are done.[22m Did you forget to wait for something async in your test?[39m
+    Attempted to log "{"timestamp":"2025-10-29T20:32:08.029Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/api/news","statusCode":200,"duration":"6ms","ip":"127.0.0.1","userAgent":"node"}".
+
+    [0m [90m  95 |[39m         console[33m.[39mlog(formatted)[33m;[39m
+     [90m  96 |[39m       }
+    [31m[1m>[22m[39m[90m  97 |[39m     }
+     [90m     |[39m      [31m[1m^[22m[39m
+     [90m  98 |[39m
+     [90m  99 |[39m     [90m// File output[39m
+     [90m 100 |[39m     [36mif[39m ([36mthis[39m[33m.[39mstream) {[0m
+
+      [2mat console.log (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/jest-runner/node_modules/@jest/console/build/BufferedConsole.js[2m:156:10)[22m
+      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:97:6)[22m
+      [2mat Logger.info (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:113:8)[22m
+      [2mat Logger.logRequest (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:142:12)[22m
+      [2mat Server.<anonymous> (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../apps/api/src/server.js[2m:95:20)[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s, estimated 10 s
+[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[0m[7m[1m[32m PASS [39m[22m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s, estimated 10 s
+[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A  [1m● [22mConsole
+
+    [2mconsole.log[22m
+      {"timestamp":"2025-10-29T20:32:08.060Z","level":"INFO","service":"auth","environment":"test","message":"JWT authentication configured","accessTokenExpiry":"15m","refreshTokenExpiry":"7d"}
+[2m[22m
+[2m      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m[2m../../../../../libs/shared/src/logger.ts[2m:95:17)[22m[2m[22m
+
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mauth.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1msecurity.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mserver.test.js[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [0m[7m[37m api [39m[27m[0m [2mapps/api/tests/[22m[1mnewsService.test.js[22m
+
+[1mTest Suites: [22m0 of 4 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s, estimated 10 s
+[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[33m1 skipped[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[33m51 skipped[39m[22m, [1m[32m1 passed[39m[22m, 52 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        1 s, estimated 10 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1ATAP version 13
+TAP version 13
+# Subtest: creates a record and returns it from list()
+ok 1 - creates a record and returns it from list()
+  ---
+  duration_ms: 19.113532
+  type: 'test'
+  ...
+# Subtest: filters records by category, tag, limit and search
+ok 2 - filters records by category, tag, limit and search
+  ---
+  duration_ms: 5.983258
+  type: 'test'
+  ...
+# Subtest: update returns null when record missing
+ok 3 - update returns null when record missing
+  ---
+  duration_ms: 2.52177
+  type: 'test'
+  ...
+# Subtest: analytics summary aggregates categories and recency
+ok 4 - analytics summary aggregates categories and recency
+  ---
+  duration_ms: 4.467381
+  type: 'test'
+  ...
+# Subtest: create throws validation errors when required fields missing
+ok 5 - create throws validation errors when required fields missing
+  ---
+  duration_ms: 2.322119
+  type: 'test'
+  ...
+# Subtest: GET /api/news returns seeded data
+ok 1 - GET /api/news returns seeded data
+  ---
+  duration_ms: 98.451644
+  type: 'test'
+  ...
+
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[33m1 skipped[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[33m51 skipped[39m[22m, [1m[32m1 passed[39m[22m, 52 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        1 s, estimated 10 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+  [1m● [22m [31m[1mCannot log after tests are done.[22m Did you forget to wait for something async in your test?[39m
+    Attempted to log "{"timestamp":"2025-10-29T20:32:08.109Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"POST","url":"/api/news","statusCode":201,"duration":"5ms","ip":"127.0.0.1","userAgent":"node"}".
+
+    [0m [90m  95 |[39m         console[33m.[39mlog(formatted)[33m;[39m
+     [90m  96 |[39m       }
+    [31m[1m>[22m[39m[90m  97 |[39m     }
+     [90m     |[39m      [31m[1m^[22m[39m
+     [90m  98 |[39m
+     [90m  99 |[39m     [90m// File output[39m
+     [90m 100 |[39m     [36mif[39m ([36mthis[39m[33m.[39mstream) {[0m
+
+      [2mat console.log (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/jest-runner/node_modules/@jest/console/build/BufferedConsole.js[2m:156:10)[22m
+      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:97:6)[22m
+      [2mat Logger.info (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:113:8)[22m
+      [2mat Logger.logRequest (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:142:12)[22m
+      [2mat Server.<anonymous> (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../apps/api/src/server.js[2m:95:20)[22m
+
+
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[33m1 skipped[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[33m51 skipped[39m[22m, [1m[32m1 passed[39m[22m, 52 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        1 s, estimated 10 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+  [1m● [22m [31m[1mCannot log after tests are done.[22m Did you forget to wait for something async in your test?[39m
+    Attempted to log "{"timestamp":"2025-10-29T20:32:08.129Z","level":"WARN","service":"api","environment":"test","message":"HTTP client error","method":"POST","url":"/api/news","statusCode":400,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}".
+
+    [0m [90m  95 |[39m         console[33m.[39mlog(formatted)[33m;[39m
+     [90m  96 |[39m       }
+    [31m[1m>[22m[39m[90m  97 |[39m     }
+     [90m     |[39m      [31m[1m^[22m[39m
+     [90m  98 |[39m
+     [90m  99 |[39m     [90m// File output[39m
+     [90m 100 |[39m     [36mif[39m ([36mthis[39m[33m.[39mstream) {[0m
+
+      [2mat console.log (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/jest-runner/node_modules/@jest/console/build/BufferedConsole.js[2m:156:10)[22m
+      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:97:6)[22m
+      [2mat Logger.warn (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:117:9)[22m
+      [2mat Logger.logRequest (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:141:6)[22m
+      [2mat Server.<anonymous> (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../apps/api/src/server.js[2m:95:20)[22m
+
+
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[33m1 skipped[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[33m51 skipped[39m[22m, [1m[32m1 passed[39m[22m, 52 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        1 s, estimated 10 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+  [1m● [22m [31m[1mCannot log after tests are done.[22m Did you forget to wait for something async in your test?[39m
+    Attempted to log "{"timestamp":"2025-10-29T20:32:08.143Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"PUT","url":"/api/news/abc","statusCode":200,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}".
+
+    [0m [90m  95 |[39m         console[33m.[39mlog(formatted)[33m;[39m
+     [90m  96 |[39m       }
+    [31m[1m>[22m[39m[90m  97 |[39m     }
+     [90m     |[39m      [31m[1m^[22m[39m
+     [90m  98 |[39m
+     [90m  99 |[39m     [90m// File output[39m
+     [90m 100 |[39m     [36mif[39m ([36mthis[39m[33m.[39mstream) {[0m
+
+      [2mat console.log (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/jest-runner/node_modules/@jest/console/build/BufferedConsole.js[2m:156:10)[22m
+      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:97:6)[22m
+      [2mat Logger.info (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:113:8)[22m
+      [2mat Logger.logRequest (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:142:12)[22m
+      [2mat Server.<anonymous> (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../apps/api/src/server.js[2m:95:20)[22m
+
+
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[33m1 skipped[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[33m51 skipped[39m[22m, [1m[32m1 passed[39m[22m, 52 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        1 s, estimated 10 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+  [1m● [22m [31m[1mCannot log after tests are done.[22m Did you forget to wait for something async in your test?[39m
+    Attempted to log "{"timestamp":"2025-10-29T20:32:08.154Z","level":"WARN","service":"api","environment":"test","message":"HTTP client error","method":"PUT","url":"/api/news/unknown","statusCode":404,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}".
+
+    [0m [90m  95 |[39m         console[33m.[39mlog(formatted)[33m;[39m
+     [90m  96 |[39m       }
+    [31m[1m>[22m[39m[90m  97 |[39m     }
+     [90m     |[39m      [31m[1m^[22m[39m
+     [90m  98 |[39m
+     [90m  99 |[39m     [90m// File output[39m
+     [90m 100 |[39m     [36mif[39m ([36mthis[39m[33m.[39mstream) {[0m
+
+      [2mat console.log (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/jest-runner/node_modules/@jest/console/build/BufferedConsole.js[2m:156:10)[22m
+      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:97:6)[22m
+      [2mat Logger.warn (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:117:9)[22m
+      [2mat Logger.logRequest (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:141:6)[22m
+      [2mat Server.<anonymous> (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../apps/api/src/server.js[2m:95:20)[22m
+
+
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[33m1 skipped[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[33m51 skipped[39m[22m, [1m[32m1 passed[39m[22m, 52 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        1 s, estimated 10 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+  [1m● [22m [31m[1mCannot log after tests are done.[22m Did you forget to wait for something async in your test?[39m
+    Attempted to log "{"timestamp":"2025-10-29T20:32:08.168Z","level":"INFO","service":"api","environment":"test","message":"HTTP request","method":"GET","url":"/metrics/news","statusCode":200,"duration":"1ms","ip":"127.0.0.1","userAgent":"node"}".
+
+    [0m [90m  95 |[39m         console[33m.[39mlog(formatted)[33m;[39m
+     [90m  96 |[39m       }
+    [31m[1m>[22m[39m[90m  97 |[39m     }
+     [90m     |[39m      [31m[1m^[22m[39m
+     [90m  98 |[39m
+     [90m  99 |[39m     [90m// File output[39m
+     [90m 100 |[39m     [36mif[39m ([36mthis[39m[33m.[39mstream) {[0m
+
+      [2mat console.log (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../node_modules/jest-runner/node_modules/@jest/console/build/BufferedConsole.js[2m:156:10)[22m
+      [2mat Logger.write (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:97:6)[22m
+      [2mat Logger.info (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:113:8)[22m
+      [2mat Logger.logRequest (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../libs/shared/src/logger.ts[2m:142:12)[22m
+      [2mat Server.<anonymous> (/Users/morganlowman/politicial-sphere (V1)[22m../../../../../apps/api/src/server.js[2m:95:20)[22m
+
+
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[33m1 skipped[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[33m51 skipped[39m[22m, [1m[32m1 passed[39m[22m, 52 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        1 s, estimated 10 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 107.719723
+# Subtest: POST /api/news creates a record and persists it
+ok 2 - POST /api/news creates a record and persists it
+  ---
+  duration_ms: 29.015862
+  type: 'test'
+  ...
+# Subtest: POST /api/news validates required fields
+ok 3 - POST /api/news validates required fields
+  ---
+  duration_ms: 19.105749
+  type: 'test'
+  ...
+# Subtest: PUT /api/news/{id} updates existing records
+ok 4 - PUT /api/news/{id} updates existing records
+  ---
+  duration_ms: 10.823775
+  type: 'test'
+  ...
+# Subtest: PUT /api/news/{id} returns 404 for unknown record
+ok 5 - PUT /api/news/{id} returns 404 for unknown record
+  ---
+  duration_ms: 10.695013
+  type: 'test'
+  ...
+# Subtest: GET /metrics/news provides aggregate summary
+ok 6 - GET /metrics/news provides aggregate summary
+  ---
+  duration_ms: 13.373646
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 210.281753
+
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[33m1 skipped[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[33m51 skipped[39m[22m, [1m[32m1 passed[39m[22m, 52 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        1 s, estimated 10 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[33mA worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks. Active timers can also cause this, ensure that .unref() was called on them.[39m
+
+
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[33m1 skipped[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[33m51 skipped[39m[22m, [1m[32m1 passed[39m[22m, 52 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        1 s, estimated 10 s
+[32m█[39m[32m█[39m[32m█[39m[32m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[37m█[39m[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[999D[K
+[1mTest Suites: [22m[1m[31m2 failed[39m[22m, [1m[33m1 skipped[39m[22m, [1m[32m1 passed[39m[22m, 3 of 4 total
+[1mTests:       [22m[1m[33m51 skipped[39m[22m, [1m[32m1 passed[39m[22m, 52 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        1.543 s, estimated 10 s
+[2mRan all test suites[22m[2m with tests matching [22m"should generate different tokens for same user"[2m.[22m
