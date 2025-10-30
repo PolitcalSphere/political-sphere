@@ -1,0 +1,15 @@
+{
+  "name": "@political-sphere/shared",
+  "version": "0.0.1",
+  "type": "commonjs",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/src/index.js",
+      "require": "./dist/src/index.js",
+      "default": "./dist/src/index.js",
+      "types": "./dist/src/index.d.ts"
+    }
+  }
+}

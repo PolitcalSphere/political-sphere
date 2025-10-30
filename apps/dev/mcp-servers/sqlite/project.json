@@ -1,0 +1,25 @@
+{
+  "name": "political-sphere-mcp-sqlite",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/dev/mcp-servers/sqlite/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "apps/dev/mcp-servers/sqlite/dist",
+        "main": "apps/dev/mcp-servers/sqlite/src/index.ts",
+        "tsConfig": "apps/dev/mcp-servers/sqlite/tsconfig.json",
+        "assets": []
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "political-sphere-mcp-sqlite:build"
+      }
+    }
+  },
+  "tags": ["scope:dev", "type:mcp-server"]
+}

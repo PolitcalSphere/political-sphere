@@ -1,0 +1,25 @@
+{
+  "name": "political-sphere-mcp-political-sphere",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/dev/mcp-servers/political-sphere/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "apps/dev/mcp-servers/political-sphere/dist",
+        "main": "apps/dev/mcp-servers/political-sphere/src/index.ts",
+        "tsConfig": "apps/dev/mcp-servers/political-sphere/tsconfig.json",
+        "assets": []
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "political-sphere-mcp-political-sphere:build"
+      }
+    }
+  },
+  "tags": ["scope:dev", "type:mcp-server"]
+}

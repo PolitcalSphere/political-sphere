@@ -1,0 +1,25 @@
+{
+  "name": "political-sphere-mcp-github",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/dev/mcp-servers/github/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "apps/dev/mcp-servers/github/dist",
+        "main": "apps/dev/mcp-servers/github/src/index.ts",
+        "tsConfig": "apps/dev/mcp-servers/github/tsconfig.json",
+        "assets": []
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "political-sphere-mcp-github:build"
+      }
+    }
+  },
+  "tags": ["scope:dev", "type:mcp-server"]
+}

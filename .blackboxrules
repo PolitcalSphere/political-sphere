@@ -1,0 +1,277 @@
+# Blackbox AI Rules for Political Sphere
+
+## Project Overview
+Political Sphere is a comprehensive political simulation and engagement platform built with a microservices architecture, using Node.js, React, Kubernetes, and Terraform.
+
+## Code Review Priorities
+
+### 1. Security (Critical)
+- Never expose secrets, API keys, or credentials
+- Validate and sanitize all user inputs
+- Use parameterized queries to prevent SQL injection
+- Implement proper authentication and authorization
+- Follow OWASP Top 10 security practices
+- Check for XSS, CSRF, and injection vulnerabilities
+- Verify secure session management
+
+### 2. Performance (High)
+- Identify inefficient database queries
+- Flag N+1 query problems
+- Check for memory leaks
+- Verify proper caching strategies
+- Review async/await usage patterns
+- Check for blocking operations in critical paths
+
+### 3. Code Quality (High)
+- Follow existing code style and patterns
+- Ensure proper error handling
+- Check for code duplication
+- Verify proper TypeScript types where applicable
+- Ensure functions have single responsibility
+- Check for proper logging
+
+### 4. Testing (High)
+- Verify test coverage for new code
+- Check for meaningful test assertions
+- Ensure integration tests cover critical paths
+- Verify edge cases are tested
+- Check for test isolation
+
+### 5. Documentation (Medium)
+- Check for JSDoc comments on public APIs
+- Verify README updates for new features
+- Ensure inline comments explain complex logic
+- Check for outdated documentation
+
+## Technology Stack Rules
+
+### Node.js/JavaScript/TypeScript
+- Use modern ES6+ features
+- Prefer async/await over callbacks
+- Use TypeScript types where available
+- Follow Node.js best practices
+- Proper error handling with try/catch
+
+### React
+- Use functional components with hooks
+- Implement proper state management
+- Follow component composition patterns
+- Ensure accessibility (a11y) compliance
+- Optimize for performance (memoization, lazy loading)
+
+### Database (PostgreSQL)
+- Use prepared statements
+- Optimize queries with proper indexes
+- Avoid N+1 queries
+- Use transactions appropriately
+- Follow data migration best practices
+
+### Kubernetes/Terraform
+- Follow Infrastructure as Code principles
+- Use proper resource limits
+- Implement health checks
+- Follow security best practices
+- Document infrastructure changes
+
+## Patterns to Enforce
+
+### Error Handling
+```javascript
+try {
+  // Operation
+} catch (error) {
+  logger.error('Operation failed', { error, context });
+  throw new CustomError('User-friendly message', { cause: error });
+}
+```
+
+### Logging
+```javascript
+logger.info('Operation started', { userId, operation });
+// ... operation
+logger.info('Operation completed', { userId, operation, duration });
+```
+
+### API Routes
+- Use proper HTTP methods (GET, POST, PUT, DELETE)
+- Implement rate limiting
+- Return appropriate status codes
+- Include proper error messages
+- Document endpoints
+
+### Async Operations
+```javascript
+// Good
+const result = await someAsyncOperation();
+
+// Avoid
+someAsyncOperation().then(result => { /* ... */ });
+```
+
+## Anti-Patterns to Flag
+
+### Security Anti-Patterns
+- Hardcoded credentials
+- SQL string concatenation
+- Unvalidated user input
+- Missing authentication checks
+- Insecure session management
+
+### Performance Anti-Patterns
+- Synchronous operations in async contexts
+- Large data loading without pagination
+- Missing database indexes
+- Inefficient loops
+- Memory leaks (unclosed connections, event listeners)
+
+### Code Quality Anti-Patterns
+- God objects/functions
+- Deep nesting (> 3 levels)
+- Long functions (> 50 lines)
+- Magic numbers
+- Global state mutation
+
+## Compliance Requirements
+
+### EU AI Act
+- Document AI usage and decisions
+- Include risk assessments
+- Maintain transparency
+- Implement human oversight
+
+### GDPR
+- Verify data minimization
+- Check user consent management
+- Ensure right to deletion
+- Verify data encryption
+
+### General Compliance
+- Log significant operations
+- Maintain audit trails
+- Follow retention policies
+- Document decision processes
+
+### Political Sphere Specific
+- No real-world political persuasion or mobilisation
+- Clear separation between simulation and real-world politics
+- Player safety and fairness in gameplay
+- Transparency in moderation and AI decisions
+- Minimal personal data collection (username, email, optional avatar)
+- Account deletion and data export capabilities
+- Strong stance against hate speech, harassment, doxxing, extremist content
+- Accessibility baseline (WCAG-aligned practices)
+- No advertising, microtransactions, or data brokerage
+- Use only free, self-hostable, or local tooling
+- Local AI models only, with guardrails and human oversight
+- Server-authoritative game actions, no client-side cheating
+- Idempotency for write actions to prevent abuse
+- Rate limiting and cooldowns on political actions
+- Append-only audit logs for sensitive actions
+- HTTPS enforced, secrets not in logs
+- Automated security checks in CI (lint, type safety, vulnerability scans)
+- No remote code execution in AI modules
+- Fictional content only, no copyrighted materials
+
+## Monorepo Structure
+
+### Apps
+- `apps/api/` - Backend API service
+- `apps/frontend/` - Main frontend application
+- `apps/worker/` - Background job processor
+- `apps/host/` - Module federation host
+- `apps/remote/` - Module federation remote
+- `apps/infrastructure/` - Infrastructure as Code
+- `apps/dev/` - Development tooling
+
+### Libs
+- `libs/shared/` - Shared utilities and types
+- `libs/ui/` - Shared UI components
+- `libs/infrastructure/` - Infrastructure modules
+- `libs/platform/` - Platform configurations
+
+## Review Checklist
+
+When reviewing code, check:
+- [ ] Security vulnerabilities addressed
+- [ ] Error handling implemented
+- [ ] Tests included and passing
+- [ ] Documentation updated
+- [ ] Performance optimized
+- [ ] Follows project patterns
+- [ ] No hardcoded secrets
+- [ ] Proper logging included
+- [ ] Accessibility considered (for UI)
+- [ ] Backward compatibility maintained
+
+## Special Considerations
+
+### Module Federation
+- Verify remote entry points are correct
+- Check for version compatibility
+- Ensure proper error boundaries
+- Test cross-module communication
+
+### Microservices
+- Verify service boundaries
+- Check inter-service communication
+- Ensure proper circuit breakers
+- Verify service mesh configuration
+
+### CI/CD
+- Check workflow configurations
+- Verify deployment strategies
+- Ensure rollback procedures
+- Test automation scripts
+
+## Language-Specific Rules
+
+### JavaScript/TypeScript
+- Use strict mode
+- Prefer const over let
+- Avoid var
+- Use template literals
+- Implement proper type checking
+
+### SQL
+- Always use parameterized queries
+- Optimize with proper indexes
+- Use transactions for data integrity
+- Avoid SELECT *
+- Use proper JOIN types
+
+### Dockerfile
+- Use multi-stage builds
+- Minimize layer count
+- Don't run as root
+- Use specific base image tags
+- Clean up in the same layer
+
+### Terraform
+- Use modules for reusability
+- Follow naming conventions
+- Document variables
+- Use remote state
+- Implement proper locking
+
+## Feedback Guidelines
+
+When providing feedback:
+1. **Be specific**: Point to exact lines or patterns
+2. **Explain why**: Don't just say what's wrong, explain the impact
+3. **Suggest solutions**: Provide concrete alternatives
+4. **Prioritize**: Mark issues as Critical, High, Medium, or Low
+5. **Be constructive**: Focus on improvement, not criticism
+
+## Automated Checks
+
+These should be handled by CI, but flag if missing:
+- Linting (ESLint, Biome)
+- Format (Prettier)
+- Type checking (TypeScript)
+- Security scanning (npm audit, Snyk)
+- Test execution (Jest)
+- Coverage thresholds
+
+---
+
+*These rules guide automated code review but don't replace human judgment. Always consider context and trade-offs.*

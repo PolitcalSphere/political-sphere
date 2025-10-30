@@ -1,0 +1,104 @@
+name: Monitoring & Observability
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    types: [opened, synchronize, reopened]
+  schedule:
+    # Run monitoring checks every 4 hours
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
+
+jobs:
+  health-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check API health
+        run: |
+          API_URL="${{ secrets.API_HEALTH_URL || 'https://api-staging.political-sphere.com/healthz' }}"
+          if curl -f -s --max-time 30 "$API_URL" > /dev/null; then
+            echo "✅ API health check passed"
+          else
+            echo "❌ API health check failed"
+            exit 1
+          fi
+
+      - name: Check Frontend health
+        run: |
+          FRONTEND_URL="${{ secrets.FRONTEND_HEALTH_URL || 'https://www-staging.political-sphere.com' }}"
+          if curl -f -s --max-time 30 -I "$FRONTEND_URL" > /dev/null; then
+            echo "✅ Frontend health check passed"
+          else
+            echo "❌ Frontend health check failed"
+            exit 1
+          fi
+
+      - name: Check database connectivity
+        run: |
+          # This would need database connection details
+          echo "Database connectivity check would go here"
+
+      - name: Check external dependencies
+        run: |
+          # Check external APIs, services, etc.
+          echo "External dependency checks would go here"
+
+  performance-monitoring:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Lighthouse CI
+        run: |
+          npm run lighthouse
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      - name: Upload Lighthouse results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-results
+          path: .lighthouseci/
+          retention-days: 30
+
+  security-monitoring:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run security scan
+        run: |
+          # Run security checks on dependencies
+          npm audit --audit-level moderate
+
+      - name: Check for secrets
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  alerting:
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+      - name: Send alert notification
+        run: |
+          # Send alert to monitoring system (PagerDuty, Slack, etc.)
+          if [[ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]]; then
+            curl -X POST -H 'Content-type: application/json' \
+              --data "{\"text\":\"🚨 Monitoring Alert: Service health check failed\\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}" \
+              ${{ secrets.SLACK_WEBHOOK_URL }}
+          fi

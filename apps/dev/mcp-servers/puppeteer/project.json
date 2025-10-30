@@ -1,0 +1,25 @@
+{
+  "name": "political-sphere-mcp-puppeteer",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/dev/mcp-servers/puppeteer/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "apps/dev/mcp-servers/puppeteer/dist",
+        "main": "apps/dev/mcp-servers/puppeteer/src/index.ts",
+        "tsConfig": "apps/dev/mcp-servers/puppeteer/tsconfig.json",
+        "assets": []
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "political-sphere-mcp-puppeteer:build"
+      }
+    }
+  },
+  "tags": ["scope:dev", "type:mcp-server"]
+}
