@@ -186,6 +186,7 @@ services:
     volumes:
       - ../../../apps/api:/app/apps/api
       - ../../../libs:/app/libs
+      - ../../../libs/shared/dist:/app/node_modules/@political-sphere/shared:ro
       - api-node-modules:/app/node_modules
     command: ['npm', 'run', 'start:api']
     depends_on:
@@ -216,6 +217,7 @@ services:
     volumes:
       - ../../../apps/frontend:/app/apps/frontend
       - ../../../libs:/app/libs
+      - ../../../libs/shared/dist:/app/node_modules/@political-sphere/shared:ro
       - frontend-node-modules:/app/node_modules
     command: ['npm', 'run', 'start:frontend']
     depends_on:
@@ -247,6 +249,7 @@ services:
     volumes:
       - ../../../apps/worker:/app/apps/worker
       - ../../../libs:/app/libs
+      - ../../../libs/shared/dist:/app/node_modules/@political-sphere/shared:ro
       - worker-node-modules:/app/node_modules
     command: ['npm', 'run', 'start:worker']
     depends_on:
