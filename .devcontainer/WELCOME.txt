@@ -1,0 +1,169 @@
+
+╔══════════════════════════════════════════════════════════════════════╗
+║                                                                      ║
+║          🎉 Welcome to Political Sphere Development! 🎉             ║
+║                                                                      ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+🚀 Your development environment is ready!
+
+📋 QUICK START
+──────────────────────────────────────────────────────────────────────
+
+  1. Start all services:
+     $ npm run dev:all
+
+  2. Start individual services:
+     $ npm run dev:api       # API server on port 4000
+     $ npm run dev:frontend  # Frontend on port 3000
+     $ npm run dev:worker    # Background worker
+
+  3. Run tests:
+     $ npm test              # Run all tests
+     $ npm run test:e2e      # Run E2E tests with Playwright
+
+  4. Code quality:
+     $ npm run lint          # Lint code
+     $ npm run format        # Format with Prettier
+     $ npm run typecheck     # TypeScript type checking
+
+
+🔗 SERVICE URLS
+──────────────────────────────────────────────────────────────────────
+
+  Frontend (Host):     http://localhost:3000
+  Remote Module Fed:   http://localhost:3001
+  API Server:          http://localhost:4000
+  
+  📊 Grafana:          http://localhost:3001/grafana
+     Username: admin
+     Password: Check .env file (GRAFANA_ADMIN_PASSWORD)
+  
+  📈 Prometheus:       http://localhost:9090
+  
+  💾 pgAdmin:          http://localhost:5050
+     Email: admin@example.com
+     Password: admin
+  
+  🔐 Keycloak:         http://localhost:8080
+     Username: admin
+     Password: Check .env file (AUTH_ADMIN_PASSWORD)
+  
+  📧 MailHog:          http://localhost:8025
+  
+
+🗄️  DATABASE ACCESS
+──────────────────────────────────────────────────────────────────────
+
+  Host:     postgres (or localhost:5432 from host)
+  Database: political_dev
+  Username: political
+  Password: Check .env file (POSTGRES_PASSWORD)
+  
+  Quick connection:
+  $ psql postgres://political:PASSWORD@localhost:5432/political_dev
+
+
+📚 DOCUMENTATION
+──────────────────────────────────────────────────────────────────────
+
+  • README.md                      - Project overview
+  • docs/onboarding.md              - Detailed onboarding guide
+  • docs/architecture.md            - System architecture
+  • DEVCONTAINER-AUDIT-REPORT.md    - DevContainer audit findings
+  • apps/docs/                      - Full documentation site
+
+
+🛠️  HELPFUL VS CODE COMMANDS
+──────────────────────────────────────────────────────────────────────
+
+  Cmd/Ctrl + Shift + P  → Command Palette
+  Cmd/Ctrl + `          → Toggle Terminal
+  Cmd/Ctrl + B          → Toggle Sidebar
+  Cmd/Ctrl + Shift + E  → Explorer
+  Cmd/Ctrl + Shift + D  → Debug Panel
+  
+
+🐛 DEBUGGING
+──────────────────────────────────────────────────────────────────────
+
+  JavaScript/TypeScript debugging is configured. Use the Debug panel
+  (Cmd/Ctrl + Shift + D) to start debugging.
+
+  Available configurations:
+  • Debug API
+  • Debug Frontend
+  • Attach to Docker Container
+
+
+⚙️  USEFUL COMMANDS
+──────────────────────────────────────────────────────────────────────
+
+  Check service status:
+  $ docker compose -f apps/dev/docker/docker-compose.dev.yaml ps
+
+  View service logs:
+  $ docker compose -f apps/dev/docker/docker-compose.dev.yaml logs -f [service]
+
+  Restart services:
+  $ docker compose -f apps/dev/docker/docker-compose.dev.yaml restart
+
+  Access database:
+  $ docker compose -f apps/dev/docker/docker-compose.dev.yaml exec postgres psql -U political political_dev
+
+  Access Redis CLI:
+  $ docker compose -f apps/dev/docker/docker-compose.dev.yaml exec redis redis-cli
+
+
+🔒 SECURITY REMINDERS
+──────────────────────────────────────────────────────────────────────
+
+  ⚠️  IMPORTANT: The .env file contains default passwords!
+  
+  Before committing or sharing:
+  • Never commit .env files to Git
+  • Change all default passwords
+  • Use strong, unique passwords for each service
+  • Keep secrets in AWS Secrets Manager for production
+
+
+🤝 CONTRIBUTION GUIDELINES
+──────────────────────────────────────────────────────────────────────
+
+  1. Create a feature branch from main:
+     $ git checkout -b feature/your-feature-name
+
+  2. Make your changes and test thoroughly
+  
+  3. Run quality checks:
+     $ npm run lint
+     $ npm run typecheck
+     $ npm test
+
+  4. Commit with conventional commits:
+     $ git commit -m "feat: add new feature"
+  
+  5. Push and create a Pull Request
+
+
+📞 NEED HELP?
+──────────────────────────────────────────────────────────────────────
+
+  • Check docs/onboarding.md for detailed setup instructions
+  • Review DEVCONTAINER-AUDIT-REPORT.md for environment details
+  • Ask in team Slack channel
+  • Open an issue on GitHub
+
+
+💡 PRO TIPS
+──────────────────────────────────────────────────────────────────────
+
+  • Use 'npm run help' to see all available commands
+  • Hot reload is enabled for API and Frontend
+  • Nx Console extension helps with monorepo tasks
+  • Git hooks will lint and test before commits
+  • Use SQLTools extension to query databases from VS Code
+
+
+Happy coding! 🚀
+

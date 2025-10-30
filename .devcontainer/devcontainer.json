@@ -1,11 +1,8 @@
 {
   "name": "Political Sphere Development Environment",
-  "dockerComposeFile": [
-    "../apps/dev/docker/docker-compose.dev.yml",
-    "../apps/dev/docker/docker-compose.override.yml"
-  ],
+  "dockerComposeFile": ["../apps/dev/docker/docker-compose.dev.yaml"],
   "service": "dev",
-  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "workspaceFolder": "/workspaces/political-sphere",
   "shutdownAction": "stopCompose",
 
   // Configure tool-specific properties.
@@ -13,33 +10,91 @@
     // Configure properties specific to VS Code.
     "vscode": {
       "extensions": [
+        // Core Development
         "ms-vscode.vscode-typescript-next",
         "esbenp.prettier-vscode",
-        "ms-vscode.vscode-eslint",
+        "dbaeumer.vscode-eslint",
         "bradlc.vscode-tailwindcss",
+
+        // File Formats
         "ms-vscode.vscode-json",
         "redhat.vscode-yaml",
-        "ms-vscode.vscode-docker",
+
+        // Container & Infrastructure
+        "ms-azuretools.vscode-docker",
         "ms-kubernetes-tools.vscode-kubernetes-tools",
+
+        // Testing
         "ms-vscode.vscode-jest",
-        "ms-vscode.test-adapter-converter",
-        "hbenl.vscode-test-explorer",
-        "ms-vscode.vscode-jest",
-        "ms-vscode.vscode-playwright",
+        "ms-playwright.playwright",
+
+        // Git & GitHub
         "GitHub.copilot",
-        "blackboxapp.blackboxagent"
+        "GitHub.copilot-chat",
+        "GitHub.vscode-pull-request-github",
+        "eamodio.gitlens",
+
+        // Monorepo & Build Tools
+        "nrwl.angular-console",
+
+        // Database
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+
+        // API Development
+        "humao.rest-client",
+
+        // Documentation
+        "bierner.markdown-mermaid",
+        "yzhang.markdown-all-in-one"
       ],
       "settings": {
+        // TypeScript
         "typescript.preferences.importModuleSpecifier": "relative",
+        "typescript.updateImportsOnFileMove.enabled": "always",
+
+        // Editor
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.codeActionsOnSave": {
           "source.fixAll.eslint": "explicit"
         },
-        "jest.autoRun": "off",
-        "jest.showCoverageOnLoad": true,
+        "editor.rulers": [80, 120],
+        "editor.tabSize": 2,
+
+        // Testing
+        "jest.runMode": "watch",
+        "jest.coverageFormatter": "DefaultFormatter",
         "playwright.reuseBrowser": true,
-        "terminal.integrated.shell.linux": "/bin/bash"
+        "testing.automaticallyOpenPeekView": "never",
+
+        // Terminal
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.cwd": "${workspaceFolder}",
+
+        // Security
+        "security.workspace.trust.enabled": true,
+        "security.workspace.trust.startupPrompt": "always",
+
+        // Database
+        "sqltools.connections": [
+          {
+            "name": "PostgreSQL Dev",
+            "driver": "PostgreSQL",
+            "server": "postgres",
+            "port": 5432,
+            "database": "${env:POSTGRES_DB}",
+            "username": "${env:POSTGRES_USER}",
+            "password": "${env:POSTGRES_PASSWORD}"
+          }
+        ],
+
+        // Files
+        "files.watcherExclude": {
+          "**/node_modules/**": true,
+          "**/.nx/**": true,
+          "**/dist/**": true
+        }
       }
     }
   },
@@ -47,63 +102,139 @@
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
-      "version": "lts",
+      "version": "22",
       "nodeGypDependencies": true,
-      "installYarnUsingApt": true
+      "installYarnUsingApt": true,
+      "nvmVersion": "0.40.0"
     },
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
       "moby": true,
-      "dockerDashComposeVersion": "v2"
+      "dockerDashComposeVersion": "v2",
+      "azureDnsAutoDetection": false
     },
-    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "2.58.0"
+    },
     "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-      "version": "latest",
-      "helm": "latest",
+      "version": "1.31",
+      "helm": "3.16",
       "minikube": "none"
     },
     "ghcr.io/devcontainers/features/terraform:1": {
-      "version": "latest"
+      "version": "1.9",
+      "tflint": "0.53",
+      "terragrunt": "0.67"
     },
-    "ghcr.io/devcontainers/features/aws-cli:1": {},
+    "ghcr.io/devcontainers/features/aws-cli:1": {
+      "version": "2"
+    },
     "ghcr.io/devcontainers/features/python:1": {
       "version": "3.11"
     }
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [3000, 3001, 5432, 6379, 8080],
+  "forwardPorts": [3000, 3001, 4000, 5432, 6379, 8025, 8080, 9090],
   "portsAttributes": {
     "3000": {
-      "label": "Dev Server",
-      "onAutoForward": "notify"
+      "label": "Frontend (Host MF)",
+      "onAutoForward": "notify",
+      "protocol": "https"
     },
     "3001": {
-      "label": "Docs Server",
-      "onAutoForward": "notify"
+      "label": "Remote MF / Grafana",
+      "onAutoForward": "notify",
+      "protocol": "https"
+    },
+    "4000": {
+      "label": "API Server",
+      "onAutoForward": "notify",
+      "protocol": "https"
     },
     "5432": {
       "label": "PostgreSQL",
-      "onAutoForward": "silent"
+      "onAutoForward": "silent",
+      "requireLocalPort": true,
+      "elevateIfNeeded": true
     },
     "6379": {
       "label": "Redis",
-      "onAutoForward": "silent"
+      "onAutoForward": "silent",
+      "requireLocalPort": true
+    },
+    "8025": {
+      "label": "MailHog UI",
+      "onAutoForward": "ignore"
     },
     "8080": {
-      "label": "Monitoring",
+      "label": "Keycloak Auth",
       "onAutoForward": "notify"
+    },
+    "9090": {
+      "label": "Prometheus",
+      "onAutoForward": "ignore"
     }
   },
 
-  // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "npm install && npm run prepare",
+  // Lifecycle hooks for container management
+  "initializeCommand": {
+    "validate": "bash .devcontainer/scripts/validate-host.sh"
+  },
+
+  "onCreateCommand": {
+    "env-setup": "bash .devcontainer/scripts/setup-env.sh",
+    "dependencies": "npm ci --prefer-offline --no-audit"
+  },
+
+  "updateContentCommand": {
+    "update-deps": "npm ci --prefer-offline"
+  },
+
+  "postCreateCommand": {
+    "wait": "bash .devcontainer/scripts/wait-for-services.sh",
+    "prepare": "npm run prepare || echo 'Git hooks setup skipped'",
+    "welcome": "echo '✅ Development environment ready! Run: bash .devcontainer/scripts/status-check.sh'"
+  },
+
+  "postAttachCommand": {
+    "status": "bash .devcontainer/scripts/status-check.sh"
+  },
+
+  // Security and resource configuration
+  "runArgs": [
+    "--security-opt=no-new-privileges",
+    "--cap-drop=ALL",
+    "--cap-add=NET_ADMIN",
+    "--cpus=4",
+    "--memory=8g",
+    "--pids-limit=500",
+    "--name=political-sphere-dev"
+  ],
+
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
 
   // Comment out to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
   "remoteUser": "node",
 
-  // Configure tool-specific properties.
+  // Environment variables for the container
+  "remoteEnv": {
+    "NODE_ENV": "development",
+    "DOCKER_BUILDKIT": "1",
+    "COMPOSE_DOCKER_CLI_BUILD": "1"
+  },
+
+  "containerEnv": {
+    "TZ": "UTC"
+  },
+
+  // Optimized volume mounts
   "mounts": [
-    "source=${localWorkspaceFolder}/.git,target=/workspaces/${localWorkspaceFolderBasename}/.git,type=bind,consistency=cached",
-    "source=${localWorkspaceFolder}/node_modules,target=/workspaces/${localWorkspaceFolderBasename}/node_modules,type=volume"
+    "type=volume,source=political-sphere-node_modules,target=/workspaces/political-sphere/node_modules",
+    "type=volume,source=political-sphere-nx-cache,target=/workspaces/political-sphere/.nx/cache",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/node/.ssh,type=bind,readonly,consistency=cached"
   ]
 }
