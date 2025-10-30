@@ -1,0 +1,44 @@
+[
+  {
+    "timestamp": "2025-10-30T14:48:13.975Z",
+    "durationMs": 21121,
+    "status": "failed",
+    "actor": "morganlowman",
+    "checks": [
+      {
+        "name": "ESLint",
+        "status": "passed"
+      },
+      {
+        "name": "TypeScript type check",
+        "status": "passed"
+      },
+      {
+        "name": "Documentation lint",
+        "status": "failed",
+        "reason": "npm run docs:lint failed with exit code 1"
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-10-30T15:15:19.249Z",
+    "durationMs": 18250,
+    "status": "failed",
+    "actor": "morganlowman",
+    "checks": [
+      {
+        "name": "ESLint",
+        "status": "passed"
+      },
+      {
+        "name": "TypeScript type check",
+        "status": "passed"
+      },
+      {
+        "name": "Documentation lint",
+        "status": "failed",
+        "reason": "npm run docs:lint failed with exit code 1"
+      }
+    ]
+  }
+]
