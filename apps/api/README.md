@@ -26,6 +26,20 @@ The service listens on `API_PORT` (default: `4000`) and binds to `0.0.0.0` so it
 
 Data is persisted to `apps/api/data/news.json`. The `JsonNewsStore` helper keeps the storage format simple while still supporting concurrent updates in tests.
 
+## Testing
+
+- Test suites are standardized on ES modules using `.mjs` files (Jest runner via Nx)
+- Legacy `.js` test files remain only as skipped CommonJS placeholders to avoid ESM parse errors in mixed tooling; see `apps/api/tests/*.test.js`
+- Run the suite:
+
+```bash
+npx nx test api --runInBand
+```
+
+Notes:
+- Avoid top‑level await in `.js` tests; use async `beforeAll` or convert to `.mjs`
+- Keep a single authoritative test per suite to prevent duplicate execution
+
 ## Next steps
 
 - Replace the JSON storage layer with a real database module or service client.

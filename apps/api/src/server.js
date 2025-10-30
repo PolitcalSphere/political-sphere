@@ -2,7 +2,7 @@ import http from 'node:http';
 import os from 'node:os';
 import process from 'node:process';
 import { URL } from 'node:url';
-import { notFound, methodNotAllowed, readJsonBody, sendError, sendJson } from './httpUtils.js';
+import { notFound, methodNotAllowed, readJsonBody, sendError, sendJson } from './http-utils.js';
 import {
   SECURITY_HEADERS,
   getCorsHeaders,

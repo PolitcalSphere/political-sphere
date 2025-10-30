@@ -21,6 +21,640 @@
   "nxJsonPlugins": [],
   "fileMap": {
     "projectFileMap": {
+      "ci-app": [
+        {
+          "file": "ci/README.md",
+          "hash": "9613858550954693846"
+        },
+        {
+          "file": "ci/project.json",
+          "hash": "7998047955333333517"
+        }
+      ],
+      "host": [
+        {
+          "file": "apps/host/README.md",
+          "hash": "7647808013037863641"
+        },
+        {
+          "file": "apps/host/project.json",
+          "hash": "1007567755219256079"
+        },
+        {
+          "file": "apps/host/public/index.html",
+          "hash": "8822495874131422781"
+        },
+        {
+          "file": "apps/host/src/index.js",
+          "hash": "6768869270960612571"
+        },
+        {
+          "file": "apps/host/webpack.config.cjs",
+          "hash": "16953561547662600198"
+        },
+        {
+          "file": "apps/host/webpack.config.js",
+          "hash": "2944078289341261036"
+        }
+      ],
+      "dev": [
+        {
+          "file": "apps/dev/README.md",
+          "hash": "9570443806440292404"
+        },
+        {
+          "file": "apps/dev/Tiltfile",
+          "hash": "9725074424613854822"
+        },
+        {
+          "file": "apps/dev/ai/blackbox-review.mjs",
+          "hash": "16280634654725341326"
+        },
+        {
+          "file": "apps/dev/ai/commit-msg.mjs",
+          "hash": "16887480062203029055"
+        },
+        {
+          "file": "apps/dev/ai/context-indexer.mjs",
+          "hash": "7836500494565292578"
+        },
+        {
+          "file": "apps/dev/ai/copilot-experiment-log.mjs",
+          "hash": "2940443637487018577"
+        },
+        {
+          "file": "apps/dev/ai/governance.js",
+          "hash": "17043640467527099638"
+        },
+        {
+          "file": "apps/dev/ai/knowledge-base.md",
+          "hash": "6675991634796752219"
+        },
+        {
+          "file": "apps/dev/ai/learning.js",
+          "hash": "479444583891075513"
+        },
+        {
+          "file": "apps/dev/ai/metrics-aggregator.mjs",
+          "hash": "13346034220662085787"
+        },
+        {
+          "file": "apps/dev/ai/ml-pipeline.js",
+          "hash": "8159234239371377646"
+        },
+        {
+          "file": "apps/dev/ai/performance-monitor.js",
+          "hash": "9342375817020461044"
+        },
+        {
+          "file": "apps/dev/ai/pr-desc.mjs",
+          "hash": "13298724294062764320"
+        },
+        {
+          "file": "apps/dev/ai/predictive-analytics.js",
+          "hash": "8429359001249954577"
+        },
+        {
+          "file": "apps/dev/ai/prompt-standards.md",
+          "hash": "6285251730035425688"
+        },
+        {
+          "file": "apps/dev/ai/review-pr.mjs",
+          "hash": "7694784373498979180"
+        },
+        {
+          "file": "apps/dev/ai/telemetry-dashboard.mjs",
+          "hash": "9665803534548698517"
+        },
+        {
+          "file": "apps/dev/docker/docker-compose.dev.yaml",
+          "hash": "6440041747246146517"
+        },
+        {
+          "file": "apps/dev/docker/docker-compose.prod.yaml",
+          "hash": "12792964927564420305"
+        },
+        {
+          "file": "apps/dev/docker/docker-compose.staging.yaml",
+          "hash": "12291443432771378486"
+        },
+        {
+          "file": "apps/dev/e2e/README.md",
+          "hash": "11472979944234497429"
+        },
+        {
+          "file": "apps/dev/e2e/playwright.config.ts",
+          "hash": "7684134352357443155"
+        },
+        {
+          "file": "apps/dev/e2e/tests/home.spec.ts",
+          "hash": "6065218271435436959"
+        },
+        {
+          "file": "apps/dev/e2e/tests/login.spec.ts",
+          "hash": "3810880609454700899"
+        },
+        {
+          "file": "apps/dev/k3d/create-cluster.sh",
+          "hash": "543413369766751832"
+        },
+        {
+          "file": "apps/dev/k3d/port-forward-vault.sh",
+          "hash": "9227632697256067181"
+        },
+        {
+          "file": "apps/dev/monitoring/grafana/dashboards/kpi-dashboard.json",
+          "hash": "5698974191683958261"
+        },
+        {
+          "file": "apps/dev/monitoring/grafana/dashboards/political-sphere-overview.json",
+          "hash": "10798897517033044189"
+        },
+        {
+          "file": "apps/dev/monitoring/grafana/provisioning/alerting/alerts.yml",
+          "hash": "3001204206024850291"
+        },
+        {
+          "file": "apps/dev/monitoring/grafana/provisioning/dashboards/dashboard.yml",
+          "hash": "5411998854122275720"
+        },
+        {
+          "file": "apps/dev/monitoring/grafana/provisioning/datasources/prometheus.yml",
+          "hash": "1411148898683889608"
+        },
+        {
+          "file": "apps/dev/monitoring/prometheus.yml",
+          "hash": "18325121230849632544"
+        },
+        {
+          "file": "apps/dev/monitoring/prometheus/rules.yml",
+          "hash": "8615800303522122651"
+        },
+        {
+          "file": "apps/dev/project.json",
+          "hash": "13252439522757258942"
+        },
+        {
+          "file": "apps/dev/scripts/dev-down.sh",
+          "hash": "3836074156399511405"
+        },
+        {
+          "file": "apps/dev/scripts/dev-service.sh",
+          "hash": "2220441559042796553"
+        },
+        {
+          "file": "apps/dev/scripts/dev-up.sh",
+          "hash": "8221685979336411912"
+        },
+        {
+          "file": "apps/dev/scripts/seed-data.sh",
+          "hash": "1627919644922326736"
+        },
+        {
+          "file": "apps/dev/templates/.env.example",
+          "hash": "13775714581316638942"
+        },
+        {
+          "file": "apps/dev/templates/.env.local.example",
+          "hash": "9595703343338985847"
+        },
+        {
+          "file": "apps/dev/terraform/main.tf",
+          "hash": "13944547948508486376"
+        },
+        {
+          "file": "apps/dev/terraform/outputs.tf",
+          "hash": "1314490971125785402"
+        },
+        {
+          "file": "apps/dev/terraform/variables.tf",
+          "hash": "13744074197593913990"
+        },
+        {
+          "file": "apps/dev/testing/accessibility-testing.js",
+          "hash": "978433328685559556"
+        },
+        {
+          "file": "apps/dev/testing/chaos-engineering.js",
+          "hash": "4714518625719637450"
+        },
+        {
+          "file": "apps/dev/testing/integration-tests.js",
+          "hash": "18203477950568943454"
+        },
+        {
+          "file": "apps/dev/testing/performance-benchmarking.js",
+          "hash": "6678850517516197570"
+        },
+        {
+          "file": "apps/dev/testing/ui-visual-testing.js",
+          "hash": "1243581069366026681"
+        },
+        {
+          "file": "apps/dev/tests/integration/api.test.mjs",
+          "hash": "11335666461658458536"
+        },
+        {
+          "file": "apps/dev/tests/unit/broken-test.mjs",
+          "hash": "6638369761619048415"
+        },
+        {
+          "file": "apps/dev/tests/unit/example.test.cjs",
+          "hash": "11683453143770268411"
+        },
+        {
+          "file": "apps/dev/tests/unit/example.test.mjs",
+          "hash": "10971746250214565585"
+        }
+      ],
+      "ci": [
+        {
+          "file": "libs/ci/README.md",
+          "hash": "6353289569023656547"
+        },
+        {
+          "file": "libs/ci/actions/setup-terraform/action.yaml",
+          "hash": "6739626979467063475"
+        },
+        {
+          "file": "libs/ci/project.json",
+          "hash": "1049332646754358564"
+        },
+        {
+          "file": "libs/ci/workflows/application-release.yaml",
+          "hash": "1891792316433707982"
+        },
+        {
+          "file": "libs/ci/workflows/build-and-test.yaml",
+          "hash": "12066423234147514099"
+        },
+        {
+          "file": "libs/ci/workflows/deploy-argocd.yaml",
+          "hash": "11558217350843139244"
+        },
+        {
+          "file": "libs/ci/workflows/iac-plan.yaml",
+          "hash": "2839832195658824445"
+        },
+        {
+          "file": "libs/ci/workflows/migrate.yml",
+          "hash": "14252828123080131346"
+        },
+        {
+          "file": "libs/ci/workflows/security-scan.yaml",
+          "hash": "10590056086377033920"
+        },
+        {
+          "file": "libs/ci/workflows/vault-client.yml",
+          "hash": "7587174745653659744"
+        }
+      ],
+      "shared": [
+        {
+          "file": "libs/shared/README.md",
+          "hash": "10200723888682019118"
+        },
+        {
+          "file": "libs/shared/jest.config.js",
+          "hash": "12839521940875294147"
+        },
+        {
+          "file": "libs/shared/project.json",
+          "hash": "4483334915276053237"
+        },
+        {
+          "file": "libs/shared/src/index.ts",
+          "hash": "14765642943770303996"
+        },
+        {
+          "file": "libs/shared/src/logger.d.ts",
+          "hash": "2401997627077690322"
+        },
+        {
+          "file": "libs/shared/src/logger.js",
+          "hash": "14226035449217494136"
+        },
+        {
+          "file": "libs/shared/src/security.d.ts",
+          "hash": "5677691564956981450"
+        },
+        {
+          "file": "libs/shared/src/security.js",
+          "hash": "7238662953830549381"
+        },
+        {
+          "file": "libs/shared/tests/security.test.js",
+          "hash": "17494033806142267745"
+        }
+      ],
+      "infrastructure": [
+        {
+          "file": "libs/infrastructure/.github/CODEOWNERS",
+          "hash": "15484730002798524220"
+        },
+        {
+          "file": "libs/infrastructure/CODE_OF_CONDUCT.md",
+          "hash": "1084617685923722651"
+        },
+        {
+          "file": "libs/infrastructure/CONTRIBUTING.md",
+          "hash": "12356970197028026722"
+        },
+        {
+          "file": "libs/infrastructure/LICENSE",
+          "hash": "6887377681110861689"
+        },
+        {
+          "file": "libs/infrastructure/README.md",
+          "hash": "9476098463801994575"
+        },
+        {
+          "file": "libs/infrastructure/envs/README.md",
+          "hash": "14848532639855604006"
+        },
+        {
+          "file": "libs/infrastructure/envs/dev/main.tf",
+          "hash": "2880147910349146423"
+        },
+        {
+          "file": "libs/infrastructure/envs/dev/terraform.tfvars.example",
+          "hash": "265355347187528996"
+        },
+        {
+          "file": "libs/infrastructure/envs/dev/variables.tf",
+          "hash": "14934808170083118318"
+        },
+        {
+          "file": "libs/infrastructure/envs/prod/main.tf",
+          "hash": "16998912515912525718"
+        },
+        {
+          "file": "libs/infrastructure/envs/prod/terraform.tfvars.example",
+          "hash": "15255880134998280670"
+        },
+        {
+          "file": "libs/infrastructure/envs/prod/variables.tf",
+          "hash": "10720991057783754935"
+        },
+        {
+          "file": "libs/infrastructure/envs/staging/main.tf",
+          "hash": "8957817090664437111"
+        },
+        {
+          "file": "libs/infrastructure/envs/staging/terraform.tfvars.example",
+          "hash": "11872411053156847247"
+        },
+        {
+          "file": "libs/infrastructure/envs/staging/variables.tf",
+          "hash": "584673667020570847"
+        },
+        {
+          "file": "libs/infrastructure/main.tf",
+          "hash": "4322916197858883728"
+        },
+        {
+          "file": "libs/infrastructure/modules/acm/main.tf",
+          "hash": "7008856834079391189"
+        },
+        {
+          "file": "libs/infrastructure/modules/acm/outputs.tf",
+          "hash": "13892791618648732380"
+        },
+        {
+          "file": "libs/infrastructure/modules/acm/variables.tf",
+          "hash": "12937576054678525999"
+        },
+        {
+          "file": "libs/infrastructure/modules/ecr/main.tf",
+          "hash": "8059920171528923322"
+        },
+        {
+          "file": "libs/infrastructure/modules/ecr/outputs.tf",
+          "hash": "16799457698625323458"
+        },
+        {
+          "file": "libs/infrastructure/modules/ecr/variables.tf",
+          "hash": "16846115983641091888"
+        },
+        {
+          "file": "libs/infrastructure/modules/eks/main.tf",
+          "hash": "6523155965219389346"
+        },
+        {
+          "file": "libs/infrastructure/modules/eks/outputs.tf",
+          "hash": "12333079080334539267"
+        },
+        {
+          "file": "libs/infrastructure/modules/eks/variables.tf",
+          "hash": "2391617385604926"
+        },
+        {
+          "file": "libs/infrastructure/modules/iam/main.tf",
+          "hash": "14446677149709460021"
+        },
+        {
+          "file": "libs/infrastructure/modules/iam/outputs.tf",
+          "hash": "14582136815976385386"
+        },
+        {
+          "file": "libs/infrastructure/modules/iam/variables.tf",
+          "hash": "11270684422491850497"
+        },
+        {
+          "file": "libs/infrastructure/modules/kms/main.tf",
+          "hash": "7523475539204420973"
+        },
+        {
+          "file": "libs/infrastructure/modules/kms/outputs.tf",
+          "hash": "4084897608313066254"
+        },
+        {
+          "file": "libs/infrastructure/modules/kms/variables.tf",
+          "hash": "4844632440047848212"
+        },
+        {
+          "file": "libs/infrastructure/modules/rds/main.tf",
+          "hash": "975563413408264568"
+        },
+        {
+          "file": "libs/infrastructure/modules/rds/outputs.tf",
+          "hash": "11493586721575220895"
+        },
+        {
+          "file": "libs/infrastructure/modules/rds/variables.tf",
+          "hash": "2243860081645557879"
+        },
+        {
+          "file": "libs/infrastructure/modules/redis/main.tf",
+          "hash": "5701858601890902577"
+        },
+        {
+          "file": "libs/infrastructure/modules/redis/outputs.tf",
+          "hash": "10715434744763866903"
+        },
+        {
+          "file": "libs/infrastructure/modules/redis/variables.tf",
+          "hash": "2585047133561059614"
+        },
+        {
+          "file": "libs/infrastructure/modules/route53/main.tf",
+          "hash": "2950374308241189109"
+        },
+        {
+          "file": "libs/infrastructure/modules/route53/outputs.tf",
+          "hash": "3171182083356859032"
+        },
+        {
+          "file": "libs/infrastructure/modules/route53/variables.tf",
+          "hash": "489885648456222815"
+        },
+        {
+          "file": "libs/infrastructure/modules/s3/main.tf",
+          "hash": "6183818399008193635"
+        },
+        {
+          "file": "libs/infrastructure/modules/s3/variables.tf",
+          "hash": "5162828677285594948"
+        },
+        {
+          "file": "libs/infrastructure/modules/vpc/main.tf",
+          "hash": "15000762537538628194"
+        },
+        {
+          "file": "libs/infrastructure/modules/vpc/outputs.tf",
+          "hash": "1961206114330004783"
+        },
+        {
+          "file": "libs/infrastructure/modules/vpc/variables.tf",
+          "hash": "12486848503888142087"
+        },
+        {
+          "file": "libs/infrastructure/project.json",
+          "hash": "11135160586648907173"
+        },
+        {
+          "file": "libs/infrastructure/providers.tf",
+          "hash": "10514865655707143549"
+        },
+        {
+          "file": "libs/infrastructure/variables.tf",
+          "hash": "9782242938533755628"
+        },
+        {
+          "file": "libs/infrastructure/vault/README.md",
+          "hash": "14942550358144895253"
+        }
+      ],
+      "frontend": [
+        {
+          "file": "apps/frontend/Dockerfile",
+          "hash": "2138599909865878875"
+        },
+        {
+          "file": "apps/frontend/README.md",
+          "hash": "14653493906540287185"
+        },
+        {
+          "file": "apps/frontend/project.json",
+          "hash": "12528297710339016493"
+        },
+        {
+          "file": "apps/frontend/public/index.html",
+          "hash": "15126979427157438876"
+        },
+        {
+          "file": "apps/frontend/src/server.js",
+          "hash": "3125211695313429102"
+        }
+      ],
+      "remote": [
+        {
+          "file": "apps/remote/README.md",
+          "hash": "6822688889377430304"
+        },
+        {
+          "file": "apps/remote/project.json",
+          "hash": "6383247958927879519"
+        },
+        {
+          "file": "apps/remote/public/index.html",
+          "hash": "10059196138403082073"
+        },
+        {
+          "file": "apps/remote/src/bootstrap.js",
+          "hash": "14193127162019413465"
+        },
+        {
+          "file": "apps/remote/src/index.js",
+          "hash": "11695556707003546148"
+        },
+        {
+          "file": "apps/remote/webpack.config.cjs",
+          "hash": "7677394919030765220"
+        },
+        {
+          "file": "apps/remote/webpack.config.js",
+          "hash": "8559437132706440067"
+        }
+      ],
+      "api": [
+        {
+          "file": "apps/api/Dockerfile",
+          "hash": "6097566971276713252"
+        },
+        {
+          "file": "apps/api/README.md",
+          "hash": "6117523241885452917"
+        },
+        {
+          "file": "apps/api/data/news.json",
+          "hash": "2850613287664466091"
+        },
+        {
+          "file": "apps/api/project.json",
+          "hash": "8541043791256006971"
+        },
+        {
+          "file": "apps/api/src/auth.js",
+          "hash": "16406000614225479943"
+        },
+        {
+          "file": "apps/api/src/httpUtils.js",
+          "hash": "1821397520345496802"
+        },
+        {
+          "file": "apps/api/src/index.js",
+          "hash": "5495833630259143047"
+        },
+        {
+          "file": "apps/api/src/news-store.js",
+          "hash": "17716726573345761485"
+        },
+        {
+          "file": "apps/api/src/newsService.js",
+          "hash": "18353053814410369454"
+        },
+        {
+          "file": "apps/api/src/server.js",
+          "hash": "11262241082556277752"
+        },
+        {
+          "file": "apps/api/tests/auth.test.js",
+          "hash": "6507638977523339750"
+        },
+        {
+          "file": "apps/api/tests/newsService.test.js",
+          "hash": "13498617446595769240"
+        },
+        {
+          "file": "apps/api/tests/security.test.js",
+          "hash": "10174598879528062352"
+        },
+        {
+          "file": "apps/api/tests/server.test.js",
+          "hash": "2707100583321415444"
+        }
+      ],
       "platform": [
         {
           "file": "libs/platform/LICENSE",
@@ -391,14 +1025,26 @@
           "hash": "13467575759250076933"
         }
       ],
-      "ui": [
+      "political-sphere-ai-assistant": [
         {
-          "file": "libs/ui/README.md",
-          "hash": "6926340928892188572"
+          "file": "apps/dev/ai/ai-assistant/package.json",
+          "hash": "5005475628442841593",
+          "deps": [
+            "npm:@types/node@20.19.24",
+            "npm:tsx",
+            "npm:typescript",
+            "npm:@modelcontextprotocol/sdk",
+            "npm:openai",
+            "npm:zod"
+          ]
         },
         {
-          "file": "libs/ui/project.json",
-          "hash": "14482594747917426574"
+          "file": "apps/dev/ai/ai-assistant/src/index.ts",
+          "hash": "11409677820906056100"
+        },
+        {
+          "file": "apps/dev/ai/ai-assistant/tsconfig.json",
+          "hash": "9513696985106221781"
         }
       ],
       "worker": [
@@ -429,630 +1075,6 @@
         {
           "file": "apps/worker/tests/aggregator.test.js",
           "hash": "4862894492488048325"
-        }
-      ],
-      "infrastructure": [
-        {
-          "file": "libs/infrastructure/.github/CODEOWNERS",
-          "hash": "15484730002798524220"
-        },
-        {
-          "file": "libs/infrastructure/CODE_OF_CONDUCT.md",
-          "hash": "1084617685923722651"
-        },
-        {
-          "file": "libs/infrastructure/CONTRIBUTING.md",
-          "hash": "12356970197028026722"
-        },
-        {
-          "file": "libs/infrastructure/LICENSE",
-          "hash": "6887377681110861689"
-        },
-        {
-          "file": "libs/infrastructure/README.md",
-          "hash": "9476098463801994575"
-        },
-        {
-          "file": "libs/infrastructure/envs/README.md",
-          "hash": "14848532639855604006"
-        },
-        {
-          "file": "libs/infrastructure/envs/dev/main.tf",
-          "hash": "2880147910349146423"
-        },
-        {
-          "file": "libs/infrastructure/envs/dev/terraform.tfvars.example",
-          "hash": "265355347187528996"
-        },
-        {
-          "file": "libs/infrastructure/envs/dev/variables.tf",
-          "hash": "14934808170083118318"
-        },
-        {
-          "file": "libs/infrastructure/envs/prod/main.tf",
-          "hash": "16998912515912525718"
-        },
-        {
-          "file": "libs/infrastructure/envs/prod/terraform.tfvars.example",
-          "hash": "15255880134998280670"
-        },
-        {
-          "file": "libs/infrastructure/envs/prod/variables.tf",
-          "hash": "10720991057783754935"
-        },
-        {
-          "file": "libs/infrastructure/envs/staging/main.tf",
-          "hash": "8957817090664437111"
-        },
-        {
-          "file": "libs/infrastructure/envs/staging/terraform.tfvars.example",
-          "hash": "11872411053156847247"
-        },
-        {
-          "file": "libs/infrastructure/envs/staging/variables.tf",
-          "hash": "584673667020570847"
-        },
-        {
-          "file": "libs/infrastructure/main.tf",
-          "hash": "4322916197858883728"
-        },
-        {
-          "file": "libs/infrastructure/modules/acm/main.tf",
-          "hash": "7008856834079391189"
-        },
-        {
-          "file": "libs/infrastructure/modules/acm/outputs.tf",
-          "hash": "13892791618648732380"
-        },
-        {
-          "file": "libs/infrastructure/modules/acm/variables.tf",
-          "hash": "12937576054678525999"
-        },
-        {
-          "file": "libs/infrastructure/modules/ecr/main.tf",
-          "hash": "8059920171528923322"
-        },
-        {
-          "file": "libs/infrastructure/modules/ecr/outputs.tf",
-          "hash": "16799457698625323458"
-        },
-        {
-          "file": "libs/infrastructure/modules/ecr/variables.tf",
-          "hash": "16846115983641091888"
-        },
-        {
-          "file": "libs/infrastructure/modules/eks/main.tf",
-          "hash": "6523155965219389346"
-        },
-        {
-          "file": "libs/infrastructure/modules/eks/outputs.tf",
-          "hash": "12333079080334539267"
-        },
-        {
-          "file": "libs/infrastructure/modules/eks/variables.tf",
-          "hash": "2391617385604926"
-        },
-        {
-          "file": "libs/infrastructure/modules/iam/main.tf",
-          "hash": "14446677149709460021"
-        },
-        {
-          "file": "libs/infrastructure/modules/iam/outputs.tf",
-          "hash": "14582136815976385386"
-        },
-        {
-          "file": "libs/infrastructure/modules/iam/variables.tf",
-          "hash": "11270684422491850497"
-        },
-        {
-          "file": "libs/infrastructure/modules/kms/main.tf",
-          "hash": "7523475539204420973"
-        },
-        {
-          "file": "libs/infrastructure/modules/kms/outputs.tf",
-          "hash": "4084897608313066254"
-        },
-        {
-          "file": "libs/infrastructure/modules/kms/variables.tf",
-          "hash": "4844632440047848212"
-        },
-        {
-          "file": "libs/infrastructure/modules/rds/main.tf",
-          "hash": "975563413408264568"
-        },
-        {
-          "file": "libs/infrastructure/modules/rds/outputs.tf",
-          "hash": "11493586721575220895"
-        },
-        {
-          "file": "libs/infrastructure/modules/rds/variables.tf",
-          "hash": "2243860081645557879"
-        },
-        {
-          "file": "libs/infrastructure/modules/redis/main.tf",
-          "hash": "5701858601890902577"
-        },
-        {
-          "file": "libs/infrastructure/modules/redis/outputs.tf",
-          "hash": "10715434744763866903"
-        },
-        {
-          "file": "libs/infrastructure/modules/redis/variables.tf",
-          "hash": "2585047133561059614"
-        },
-        {
-          "file": "libs/infrastructure/modules/route53/main.tf",
-          "hash": "2950374308241189109"
-        },
-        {
-          "file": "libs/infrastructure/modules/route53/outputs.tf",
-          "hash": "3171182083356859032"
-        },
-        {
-          "file": "libs/infrastructure/modules/route53/variables.tf",
-          "hash": "489885648456222815"
-        },
-        {
-          "file": "libs/infrastructure/modules/s3/main.tf",
-          "hash": "6183818399008193635"
-        },
-        {
-          "file": "libs/infrastructure/modules/s3/variables.tf",
-          "hash": "5162828677285594948"
-        },
-        {
-          "file": "libs/infrastructure/modules/vpc/main.tf",
-          "hash": "15000762537538628194"
-        },
-        {
-          "file": "libs/infrastructure/modules/vpc/outputs.tf",
-          "hash": "1961206114330004783"
-        },
-        {
-          "file": "libs/infrastructure/modules/vpc/variables.tf",
-          "hash": "12486848503888142087"
-        },
-        {
-          "file": "libs/infrastructure/project.json",
-          "hash": "11135160586648907173"
-        },
-        {
-          "file": "libs/infrastructure/providers.tf",
-          "hash": "10514865655707143549"
-        },
-        {
-          "file": "libs/infrastructure/variables.tf",
-          "hash": "9782242938533755628"
-        },
-        {
-          "file": "libs/infrastructure/vault/README.md",
-          "hash": "14942550358144895253"
-        }
-      ],
-      "api": [
-        {
-          "file": "apps/api/Dockerfile",
-          "hash": "6097566971276713252"
-        },
-        {
-          "file": "apps/api/README.md",
-          "hash": "6117523241885452917"
-        },
-        {
-          "file": "apps/api/data/news.json",
-          "hash": "2850613287664466091"
-        },
-        {
-          "file": "apps/api/project.json",
-          "hash": "8541043791256006971"
-        },
-        {
-          "file": "apps/api/src/auth.js",
-          "hash": "16406000614225479943"
-        },
-        {
-          "file": "apps/api/src/httpUtils.js",
-          "hash": "1821397520345496802"
-        },
-        {
-          "file": "apps/api/src/index.js",
-          "hash": "5495833630259143047"
-        },
-        {
-          "file": "apps/api/src/news-store.js",
-          "hash": "17716726573345761485"
-        },
-        {
-          "file": "apps/api/src/newsService.js",
-          "hash": "18353053814410369454"
-        },
-        {
-          "file": "apps/api/src/server.js",
-          "hash": "11262241082556277752"
-        },
-        {
-          "file": "apps/api/tests/auth.test.js",
-          "hash": "6507638977523339750"
-        },
-        {
-          "file": "apps/api/tests/newsService.test.js",
-          "hash": "13498617446595769240"
-        },
-        {
-          "file": "apps/api/tests/security.test.js",
-          "hash": "10174598879528062352"
-        },
-        {
-          "file": "apps/api/tests/server.test.js",
-          "hash": "2707100583321415444"
-        }
-      ],
-      "shared": [
-        {
-          "file": "libs/shared/README.md",
-          "hash": "10200723888682019118"
-        },
-        {
-          "file": "libs/shared/jest.config.js",
-          "hash": "12839521940875294147"
-        },
-        {
-          "file": "libs/shared/project.json",
-          "hash": "4483334915276053237"
-        },
-        {
-          "file": "libs/shared/src/index.ts",
-          "hash": "14765642943770303996"
-        },
-        {
-          "file": "libs/shared/src/logger.d.ts",
-          "hash": "2401997627077690322"
-        },
-        {
-          "file": "libs/shared/src/logger.js",
-          "hash": "14226035449217494136"
-        },
-        {
-          "file": "libs/shared/src/security.d.ts",
-          "hash": "5677691564956981450"
-        },
-        {
-          "file": "libs/shared/src/security.js",
-          "hash": "7238662953830549381"
-        },
-        {
-          "file": "libs/shared/tests/security.test.js",
-          "hash": "17494033806142267745"
-        }
-      ],
-      "host": [
-        {
-          "file": "apps/host/README.md",
-          "hash": "7647808013037863641"
-        },
-        {
-          "file": "apps/host/project.json",
-          "hash": "1007567755219256079"
-        },
-        {
-          "file": "apps/host/public/index.html",
-          "hash": "8822495874131422781"
-        },
-        {
-          "file": "apps/host/src/index.js",
-          "hash": "6768869270960612571"
-        },
-        {
-          "file": "apps/host/webpack.config.cjs",
-          "hash": "16953561547662600198"
-        },
-        {
-          "file": "apps/host/webpack.config.js",
-          "hash": "2944078289341261036"
-        }
-      ],
-      "frontend": [
-        {
-          "file": "apps/frontend/Dockerfile",
-          "hash": "2138599909865878875"
-        },
-        {
-          "file": "apps/frontend/README.md",
-          "hash": "14653493906540287185"
-        },
-        {
-          "file": "apps/frontend/project.json",
-          "hash": "12528297710339016493"
-        },
-        {
-          "file": "apps/frontend/public/index.html",
-          "hash": "15126979427157438876"
-        },
-        {
-          "file": "apps/frontend/src/server.js",
-          "hash": "3125211695313429102"
-        }
-      ],
-      "ci": [
-        {
-          "file": "libs/ci/README.md",
-          "hash": "6353289569023656547"
-        },
-        {
-          "file": "libs/ci/actions/setup-terraform/action.yaml",
-          "hash": "6739626979467063475"
-        },
-        {
-          "file": "libs/ci/project.json",
-          "hash": "1049332646754358564"
-        },
-        {
-          "file": "libs/ci/workflows/application-release.yaml",
-          "hash": "1891792316433707982"
-        },
-        {
-          "file": "libs/ci/workflows/build-and-test.yaml",
-          "hash": "12066423234147514099"
-        },
-        {
-          "file": "libs/ci/workflows/deploy-argocd.yaml",
-          "hash": "11558217350843139244"
-        },
-        {
-          "file": "libs/ci/workflows/iac-plan.yaml",
-          "hash": "2839832195658824445"
-        },
-        {
-          "file": "libs/ci/workflows/migrate.yml",
-          "hash": "14252828123080131346"
-        },
-        {
-          "file": "libs/ci/workflows/security-scan.yaml",
-          "hash": "10590056086377033920"
-        },
-        {
-          "file": "libs/ci/workflows/vault-client.yml",
-          "hash": "7587174745653659744"
-        }
-      ],
-      "remote": [
-        {
-          "file": "apps/remote/README.md",
-          "hash": "6822688889377430304"
-        },
-        {
-          "file": "apps/remote/project.json",
-          "hash": "6383247958927879519"
-        },
-        {
-          "file": "apps/remote/public/index.html",
-          "hash": "10059196138403082073"
-        },
-        {
-          "file": "apps/remote/src/bootstrap.js",
-          "hash": "14193127162019413465"
-        },
-        {
-          "file": "apps/remote/src/index.js",
-          "hash": "11695556707003546148"
-        },
-        {
-          "file": "apps/remote/webpack.config.cjs",
-          "hash": "7677394919030765220"
-        },
-        {
-          "file": "apps/remote/webpack.config.js",
-          "hash": "8559437132706440067"
-        }
-      ],
-      "dev": [
-        {
-          "file": "apps/dev/README.md",
-          "hash": "9570443806440292404"
-        },
-        {
-          "file": "apps/dev/Tiltfile",
-          "hash": "9725074424613854822"
-        },
-        {
-          "file": "apps/dev/ai/blackbox-review.mjs",
-          "hash": "16280634654725341326"
-        },
-        {
-          "file": "apps/dev/ai/commit-msg.mjs",
-          "hash": "16887480062203029055"
-        },
-        {
-          "file": "apps/dev/ai/context-indexer.mjs",
-          "hash": "7836500494565292578"
-        },
-        {
-          "file": "apps/dev/ai/copilot-experiment-log.mjs",
-          "hash": "2940443637487018577"
-        },
-        {
-          "file": "apps/dev/ai/governance.js",
-          "hash": "17043640467527099638"
-        },
-        {
-          "file": "apps/dev/ai/knowledge-base.md",
-          "hash": "6675991634796752219"
-        },
-        {
-          "file": "apps/dev/ai/learning.js",
-          "hash": "479444583891075513"
-        },
-        {
-          "file": "apps/dev/ai/metrics-aggregator.mjs",
-          "hash": "13346034220662085787"
-        },
-        {
-          "file": "apps/dev/ai/ml-pipeline.js",
-          "hash": "8159234239371377646"
-        },
-        {
-          "file": "apps/dev/ai/performance-monitor.js",
-          "hash": "9342375817020461044"
-        },
-        {
-          "file": "apps/dev/ai/pr-desc.mjs",
-          "hash": "13298724294062764320"
-        },
-        {
-          "file": "apps/dev/ai/predictive-analytics.js",
-          "hash": "8429359001249954577"
-        },
-        {
-          "file": "apps/dev/ai/prompt-standards.md",
-          "hash": "6285251730035425688"
-        },
-        {
-          "file": "apps/dev/ai/review-pr.mjs",
-          "hash": "7694784373498979180"
-        },
-        {
-          "file": "apps/dev/ai/telemetry-dashboard.mjs",
-          "hash": "9665803534548698517"
-        },
-        {
-          "file": "apps/dev/docker/docker-compose.dev.yaml",
-          "hash": "6440041747246146517"
-        },
-        {
-          "file": "apps/dev/docker/docker-compose.prod.yaml",
-          "hash": "12792964927564420305"
-        },
-        {
-          "file": "apps/dev/docker/docker-compose.staging.yaml",
-          "hash": "12291443432771378486"
-        },
-        {
-          "file": "apps/dev/e2e/README.md",
-          "hash": "11472979944234497429"
-        },
-        {
-          "file": "apps/dev/e2e/playwright.config.ts",
-          "hash": "7684134352357443155"
-        },
-        {
-          "file": "apps/dev/e2e/tests/home.spec.ts",
-          "hash": "6065218271435436959"
-        },
-        {
-          "file": "apps/dev/e2e/tests/login.spec.ts",
-          "hash": "3810880609454700899"
-        },
-        {
-          "file": "apps/dev/k3d/create-cluster.sh",
-          "hash": "543413369766751832"
-        },
-        {
-          "file": "apps/dev/k3d/port-forward-vault.sh",
-          "hash": "9227632697256067181"
-        },
-        {
-          "file": "apps/dev/monitoring/grafana/dashboards/kpi-dashboard.json",
-          "hash": "5698974191683958261"
-        },
-        {
-          "file": "apps/dev/monitoring/grafana/dashboards/political-sphere-overview.json",
-          "hash": "10798897517033044189"
-        },
-        {
-          "file": "apps/dev/monitoring/grafana/provisioning/alerting/alerts.yml",
-          "hash": "3001204206024850291"
-        },
-        {
-          "file": "apps/dev/monitoring/grafana/provisioning/dashboards/dashboard.yml",
-          "hash": "5411998854122275720"
-        },
-        {
-          "file": "apps/dev/monitoring/grafana/provisioning/datasources/prometheus.yml",
-          "hash": "1411148898683889608"
-        },
-        {
-          "file": "apps/dev/monitoring/prometheus.yml",
-          "hash": "18325121230849632544"
-        },
-        {
-          "file": "apps/dev/monitoring/prometheus/rules.yml",
-          "hash": "8615800303522122651"
-        },
-        {
-          "file": "apps/dev/project.json",
-          "hash": "13252439522757258942"
-        },
-        {
-          "file": "apps/dev/scripts/dev-down.sh",
-          "hash": "3836074156399511405"
-        },
-        {
-          "file": "apps/dev/scripts/dev-service.sh",
-          "hash": "2220441559042796553"
-        },
-        {
-          "file": "apps/dev/scripts/dev-up.sh",
-          "hash": "8221685979336411912"
-        },
-        {
-          "file": "apps/dev/scripts/seed-data.sh",
-          "hash": "1627919644922326736"
-        },
-        {
-          "file": "apps/dev/templates/.env.example",
-          "hash": "13775714581316638942"
-        },
-        {
-          "file": "apps/dev/templates/.env.local.example",
-          "hash": "9595703343338985847"
-        },
-        {
-          "file": "apps/dev/terraform/main.tf",
-          "hash": "13944547948508486376"
-        },
-        {
-          "file": "apps/dev/terraform/outputs.tf",
-          "hash": "1314490971125785402"
-        },
-        {
-          "file": "apps/dev/terraform/variables.tf",
-          "hash": "13744074197593913990"
-        },
-        {
-          "file": "apps/dev/testing/accessibility-testing.js",
-          "hash": "978433328685559556"
-        },
-        {
-          "file": "apps/dev/testing/chaos-engineering.js",
-          "hash": "4714518625719637450"
-        },
-        {
-          "file": "apps/dev/testing/integration-tests.js",
-          "hash": "18203477950568943454"
-        },
-        {
-          "file": "apps/dev/testing/performance-benchmarking.js",
-          "hash": "6678850517516197570"
-        },
-        {
-          "file": "apps/dev/testing/ui-visual-testing.js",
-          "hash": "1243581069366026681"
-        },
-        {
-          "file": "apps/dev/tests/integration/api.test.mjs",
-          "hash": "11335666461658458536"
-        },
-        {
-          "file": "apps/dev/tests/unit/broken-test.mjs",
-          "hash": "6638369761619048415"
-        },
-        {
-          "file": "apps/dev/tests/unit/example.test.cjs",
-          "hash": "11683453143770268411"
-        },
-        {
-          "file": "apps/dev/tests/unit/example.test.mjs",
-          "hash": "10971746250214565585"
         }
       ],
       "docs": [
@@ -1189,36 +1211,14 @@
           "hash": "13775826700683363132"
         }
       ],
-      "ci-app": [
+      "ui": [
         {
-          "file": "ci/README.md",
-          "hash": "9613858550954693846"
+          "file": "libs/ui/README.md",
+          "hash": "6926340928892188572"
         },
         {
-          "file": "ci/project.json",
-          "hash": "7998047955333333517"
-        }
-      ],
-      "political-sphere-ai-assistant": [
-        {
-          "file": "apps/dev/ai/ai-assistant/package.json",
-          "hash": "5005475628442841593",
-          "deps": [
-            "npm:@types/node@20.19.24",
-            "npm:tsx",
-            "npm:typescript",
-            "npm:@modelcontextprotocol/sdk",
-            "npm:openai",
-            "npm:zod"
-          ]
-        },
-        {
-          "file": "apps/dev/ai/ai-assistant/src/index.ts",
-          "hash": "11409677820906056100"
-        },
-        {
-          "file": "apps/dev/ai/ai-assistant/tsconfig.json",
-          "hash": "9513696985106221781"
+          "file": "libs/ui/project.json",
+          "hash": "14482594747917426574"
         }
       ]
     },

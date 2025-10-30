@@ -1,1 +1,0 @@
-import{_ as t,c as d,o as a,ae as o}from"./chunks/framework.CBTkueSR.js";const m=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"adr/README.md","filePath":"adr/README.md"}'),c={name:"adr/README.md"};function i(r,e,s,l,p,n){return a(),d("div",null,[...e[0]||(e[0]=[o("",5)])])}const f=t(c,[["render",i]]);export{m as __pageData,f as default};

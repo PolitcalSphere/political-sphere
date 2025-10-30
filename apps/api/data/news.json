@@ -5,8 +5,13 @@
     "excerpt": "The latest index highlights shifts in civic engagement and outlines early indicators for democratic resilience.",
     "content": "The 2024 report from Global Democracy Watch captures both progress and setbacks in representative institutions across 120 countries.",
     "category": "governance",
-    "tags": ["governance", "civil-society"],
-    "sources": ["https://example.org/reports/democracy-2024"],
+    "tags": [
+      "governance",
+      "civil-society"
+    ],
+    "sources": [
+      "https://example.org/reports/democracy-2024"
+    ],
     "author": "analysis-bot",
     "status": "published",
     "createdAt": "2024-01-12T09:00:00.000Z",
@@ -18,8 +23,13 @@
     "excerpt": "A transparency initiative surfaces large donations within minutes, enabling faster fact-checking.",
     "content": "The platform now streams large donations minutes after filing, alerting journalists and researchers to emerging influence campaigns.",
     "category": "finance",
-    "tags": ["campaigns", "transparency"],
-    "sources": ["https://example.org/policy/campaign-finance-tracker"],
+    "tags": [
+      "campaigns",
+      "transparency"
+    ],
+    "sources": [
+      "https://example.org/policy/campaign-finance-tracker"
+    ],
     "author": "policy-reporter",
     "status": "published",
     "createdAt": "2024-02-05T18:30:00.000Z",
