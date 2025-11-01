@@ -14,6 +14,7 @@
 - [x] **Fixed Nx refresh slowdown**: Optimized daemon settings, added file watcher ignore patterns, cleared 1.3GB cache, added debounce delays (2025-11-01)
 - [x] **Fixed commit buffering/hanging**: Replaced slow TruffleHog with fast gitleaks for pre-commit secret scanning (2025-11-01)
 - [x] **Fixed pre-push hanging**: Simplified integrity check to only verify critical files exist instead of slow find operations (2025-11-01)
+- [x] **Fixed integration test workflow**: Updated workflow to gracefully handle missing migration/seed scripts and services (2025-11-01)
 - [ ] Run full test suite to verify all Jest configuration improvements
 - [ ] Address remaining database connectivity issues (500 errors in tests)
 - [ ] Fix module resolution issues in unit tests (UserService import)
@@ -22,6 +23,39 @@
 - [ ] Audit and resolve tool conflicts between Prettier and Biome
 - [ ] Optimize AI script execution with async processing
 - [ ] Update governance files (`.blackboxrules` and `.github/copilot-instructions.md`) to version 1.2.7 and add CHANGELOG/TODO entry template — awaiting governance owner review (Automation/Assistant, 2025-11-01)
+
+## MVP Implementation Tasks (from implementation_plan.md)
+
+- [ ] Build and export the shared library properly (scripts/build-shared.mjs)
+- [ ] Fix TypeScript configuration and imports (tsconfig.base.json, apps/api/tsconfig.json)
+- [ ] Convert route files from .js to .ts with proper typing (apps/api/src/routes/bills.js, parties.js, users.js, votes.js)
+- [ ] Fix store method signatures and implementations (apps/api/src/stores/\*.ts files)
+- [ ] Create missing votes API routes if needed (apps/api/src/routes/votes.js exists, verify completeness)
+- [ ] Create main server setup file (apps/api/src/server.ts)
+- [ ] Update and fix all tests (apps/api/tests/\*)
+- [ ] Run integration tests and verify demo flow works (apps/api/tests/integration/demo-flow.test.mjs)
+- [ ] Add any missing API endpoints (vote counts, etc.)
+- [ ] Final validation and documentation updates
+
+## Technical Debt (from CHANGELOG.md)
+
+- [ ] Investigate and fix database/storage layer issues causing 500 errors in tests
+- [ ] Resolve tool conflicts between Prettier and Biome formatters
+- [ ] Implement AI cache cleanup for TTL-based eviction
+
+## Additional Tasks Identified
+
+- [ ] Verify all domain types and schemas are properly exported from libs/shared/src/index.ts
+- [ ] Update package.json with build script for shared library
+- [ ] Ensure proper migration and connection handling in database initialization
+- [ ] Add proper TypeScript typing and error handling to route handlers
+- [ ] Create Server class for main application server with route setup and middleware
+- [ ] Add express and supertest dependencies if not present
+- [ ] Update @types/express to latest compatible version
+- [ ] Create unit tests for new/modified files (server.test.mjs, routes/votes.test.mjs)
+- [ ] Fix integration test to work with corrected API endpoints
+- [ ] Conduct ISO 42001 certification readiness assessment
+- [ ] Schedule external audit and certification process for ISO 42001 AMLS
 
 ## Completed Tasks
 

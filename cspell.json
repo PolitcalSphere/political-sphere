@@ -71,7 +71,10 @@
     "modelcontextprotocol",
     "blackboxrules",
     "AMLS",
-    "pipefail"
+    "pipefail",
+    "isready",
+    "PGPASSWORD",
+    "psql"
   ],
   "ignorePaths": [
     "node_modules/**",

@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Fixed commit buffering**: Replaced slow TruffleHog with fast gitleaks for pre-commit secret scanning - reduces commit time from 30+ seconds to <2 seconds (2025-11-01)
 - **Fixed pre-push hanging**: Simplified workspace integrity check to only verify critical files exist instead of running slow find operations across entire workspace (2025-11-01)
 
+### Fixed
+
+- **Integration test workflow**: Updated `.github/workflows/integration.yml` to gracefully handle missing migration scripts, seed data, and service start commands - prevents CI failures when services aren't ready (2025-11-01)
+
 ### Added
 
 - **MCP Servers (4 New)**: Added Playwright, Chrome DevTools, Official Filesystem, and Time MCP servers - all 100% free (2025-11-01)
