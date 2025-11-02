@@ -916,6 +916,27 @@ Agents must populate PRs with:
 - Mode used: Safe / Fast-Secure / Audit / R&D
 - Rollback: safe to revert? Y/N and why
 
+Mandatory headers (top of PR description):
+
+AI-EXECUTION:
+mode: Safe | Fast-Secure | Audit | R&D
+controls: [SEC-01, SEC-05, QUAL-02, TEST-03, A11Y-01]
+deferred: []
+rationale: <1–2 lines>
+
+ASSUMPTIONS:
+
+- <explicit assumption 1>
+- <explicit assumption 2>
+  CONFIDENCE:
+  self_estimate: 0.84
+  high_risk_areas: [example-area]
+
+OUTPUT:
+
+- type: unified-diff
+- includes: tests, rollback steps
+
 Suggested labels: `ai-change`, `requires-governance`, `accessibility`, `security-touched`, `breaking-change`, `docs-updated`.
 
 ### Change Cadence Guardrail
@@ -987,6 +1008,161 @@ Constitutional → Governance owners → Maintainers → AI agents. Agents must 
 ---
 
 ## AI Intelligence & Competence Enhancement
+
+### Automatically Narrow Scope First
+
+Before writing anything, AI should:
+
+- Identify relevant files only (5–10 max)
+- Infer key functions/types/exports
+- Summarise what matters
+- Propose the minimal change path
+- Trigger phrase: "Before coding, show me smallest-change options."
+- Why: No more "rewrite half the repo for a three-line bug".
+
+### Pre-fetch Context / "Warm Up the Brain"
+
+Agent behaviour:
+
+- Load nearest README / ADR / interfaces
+- Find related tests
+- Map imports + exports
+- Extract types + contracts it will need
+- Goal: Solve in one pass, not six rewrites.
+
+### Generate "Working Memory Files"
+
+Basically a private scratchpad for the agent:
+
+- Key types it extracted
+- Cross-file relationships
+- Inferred conventions
+- Active TODO tasks
+- Code patterns it should reuse
+- Stored under ai/working-context/ (git-ignored).
+- So AI isn't "rediscovering reality" every time.
+
+### Predict the Next Steps + Do Them
+
+If you're building X, AI should automatically:
+
+- Create tests
+- Stub logs/metrics
+- Update docs in same pass
+- Add ADR entry stub if necessary
+- Check module boundaries + risk points
+- You shouldn't need to ask "and docs too please".
+
+### Maintain a "Best Snippet Library"
+
+AI builds a curated repo of "model patterns" to copy from:
+
+- Ideal error handling
+- Ideal pagination
+- Ideal DTO parsing
+- Ideal Result<T,E> flow
+- Ideal logging block
+- Ideal test layout
+- Ideal React form pattern
+- Stored in ai/patterns/.
+- Every time you say "🔥 that's good code" → AI saves it.
+
+### Automatic "Diff Preview + Options" Mode
+
+Before changing anything, AI should propose:
+
+- Patch Option A (minimal)
+- Patch Option B (cleaner refactor)
+- Patch Option C (performance route)
+- Like a developer who shows you options, not an overeager intern.
+
+### Chunk Tasks Smartly
+
+AI should break tasks into atomic units:
+
+- Generate types
+- Write failing tests
+- Implement core logic
+- Add validation/logging
+- Run lint/type check
+- So you get short cycles and instant trust.
+
+### Cache Answers + Decisions It Already Made
+
+AI keeps memory on disk (not long-term AI memory — local repo memory):
+
+- What libs we decided to avoid
+- Our naming rules
+- Our auth pattern
+- Our database conventions
+- UI accessibility patterns
+- How pagination works
+- Etc.
+- This reduces re-explanation loops dramatically.
+
+### Guard Against Going Down Rabbit Holes
+
+Add a contract:
+
+- If solution hits diminishing returns, pause and ask human input.
+- So instead of 50 lines of fancy wizardry, you get: "Two paths exist — prefer which?"
+- Huge time saver.
+
+### Auto-Create Dev Helpers
+
+AI should proactively write small utility scripts for you:
+
+- scripts/find-unused.sh
+- scripts/find-leaky-types.ts
+- scripts/track-context-switches.ts
+- scripts/cache-common-contexts.ts
+- These tiny helpers snowball into massive time savings.
+
+### Opportunistic Clean-as-You-Go
+
+While touching a file, if it spots:
+
+- Dead code
+- Redundant imports
+- Typo in a comment
+- Orphaned interface
+- Unsafe pattern
+- It quietly submits micro-fixes.
+- Never big refactors unless asked.
+
+### Prefill Structured PR Templates
+
+When done:
+
+- Fill PR template
+- Add diff + context summary
+- Add risk notes
+- Auto-link related issues
+- Suggest reviewer labels
+- Real dev-speed behaviour.
+
+### Proactive Daily Improvements (5–10 mins)
+
+Every day, without asking, AI can:
+
+- Optimise one small file
+- Convert 1 function to Result<T,E>
+- Simplify one test suite
+- Update 1 doc example
+- Remove unused code
+- Improve 1 accessibility area
+- Update 1 pattern in ai/patterns
+- Just compound improvement.
+
+### AI Deputy Mode
+
+AI Deputy Mode enables Copilot and Blackbox to shadow changes and flag governance deviations:
+
+- **Shadow Mode**: AI agents monitor code changes in real-time, comparing against governance rules
+- **Deviation Flagging**: Automatically detects and flags violations of security, accessibility, or ethical standards
+- **Proactive Alerts**: Provides immediate feedback on potential issues before commits
+- **Learning Integration**: Uses flagged deviations to improve future suggestions and prevent recurrence
+- **Audit Trail**: Maintains logs of all flagged deviations for governance review
 
 ### Codebase Intelligence
 
@@ -1240,6 +1416,123 @@ Before marking work complete:
 - Propose multiple options with trade-offs
 - Highlight assumptions made
 
+## 🧠 Core Engineering Behaviour (AI MUST)
+
+AI agents must:
+
+- Treat architecture, security, testing, and documentation as first-order concerns — not afterthoughts
+- Produce deterministic, reproducible outputs (same input → same trustworthy outcome)
+- Decompose tasks into clear steps, constraints, and expected outputs
+- Maintain state/context continuity across steps and update knowledge when corrections are made
+- Detect when context is missing and ask focused questions instead of guessing
+- Operate with least privilege and safe execution defaults
+- Produce minimal-diff, low-risk patches unless explicitly told otherwise
+- Flag breaking changes and dependency assumptions before writing code
+- Provide options with rationale (not one solution blindly)
+- Identify complexity smells and propose simplifications
+- Expect and respect constraints, including: performance budgets, file size limits (prefer decomposition), memory constraints, database query efficiency, and CI pipeline lifecycle
+
+## 🔍 Self-Audit Protocol
+
+Every meaningful change must include and pass the following checks; if any check fails, iterate until correct:
+
+- Code correctness review (logic and behaviour against requirements)
+- Type safety check (no implicit any; strict typing)
+- Lint and format compliance
+- Complexity review (cyclomatic and conceptual)
+- Architectural boundary check (imports, services, domains)
+- Security sweep (validate inputs, no secrets, safe defaults)
+- Docstring/JSDoc update if behaviour changes
+- Test coverage introspection and generation (happy path + edges)
+
+## 🛠️ Technical Guardrails
+
+Always consider and prefer:
+
+- Composition over inheritance
+- Small, pure functions first — side effects at the edges
+- Single Responsibility: each piece does one thing well
+- Strict typing everywhere; avoid any
+- Interface-forward design: define contracts first
+- Data validation at all I/O boundaries (e.g., Zod/Yup)
+- Avoid global state; avoid mutex-like orchestration unless essential
+- Idempotent functions where reasonable
+- Predictable errors (Result<T, E> style or equivalent)
+- Defensive defaults on code paths
+- Never bypass logging/metrics
+
+## 🧪 Testing Doctrine
+
+Default approach:
+
+- Test-first or test-alongside implementation
+- Unit plus integration when appropriate
+- Table-driven tests where helpful
+- Include negative paths, edge cases, and boundary conditions
+- Meaningful assertion messages
+- No flaky async tests (stabilise with proper waits and timeouts)
+- Fake/mock external services only at boundaries
+- Recommend property-based testing where beneficial
+
+Goal: code that ships confidently, not hopefully.
+
+## 🔐 Security Protocol
+
+Automatically enforce:
+
+- Zero-trust assumptions
+- Input validation and output sanitisation
+- No hardcoded secrets; secret-safe logging
+- Use secure hashing and modern cryptographic primitives
+- Permission checks for privileged operations
+- Deny-by-default patterns
+- Always flag potential data-handling and privacy-compliance issues
+
+## 📈 Observability & maintainability
+
+Agents should:
+
+- Add logs structured by event and context
+- Suggest metrics and tracing names aligned with domain language
+- Comment only high-risk code paths — avoid noisy commentary
+- Keep functions under ~30 lines unless exceptional
+- Avoid deep nesting and long parameter lists
+- Use ADRs for non-obvious decisions
+
+## 🚨 Failure Mode Behaviour
+
+When uncertain:
+
+- Do not hallucinate APIs
+- Do not invent configs or commands without clearly flagging assumptions
+- Ask for missing context with precise questions
+- Defer destructive operations
+- Provide a fallback implementation or pseudocode with TODO markers
+- When confidence is < 80%, explain risks explicitly
+
+## 🌱 Continuous Improvement Loop (AI agents)
+
+AI should autonomously:
+
+- Log patterns of past fixes and improvements
+- Suggest refactor opportunities and simplifications
+- Propose performance boosts where safe
+- Update internal rules when corrected
+- Surface architectural debt and anti-patterns
+
+Every improvement compounds.
+
+## 🧾 Operational Output Format
+
+When producing a patch, include:
+
+- ✅ Diff (minimal, well-scoped)
+- ✅ Tests (unit/integration as relevant)
+- ✅ Brief reasoning
+- ✅ Edge cases considered
+- ✅ Risk notes
+- ✅ Rollback guidance if risky
+
 ## Continuous Improvement
 
 This instruction set is itself governed by our principles:
@@ -1251,8 +1544,8 @@ This instruction set is itself governed by our principles:
 - Accessible to all team members
 - **AI assistants should proactively improve these rules when patterns emerge** (see Meta-Rule above)
 
-**Last updated**: 2025-11-01
-**Version**: 1.2.7
+**Last updated**: 2025-01-10
+**Version**: 1.3.1
 **Owned by**: Technical Governance Committee
 **Review cycle**: Quarterly
 
