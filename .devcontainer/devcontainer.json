@@ -9,7 +9,7 @@
       "extensions": [
         "ms-vscode.vscode-typescript-next",
         "esbenp.prettier-vscode",
-        "dbaeumer.vscode-eslint",
+        "dbailedaeumer.vscode-eslint",
         "bradlc.vscode-tailwindcss",
         "redhat.vscode-yaml",
         "ms-azuretools.vscode-docker",
@@ -143,8 +143,6 @@
   },
   "remoteUser": "node",
   "mounts": [
-    "type=volume,source=political-sphere-node_modules,target=/workspaces/political-sphere/node_modules",
-    "type=volume,source=political-sphere-nx-cache,target=/workspaces/political-sphere/.nx/cache",
     "source=${localEnv:HOME}/.ssh,target=/home/node/.ssh,type=bind,readonly,consistency=cached"
   ]
 }
