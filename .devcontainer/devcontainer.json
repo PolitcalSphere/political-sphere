@@ -105,7 +105,10 @@
     "build-shared": "npm run build:shared || echo 'build:shared failed (non-fatal)'",
     "welcome": "echo '✅ Development environment ready! Run: bash .devcontainer/scripts/status-check.sh'"
   },
-  "postAttachCommand": { "status": "bash .devcontainer/scripts/status-check.sh" },
+  "postAttachCommand": {
+    "status": "bash .devcontainer/scripts/status-check.sh",
+    "apps": "bash .devcontainer/scripts/start-apps.sh || echo 'app processes not started'"
+  },
   "hostRequirements": { "cpus": 2, "memory": "4gb", "storage": "16gb" },
   "remoteUser": "node",
   "remoteEnv": {
