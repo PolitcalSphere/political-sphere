@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- DevContainer feature options: Removed unsupported `installYarnUsingApt` from Node feature and corrected `kubectl-helm-minikube` to use `kubectl` version key instead of `version`. Fixes Remote Containers feature parsing/build errors in the dev environment. (2025-11-02)
+- DevContainer tests: Updated `.devcontainer/test-devcontainer.sh` to `cd` into its own directory, ensuring relative paths resolve. Prevents spurious JSON syntax error when running the test from the repository root. (2025-11-02)
+- DevContainer hardening: Applied least-privilege defaults via `no-new-privileges`, dropped capabilities (`cap_drop: [ALL]`), and added `tmpfs` mounts for temp directories in compose. Test script now recognises compose-based settings. (2025-11-02)
 - Strict TypeScript compliance (exactOptionalPropertyTypes):
   - OTEL exporter URL now conditionally provided to avoid passing undefined
   - Playwright e2e config uses `shard: null` when not enabled

@@ -8,6 +8,13 @@ services:
     volumes:
       - ../../..:/workspaces/political-sphere:cached
       - /var/run/docker.sock:/var/run/docker.sock
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=256m
+      - /var/tmp:rw,noexec,nosuid,nodev,size=256m
     command: sleep infinity
     environment:
       DATABASE_URL: 'postgres://${POSTGRES_USER:-political}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-political_dev}'

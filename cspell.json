@@ -150,7 +150,9 @@
     "AUTOINCREMENT",
     "DPIA",
     "endgroup",
-    "USERPROFILE"
+    "USERPROFILE",
+    "recognises",
+    "recognise"
   ],
   "ignorePaths": [
     "node_modules/**",

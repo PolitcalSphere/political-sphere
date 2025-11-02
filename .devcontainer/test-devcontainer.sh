@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Always run relative checks from the script's directory
+SCRIPT_DIR="$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)"
+cd "$SCRIPT_DIR"
+
 echo "🧪 Testing DevContainer Configuration"
 echo "====================================="
 
@@ -63,13 +67,16 @@ fi
 # Test 5: Basic security checks
 echo ""
 echo "5. Basic security checks..."
-if grep -q "no-new-privileges" devcontainer.json; then
+
+COMPOSE_FILE="../apps/dev/docker/docker-compose.dev.yaml"
+
+if grep -q "no-new-privileges" devcontainer.json || ( [ -f "$COMPOSE_FILE" ] && grep -q "no-new-privileges" "$COMPOSE_FILE" ); then
     echo "✅ Security: no-new-privileges enabled"
 else
     echo "⚠️  Security: no-new-privileges not found"
 fi
 
-if grep -q "cap-drop.*ALL" devcontainer.json; then
+if grep -q "cap-drop.*ALL" devcontainer.json || ( [ -f "$COMPOSE_FILE" ] && grep -q "cap_drop" "$COMPOSE_FILE" && grep -q -- "- ALL" "$COMPOSE_FILE" ); then
     echo "✅ Security: capabilities dropped"
 else
     echo "⚠️  Security: capabilities not properly restricted"
@@ -96,7 +103,7 @@ else
     echo "⚠️  Performance: Memory limits not configured"
 fi
 
-if grep -q "tmpfs" devcontainer.json; then
+if grep -q "tmpfs" devcontainer.json || ( [ -f "$COMPOSE_FILE" ] && grep -q "tmpfs" "$COMPOSE_FILE" ); then
     echo "✅ Performance: tmpfs mounts configured"
 else
     echo "⚠️  Performance: tmpfs mounts not configured"

@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- DevContainer feature options: Removed unsupported `installYarnUsingApt` from Node feature and corrected `kubectl-helm-minikube` to use `kubectl` version key instead of `version`. This resolves Remote Containers feature parsing/build errors during devcontainer creation. (2025-11-02)
+- DevContainer tests: Made `.devcontainer/test-devcontainer.sh` change to its own directory before running checks so `devcontainer.json` is found when the script is invoked from repository root. Fixes false-negative "JSON syntax errors" output. (2025-11-02)
+- DevContainer hardening: Added `security_opt: [no-new-privileges:true]`, `cap_drop: [ALL]`, and `tmpfs` mounts for `/tmp` and `/var/tmp` to `apps/dev/docker/docker-compose.dev.yaml` for the `dev` service. Updated test script to detect settings in compose when using compose-based devcontainers. (2025-11-02)
 - **DevContainer critical fixes**: Fixed multiple issues preventing proper container operation and extension loading (2025-11-02):
   - Fixed disk space validation in `validate-host.sh` - removed non-numeric characters before integer comparison to prevent "integer expression expected" errors
   - Fixed `postAttachCommand` syntax in `devcontainer.json` - corrected command chaining using proper bash -c syntax with && and || operators
