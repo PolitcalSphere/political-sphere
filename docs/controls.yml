@@ -1,0 +1,87 @@
+version: 1
+metadata:
+  name: Political Sphere Controls Catalogue
+  description: Machine-checkable controls mapping to tools, commands, and pass/fail thresholds
+  lastUpdated: 2025-11-02
+  owner: Technical Governance Committee
+
+# Each control defines how to evaluate a project rule.
+# Fields:
+# - id: unique key
+# - name: human-friendly name
+# - severity: blocker | warning (blocker fails CI on violation)
+# - type: command | metric
+# - command: shell command to execute (for type=command)
+# - metric:
+#     run: shell command to produce a JSON file with metrics
+#     file: path to the produced JSON file
+#     jsonPath: JSONPath-like pointer (dot notation) to the metric value
+#     threshold: numeric threshold to compare against
+#     comparison: ">=" | ">" | "<=" | "<"
+# Notes: Prefer existing project scripts; commands must exit non-zero on failure for command-type controls.
+
+controls:
+  - id: pr-headers
+    name: PR mandatory headers present
+    severity: blocker
+    type: command
+    command: node scripts/ci/check-pr-headers.mjs
+  - id: lint
+    name: ESLint no warnings
+    severity: blocker
+    type: command
+    command: npm run lint
+
+  - id: typecheck
+    name: TypeScript typecheck
+    severity: blocker
+    type: command
+    command: npm run typecheck
+
+  - id: tests
+    name: Unit & integration tests
+    severity: blocker
+    type: command
+    command: npm run test
+
+  - id: docs-lint
+    name: Markdown & spell check
+    severity: warning
+    type: command
+    command: npm run docs:lint
+
+  - id: import-boundaries
+    name: Module import boundaries
+    severity: blocker
+    type: command
+    command: node scripts/ci/check-import-boundaries.mjs
+
+  - id: a11y
+    name: Accessibility checks (WCAG 2.2 AA+)
+    severity: blocker
+    type: command
+    command: npm run test:a11y
+
+  - id: secrets
+    name: Secret scanning (Gitleaks)
+    severity: blocker
+    type: command
+    command: bash scripts/security/gitleaks-scan.sh
+
+  - id: novelty
+    name: Novelty guard (prevent low-change regenerations)
+    severity: warning
+    type: command
+    command: node scripts/novelty-guard.js --min-novelty 0.2
+
+  # Example metric-based control (disabled by default). Uncomment when coverage JSON is available.
+  # - id: coverage
+  #   name: Test coverage threshold
+  #   severity: warning
+  #   type: metric
+  #   metric:
+  #     run: npm run test -- --coverage --coverageReporters=json-summary
+  #     file: coverage/coverage-summary.json
+  #     jsonPath: total.lines.pct
+  #     threshold: 80
+  #     comparison: ">="

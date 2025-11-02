@@ -8,6 +8,8 @@
     "libs/*"
   ],
   "devDependencies": {
+    "ts-node": "^10.9.2",
+    "yaml": "^2.6.0",
     "@axe-core/playwright": "^4.11.0",
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^19.2.2",
@@ -27,6 +29,7 @@
     "concurrently": "^8.2.2",
     "cspell": "^9.2.2",
     "eslint": "^8.57.0",
+    "@nx/eslint-plugin": "^19.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-filenames": "^1.3.2",
     "html-webpack-plugin": "^5.5.0",
@@ -45,9 +48,11 @@
     "webpack-dev-server": "^5.2.2"
   },
   "scripts": {
-  "dev:clean:processes": "bash scripts/dev/kill-resource-hogs.sh",
-  "dev:reset-performance": "bash scripts/dev/kill-resource-hogs.sh",
+    "controls:run": "tsx scripts/controls-runner.ts",
+    "dev:clean:processes": "bash scripts/dev/kill-resource-hogs.sh",
+    "dev:reset-performance": "bash scripts/dev/kill-resource-hogs.sh",
     "help": "echo 'Available scripts:\\n  build: Build the project\\n  lint: Lint the code\\n  test: Run tests\\n  bootstrap: Bootstrap the project\\n  format: Format code\\n  typecheck: Type check\\n  docs:lint: Lint documentation\\n  ai:*: AI-related scripts\\n  dev:*: Development servers\\n  validate:env: Validate environment\\n  rollback: Rollback changes'",
+    "build:shared": "nx run-many --target=build --projects=@political-sphere/shared",
     "bootstrap": "bash scripts/bootstrap.sh",
     "validate:env": "node scripts/validate-env.js",
     "format": "prettier --write .",
@@ -82,7 +87,7 @@
     "mf:init": "node tools/module-federation/generate.js",
     "lint:boundaries": "eslint . --ext .ts,.tsx --max-warnings=0",
     "lint:import-boundaries": "node scripts/ci/check-import-boundaries.js",
-    "test:a11y": "bash scripts/ci/a11y-check.sh",
+    "test:a11y": "playwright test --config=playwright-accessibility-config.ts",
     "hooks:review": "node scripts/ci/husky-lefthook-review.mjs",
     "hooks:security": "node scripts/ci/husky-lefthook-security.mjs",
     "hooks:bugs": "node scripts/ci/husky-lefthook-bugs.mjs",

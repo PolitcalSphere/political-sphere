@@ -79,6 +79,17 @@
   "pluginsConfig": {
     "@nx/js": {
       "analyzeSourceFiles": false
+    },
+    "@nx/enforce-module-boundaries": {
+      "enforceBuildableLibDependency": true,
+      "allow": [],
+      "depConstraints": [
+        {
+          "sourceTag": "type:app",
+          "onlyDependOnLibsWithTags": ["type:ui", "type:feature", "type:data", "type:util"]
+        },
+        { "sourceTag": "scope:core", "onlyDependOnLibsWithTags": ["scope:core"] }
+      ]
     }
   },
   "defaultBase": "main",

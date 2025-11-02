@@ -1,0 +1,41 @@
+{
+  "rateLimits": {
+    "codeGeneration": {
+      "maxPerHour": 200,
+      "maxPerDay": 1000
+    },
+    "codeReview": {
+      "maxPerHour": 100,
+      "maxPerDay": 400
+    },
+    "testing": {
+      "maxPerHour": 60,
+      "maxPerDay": 300
+    }
+  },
+  "qualityGates": {
+    "requireLinting": true,
+    "requireSecurityScan": true,
+    "requireTesting": true,
+    "minTestCoverage": 80
+  },
+  "contentFilters": {
+    "blockHardcodedSecrets": true,
+    "blockInsecurePatterns": true,
+    "requireErrorHandling": true
+  },
+  "fastMode": {
+    "enabled": false,
+    "environmentVariable": "FAST_AI",
+    "skipVerboseAuditLogging": true,
+    "useCachedResults": true,
+    "deferNonCriticalQualityGates": true,
+    "prioritizeSpeedOverExhaustiveChecks": true,
+    "stillEnforceSecurityAndAccessibility": true
+  },
+  "auditSettings": {
+    "logAllInteractions": true,
+    "retainLogsDays": 90,
+    "anonymizeUserData": true
+  }
+}

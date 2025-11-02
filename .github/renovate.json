@@ -6,9 +6,17 @@
   "packageRules": [
     {
       "matchManagers": ["npm"],
-      "labels": ["deps"],
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "labels": ["dependencies", "auto-merge"],
       "automerge": true,
       "automergeType": "branch"
+    },
+    {
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["major"],
+      "labels": ["dependencies", "requires-adr"],
+      "automerge": false
     }
   ]
 }

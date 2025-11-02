@@ -1,0 +1,9 @@
+{
+  "name": "React Form Pattern",
+  "description": "Accessible form component with validation and error handling",
+  "example": {
+    "typescript": "import { useState } from 'react';\n\ninterface FormData {\n  email: string;\n  password: string;\n}\n\ninterface FormErrors {\n  email?: string;\n  password?: string;\n}\n\nexport function LoginForm() {\n  const [formData, setFormData] = useState<FormData>({ email: '', password: '' });\n  const [errors, setErrors] = useState<FormErrors>({});\n  const [isSubmitting, setIsSubmitting] = useState(false);\n\n  const validate = (): boolean => {\n    const newErrors: FormErrors = {};\n    if (!formData.email.includes('@')) newErrors.email = 'Invalid email';\n    if (formData.password.length < 8) newErrors.password = 'Password too short';\n    setErrors(newErrors);\n    return Object.keys(newErrors).length === 0;\n  };\n\n  const handleSubmit = async (e: React.FormEvent) => {\n    e.preventDefault();\n    if (!validate()) return;\n    \n    setIsSubmitting(true);\n    try {\n      await login(formData);\n    } catch (error) {\n      setErrors({ general: 'Login failed' });\n    } finally {\n      setIsSubmitting(false);\n    }\n  };\n\n  return (\n    <form onSubmit={handleSubmit} noValidate>\n      <div>\n        <label htmlFor=\"email\">Email</label>\n        <input\n          id=\"email\"\n          type=\"email\"\n          value={formData.email}\n          onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}\n          aria-describedby={errors.email ? 'email-error' : undefined}\n          aria-invalid={!!errors.email}\n        />\n        {errors.email && <span id=\"email-error\" role=\"alert\">{errors.email}</span>}\n      </div>\n      <button type=\"submit\" disabled={isSubmitting}>\n        {isSubmitting ? 'Logging in...' : 'Login'}\n      </button>\n    </form>\n  );\n}",
+    "usage": "<LoginForm />"
+  },
+  "tags": ["react", "forms", "accessibility", "validation"]
+}

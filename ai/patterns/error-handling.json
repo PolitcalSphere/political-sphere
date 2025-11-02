@@ -1,0 +1,9 @@
+{
+  "name": "Error Handling Pattern",
+  "description": "Standard error handling with Result<T,E> pattern",
+  "example": {
+    "typescript": "function safeOperation(): Result<User, Error> {\n  try {\n    const user = getUser(id);\n    return { success: true, data: user };\n  } catch (error) {\n    return { success: false, error: error as Error };\n  }\n}",
+    "usage": "const result = safeOperation();\nif (result.success) {\n  // use result.data\n} else {\n  // handle result.error\n}"
+  },
+  "tags": ["error-handling", "typescript", "result-pattern"]
+}

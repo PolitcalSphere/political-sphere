@@ -1,0 +1,1 @@
+{ "latency": { "p95_ms": 250 }, "error_rate": { "max_pct": 0.5 }, "cold_start_ms": 800 }

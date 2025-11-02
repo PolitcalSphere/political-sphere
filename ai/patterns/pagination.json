@@ -1,0 +1,9 @@
+{
+  "name": "Pagination Pattern",
+  "description": "Standard pagination implementation with cursor-based navigation",
+  "example": {
+    "typescript": "interface PaginatedResponse<T> {\n  data: T[];\n  hasNext: boolean;\n  hasPrev: boolean;\n  nextCursor?: string;\n  prevCursor?: string;\n}\n\nfunction paginate<T>(\n  items: T[],\n  cursor?: string,\n  limit: number = 20\n): PaginatedResponse<T> {\n  const startIndex = cursor ? parseInt(cursor) : 0;\n  const endIndex = startIndex + limit;\n  const data = items.slice(startIndex, endIndex);\n  \n  return {\n    data,\n    hasNext: endIndex < items.length,\n    hasPrev: startIndex > 0,\n    nextCursor: endIndex < items.length ? endIndex.toString() : undefined,\n    prevCursor: startIndex > 0 ? Math.max(0, startIndex - limit).toString() : undefined\n  };\n}",
+    "usage": "const result = paginate(users, req.query.cursor, 10);\nres.json(result);"
+  },
+  "tags": ["pagination", "api", "cursor-based"]
+}

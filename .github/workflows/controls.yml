@@ -1,0 +1,43 @@
+name: Controls
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  controls:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Show environment
+        run: |
+          node -v
+          npm -v
+
+      - name: Run controls
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: npm run controls:run
+
+      - name: Upload controls summary (optional)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: controls-catalogue
+          path: |
+            docs/controls.yml

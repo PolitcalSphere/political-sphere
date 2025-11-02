@@ -1,0 +1,9 @@
+{
+  "name": "Logging Pattern",
+  "description": "Structured logging with context and redaction",
+  "example": {
+    "typescript": "import { log } from '@shared/log';\n\nfunction processUser(userId: string): void {\n  log('info', 'user.process.start', { userId });\n  \n  try {\n    // business logic\n    const user = getUser(userId);\n    log('info', 'user.process.success', { userId, userEmail: user.email });\n  } catch (error) {\n    log('error', 'user.process.failed', { userId, error: error.message });\n    throw error;\n  }\n}",
+    "usage": "processUser('123');\n// Output: {\"level\":\"info\",\"event\":\"user.process.start\",\"ctx\":{\"userId\":\"123\"},\"ts\":\"2024-01-10T10:00:00.000Z\"}"
+  },
+  "tags": ["logging", "observability", "structured"]
+}

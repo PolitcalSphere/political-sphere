@@ -1,0 +1,9 @@
+{
+  "name": "Test Layout Pattern",
+  "description": "Standard test structure with describe/it blocks and proper setup",
+  "example": {
+    "typescript": "import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';\nimport { UserService } from '../user.service';\n\ndescribe('UserService', () => {\n  let service: UserService;\n  let mockRepo: jest.Mocked<UserRepository>;\n\n  beforeEach(() => {\n    mockRepo = {\n      findById: jest.fn(),\n      save: jest.fn(),\n    } as jest.Mocked<UserRepository>;\n    service = new UserService(mockRepo);\n  });\n\n  afterEach(() => {\n    jest.clearAllMocks();\n  });\n\n  describe('getUser', () => {\n    it('should return user when found', async () => {\n      const mockUser = { id: '1', name: 'John' };\n      mockRepo.findById.mockResolvedValue(mockUser);\n\n      const result = await service.getUser('1');\n\n      expect(result).toEqual(mockUser);\n      expect(mockRepo.findById).toHaveBeenCalledWith('1');\n    });\n\n    it('should throw error when user not found', async () => {\n      mockRepo.findById.mockResolvedValue(null);\n\n      await expect(service.getUser('1')).rejects.toThrow('User not found');\n    });\n\n    it('should handle repository errors', async () => {\n      const error = new Error('Database error');\n      mockRepo.findById.mockRejectedValue(error);\n\n      await expect(service.getUser('1')).rejects.toThrow('Database error');\n    });\n  });\n});",
+    "usage": "Run with: npm test -- --testPathPattern=user.service.spec.ts"
+  },
+  "tags": ["testing", "jest", "unit-tests", "mocks"]
+}

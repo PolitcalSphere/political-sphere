@@ -1,0 +1,87 @@
+{
+  "projectOverview": {
+    "name": "Political Sphere",
+    "description": "A democratically-governed multiplayer political simulation game with strict constitutional governance",
+    "architecture": "Monorepo with Nx workspace, modular structure",
+    "techStack": {
+      "frontend": ["React", "TypeScript", "Tailwind CSS", "Module Federation"],
+      "backend": ["Node.js", "NestJS", "TypeScript"],
+      "infrastructure": ["Docker", "Kubernetes", "Terraform"],
+      "testing": ["Jest", "Playwright", "Testing Library"],
+      "ci": ["GitHub Actions", "Nx"]
+    },
+    "keyPrinciples": [
+      "Democratic governance",
+      "Constitutional compliance",
+      "Zero-trust security",
+      "WCAG 2.2 AA+ accessibility",
+      "Ethical AI use"
+    ]
+  },
+  "architecturalPatterns": {
+    "boundedContexts": {
+      "apps": "Application entry points (frontend, api, worker)",
+      "libs": "Shared libraries (ui, platform, infrastructure)",
+      "tools": "Build tools and utilities",
+      "docs": "Comprehensive documentation"
+    },
+    "moduleBoundaries": {
+      "enforced": true,
+      "tool": "Nx",
+      "rules": "Import boundaries checked in CI"
+    },
+    "security": {
+      "zeroTrust": "All access verified, least privilege",
+      "secrets": "Environment variables or secret managers",
+      "audit": "Full traceability and auditability"
+    }
+  },
+  "commonIssues": {
+    "importBoundaries": {
+      "symptom": "CI fails with import boundary violations",
+      "solution": "Check scripts/ci/check-import-boundaries.js, ensure imports follow module boundaries",
+      "prevention": "Use Nx generators for new modules"
+    },
+    "accessibility": {
+      "symptom": "WCAG compliance failures",
+      "solution": "Run scripts/ci/a11y-check.sh, add ARIA labels, semantic HTML",
+      "prevention": "Include accessibility in component design"
+    },
+    "security": {
+      "symptom": "Security scan failures",
+      "solution": "Review ai-controls.json quality gates, avoid hardcoded secrets",
+      "prevention": "Use secure coding practices from day one"
+    }
+  },
+  "bestPractices": {
+    "codeStyle": {
+      "naming": "kebab-case for files, PascalCase for components, camelCase for functions",
+      "imports": "Group by external, internal, relative",
+      "errorHandling": "Always include try/catch, meaningful error messages"
+    },
+    "testing": {
+      "coverage": "Minimum 80% for critical paths",
+      "types": "Unit, integration, e2e, accessibility",
+      "mocks": "Use proper fixtures, avoid over-mocking"
+    },
+    "documentation": {
+      "readme": "Every directory needs README.md",
+      "code": "JSDoc/TSDoc for public APIs",
+      "adr": "Architecture decisions in docs/architecture/decisions/"
+    }
+  },
+  "developmentWorkflow": {
+    "branching": "feature branches from main, PR reviews required",
+    "commits": "Conventional commits with commitlint",
+    "ci": "Lint, test, security scan, accessibility check on every PR",
+    "deployment": "Canary deployments, blue-green for critical services"
+  },
+  "performancePatterns": {
+    "caching": "Use ai-cache for expensive operations",
+    "lazyLoading": "Components and routes loaded on demand",
+    "optimization": "Bundle analysis, tree shaking enabled",
+    "monitoring": "OpenTelemetry traces, metrics, logs"
+  },
+  "lastUpdated": "2025-10-29T12:00:00.000Z",
+  "version": "1.0.0"
+}

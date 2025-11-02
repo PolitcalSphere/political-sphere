@@ -11,7 +11,7 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "@nrwl/nx", "filenames"],
+  "plugins": ["@typescript-eslint", "@nrwl/nx", "filenames", "@nx"],
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"],
   "env": {
     "node": true,
@@ -53,5 +53,14 @@
         "ignoreExplicitRelative": true
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "extends": ["plugin:@nx/typescript"],
+      "rules": {
+        "@nx/enforce-module-boundaries": ["error", { "enforceBuildableLibDependency": true }]
+      }
+    }
+  ]
 }

@@ -1,3 +1,16 @@
+AI-EXECUTION:
+mode: Safe | Fast-Secure | Audit | R&D
+controls: [SEC-01, SEC-05, QUAL-02, TEST-03, A11Y-01]
+deferred: []
+rationale: <1–2 lines>
+
+ASSUMPTIONS: - <explicit assumption 1> - <explicit assumption 2>
+CONFIDENCE:
+self_estimate: 0.8
+high_risk_areas: [example-area]
+
+OUTPUT: - type: unified-diff - includes: tests, rollback steps
+
 ## Description
 
 Brief description of the changes made in this PR.

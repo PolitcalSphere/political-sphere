@@ -28,3 +28,21 @@ Require stack:
 }
 
 Node.js v22.19.0
+[NX v22.0.2 Daemon Server] - 2025-11-02T11:47:57.963Z - Started listening on: /private/var/folders/g5/kzl_1fgd7fn1dcmthvyjs9j40000gn/T/e93116b9a22cc23eccb1/d.sock
+[NX v22.0.2 Daemon Server] - 2025-11-02T11:47:57.967Z - [WATCHER]: Subscribed to changes within: /Users/morganlowman/politicial-sphere (V1) (native)
+Time for 'plugin worker 26939 code loading' 5.348399999999998
+Time for 'plugin worker 26938 code loading' 5.3637049999999995
+Time for 'plugin worker 26937 code loading' 5.435320000000001
+[NX v22.0.2 Daemon Server] - 2025-11-02T11:47:58.331Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v22.0.2 Daemon Server] - 2025-11-02T11:47:58.332Z - [REQUEST]: 
+[NX v22.0.2 Daemon Server] - 2025-11-02T11:47:58.332Z - [REQUEST]: 
+Time for 'nx/core/project-json:createNodes' 1.5759470000000135
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 8.601403000000005
+Time for 'nx/core/package-json:createNodes' 12.42788999999999
+Unable to find local plugin [] Map(0) {}
+Unable to find local plugin [] Map(0) {}
+Time for 'build typescript dependencies' 0.27996799999999666
+[NX v22.0.2 Daemon Server] - 2025-11-02T11:47:58.467Z - [SYNC]: collect registered sync generators
+[NX v22.0.2 Daemon Server] - 2025-11-02T11:48:04.499Z - [WATCHER]: Stopping the watcher for /Users/morganlowman/politicial-sphere (V1) (sources)
+[NX v22.0.2 Daemon Server] - 2025-11-02T11:48:04.499Z - [WATCHER]: Stopping the watcher for /Users/morganlowman/politicial-sphere (V1) (outputs)
+[NX v22.0.2 Daemon Server] - 2025-11-02T11:48:04.500Z - Server stopped because: "this process is no longer the current daemon (native)"

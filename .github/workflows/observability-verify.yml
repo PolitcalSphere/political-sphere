@@ -1,0 +1,13 @@
+name: Observability Verify
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  verify-otel-env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify OTEL envs present in prod
+        run: |
+          test -n "$OTEL_EXPORTER_OTLP_TRACES_ENDPOINT" || (echo "Missing OTEL endpoint" && exit 1)

@@ -1,0 +1,45 @@
+name: Security Scan
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Semgrep
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: '.semgrep.yml'
+        env:
+          SEMGREP_RULES: '.semgrep.yml'
+
+      - name: Upload SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep
+
+      - name: Initialize CodeQL (optional)
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        uses: github/codeql-action/init@v3
+        with:
+          languages: 'javascript'
+
+      - name: Analyze CodeQL (optional)
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        uses: github/codeql-action/analyze@v3
