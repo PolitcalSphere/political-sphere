@@ -1,92 +1,170 @@
-version: 1
-metadata:
-  name: Political Sphere Controls Catalogue
-  description: Machine-checkable controls mapping to tools, commands, and pass/fail thresholds
-  lastUpdated: 2025-11-02
-  owner: Technical Governance Committee
-
-# Each control defines how to evaluate a project rule.
-# Fields:
-# - id: unique key
-# - name: human-friendly name
-# - severity: blocker | warning (blocker fails CI on violation)
-# - type: command | metric
-# - command: shell command to execute (for type=command)
-# - metric:
-#     run: shell command to produce a JSON file with metrics
-#     file: path to the produced JSON file
-#     jsonPath: JSONPath-like pointer (dot notation) to the metric value
-#     threshold: numeric threshold to compare against
-#     comparison: ">=" | ">" | "<=" | "<"
-# Notes: Prefer existing project scripts; commands must exit non-zero on failure for command-type controls.
+# Controls Catalogue for Political Sphere
+# Typed source for governance controls - compiled to YAML
 
 controls:
-  - id: pr-headers
-    name: PR mandatory headers present
-    severity: blocker
-    type: command
-    command: node scripts/ci/check-pr-headers.mjs
-  - id: lint
-    name: ESLint no warnings
-    severity: blocker
-    type: command
-    command: npm run lint
+  # Foundation & Governance
+  GOV-01:
+    name: 'Constitutional Compliance'
+    category: 'governance'
+    severity: 'blocker'
+    description: 'Project must comply with .blackboxrules constitution'
+    evidence: '.blackboxrules exists and contains neutrality/anti-manipulation clauses'
+    fix: 'Add missing constitutional safeguards'
+    owner: 'Technical Governance Committee'
 
-  - id: typecheck
-    name: TypeScript typecheck
-    severity: blocker
-    type: command
-    command: npm run typecheck
+  GOV-02:
+    name: 'Rule Parity'
+    category: 'governance'
+    severity: 'blocker'
+    description: 'Changes to .blackboxrules must be mirrored in .github/copilot-instructions.md'
+    evidence: 'Both files updated simultaneously with matching version/date'
+    fix: 'Update both rule files and increment version'
+    owner: 'Technical Governance Committee'
 
-  - id: tests
-    name: Unit & integration tests
-    severity: blocker
-    type: command
-    command: npm run test
+  # Security Controls
+  SEC-01:
+    name: 'Secret Scanning'
+    category: 'security'
+    severity: 'blocker'
+    description: 'No secrets committed to repository'
+    evidence: 'gitleaks scan passes'
+    fix: 'Remove secrets and rotate if exposed'
+    owner: 'Security Team'
 
-  - id: docs-lint
-    name: Markdown & spell check
-    severity: warning
-    type: command
-    command: npm run docs:lint
+  SEC-02:
+    name: 'Dependency Vulnerabilities'
+    category: 'security'
+    severity: 'warning'
+    description: 'No high/critical vulnerabilities in dependencies'
+    evidence: 'pnpm audit/npm audit clean'
+    fix: 'Update vulnerable packages'
+    owner: 'Platform Team'
 
-  - id: import-boundaries
-    name: Module import boundaries
-    severity: blocker
-    type: command
-    command: node scripts/ci/check-import-boundaries.mjs
+  SEC-03:
+    name: 'SAST Scanning'
+    category: 'security'
+    severity: 'warning'
+    description: 'No security issues in source code'
+    evidence: 'Semgrep scan passes'
+    fix: 'Fix identified security issues'
+    owner: 'Development Teams'
 
-  - id: a11y
-    name: Accessibility checks (WCAG 2.2 AA+)
-    severity: blocker
-    type: command
-    command: npm run test:a11y
+  # Quality Controls
+  QUAL-01:
+    name: 'Code Linting'
+    category: 'code-quality'
+    severity: 'blocker'
+    description: 'Code passes ESLint/Biome rules'
+    evidence: 'Linting passes with zero errors'
+    fix: 'Fix linting violations'
+    owner: 'Development Teams'
 
-  - id: secrets
-    name: Secret scanning (Gitleaks)
-    severity: blocker
-    type: command
-    command: bash scripts/security/gitleaks-scan.sh
+  QUAL-02:
+    name: 'Type Safety'
+    category: 'code-quality'
+    severity: 'blocker'
+    description: 'TypeScript compilation succeeds'
+    evidence: 'tsc --noEmit passes'
+    fix: 'Fix type errors'
+    owner: 'Development Teams'
 
-  - id: novelty
-    name: Novelty guard (prevent low-change regenerations)
-    severity: warning
-    type: command
-    command: node scripts/novelty-guard.js --min-novelty 0.2
+  QUAL-03:
+    name: 'Test Coverage'
+    category: 'testing'
+    severity: 'warning'
+    description: 'Unit tests cover critical paths'
+    evidence: 'Coverage meets thresholds'
+    fix: 'Add missing test coverage'
+    owner: 'Development Teams'
 
-  - id: universal-audit
-    name: Universal audit across all dimensions
-    severity: blocker
-    type: command
-    command: bash scripts/universal-audit.sh ci-safe online true
-  # Example metric-based control (disabled by default). Uncomment when coverage JSON is available.
-  # - id: coverage
-  #   name: Test coverage threshold
-  #   severity: warning
-  #   type: metric
-  #   metric:
-  #     run: npm run test -- --coverage --coverageReporters=json-summary
-  #     file: coverage/coverage-summary.json
-  #     jsonPath: total.lines.pct
-  #     threshold: 80
-  #     comparison: ">="
+  # Accessibility Controls
+  A11Y-01:
+    name: 'WCAG Compliance'
+    category: 'accessibility'
+    severity: 'blocker'
+    description: 'UI meets WCAG 2.2 AA standards'
+    evidence: 'Automated a11y tests pass'
+    fix: 'Fix accessibility violations'
+    owner: 'UX Team'
+
+  # AI Governance Controls
+  AI-01:
+    name: 'AI Neutrality'
+    category: 'ai-governance'
+    severity: 'blocker'
+    description: 'AI systems maintain political neutrality'
+    evidence: 'Neutrality tests pass'
+    fix: 'Implement neutrality safeguards'
+    owner: 'AI Governance Committee'
+
+  AI-02:
+    name: 'AI Fairness'
+    category: 'ai-governance'
+    severity: 'warning'
+    description: 'AI outputs are fair and unbiased'
+    evidence: 'Bias detection passes'
+    fix: 'Address identified biases'
+    owner: 'AI Governance Committee'
+
+  # Privacy Controls
+  PRIV-01:
+    name: 'Data Minimization'
+    category: 'privacy'
+    severity: 'warning'
+    description: 'Only necessary data collected'
+    evidence: 'Privacy impact assessment completed'
+    fix: 'Remove unnecessary data collection'
+    owner: 'Privacy Officer'
+
+  # Operational Controls
+  OPS-01:
+    name: 'Observability'
+    category: 'operations'
+    severity: 'warning'
+    description: 'Systems are observable'
+    evidence: 'Monitoring/logging/tracing implemented'
+    fix: 'Add observability instrumentation'
+    owner: 'Platform Team'
+
+  OPS-02:
+    name: 'Incident Response'
+    category: 'operations'
+    severity: 'info'
+    description: 'Incident response procedures exist'
+    evidence: 'Runbooks and playbooks documented'
+    fix: 'Create incident response documentation'
+    owner: 'Operations Team'
+
+# Control Execution Modes
+execution_modes:
+  safe:
+    controls: [GOV-01, GOV-02, SEC-01, QUAL-01, QUAL-02, A11Y-01, AI-01]
+    description: 'Full compliance required'
+
+  fast-secure:
+    controls: [SEC-01, QUAL-02, AI-01]
+    description: 'Security and types only, defer others to TODO'
+
+  audit:
+    controls:
+      [
+        GOV-01,
+        GOV-02,
+        SEC-01,
+        SEC-02,
+        SEC-03,
+        QUAL-01,
+        QUAL-02,
+        QUAL-03,
+        A11Y-01,
+        AI-01,
+        AI-02,
+        PRIV-01,
+        OPS-01,
+        OPS-02,
+      ]
+    description: 'Comprehensive audit with full artefact capture'
+
+  r-and-d:
+    controls: [SEC-01, AI-01]
+    description: 'Minimal controls for experimental work'

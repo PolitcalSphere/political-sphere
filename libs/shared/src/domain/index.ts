@@ -3,6 +3,15 @@ export * from './party';
 export * from './bill';
 export * from './vote';
 
+export * from './session';
+export * from './sitting-day';
+export * from './order-paper-item';
+export * from './bill-stage';
+export * from './debate';
+export * from './division';
+export * from './election';
+export * from './mp';
+
 // Re-export types and schemas for convenience
 export type { User, CreateUserInput } from './user';
 export type { Party, CreatePartyInput } from './party';

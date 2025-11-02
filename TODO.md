@@ -28,6 +28,8 @@
 - [x] Reduce ESLint warnings in custom MCP servers (filesystem, political-sphere, puppeteer, sqlite) by replacing explicit `any` with precise types, adding safe error handling, and removing unused code. Lint now passes with zero warnings. (2025-11-02)
 - [x] **Fixed DevContainer critical bugs**: Fixed disk space validation integer parsing error, corrected postAttachCommand syntax, added ESLint validation settings, enhanced status-check.sh with validation and auto-install, enhanced start-apps.sh with port conflict detection, added debug-extensions.sh troubleshooting script, and changed to manual app startup mode (2025-11-02)
 - [x] **Fixed Docker-in-Docker permissions**: Updated docker-compose.dev.yaml to enable privileged mode and required capabilities for Docker-in-Docker, created docker-helper.sh script for managing Docker daemon and monitoring stack, added comprehensive documentation in docs/CONTAINER-FIXES.md (2025-11-02)
+- [x] **DevContainer alignment**: Fixed ESLint extension ID typo, exposed PostgreSQL on host port 5433, added postAttachCommand to show status on attach, and aligned frontend port defaults to 3002 across scripts and compose (2025-11-02)
+- [x] **Fix postCreate exit 127**: Guarded `wait-for-services.sh` when Docker CLI is unavailable and made `REDIS_PASSWORD` checks safe under `set -u`; verified script returns success with non-fatal warnings (2025-11-02)
 - [ ] Rebuild dev container to apply Docker-in-Docker fixes (requires user action)
 - [ ] Run full test suite to verify all Jest configuration improvements
 - [ ] Address remaining database connectivity issues (500 errors in tests)
@@ -85,6 +87,8 @@
 
 ## Universal Audit Implementation Tasks
 
+- [x] Apply "Top fixes (high impact)" to scripts/universal-audit.sh: harden JSON assembly with NDJSON, capture stdout/stderr/time/exit code in evidence, deterministic constitution checks, AI asset proof-of-use, package manager detection, perf probes, SARIF output, tightened exit criteria, shellcheck self-audit
+- [x] Create ai-assets.json manifest with example AI assets (context-preloader.js, novelty-guard.js, ai/patterns/)
 - [ ] Implement specific game simulation logic validation checks in universal audit
 - [ ] Add performance benchmarking and SLO validation to audit
 - [ ] Develop comprehensive AI neutrality and fairness audit suite

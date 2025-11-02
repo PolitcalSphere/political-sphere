@@ -30,7 +30,7 @@ export function initializeDatabase(): Database.Database {
   const dir = path.dirname(DB_PATH);
   try {
     fs.mkdirSync(dir, { recursive: true });
-  } catch (e) {
+  } catch (_e) {
     // If for some reason directory creation fails, let better-sqlite3 report the error
   }
 
@@ -38,7 +38,7 @@ export function initializeDatabase(): Database.Database {
   if (process.env.NODE_ENV === 'test') {
     try {
       if (fs.existsSync(DB_PATH)) fs.unlinkSync(DB_PATH);
-    } catch (e) {
+    } catch (_e) {
       // ignore - will error when opening if removal failed
     }
   }

@@ -11,28 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - AI Intelligence & Competence Enhancement section with 13 improvements to speed up AI agents (Blackbox AI and GitHub Copilot) by narrowing scope, pre-fetching context, generating working memory files, predicting next steps, maintaining best snippet libraries, automatic diff previews, chunking tasks, caching decisions, guarding against rabbit holes, auto-creating dev helpers, opportunistic clean-as-you-go, pre-filling PR templates, and proactive daily improvements. (2025-01-10)
 - AI Deputy Mode: Enables Copilot and Blackbox to shadow changes and flag governance deviations in real-time, with proactive alerts, learning integration, and audit trails. (2025-01-10)
-- Universal audit command (`scripts/universal-audit.sh`) for comprehensive project auditing across all dimensions including code quality, security, AI governance, game simulation logic, accessibility, observability, and constitutional compliance
-- Integration of universal audit into controls system as blocker control to ensure comprehensive quality gates
-- **DevContainer startup troubleshooting**: Added `docs/DEVCONTAINER-STARTUP-ISSUES.md` with comprehensive guide for resolving container rebuild failures and command execution errors (2025-11-02)
-- **Docker helper script**: Added `scripts/docker-helper.sh` to manage Docker daemon and monitoring stack within dev container, with commands for starting/stopping services and checking status (2025-11-02)
-- **Container fixes documentation**: Added `docs/CONTAINER-FIXES.md` with comprehensive guide for resolving Docker-in-Docker permission issues and monitoring stack startup (2025-11-02)
 - **DevContainer extension debugging**: Added `debug-extensions.sh` script to troubleshoot VS Code extension loading issues, with comprehensive diagnostics and troubleshooting steps (2025-11-02)
 - **DevContainer tool bootstrap**: Added `install-tools.sh` to install pnpm via corepack and optionally Nx CLI globally; wired into postCreate. Improves extension activation and script reliability by ensuring expected tools exist in the container. (2025-11-02)
 - **Docker socket permission helper**: Added `docker-socket-perms.sh` to detect host docker.sock GID, create matching group, and add the container user to enable Docker access; referenced from status checks. (2025-11-02)
 
 ### Fixed
 
-- **DevContainer startup failures**: Fixed critical issues preventing container rebuild and startup (2025-11-02):
-  - Removed problematic SSH mount that caused permission errors and build failures
-  - Changed `postCreateCommand` from array to resilient bash command with `set +e` to continue on errors
-  - Removed hard `exit 1` from build:shared failure that prevented container from starting
-  - Made all lifecycle commands non-blocking with proper warning messages
-- **Docker-in-Docker configuration**: Updated `apps/dev/docker/docker-compose.dev.yaml` to enable Docker-in-Docker functionality by adding `privileged: true` and required capabilities (SYS_ADMIN, NET_ADMIN), replacing overly restrictive security settings that prevented Docker daemon from starting (2025-11-02)
-- **Docker Compose version warning**: Removed obsolete `version: '3.8'` from `monitoring/docker-compose.yml` to eliminate deprecation warnings in Docker Compose v2 (2025-11-02)
 - DevContainer feature options: Removed unsupported `installYarnUsingApt` from Node feature and corrected `kubectl-helm-minikube` to use `kubectl` version key instead of `version`. This resolves Remote Containers feature parsing/build errors during devcontainer creation. (2025-11-02)
 - DevContainer tests: Made `.devcontainer/test-devcontainer.sh` change to its own directory before running checks so `devcontainer.json` is found when the script is invoked from repository root. Fixes false-negative "JSON syntax errors" output. (2025-11-02)
 - DevContainer hardening: Added `security_opt: [no-new-privileges:true]`, `cap_drop: [ALL]`, and `tmpfs` mounts for `/tmp` and `/var/tmp` to `apps/dev/docker/docker-compose.dev.yaml` for the `dev` service. Updated test script to detect settings in compose when using compose-based devcontainers. (2025-11-02)
-  - **Note**: Security settings were later adjusted to enable Docker-in-Docker functionality (see Docker-in-Docker configuration fix above)
 - DevContainer dependency install: Made `.devcontainer/scripts/install-deps.sh` robust to npm v10 peer resolution and missing lockfiles. Now skips `npm ci` if no `package-lock.json` and falls back to `npm install --legacy-peer-deps` on conflicts; logs clearer diagnostics on failure. (2025-11-02)
 - DevContainer npm defaults: Added containerEnv npm settings (LEGACY_PEER_DEPS=true, disable audit/fund/progress, increased fetch retries/timeouts) to improve reliability of `npm install` during onCreate. (2025-11-02)
 - DevContainer mounts: Removed named volume mounts for `node_modules` and `.nx/cache` from `devcontainer.json` to prevent permission issues for the non-root `node` user during dependency installation. (2025-11-02)
@@ -60,6 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fixed SSH mount path: corrected `mounts` entry to use `${localEnv:HOME}/.ssh` (macOS/Linux) instead of concatenating HOME and USERPROFILE which produced an invalid path and prevented container start. (2025-11-02)
 
 - **DevContainer code review and improvements**: Reviewed all devcontainer files for readability, quality, and issues. Fixed incorrect source path in test-functions.sh, made telemetry opt-in by default for privacy, made IMAGE_NAME configurable in security-scan.sh, enhanced Dockerfile comments, removed unnecessary blank line in extensions list, and ensured consistent error handling across scripts (2025-11-02)
+- **DevContainer postCreateCommand failure (exit 127)**: Guarded `.devcontainer/scripts/wait-for-services.sh` to skip when `docker` CLI is unavailable and fixed an unbound variable by using `${REDIS_PASSWORD:-}` under `set -u`. This prevents post-create aborts when Docker isn’t yet accessible and makes the script safe to re-run. (2025-11-02)
+- **DevContainer extensions loading**: Corrected misspelled ESLint extension identifier in `customizations.vscode.extensions` (`dbaeumer.vscode-eslint`) so VS Code can auto-install it in the container. Improved `.devcontainer/scripts/debug-extensions.sh` to compare IDs case-insensitively and removed a stale expected extension entry to avoid false "missing" reports. (2025-11-02)
 - **DevContainer configuration**: Fixed multiple critical issues in `.devcontainer/devcontainer.json`:
   - Corrected port forwarding syntax from invalid `"5432:5433"` to proper port number `5432`
   - Changed development server protocols from HTTPS to HTTP for ports 3000, 3001, 4000
@@ -77,6 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **DevContainer port mapping**: Updated PostgreSQL port forwarding from 5432 to 5433 on host to avoid conflicts with local PostgreSQL installations. Container still uses standard port 5432 internally. Added comprehensive port forwarding documentation to `.devcontainer/README.md` (2025-11-02)
+- **DevContainer performance defaults**: Increased recommended host resources to 4 CPUs / 8GB RAM / 20GB storage in `devcontainer.json`. Applied effective non‑Swarm resource limits for the `dev` service in `apps/dev/docker/docker-compose.dev.yaml` using `cpus: 4.0`, `mem_limit: 8g`, `mem_reservation: 4g`, `pids_limit: 2048`, and higher `nofile` ulimit, all configurable via `DEV_*` env vars. (2025-11-02)
 
 ### Fixed
 

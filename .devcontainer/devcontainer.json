@@ -9,7 +9,7 @@
       "extensions": [
         "ms-vscode.vscode-typescript-next",
         "esbenp.prettier-vscode",
-        "dbailedaeumer.vscode-eslint",
+        "dbaeumer.vscode-eslint",
         "bradlc.vscode-tailwindcss",
         "redhat.vscode-yaml",
         "ms-azuretools.vscode-docker",
@@ -115,8 +115,18 @@
   "initializeCommand": "bash .devcontainer/scripts/validate-host.sh",
   "onCreateCommand": "cd /workspaces/political-sphere && bash .devcontainer/scripts/setup-env.sh && bash .devcontainer/scripts/install-deps.sh",
   "updateContentCommand": "bash .devcontainer/scripts/install-deps.sh",
-  "postCreateCommand": "bash -c 'set +e; bash .devcontainer/scripts/install-tools.sh; bash .devcontainer/scripts/docker-socket-perms.sh || echo \"⚠️ Docker socket permission adjustment may require window reload\"; bash .devcontainer/scripts/security-scan.sh || echo \"⚠️ Security scan failed - review manually\"; bash .devcontainer/scripts/wait-for-services.sh; npm run prepare || echo \"⚠️ Git hooks setup skipped\"; npm run build:shared || echo \"⚠️ build:shared failed - check logs above for details\"; echo \"✅ Development environment ready! Run: bash .devcontainer/scripts/status-check.sh\"; echo \"ℹ️ If extensions are disabled, click Trust in the workspace trust prompt to enable them.\"'",
-  "hostRequirements": { "cpus": 2, "memory": "6gb", "storage": "16gb" },
+  "postCreateCommand": [
+    "bash .devcontainer/scripts/install-tools.sh",
+    "bash .devcontainer/scripts/docker-socket-perms.sh || echo 'Docker socket permission adjustment may require window reload'",
+    "bash .devcontainer/scripts/security-scan.sh || echo 'Security scan failed - review manually'",
+    "bash .devcontainer/scripts/wait-for-services.sh",
+    "npm run prepare || echo 'Git hooks setup skipped'",
+    "npm run build:shared || (echo 'build:shared failed - check logs above for details' && exit 1)",
+    "chmod 600 /home/node/.ssh/* 2>/dev/null || true",
+    "echo '✅ Development environment ready! Run: bash .devcontainer/scripts/status-check.sh'",
+    "echo 'ℹ️ If extensions are disabled, click Trust in the workspace trust prompt to enable them.'"
+  ],
+  "hostRequirements": { "cpus": 4, "memory": "8gb", "storage": "20gb" },
   "containerEnv": {
     "NODE_ENV": "development",
     "DOCKER_BUILDKIT": "1",
@@ -131,5 +141,8 @@
     "NPM_CONFIG_FETCH_RETRY_MAXTIMEOUT": "120000",
     "NPM_CONFIG_TIMEOUT": "120000"
   },
-  "remoteUser": "node"
+  "remoteUser": "node",
+  "mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/home/node/.ssh,type=bind,readonly,consistency=cached"
+  ]
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Docker Helper Script for DevContainer
 # Manages Docker daemon and services within the dev container
-# 
+#
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Copyright (C) 2025 Political Sphere Contributors
 
@@ -45,11 +45,11 @@ check_docker_daemon() {
 # Start Docker daemon if not running
 start_docker_daemon() {
     log_info "Starting Docker daemon..."
-    
+
     if [ -f "/usr/local/share/docker-init.sh" ]; then
         # Use the Docker-in-Docker feature's init script
         nohup /usr/local/share/docker-init.sh > /tmp/docker-init.log 2>&1 &
-        
+
         # Wait for daemon to be ready (max 30 seconds)
         local max_wait=30
         local waited=0
@@ -57,7 +57,7 @@ start_docker_daemon() {
             sleep 1
             waited=$((waited + 1))
         done
-        
+
         if check_docker_daemon; then
             log_success "Docker daemon started successfully"
             return 0
@@ -76,14 +76,14 @@ start_docker_daemon() {
 # Start monitoring stack
 start_monitoring() {
     log_info "Starting monitoring stack..."
-    
+
     if ! check_docker_daemon; then
         if ! start_docker_daemon; then
             log_error "Cannot start monitoring stack without Docker daemon"
             return 1
         fi
     fi
-    
+
     cd "$PROJECT_ROOT/monitoring"
     docker compose up -d
     log_success "Monitoring stack started"
@@ -96,12 +96,12 @@ start_monitoring() {
 # Stop monitoring stack
 stop_monitoring() {
     log_info "Stopping monitoring stack..."
-    
+
     if ! check_docker_daemon; then
         log_error "Docker daemon not running"
         return 1
     fi
-    
+
     cd "$PROJECT_ROOT/monitoring"
     docker compose down
     log_success "Monitoring stack stopped"
@@ -117,22 +117,22 @@ status() {
         log_warning "Docker daemon is not running"
         log_info "Run: $0 start-daemon"
     fi
-    
+
     echo ""
     log_info "Checking core services (PostgreSQL, Redis)..."
-    
+
     if pg_isready -h postgres -U political >/dev/null 2>&1; then
         log_success "PostgreSQL is running"
     else
         log_warning "PostgreSQL is not accessible"
     fi
-    
+
     if redis-cli -h redis -a changeme ping >/dev/null 2>&1; then
         log_success "Redis is running"
     else
         log_warning "Redis is not accessible"
     fi
-    
+
     echo ""
     log_info "Checking monitoring stack..."
     if check_docker_daemon; then

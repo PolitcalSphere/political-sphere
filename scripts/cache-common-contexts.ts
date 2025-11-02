@@ -4,10 +4,10 @@
   Usage: tsx scripts/cache-common-contexts.ts
 */
 
-import { readFileSync, writeFileSync, existsSync, statSync } from "fs";
-import { join } from "path";
+import { readFileSync, writeFileSync, existsSync, statSync } from 'fs';
+import { join } from 'path';
 
-const CACHE_FILE = "ai-cache/common-contexts.json";
+const CACHE_FILE = 'ai-cache/common-contexts.json';
 
 interface CachedContext {
   name: string;
@@ -17,20 +17,20 @@ interface CachedContext {
 
 const COMMON_CONTEXTS = [
   {
-    name: "api-types",
-    files: ["libs/shared/src/types/api.ts", "libs/shared/src/types/index.ts"],
+    name: 'api-types',
+    files: ['libs/shared/src/types/api.ts', 'libs/shared/src/types/index.ts'],
   },
   {
-    name: "auth-utils",
-    files: ["libs/shared/src/auth/", "libs/shared/src/utils/auth.ts"],
+    name: 'auth-utils',
+    files: ['libs/shared/src/auth/', 'libs/shared/src/utils/auth.ts'],
   },
   {
-    name: "test-helpers",
-    files: ["libs/shared/src/test/", "jest.setup.js"],
+    name: 'test-helpers',
+    files: ['libs/shared/src/test/', 'jest.setup.js'],
   },
   {
-    name: "config-files",
-    files: ["package.json", "tsconfig.base.json", "nx.json", ".eslintrc.json"],
+    name: 'config-files',
+    files: ['package.json', 'tsconfig.base.json', 'nx.json', '.eslintrc.json'],
   },
 ];
 
@@ -48,14 +48,14 @@ function cacheContext(contextDef: (typeof COMMON_CONTEXTS)[0]): CachedContext | 
       const fullPath = join(process.cwd(), filePath);
       if (existsSync(fullPath)) {
         const stats = statSync(fullPath);
-        const content = readFileSync(fullPath, "utf8");
+        const content = readFileSync(fullPath, 'utf8');
         context.files[filePath] = {
           content: content.slice(0, 2000), // Limit content size
           lastModified: stats.mtime.getTime(),
         };
         hasContent = true;
       }
-    } catch (e) {
+    } catch (_e) {
       // Skip files that can't be read
     }
   }
@@ -75,18 +75,18 @@ function cacheAllContexts(): void {
 
   writeFileSync(
     CACHE_FILE,
-    JSON.stringify({ contexts: cachedContexts, lastUpdated: new Date().toISOString() }, null, 2),
+    JSON.stringify({ contexts: cachedContexts, lastUpdated: new Date().toISOString() }, null, 2)
   );
   console.log(`Cached ${cachedContexts.length} common contexts`);
 }
 
 function getCachedContext(name: string): void {
   if (!existsSync(CACHE_FILE)) {
-    console.error("Cache not found. Run script without arguments first.");
+    console.error('Cache not found. Run script without arguments first.');
     return;
   }
 
-  const cache = JSON.parse(readFileSync(CACHE_FILE, "utf8"));
+  const cache = JSON.parse(readFileSync(CACHE_FILE, 'utf8'));
   const context = cache.contexts.find((c: CachedContext) => c.name === name);
 
   if (!context) {

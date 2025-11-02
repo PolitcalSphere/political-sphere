@@ -31,14 +31,19 @@ services:
         condition: service_healthy
     networks:
       - dev-network
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
-          memory: 4G
-        reservations:
-          cpus: '1'
-          memory: 2G
+    # NOTE: docker-compose ignores the 'deploy.resources' section unless using Swarm.
+    # To ensure limits apply in local dev, set explicit non-Swarm resource keys below.
+    # These are configurable via environment variables for easy tuning.
+    # See: https://docs.docker.com/compose/compose-file/compose-file-v3/#cpu-and-other-resources
+    cpus: '${DEV_CPUS:-4.0}'
+    mem_limit: '${DEV_MEM_LIMIT:-8g}'
+    mem_reservation: '${DEV_MEM_RESERVATION:-4g}'
+    pids_limit: ${DEV_PIDS_LIMIT:-2048}
+    ulimits:
+      nofile:
+        soft: ${DEV_ULIMIT_NOFILE_SOFT:-10240}
+        hard: ${DEV_ULIMIT_NOFILE_HARD:-10240}
+    # 'deploy' is ignored by docker-compose (non-Swarm); effective limits are set above.
 
   postgres:
     image: postgres:15-alpine
@@ -47,6 +52,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-political}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
       POSTGRES_DB: ${POSTGRES_DB:-political_dev}
+    ports:
+      - '5433:5432'
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:

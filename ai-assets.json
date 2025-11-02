@@ -1,0 +1,7 @@
+{
+  "assets": [
+    { "path": "scripts/ai/context-preloader.js", "purpose": "AI context warm-up" },
+    { "path": "scripts/novelty-guard.js", "purpose": "Novelty enforcement" },
+    { "path": "ai/patterns/", "purpose": "Reusable code patterns" }
+  ]
+}

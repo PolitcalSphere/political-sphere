@@ -40,7 +40,7 @@ log_info "🔍 Checking installed extensions..."
 echo ""
 
 # List all installed extensions
-EXTENSIONS=$(code --list-extensions 2>/dev/null || echo "")
+EXTENSIONS=$(code --list-extensions 2>/dev/null | tr '[:upper:]' '[:lower:]' || echo "")
 
 if [ -z "$EXTENSIONS" ]; then
     log_error "No extensions found or unable to list extensions"
@@ -67,10 +67,9 @@ echo "  • ms-vscode.vscode-typescript-next"
 echo "  • esbenp.prettier-vscode"
 echo "  • dbaeumer.vscode-eslint"
 echo "  • bradlc.vscode-tailwindcss"
-echo "  • GitHub.copilot"
-echo "  • GitHub.copilot-chat"
-echo "  • Blackboxapp.blackbox"
-echo "  • nrwl.angular-console"
+echo "  • github.copilot"
+echo "  • github.copilot-chat"
+echo "  • blackboxapp.blackbox"
 echo ""
 
 # Check for missing extensions
@@ -79,13 +78,14 @@ CRITICAL_EXTENSIONS=(
     "ms-vscode.vscode-typescript-next"
     "esbenp.prettier-vscode"
     "dbaeumer.vscode-eslint"
-    "GitHub.copilot"
-    "GitHub.copilot-chat"
+    "github.copilot"
+    "github.copilot-chat"
 )
 
 MISSING_COUNT=0
 for ext in "${CRITICAL_EXTENSIONS[@]}"; do
-    if ! echo "$EXTENSIONS" | grep -q "^$ext$"; then
+    ext_lc="$(echo "$ext" | tr '[:upper:]' '[:lower:]')"
+    if ! echo "$EXTENSIONS" | grep -q "^$ext_lc$"; then
         log_warning "Missing: $ext"
         MISSING_COUNT=$((MISSING_COUNT + 1))
     fi
@@ -104,13 +104,13 @@ log_info "🔍 Checking VS Code server logs..."
 VSCODE_SERVER_DIR="$HOME/.vscode-server"
 if [ -d "$VSCODE_SERVER_DIR" ]; then
     log_success "VS Code server directory found: $VSCODE_SERVER_DIR"
-    
+
     # Find recent log files
     LOG_DIRS=$(find "$VSCODE_SERVER_DIR/data/logs" -maxdepth 1 -type d -name "2*" 2>/dev/null | sort -r | head -1)
-    
+
     if [ -n "$LOG_DIRS" ]; then
         log_info "Recent log directory: $LOG_DIRS"
-        
+
         # Check for extension host errors
         EXTHOST_LOG="$LOG_DIRS/exthost1/output.log"
         if [ -f "$EXTHOST_LOG" ]; then

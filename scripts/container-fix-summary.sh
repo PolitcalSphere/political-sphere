@@ -45,15 +45,15 @@ Monitoring Stack:
 Option A: REBUILD CONTAINER (Permanent Fix - Recommended)
 
   1. Save your work (commit or stash changes)
-  
+
   2. Rebuild the dev container:
      • Press Cmd/Ctrl + Shift + P
      • Select "Dev Containers: Rebuild Container"
      • Wait 5-10 minutes for rebuild
-  
+
   3. After rebuild, start monitoring:
      bash scripts/docker-helper.sh start-monitoring
-  
+
   4. Verify everything works:
      bash scripts/docker-helper.sh status
 
@@ -62,20 +62,20 @@ Option A: REBUILD CONTAINER (Permanent Fix - Recommended)
 Option B: TEMPORARY WORKAROUND (If you can't rebuild now)
 
   Run Docker commands from your HOST machine (not in the container):
-  
+
   1. Open a terminal on your HOST machine
-  
+
   2. Navigate to the monitoring directory:
      cd /path/to/political-sphere/monitoring
-  
+
   3. Start the monitoring stack:
      docker compose up -d
-  
+
   4. Access services:
      • Grafana: http://localhost:3000 (admin/admin)
      • Prometheus: http://localhost:9090
      • Jaeger: http://localhost:16686
-  
+
   5. Stop when done:
      docker compose down
 

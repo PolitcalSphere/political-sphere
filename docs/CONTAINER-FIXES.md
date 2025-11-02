@@ -5,11 +5,13 @@
 ### 1. Docker-in-Docker Permission Issues (PRIMARY)
 
 **Problem**: Docker daemon cannot start inside the dev container due to:
+
 - Missing `sudo` command (required by docker-init.sh)
 - Restrictive security settings in docker-compose.dev.yaml
 - Docker socket owned by root:root (GID 0)
 
 **Root Cause**: The docker-compose.dev.yaml has conflicting security settings:
+
 ```yaml
 security_opt:
   - no-new-privileges:true
@@ -89,6 +91,7 @@ This applies all fixes permanently:
    - Wait for rebuild to complete (5-10 minutes)
 
 3. **Verify Docker works**:
+
    ```bash
    docker info
    ```
@@ -105,11 +108,13 @@ If you cannot rebuild right now, run Docker commands from your host machine:
 1. **Open a terminal on your HOST machine** (not in the container)
 
 2. **Navigate to the project monitoring directory**:
+
    ```bash
    cd path/to/political-sphere/monitoring
    ```
 
 3. **Start the monitoring stack**:
+
    ```bash
    docker compose up -d
    ```
@@ -131,6 +136,7 @@ If you cannot rebuild right now, run Docker commands from your host machine:
 The updated configuration uses `privileged: true` which is necessary for Docker-in-Docker but reduces container isolation. This is acceptable for development environments but should NOT be used in production.
 
 **Why this is safe for development**:
+
 - Dev containers are isolated from production
 - Used only by trusted developers
 - Required for legitimate development workflows
@@ -138,6 +144,7 @@ The updated configuration uses `privileged: true` which is necessary for Docker-
 
 **Alternative Approaches**:
 If you're uncomfortable with privileged mode, you can:
+
 1. Use Option B (run from host) permanently
 2. Use a separate VM for Docker operations
 3. Use cloud-based development environments
@@ -147,18 +154,21 @@ If you're uncomfortable with privileged mode, you can:
 After rebuilding the container:
 
 1. ✅ **Test Docker access**:
+
    ```bash
    docker version
    docker ps
    ```
 
 2. ✅ **Test monitoring stack**:
+
    ```bash
    bash scripts/docker-helper.sh start-monitoring
    curl http://localhost:9090/-/healthy
    ```
 
 3. ✅ **Test core services**:
+
    ```bash
    bash scripts/docker-helper.sh status
    ```
@@ -173,12 +183,14 @@ After rebuilding the container:
 ### Docker daemon still won't start after rebuild
 
 **Check**:
+
 ```bash
 cat /tmp/docker-init.log
 ps aux | grep dockerd
 ```
 
 **If sudo errors persist**, the Docker-in-Docker feature may not be properly installed. Verify in devcontainer.json:
+
 ```jsonc
 "features": {
   "ghcr.io/devcontainers/features/docker-in-docker:2": {
@@ -194,10 +206,11 @@ Grafana uses port 3000, which may conflict with the frontend:
 
 **Option 1: Change Grafana port**
 Edit `monitoring/docker-compose.yml`:
+
 ```yaml
 grafana:
   ports:
-    - '3003:3000'  # Changed from 3000:3000
+    - '3003:3000' # Changed from 3000:3000
 ```
 
 **Option 2: Run services separately**
@@ -206,6 +219,7 @@ Don't run frontend and monitoring stack simultaneously.
 ### Container rebuild fails
 
 **Clear Docker cache**:
+
 ```bash
 # From host machine
 docker system prune -a
@@ -216,14 +230,14 @@ Then rebuild the container.
 
 ## Summary
 
-| Status | Item | Action Required |
-|--------|------|-----------------|
-| ✅ | Core services (Postgres, Redis) | Working - no action needed |
-| ✅ | Docker-compose config updated | Rebuild container to apply |
-| ✅ | Helper script created | Available immediately |
-| ✅ | Version warning fixed | Applied immediately |
-| ⚠️ | Docker-in-Docker | Requires container rebuild |
-| ⚠️ | Monitoring stack | Start after rebuild OR use host |
+| Status | Item                            | Action Required                 |
+| ------ | ------------------------------- | ------------------------------- |
+| ✅     | Core services (Postgres, Redis) | Working - no action needed      |
+| ✅     | Docker-compose config updated   | Rebuild container to apply      |
+| ✅     | Helper script created           | Available immediately           |
+| ✅     | Version warning fixed           | Applied immediately             |
+| ⚠️     | Docker-in-Docker                | Requires container rebuild      |
+| ⚠️     | Monitoring stack                | Start after rebuild OR use host |
 
 ## Next Steps
 

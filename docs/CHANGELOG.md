@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - DevContainer dependency install: Improved `.devcontainer/scripts/install-deps.sh` to skip `npm ci` when no lockfile is present and add a `--legacy-peer-deps` fallback to work around strict peer conflicts with npm v10+. Better logging when all attempts fail. (2025-11-02)
 - DevContainer npm defaults: Set npm config via containerEnv (legacy peer deps, disable audit/fund/progress, higher fetch retries/timeouts) to stabilise dependency installation during container creation. (2025-11-02)
 - DevContainer mounts: Removed `node_modules` and `.nx/cache` named volume mounts from `devcontainer.json` to avoid permission issues blocking npm install when running as the `node` user. (2025-11-02)
+- DevContainer postCreateCommand failure (exit 127): `wait-for-services.sh` now skips service checks if `docker` is not present and uses safe default expansion for `REDIS_PASSWORD` under `set -u`, preventing aborts and making the script idempotent. (2025-11-02)
 - DevContainer UX: `docker-socket-perms.sh` skips unsafe changes when docker.sock GID is 0 and provides guidance; `status-check.sh` avoids pnpm workspace warnings and makes telemetry opt-in. (2025-11-02)
 - Strict TypeScript compliance (exactOptionalPropertyTypes):
   - OTEL exporter URL now conditionally provided to avoid passing undefined

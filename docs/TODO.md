@@ -2,6 +2,8 @@
 
 ## Completed Tasks
 
+- [x] Increase dev container resources: add effective non‑Swarm limits (cpus/mem*limit/mem_reservation/pids_limit/ulimits) for `dev` service and bump host recommendations to 4 CPU / 8GB / 20GB. Configurable via `DEV*\*` env vars. (2025-11-02)
+- [x] Fix DevContainer ESLint extension ID typo (`dbaeumer.vscode-eslint`) so auto-install works; improved extension debug script to be case-insensitive and removed stale expected entry. (2025-11-02)
 - [x] Fix DevContainer feature parsing/build errors: removed unsupported `installYarnUsingApt` option from Node feature and corrected `kubectl-helm-minikube` to use `kubectl` key. Verified JSON validity. (2025-11-02)
 - [x] Fix DevContainer test script path handling: ensure `.devcontainer/test-devcontainer.sh` runs from its own directory so `devcontainer.json` is found when invoked via `bash .devcontainer/test-devcontainer.sh` from repo root. (2025-11-02)
 - [x] Harden DevContainer runtime: added `security_opt: no-new-privileges:true`, `cap_drop: ALL`, and `tmpfs` mounts for `/tmp` and `/var/tmp` in `apps/dev/docker/docker-compose.dev.yaml`; updated test script to recognise compose-based settings. (2025-11-02)

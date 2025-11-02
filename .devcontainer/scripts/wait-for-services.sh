@@ -5,6 +5,13 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/common.sh"
 
+# If Docker CLI is not available, skip service waiting gracefully.
+if ! command -v docker >/dev/null 2>&1; then
+    log_warning "Docker CLI not found in PATH; skipping service readiness checks."
+    log_info "This is expected if Docker-in-Docker or host socket isn't available yet."
+    exit 0
+fi
+
 log_info "Waiting for services to be ready..."
 
 # Configuration variables
@@ -77,7 +84,7 @@ else
     log_warning "PostgreSQL connection failed (may still be initializing)"
 fi
 
-if [ -n "${REDIS_PASSWORD}" ] && command -v redis-cli &> /dev/null && redis-cli -h redis -a "${REDIS_PASSWORD}" ping > /dev/null 2>&1; then
+if [ -n "${REDIS_PASSWORD:-}" ] && command -v redis-cli &> /dev/null && redis-cli -h redis -a "${REDIS_PASSWORD}" ping > /dev/null 2>&1; then
     log_success "Redis connection successful"
 else
     log_warning "Redis connection failed (may still be initializing)"
