@@ -18,6 +18,15 @@
 - [x] **Enhanced git hooks with detailed output**: Added verbose test/lint results on commit/push with clear pass/fail messages and skip options (2025-11-01)
 - [x] **Added GitHub Actions status to pre-push**: Shows status of recent CI runs on main branch before pushing, with color-coded results (2025-11-01)
 - [x] **Fixed containerised environment**: Removed conflicting `--read-only` and `--tmpfs=/workspaces` flags from devcontainer.json that prevented proper workspace mounting (2025-11-01)
+- [x] **Enhanced devcontainer security and reliability**: Added resource limits (CPU, memory, PIDs), pinned all feature versions, added mkcert and node-clinic features, implemented graceful shutdown, added telemetry configuration, improved error handling in scripts, and added security scanning with Trivy (2025-11-01)
+- [x] **Resolved PostgreSQL port conflict**: Updated devcontainer to map PostgreSQL to host port 5433 (from container port 5432) to avoid conflicts with local installations. Added comprehensive documentation to `.devcontainer/README.md` (2025-11-02)
+- [x] **Fixed devcontainer configuration issues**: Corrected port forwarding syntax (removed invalid "5432:5433" notation), changed development protocols from HTTPS to HTTP, added missing Prometheus port 9090, adjusted host resource requirements to 2 CPUs/6GB RAM (within Docker limits), and added missing build:shared script to package.json (2025-11-02)
+- [x] **Fixed extension installation**: Replaced invalid extension ID `ms-vscode.vscode-jest` with `Orta.vscode-jest` and removed deprecated/built-in `ms-vscode.vscode-json`. Added welcome reminder to trust the workspace if extensions appear disabled (2025-11-02)
+- [x] **Improved extension reliability**: Installed `Blackboxapp.blackbox` and forced it to run on the UI side via `remote.extensionKind`. Ensured Copilot runs where supported (Workspace/UI). Enabled extensions auto updates/checks (2025-11-02)
+- [x] **DevContainer code review and improvements**: Reviewed all devcontainer files for readability, quality, and issues. Fixed incorrect source path in test-functions.sh, made telemetry opt-in by default for privacy, made IMAGE_NAME configurable in security-scan.sh, enhanced Dockerfile comments, removed unnecessary blank line in extensions list, and ensured consistent error handling across scripts (2025-11-02)
+- [x] **Added missing extensions**: Installed `GitHub.vscode-github-actions`, `EditorConfig.EditorConfig`, `streetsidesoftware.code-spell-checker`, `hashicorp.terraform`, `ms-vscode.makefile-tools`, and `mikestead.dotenv`. Added stable host mappings with `remote.extensionKind` (2025-11-02)
+- [x] Reduce ESLint warnings in custom MCP servers (filesystem, political-sphere, puppeteer, sqlite) by replacing explicit `any` with precise types, adding safe error handling, and removing unused code. Lint now passes with zero warnings. (2025-11-02)
+- [x] **Fixed DevContainer critical bugs**: Fixed disk space validation integer parsing error, corrected postAttachCommand syntax, added ESLint validation settings, enhanced status-check.sh with validation and auto-install, enhanced start-apps.sh with port conflict detection, added debug-extensions.sh troubleshooting script, and changed to manual app startup mode (2025-11-02)
 - [ ] Run full test suite to verify all Jest configuration improvements
 - [ ] Address remaining database connectivity issues (500 errors in tests)
 - [ ] Fix module resolution issues in unit tests (UserService import)
@@ -26,6 +35,18 @@
 - [ ] Audit and resolve tool conflicts between Prettier and Biome
 - [ ] Optimize AI script execution with async processing
 - [ ] Update governance files (`.blackboxrules` and `.github/copilot-instructions.md`) to version 1.2.7 and add CHANGELOG/TODO entry template — awaiting governance owner review (Automation/Assistant, 2025-11-01)
+- [x] Add AI Intelligence & Competence Enhancement section with 13 improvements to speed up AI agents (2025-01-10)
+- [x] Add AI Deputy Mode: Enables Copilot and Blackbox to shadow changes and flag governance deviations (2025-01-10)
+- [x] Implement AI Intelligence & Competence Enhancement features
+  - [x] Add 13 AI enhancement sections to .blackboxrules and .github/copilot-instructions.md
+  - [x] Create AI infrastructure directories (ai/working-context/, ai/patterns/, ai-cache/, ai-metrics/, ai-learning/, ai-index/)
+  - [x] Implement AI scripts (code-indexer.js, context-preloader.js, competence-monitor.js, index-server.js, fetch-index.sh, smoke.sh)
+  - [x] Create dev helper scripts (find-unused.sh, find-leaky-types.ts, track-context-switches.ts, cache-common-contexts.ts)
+  - [x] Populate best snippet library with patterns (error-handling, pagination, logging, react-form, test-layout)
+  - [x] Add AI Deputy Mode section to governance rules
+  - [x] Create unit tests for AI scripts
+  - [x] Update CHANGELOG.md and docs/CHANGELOG.md with rule changes
+  - [x] Update version numbers in both rule files
 
 ## MVP Implementation Tasks (from implementation_plan.md)
 

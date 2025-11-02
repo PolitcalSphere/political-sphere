@@ -7,6 +7,59 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Strict TypeScript compliance (exactOptionalPropertyTypes):
+  - OTEL exporter URL now conditionally provided to avoid passing undefined
+  - Playwright e2e config uses `shard: null` when not enabled
+  - GitHub MCP server validates `GITHUB_REPOSITORY` format before use
+  - AI Assistant rate limiter loop refactored to avoid undefined indexing
+  - Controls runner avoids unreachable union branch property access
+  - Context switch tracker omits optional `reason` when undefined (2025-11-02)
+  - Removed explicit `any` types in GitHub MCP server; added safe narrowing for tool args and Octokit call params (2025-11-02)
+  - Reduced ESLint warnings: tightened types in controls runner (`getByPath` uses unknown), removed unused imports in Git MCP placeholder, removed unused import in `scripts/find-leaky-types.ts`, removed `any` casts from telemetry error logging, and replaced explicit `any` in API stores with typed better-sqlite3 Statement generics (2025-11-02)
+  - MCP servers lint cleanup: removed explicit `any` usage and added precise request param types; introduced safe error handling with `unknown` and message extraction; tightened Puppeteer `waitUntil` typing; added structural typing for `.connect(...)` to avoid `any` casts in Filesystem, Political Sphere, Puppeteer, and SQLite servers. Lint now passes with zero warnings. (2025-11-02)
+  - DevContainer features: Replaced deprecated `ghcr.io/devcontainers-contrib/features/mkcert` with `ghcr.io/devcontainers-extra/features/mkcert`; removed unsupported `runArgs` for Compose-based devcontainer (migrate constraints to docker-compose). JSON validation passes. (2025-11-02)
+
+### Changed
+
+- Renamed Playwright accessibility test config to `playwright-accessibility-config.ts` to satisfy ESLint filename regex (digits not allowed), removed duplicate legacy configs, and updated `test:a11y` script to reference the new file. This unblocks the a11y gate and keeps naming consistent with repository rules. (2025-11-02)
+
+### Fixed
+
+- **TypeScript Lint Errors**: Eliminated all 6 blocking TypeScript errors (inferrable type annotations, non-null assertions) in AI assistant and shared security modules. Reduced lint issues from 72 problems (6 errors, 66 warnings) to 65 warnings. Remaining warnings are explicit `any` types in data stores and MCP servers that don't block builds. (2025-11-02)
+
+### Improved
+
+- **README Documentation**: Comprehensive update documenting completed CI/CD infrastructure including security scanning (Gitleaks, Semgrep, CodeQL), supply-chain hardening (SBOM, SLSA provenance), observability verification, performance budgets with k6 gates, and governance controls system. Added workflow badges, required secrets documentation, AI intelligence features, and expanded troubleshooting section. (2025-11-02)
+- **Controls Runner**: Switched from `ts-node/esm` to `tsx` for better ESM compatibility. Controls system now executes reliably with proper shell command handling and clear output. All gates pass except expected 65 lint warnings. (2025-11-02)
+
+### Added
+
+- AI Intelligence & Competence Enhancement section with 13 improvements to speed up AI agents (Blackbox AI and GitHub Copilot) by narrowing scope, pre-fetching context, generating working memory files, predicting next steps, maintaining best snippet libraries, automatic diff previews, chunking tasks, caching decisions, guarding against rabbit holes, auto-creating dev helpers, opportunistic clean-as-you-go, pre-filling PR templates, and proactive daily improvements. (2025-01-10)
+- AI Deputy Mode: Enables Copilot and Blackbox to shadow changes and flag governance deviations in real-time, with proactive alerts, learning integration, and audit trails. (2025-01-10)
+
+- **Rules Update: Core Engineering Protocols (2025-11-02)**
+  - Added sections to governance rule sets: Core Engineering Behaviour (AI MUST), Self-Audit Protocol, Technical Guardrails, Testing Doctrine, Security Protocol, Observability & maintainability, Failure Mode Behaviour, Continuous Improvement Loop, and Operational Output Format
+  - Updated `.github/copilot-instructions.md` and `.blackboxrules` in lockstep; bumped versions to 1.3.0 and set Last updated to 2025-11-02, per Meta-Rule parity requirements
+  - Impact: Tightens AI agent discipline and determinism; improves safety, testing rigour, observability, and auditability across all assistant-driven changes
+  - Compliance: CHANGELOG and TODO updated as required (Automation/Assistant, 2025-11-02)
+
+- **Controls: Machine-checkable rules (2025-11-02)**
+  - Added `docs/controls.yml` catalogue mapping governance controls to executable checks with severity and thresholds
+  - Added `scripts/controls-runner.ts` (Node/TS) to parse the catalogue and execute each control, annotating results and failing on blocking violations
+  - Added GitHub workflow `.github/workflows/controls.yml` to run controls on PRs and pushes to `main`
+  - Added npm script `controls:run` and dev dependencies (`ts-node`, `yaml`)
+  - Added PR mandatory headers enforcement via `scripts/ci/check-pr-headers.mjs` and catalogue control `pr-headers`; workflow passes PR body for validation
+  - Impact: Makes governance rules auditable and enforceable in CI with a single, versioned source of truth; standardises PR structure and validation
+
+- **Architecture: Module boundaries + strict TypeScript (2025-11-02)**
+  - Enforced Nx module boundaries via `nx.json` pluginsConfig `@nx/enforce-module-boundaries` with `enforceBuildableLibDependency` and dep constraints
+  - Added ESLint overrides using `plugin:@nx/typescript` and `@nx/enforce-module-boundaries` rule (error)
+  - Enabled stronger TypeScript safety flags in `tsconfig.base.json`: `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noImplicitOverride`, `useUnknownInCatchVariables` (strict already enabled)
+  - Added `@nx/eslint-plugin` dev dependency to support the modern rule namespace
+  - Impact: Stronger architectural integrity and type safety; may surface new lint/type errors that require remediation
+
 - **AI Indexing: ANN Recall Integration Test (2025-11-01)**
   - Added `apps/dev/tests/integration/ann-recall.test.mjs` to compare ANN-backed `/vector-search` results against brute-force baseline and validate fallback behaviour and metrics exposure
   - Test auto-builds index and embeddings if missing; ANN comparison enabled when `TEST_ANN_URL` or `ANN_BACKEND_URL` is provided, otherwise skips gracefully

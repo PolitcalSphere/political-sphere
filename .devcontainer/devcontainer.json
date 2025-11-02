@@ -11,22 +11,28 @@
         "esbenp.prettier-vscode",
         "dbaeumer.vscode-eslint",
         "bradlc.vscode-tailwindcss",
-        "ms-vscode.vscode-json",
         "redhat.vscode-yaml",
         "ms-azuretools.vscode-docker",
         "ms-kubernetes-tools.vscode-kubernetes-tools",
-        "ms-vscode.vscode-jest",
+        "Orta.vscode-jest",
         "ms-playwright.playwright",
+        "Blackboxapp.blackbox",
         "GitHub.copilot",
         "GitHub.copilot-chat",
         "GitHub.vscode-pull-request-github",
+        "GitHub.vscode-github-actions",
         "eamodio.gitlens",
         "nrwl.angular-console",
         "mtxr.sqltools",
         "mtxr.sqltools-driver-pg",
         "humao.rest-client",
         "bierner.markdown-mermaid",
-        "yzhang.markdown-all-in-one"
+        "yzhang.markdown-all-in-one",
+        "EditorConfig.EditorConfig",
+        "streetsidesoftware.code-spell-checker",
+        "hashicorp.terraform",
+        "ms-vscode.makefile-tools",
+        "mikestead.dotenv"
       ],
       "settings": {
         "typescript.preferences.importModuleSpecifier": "relative",
@@ -43,6 +49,21 @@
         "terminal.integrated.cwd": "${workspaceFolder}",
         "security.workspace.trust.enabled": true,
         "security.workspace.trust.startupPrompt": "always",
+        "extensions.autoCheckUpdates": false,
+        "extensions.autoUpdate": false,
+        "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+        "remote.extensionKind": {
+          "Blackboxapp.blackbox": ["workspace"],
+          "GitHub.copilot": ["workspace"],
+          "GitHub.copilot-chat": ["workspace"],
+          "GitHub.vscode-pull-request-github": ["workspace"],
+          "GitHub.vscode-github-actions": ["workspace"],
+          "hashicorp.terraform": ["workspace"],
+          "streetsidesoftware.code-spell-checker": ["workspace"],
+          "EditorConfig.EditorConfig": ["workspace"],
+          "ms-vscode.makefile-tools": ["workspace"],
+          "mikestead.dotenv": ["workspace"]
+        },
         "files.watcherExclude": {
           "**/node_modules/**": true,
           "**/.nx/**": true,
@@ -53,7 +74,7 @@
   },
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
-      "version": "22",
+      "version": "22.11.0",
       "nodeGypDependencies": true,
       "installYarnUsingApt": true,
       "nvmVersion": "0.40.0"
@@ -65,28 +86,28 @@
     },
     "ghcr.io/devcontainers/features/github-cli:1": { "version": "2.58.0" },
     "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-      "version": "1.31",
-      "helm": "3.16",
+      "version": "1.31.1",
+      "helm": "3.16.0",
       "minikube": "none"
     },
     "ghcr.io/devcontainers/features/terraform:1": {
-      "version": "1.9",
-      "tflint": "0.53",
-      "terragrunt": "0.67"
+      "version": "1.9.7",
+      "tflint": "0.53.0",
+      "terragrunt": "0.67.0"
     },
-    "ghcr.io/devcontainers/features/aws-cli:1": { "version": "2" },
-    "ghcr.io/devcontainers/features/python:1": { "version": "3.11" }
+    "ghcr.io/devcontainers/features/aws-cli:1": { "version": "2.17.0" },
+    "ghcr.io/devcontainers/features/python:1": { "version": "3.11.10" },
+    "ghcr.io/devcontainers-extra/features/mkcert:1": {}
   },
   "forwardPorts": [3000, 3001, 4000, 5432, 6379, 8025, 8080, 9090],
   "portsAttributes": {
-    "3000": { "label": "Frontend (Host MF)", "onAutoForward": "notify", "protocol": "https" },
-    "3001": { "label": "Remote MF / Grafana", "onAutoForward": "notify", "protocol": "https" },
-    "4000": { "label": "API Server", "onAutoForward": "notify", "protocol": "https" },
+    "3000": { "label": "Frontend (Host MF)", "onAutoForward": "notify", "protocol": "http" },
+    "3001": { "label": "Remote MF / Grafana", "onAutoForward": "notify", "protocol": "http" },
+    "4000": { "label": "API Server", "onAutoForward": "notify", "protocol": "http" },
     "5432": {
       "label": "PostgreSQL",
       "onAutoForward": "silent",
-      "requireLocalPort": true,
-      "elevateIfNeeded": true
+      "requireLocalPort": false
     },
     "6379": { "label": "Redis", "onAutoForward": "silent", "requireLocalPort": true },
     "8025": { "label": "MailHog UI", "onAutoForward": "ignore" },
@@ -99,24 +120,24 @@
     "dependencies": "bash .devcontainer/scripts/install-deps.sh"
   },
   "updateContentCommand": { "update-deps": "bash .devcontainer/scripts/install-deps.sh" },
-  "postCreateCommand": {
-    "wait": "bash .devcontainer/scripts/wait-for-services.sh",
-    "prepare": "npm run prepare || echo 'Git hooks setup skipped'",
-    "build-shared": "npm run build:shared || echo 'build:shared failed (non-fatal)'",
-    "welcome": "echo '✅ Development environment ready! Run: bash .devcontainer/scripts/status-check.sh'"
-  },
-  "postAttachCommand": {
-    "status": "bash .devcontainer/scripts/status-check.sh",
-    "apps": "bash .devcontainer/scripts/start-apps.sh || echo 'app processes not started'"
-  },
-  "hostRequirements": { "cpus": 2, "memory": "4gb", "storage": "16gb" },
-  "remoteUser": "node",
-  "remoteEnv": {
+  "postCreateCommand": [
+    "bash .devcontainer/scripts/security-scan.sh || echo 'Security scan failed - review manually'",
+    "bash .devcontainer/scripts/wait-for-services.sh",
+    "npm run prepare || echo 'Git hooks setup skipped'",
+    "npm run build:shared || echo 'build:shared failed (non-fatal)'",
+    "echo '✅ Development environment ready! Run: bash .devcontainer/scripts/status-check.sh'",
+    "echo 'ℹ️ If extensions are disabled, click Trust in the workspace trust prompt to enable them.'"
+  ],
+  "postAttachCommand": "bash -c 'bash .devcontainer/scripts/status-check.sh && bash .devcontainer/scripts/start-apps.sh || echo \"app processes not started\"'",
+  "hostRequirements": { "cpus": 2, "memory": "6gb", "storage": "16gb" },
+  "containerEnv": {
     "NODE_ENV": "development",
     "DOCKER_BUILDKIT": "1",
-    "COMPOSE_DOCKER_CLI_BUILD": "1"
+    "COMPOSE_DOCKER_CLI_BUILD": "1",
+    "TZ": "UTC",
+    "VSCODE_IPC_HOOK_CLI": ""
   },
-  "containerEnv": { "TZ": "UTC" },
+  "remoteUser": "node",
   "mounts": [
     "type=volume,source=political-sphere-node_modules,target=/workspaces/political-sphere/node_modules",
     "type=volume,source=political-sphere-nx-cache,target=/workspaces/political-sphere/.nx/cache",

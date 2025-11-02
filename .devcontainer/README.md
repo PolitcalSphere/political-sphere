@@ -152,6 +152,51 @@ Runs **every time** you attach to the container:
 - Ports forwarded selectively
 - Database ports require local access
 
+## Port Forwarding
+
+The devcontainer forwards the following ports from the container to your host machine:
+
+| Host Port | Container Port | Service             | Notes                                      |
+| --------- | -------------- | ------------------- | ------------------------------------------ |
+| 3000      | 3000           | Frontend (Host MF)  | React application                          |
+| 3001      | 3001           | Remote MF / Grafana | Module federation remote or Grafana UI     |
+| 4000      | 4000           | API Server          | Backend REST API                           |
+| 5433      | 5432           | PostgreSQL          | Database (mapped to avoid local conflicts) |
+| 6379      | 6379           | Redis               | Cache server                               |
+| 8025      | 8025           | MailHog UI          | Email testing interface                    |
+| 8080      | 8080           | Keycloak Auth       | Authentication server                      |
+| 9090      | 9090           | Prometheus          | Metrics collection                         |
+
+### PostgreSQL Port Mapping
+
+PostgreSQL runs on port **5432** inside the container but is mapped to port **5433** on your host machine to avoid conflicts with local PostgreSQL installations.
+
+**Inside the container** (where your code runs), use:
+
+```
+DATABASE_URL=postgres://political:changeme@postgres:5432/political_dev
+```
+
+**From your host machine** (e.g., for database GUI tools), use:
+
+```
+Host: localhost
+Port: 5433
+Username: political
+Password: changeme
+Database: political_dev
+```
+
+If you need to stop your local PostgreSQL to free up port 5432:
+
+```bash
+# Find the PostgreSQL process
+ps aux | grep postgres
+
+# Stop PostgreSQL (adjust path to your installation)
+sudo -u postgres /Library/PostgreSQL/15/bin/pg_ctl stop -D /Library/PostgreSQL/15/data -m fast
+```
+
 ## Troubleshooting
 
 ### Container won't start
@@ -175,6 +220,28 @@ If file changes don't persist or the workspace appears empty:
 - These flags conflict with the bind-mount from docker-compose
 - The workspace should be bind-mounted from the host via docker-compose, not as tmpfs
 - Rebuild the container after removing conflicting flags
+
+### Port conflicts
+
+If you see warnings about port forwarding conflicts (e.g., "Local port 5432 could not be used"):
+
+**This is expected and handled automatically.** PostgreSQL is mapped to port 5433 to avoid conflicts with local installations. See the [Port Forwarding](#port-forwarding) section above.
+
+If you need different port mappings, edit `devcontainer.json`:
+
+```json
+"forwardPorts": [3000, 3001, 4000, "5432:5433", 6379, 8025, 8080, 9090]
+```
+
+To check which process is using a port on your host:
+
+```bash
+# macOS/Linux
+lsof -i :5432
+
+# Check all forwarded ports
+lsof -i :3000,:3001,:4000,:5433,:6379,:8025,:8080,:9090
+```
 
 ### Services not ready
 

@@ -2,6 +2,14 @@
 
 ## Completed Tasks
 
+- [x] Fixed strict TypeScript errors uncovered by `exactOptionalPropertyTypes`:
+  - OTEL exporter URL conditional assignment
+  - Playwright e2e config shard set to `null` when disabled
+  - GitHub MCP server validates `GITHUB_REPOSITORY` and guards owner/repo
+  - AI Assistant rate limiter loop avoids undefined element access
+  - Controls runner unknown-type branch no longer references unreachable properties
+  - Context switch tracker avoids assigning `undefined` to optional property (2025-11-02)
+
 - [x] Standardised on Lefthook for Git hooks; removed Husky and enhanced hook output (staged overview, timings, robust base detection, SKIP_A11Y) (2025-11-01)
 - [x] Removed invalid NX_CLOUD_ACCESS_TOKEN from CI workflow
 - [x] Renamed files to follow kebab-case naming convention (newsService.js → news-service.js, httpUtils.js → http-utils.js)
@@ -25,6 +33,13 @@
 - [x] Fixed TypeScript build configuration for shared library to generate proper dist structure (2025-11-01)
 - [x] Updated Jest configuration to support TypeScript and resolve shared library imports (2025-11-01)
 - [x] Resolved 66 TypeScript compilation errors across API stores, services, and routes (2025-11-01)
+- [x] Fixed Playwright a11y config naming to comply with ESLint regex; removed duplicate configs and updated script reference (2025-11-02)
+- [x] Fixed all 6 TypeScript lint errors (inferrable types, non-null assertions) - reduced from 72 to 65 warnings (2025-11-02)
+- [x] Updated README.md with comprehensive CI/CD documentation: security scanning, supply-chain, observability, performance budgets, controls system, AI features, workflow badges, and troubleshooting (2025-11-02)
+- [x] Fixed controls runner by switching from ts-node/esm to tsx; all governance gates now execute properly (2025-11-02)
+- [x] Removed explicit `any` types in GitHub MCP server; added safe narrowing for tool args and Octokit params (2025-11-02)
+- [x] Reduced ESLint warnings across custom MCP servers (filesystem, political-sphere, puppeteer, sqlite) by removing explicit `any`, adding precise request param types, safe `unknown` error handling, and structural `.connect(...)` typing; lint now passes with zero warnings (2025-11-02)
+- [x] DevContainer maintenance: Switched mkcert feature from deprecated `devcontainers-contrib` to `devcontainers-extra`; removed unsupported `runArgs` in Compose-based setup (follow-up: move constraints to docker-compose). JSON check passes. (2025-11-02)
 
 ## Foundation & Strategy (High Priority)
 
@@ -100,6 +115,12 @@
 - [ ] Implement NPC/AI simulation layer with tick loop, agent policies, deterministic core + stochastic LLM planner
 - [ ] Implement caching and performance optimizations with Redis read-through cache
 
+### Module Boundaries & Type Safety (New)
+
+- [x] Enforce Nx module boundaries in `nx.json` and ESLint with `@nx/enforce-module-boundaries` (2025-11-02)
+- [x] Enable strict TypeScript options globally in `tsconfig.base.json` (2025-11-02)
+- [ ] Remediate any new lint/type errors surfaced by the stricter rules (owners: all code areas)
+
 ### Security & Compliance (Critical Priority)
 
 - [ ] Implement secure secret management using KMS/SM for all sensitive data
@@ -119,6 +140,12 @@
 - [x] Implement fast-mode cache fast-path in local Blackbox assistant and telemetry capture (2025-11-01)
 - [x] Seed AI pre-cache from README and package.json scripts to improve cache hit rate (2025-11-01)
 - [x] Update governance rule sets to include AI indexing & warm-start operational guidance, FAST_AI recommendations, in-memory index server, CI warmed-index persistence and helper scripts; bumped rule versions to 1.2.3 (2025-11-01)
+
+### Governance Controls (New)
+
+- [x] Add machine-checkable controls catalogue at `docs/controls.yml` (2025-11-02)
+- [x] Implement `scripts/controls-runner.ts` to parse and execute controls with CI-friendly output (2025-11-02)
+- [x] Add `.github/workflows/controls.yml` to run controls on PR and push to main (2025-11-02)
 
 ### Performance & Infrastructure
 
@@ -167,6 +194,7 @@
 
 - [x] Add CI parity check to enforce that edits to `.github/copilot-instructions.md` and `.blackboxrules` are made together (2025-11-01)
 - [x] Add `.github/PULL_REQUEST_TEMPLATE/rule-update.md` and update governance guidance to require CHANGELOG and TODO updates for rule edits (2025-11-01)
+- [x] Update `.github/copilot-instructions.md` and `.blackboxrules` with Core Engineering Behaviour (AI MUST), Self-Audit Protocol, Technical Guardrails, Testing Doctrine, Security Protocol, Observability & maintainability, Failure Mode Behaviour, Continuous Improvement Loop, and Operational Output Format; bumped versions to 1.3.0 (2025-11-02)
 
 ### Operations & Reliability
 

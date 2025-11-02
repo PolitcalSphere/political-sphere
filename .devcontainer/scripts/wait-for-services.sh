@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "⏳ Waiting for services to be ready..."
+# Source common utilities
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/common.sh"
+
+log_info "Waiting for services to be ready..."
+
+# Configuration variables
+MAX_ATTEMPTS="${MAX_ATTEMPTS:-60}"
+SLEEP_INTERVAL="${SLEEP_INTERVAL:-2}"
 
 # Get the compose file path
 COMPOSE_FILE="${COMPOSE_FILE:-apps/dev/docker/docker-compose.dev.yaml}"
@@ -9,59 +17,70 @@ COMPOSE_FILE="${COMPOSE_FILE:-apps/dev/docker/docker-compose.dev.yaml}"
 # Function to check service health with improved error handling
 check_service() {
     local service=$1
-    local max_attempts=60
     local attempt=0
 
     if [ -z "$service" ]; then
-        echo "  ❌ Error: No service name provided"
+        log_error "No service name provided"
         return 1
     fi
 
-    echo "  Checking $service..."
+    log_info "Checking $service..."
 
-    while [ $attempt -lt $max_attempts ]; do
+    while [ $attempt -lt $MAX_ATTEMPTS ]; do
         if docker compose -f "$COMPOSE_FILE" ps "$service" 2>/dev/null | grep -q "healthy\|Up"; then
-            echo "  ✅ $service is ready"
+            log_success "$service is ready"
             return 0
         fi
 
         # Check if service exists but is not healthy
         if docker compose -f "$COMPOSE_FILE" ps "$service" 2>/dev/null | grep -q "$service"; then
-            echo "  ⏳ $service is starting... (attempt $((attempt + 1))/$max_attempts)"
+            echo "  ⏳ $service is starting... (attempt $((attempt + 1))/$MAX_ATTEMPTS)"
         else
-            echo "  ❌ $service service not found in compose file"
+            log_error "$service service not found in compose file"
             return 1
         fi
 
         attempt=$((attempt + 1))
-        sleep 2
+        sleep $SLEEP_INTERVAL
     done
 
-    echo "  ⚠️  $service health check timed out after $max_attempts attempts"
-    echo "     Service may still be initializing. Check logs with:"
-    echo "     docker compose -f \"$COMPOSE_FILE\" logs -f $service"
+    log_warning "$service health check timed out after $MAX_ATTEMPTS attempts"
+    log_info "Service may still be initializing. Check logs with: docker compose -f \"$COMPOSE_FILE\" logs -f $service"
     return 1
 }
 
+# Function to handle graceful shutdown
+cleanup() {
+    log_info "Performing cleanup..."
+    # Stop any running processes
+    if command -v tmux &> /dev/null && tmux has-session -t apps 2>/dev/null; then
+        tmux kill-session -t apps
+        log_success "Stopped tmux session 'apps'"
+    fi
+    # Additional cleanup can be added here
+    log_success "Cleanup complete"
+}
+
+# Set trap for graceful shutdown
+trap cleanup EXIT
+
 # Wait for critical services with optimized timing
-echo "⏳ Waiting for critical services (timeout: 60 seconds each)..."
-check_service postgres || echo "  ⚠️  Postgres may not be ready - check logs manually"
-check_service redis || echo "  ⚠️  Redis may not be ready - check logs manually"
+log_info "Waiting for critical services (timeout: $MAX_ATTEMPTS seconds each)..."
+check_service postgres || log_warning "Postgres may not be ready - check logs manually"
+check_service redis || log_warning "Redis may not be ready - check logs manually"
 
 # Optional: Check if we can connect
-echo ""
-echo "🔌 Testing database connectivity..."
-if pg_isready -h postgres -U "${POSTGRES_USER:-political}" > /dev/null 2>&1; then
-    echo "  ✅ PostgreSQL connection successful"
+log_info "Testing database connectivity..."
+if command -v pg_isready &> /dev/null && pg_isready -h postgres -U "${POSTGRES_USER:-political}" > /dev/null 2>&1; then
+    log_success "PostgreSQL connection successful"
 else
-    echo "  ⚠️  PostgreSQL connection failed (may still be initializing)"
+    log_warning "PostgreSQL connection failed (may still be initializing)"
 fi
 
-if [ -n "${REDIS_PASSWORD}" ] && redis-cli -h redis -a "${REDIS_PASSWORD}" ping > /dev/null 2>&1; then
-    echo "  ✅ Redis connection successful"
+if [ -n "${REDIS_PASSWORD}" ] && command -v redis-cli &> /dev/null && redis-cli -h redis -a "${REDIS_PASSWORD}" ping > /dev/null 2>&1; then
+    log_success "Redis connection successful"
 else
-    echo "  ⚠️  Redis connection failed (may still be initializing)"
+    log_warning "Redis connection failed (may still be initializing)"
 fi
 
-echo ""
-echo "✅ Service initialization complete"
+log_success "Service initialization complete"

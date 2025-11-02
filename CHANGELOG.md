@@ -7,6 +7,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- AI Intelligence & Competence Enhancement section with 13 improvements to speed up AI agents (Blackbox AI and GitHub Copilot) by narrowing scope, pre-fetching context, generating working memory files, predicting next steps, maintaining best snippet libraries, automatic diff previews, chunking tasks, caching decisions, guarding against rabbit holes, auto-creating dev helpers, opportunistic clean-as-you-go, pre-filling PR templates, and proactive daily improvements. (2025-01-10)
+- AI Deputy Mode: Enables Copilot and Blackbox to shadow changes and flag governance deviations in real-time, with proactive alerts, learning integration, and audit trails. (2025-01-10)
+- **DevContainer extension debugging**: Added `debug-extensions.sh` script to troubleshoot VS Code extension loading issues, with comprehensive diagnostics and troubleshooting steps (2025-11-02)
+
+### Fixed
+
+- **DevContainer critical fixes**: Fixed multiple issues preventing proper container operation and extension loading (2025-11-02):
+  - Fixed disk space validation in `validate-host.sh` - removed non-numeric characters before integer comparison to prevent "integer expression expected" errors
+  - Fixed `postAttachCommand` syntax in `devcontainer.json` - corrected command chaining using proper bash -c syntax with && and || operators
+  - Added ESLint validation settings to ensure proper extension activation for JavaScript/TypeScript files
+  - Enhanced `status-check.sh` with directory validation, automatic dependency installation, and comprehensive tool verification
+  - Enhanced `start-apps.sh` with intelligent port conflict detection and resolution (uses port 3001 if 3000 is occupied)
+  - Changed app startup behaviour to manual mode (no auto-start) to prevent port conflicts and give developers control
+
+- Strict TypeScript compliance (exactOptionalPropertyTypes):
+  - OTEL exporter URL now conditionally provided to avoid passing undefined
+  - Playwright e2e config uses `shard: null` when not enabled
+  - GitHub MCP server validates `GITHUB_REPOSITORY` format before use
+  - AI Assistant rate limiter loop refactored to avoid undefined indexing
+  - Controls runner avoids unreachable union branch property access
+  - Context switch tracker omits optional `reason` when undefined (2025-11-02)
+  - Removed explicit `any` types in GitHub MCP server; added safe narrowing for tool args and Octokit call params (2025-11-02)
+  - Reduced ESLint warnings: tightened types in controls runner (`getByPath` uses unknown), removed unused imports in Git MCP placeholder, removed unused import in `scripts/find-leaky-types.ts`, removed `any` casts from telemetry error logging, and replaced explicit `any` in API stores with typed better-sqlite3 Statement generics (2025-11-02)
+  - MCP servers lint cleanup: removed explicit `any` usage and added precise request param types; introduced safe error handling with `unknown` and message extraction; tightened Puppeteer `waitUntil` typing; added structural typing for `.connect(...)` to avoid `any` casts in Filesystem, Political Sphere, Puppeteer, and SQLite servers. Lint now passes with zero warnings. (2025-11-02)
+  - DevContainer features: Replaced deprecated `ghcr.io/devcontainers-contrib/features/mkcert` with `ghcr.io/devcontainers-extra/features/mkcert`; removed unsupported `runArgs` for Compose-based devcontainer (to be enforced via docker-compose). JSON validation passes. (2025-11-02)
+
+- **DevContainer code review and improvements**: Reviewed all devcontainer files for readability, quality, and issues. Fixed incorrect source path in test-functions.sh, made telemetry opt-in by default for privacy, made IMAGE_NAME configurable in security-scan.sh, enhanced Dockerfile comments, removed unnecessary blank line in extensions list, and ensured consistent error handling across scripts (2025-11-02)
+- **DevContainer configuration**: Fixed multiple critical issues in `.devcontainer/devcontainer.json`:
+  - Corrected port forwarding syntax from invalid `"5432:5433"` to proper port number `5432`
+  - Changed development server protocols from HTTPS to HTTP for ports 3000, 3001, 4000
+  - Added missing Prometheus port 9090 to forwardPorts array
+  - Adjusted host resource requirements to 2 CPUs and 6GB RAM (within Docker daemon limits)
+  - Updated PostgreSQL port label for clarity (2025-11-02)
+- **DevContainer security and reliability enhancements**: Added comprehensive security improvements including resource limits (CPU: 2.0, memory: 4GB, PIDs: 1024), pinned all feature versions to prevent unpredictable updates, added mkcert for HTTPS development and node-clinic for performance monitoring, implemented graceful shutdown handling, added optional telemetry configuration, improved error handling in lifecycle scripts, and integrated Trivy security scanning (2025-11-01)
+- **Package scripts**: Added missing `build:shared` script to package.json to build shared libraries during dev container setup (2025-11-02)
+- **DevContainer extensions**: Corrected invalid extension identifiers in `customizations.vscode.extensions` (replaced `ms-vscode.vscode-jest` with `Orta.vscode-jest`, removed deprecated/built-in `ms-vscode.vscode-json`). Added a post-create reminder to trust the workspace so extensions can activate (2025-11-02)
+  - **Extension reliability**: Added `Blackboxapp.blackbox` to the devcontainer extension list and configured `remote.extensionKind` to run Blackbox on the UI side, and Copilot on Workspace/UI as supported. Enabled automatic extension updates (2025-11-02)
+- **Extension completeness**: Added tooling-aligned extensions: `GitHub.vscode-github-actions`, `EditorConfig.EditorConfig`, `streetsidesoftware.code-spell-checker`, `hashicorp.terraform`, `ms-vscode.makefile-tools`, and `mikestead.dotenv`. Mapped extension hosts for reliability (`remote.extensionKind`) (2025-11-02)
+
+### Changed
+
+- **DevContainer port mapping**: Updated PostgreSQL port forwarding from 5432 to 5433 on host to avoid conflicts with local PostgreSQL installations. Container still uses standard port 5432 internally. Added comprehensive port forwarding documentation to `.devcontainer/README.md` (2025-11-02)
+
 ### Fixed
 
 - **Containerised environment**: Removed conflicting `--read-only` and `--tmpfs=/workspaces` flags from `.devcontainer/devcontainer.json` runArgs that prevented proper workspace mounting from docker-compose. The workspace is now properly bind-mounted from the host, allowing file changes to persist and the development environment to function correctly (2025-11-01)
