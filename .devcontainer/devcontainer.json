@@ -22,7 +22,6 @@
         "GitHub.vscode-pull-request-github",
         "GitHub.vscode-github-actions",
         "eamodio.gitlens",
-        "nrwl.angular-console",
         "mtxr.sqltools",
         "mtxr.sqltools-driver-pg",
         "humao.rest-client",
@@ -99,9 +98,9 @@
     "ghcr.io/devcontainers/features/python:1": { "version": "3.11.10" },
     "ghcr.io/devcontainers-extra/features/mkcert:1": {}
   },
-  "forwardPorts": [3000, 3001, 4000, 5432, 6379, 8025, 8080, 9090],
+  "forwardPorts": [3002, 3001, 4000, 5432, 6379, 8025, 8080, 9090],
   "portsAttributes": {
-    "3000": { "label": "Frontend (Host MF)", "onAutoForward": "notify", "protocol": "http" },
+    "3002": { "label": "Frontend (Host MF)", "onAutoForward": "notify", "protocol": "http" },
     "3001": { "label": "Remote MF / Grafana", "onAutoForward": "notify", "protocol": "http" },
     "4000": { "label": "API Server", "onAutoForward": "notify", "protocol": "http" },
     "5432": {
@@ -126,11 +125,11 @@
     "bash .devcontainer/scripts/security-scan.sh || echo 'Security scan failed - review manually'",
     "bash .devcontainer/scripts/wait-for-services.sh",
     "npm run prepare || echo 'Git hooks setup skipped'",
-    "npm run build:shared || echo 'build:shared failed (non-fatal)'",
+    "npm run build:shared || (echo 'build:shared failed - check logs above for details' && exit 1)",
+    "chmod 600 /home/node/.ssh/* 2>/dev/null || true",
     "echo '✅ Development environment ready! Run: bash .devcontainer/scripts/status-check.sh'",
     "echo 'ℹ️ If extensions are disabled, click Trust in the workspace trust prompt to enable them.'"
   ],
-  "postAttachCommand": "bash -c 'bash .devcontainer/scripts/status-check.sh && bash .devcontainer/scripts/start-apps.sh || echo \"app processes not started\"'",
   "hostRequirements": { "cpus": 2, "memory": "6gb", "storage": "16gb" },
   "containerEnv": {
     "NODE_ENV": "development",

@@ -23,11 +23,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '4'
-          memory: 8G
-        reservations:
           cpus: '2'
           memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
 
   postgres:
     image: postgres:15-alpine
@@ -40,9 +40,10 @@ services:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-political}']
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
     networks:
       - dev-network
     deploy:
@@ -63,9 +64,10 @@ services:
       - redis-data:/data
     healthcheck:
       test: ['CMD', 'redis-cli', '-a', '${REDIS_PASSWORD:-changeme}', 'ping']
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
     networks:
       - dev-network
     deploy:
@@ -213,7 +215,7 @@ services:
       API_BASE_URL: http://api:4000
       NODE_ENV: development
     ports:
-      - '${FRONTEND_PORT:-3000}:3000'
+      - '${FRONTEND_PORT:-3002}:3000'
     volumes:
       - ../../../apps/frontend:/app/apps/frontend
       - ../../../libs:/app/libs
