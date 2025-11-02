@@ -19,7 +19,8 @@ services:
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=256m
       - /var/tmp:rw,noexec,nosuid,nodev,size=256m
-    command: sleep infinity
+    entrypoint: ['/usr/local/share/docker-init.sh']
+    command: ['sleep', 'infinity']
     environment:
       DATABASE_URL: 'postgres://${POSTGRES_USER:-political}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-political_dev}'
       REDIS_URL: 'redis://default:${REDIS_PASSWORD:-changeme}@redis:6379/0'
