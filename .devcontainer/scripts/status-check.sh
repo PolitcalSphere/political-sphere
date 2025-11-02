@@ -37,7 +37,13 @@ fi
 # Verify required tools
 log_info "🔧 Tool Verification:"
 command -v node &> /dev/null && echo "  ✅ Node.js: $(node --version)" || echo "  ❌ Node.js not found"
-command -v pnpm &> /dev/null && echo "  ✅ pnpm: $(pnpm --version)" || echo "  ⚠️  pnpm not found"
+if command -v pnpm &> /dev/null; then
+    # Run from /tmp to avoid workspace warnings about unsupported workspaces field
+    PNPM_VER=$( (cd /tmp && pnpm --version) 2>/dev/null || pnpm --version )
+    echo "  ✅ pnpm: $PNPM_VER"
+else
+    echo "  ⚠️  pnpm not found"
+fi
 command -v npm &> /dev/null && echo "  ✅ npm: $(npm --version)" || echo "  ❌ npm not found"
 command -v nx &> /dev/null && echo "  ✅ Nx CLI available" || echo "  ⚠️  Nx CLI not found (will use npx)"
 echo ""
@@ -45,7 +51,7 @@ echo ""
 # Telemetry: Record usage for analytics (optional, can be disabled)
 # Note: This sends anonymous usage data to improve the development experience
 # Set DISABLE_TELEMETRY=false to opt in (default is disabled for privacy)
-if [ "${DISABLE_TELEMETRY:-true}" != "false" ]; then
+if [ "${DISABLE_TELEMETRY:-true}" = "false" ]; then
     # Simple anonymous usage tracking - only counts, no personal data
     curl -s --fail "https://api.segment.io/v1/track" \
         -H "Content-Type: application/json" \

@@ -28,6 +28,14 @@ get_gid() {
 SOCK_GID="$(get_gid)"
 log_info "Detected docker.sock GID: ${SOCK_GID}"
 
+# Special-case: GID 0 (root) is not a safe/usable target for non-root membership without elevated perms.
+# In compose-based devcontainers, Docker access from inside the container is optional; manage services from host.
+if [ "$SOCK_GID" = "0" ]; then
+  log_info "docker.sock is owned by root (GID 0). Skipping group modification for safety."
+  log_warning "If you need Docker inside the container, consider enabling Docker-in-Docker or run commands from host."
+  exit 0
+fi
+
 # Find group name for this GID if it exists
 GROUP_NAME=$(getent group "$SOCK_GID" 2>/dev/null | cut -d: -f1 || true)
 if [ -z "${GROUP_NAME:-}" ]; then

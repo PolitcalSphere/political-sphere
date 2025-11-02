@@ -47,6 +47,7 @@
 - [x] Improve Docker access inside DevContainer: added `docker-socket-perms.sh` and enhanced diagnostics in `status-check.sh` for permission-denied vs. missing daemon; documented reload requirement. (2025-11-02)
 - [x] Improve extension reliability in remote containers: enabled extension auto updates, moved Blackbox/Copilot to UI host via `remote.extensionKind`, and removed IPC env override that could break CLI. (2025-11-02)
 - [x] Fix DevContainer command fields and SSH mount: replaced object maps for `initializeCommand`, `onCreateCommand`, and `updateContentCommand` with supported string/array forms; corrected SSH mount to `${localEnv:HOME}/.ssh` to avoid invalid path on macOS. (2025-11-02)
+- [x] DevContainer UX polish: `docker-socket-perms.sh` safely skips when docker.sock GID is 0 (root-owned socket) and documents alternatives; `status-check.sh` suppresses pnpm workspace warning and makes telemetry strictly opt-in. (2025-11-02)
 
 ## Foundation & Strategy (High Priority)
 
@@ -180,6 +181,12 @@
 ### Follow-ups
 
 - [ ] Rename CI helper scripts from `husky-lefthook-*.mjs` to `git-hooks-*.mjs` for clarity (non-functional change)
+
+### DevContainer follow-ups
+
+- [ ] Validate onCreate dependency install stability on fresh rebuilds; capture and triage npm log tail if failures recur (owner: Platform Eng)
+- [ ] Decide whether in-container Docker access is required; if yes, document enabling DinD or host socket group mapping workflow; if not, document host-managed Docker workflow as default (owner: DevEx)
+- [ ] Consider adding a repo-level `.npmrc` mirroring safe defaults (disable audit/fund/progress, increased timeouts/retries) to make behaviour consistent outside DevContainer (owner: Platform Eng)
 
 ### Documentation & Onboarding
 

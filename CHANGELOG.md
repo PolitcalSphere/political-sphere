@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - DevContainer dependency install: Made `.devcontainer/scripts/install-deps.sh` robust to npm v10 peer resolution and missing lockfiles. Now skips `npm ci` if no `package-lock.json` and falls back to `npm install --legacy-peer-deps` on conflicts; logs clearer diagnostics on failure. (2025-11-02)
 - DevContainer npm defaults: Added containerEnv npm settings (LEGACY_PEER_DEPS=true, disable audit/fund/progress, increased fetch retries/timeouts) to improve reliability of `npm install` during onCreate. (2025-11-02)
 - DevContainer mounts: Removed named volume mounts for `node_modules` and `.nx/cache` from `devcontainer.json` to prevent permission issues for the non-root `node` user during dependency installation. (2025-11-02)
+- DevContainer UX: Improved `docker-socket-perms.sh` to safely skip adjustments when docker.sock GID is 0 and clarified guidance; `status-check.sh` now avoids pnpm workspace warnings and fixes telemetry to be opt-in only. (2025-11-02)
 - **DevContainer critical fixes**: Fixed multiple issues preventing proper container operation and extension loading (2025-11-02):
   - Fixed disk space validation in `validate-host.sh` - removed non-numeric characters before integer comparison to prevent "integer expression expected" errors
   - Fixed `postAttachCommand` syntax in `devcontainer.json` - corrected command chaining using proper bash -c syntax with && and || operators
