@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - DevContainer tests: Updated `.devcontainer/test-devcontainer.sh` to `cd` into its own directory, ensuring relative paths resolve. Prevents spurious JSON syntax error when running the test from the repository root. (2025-11-02)
 - DevContainer hardening: Applied least-privilege defaults via `no-new-privileges`, dropped capabilities (`cap_drop: [ALL]`), and added `tmpfs` mounts for temp directories in compose. Test script now recognises compose-based settings. (2025-11-02)
 - DevContainer dependency install: Improved `.devcontainer/scripts/install-deps.sh` to skip `npm ci` when no lockfile is present and add a `--legacy-peer-deps` fallback to work around strict peer conflicts with npm v10+. Better logging when all attempts fail. (2025-11-02)
+- DevContainer npm defaults: Set npm config via containerEnv (legacy peer deps, disable audit/fund/progress, higher fetch retries/timeouts) to stabilise dependency installation during container creation. (2025-11-02)
 - Strict TypeScript compliance (exactOptionalPropertyTypes):
   - OTEL exporter URL now conditionally provided to avoid passing undefined
   - Playwright e2e config uses `shard: null` when not enabled
