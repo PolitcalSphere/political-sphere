@@ -74,6 +74,11 @@ controls:
     type: command
     command: node scripts/novelty-guard.js --min-novelty 0.2
 
+  - id: universal-audit
+    name: Universal audit across all dimensions
+    severity: blocker
+    type: command
+    command: bash scripts/universal-audit.sh ci-safe online true
   # Example metric-based control (disabled by default). Uncomment when coverage JSON is available.
   # - id: coverage
   #   name: Test coverage threshold

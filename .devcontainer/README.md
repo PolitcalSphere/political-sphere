@@ -2,6 +2,8 @@
 
 This directory contains the VS Code DevContainer configuration for the Political Sphere development environment.
 
+> **⚠️ Container Issues Fixed**: If you're experiencing Docker-in-Docker permission issues or the monitoring stack won't start, see [`/docs/CONTAINER-FIXES.md`](/docs/CONTAINER-FIXES.md) or run `bash scripts/container-fix-summary.sh` for a quick summary.
+
 ## Quick Start
 
 1. **Install Prerequisites:**

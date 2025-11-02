@@ -27,6 +27,8 @@
 - [x] **Added missing extensions**: Installed `GitHub.vscode-github-actions`, `EditorConfig.EditorConfig`, `streetsidesoftware.code-spell-checker`, `hashicorp.terraform`, `ms-vscode.makefile-tools`, and `mikestead.dotenv`. Added stable host mappings with `remote.extensionKind` (2025-11-02)
 - [x] Reduce ESLint warnings in custom MCP servers (filesystem, political-sphere, puppeteer, sqlite) by replacing explicit `any` with precise types, adding safe error handling, and removing unused code. Lint now passes with zero warnings. (2025-11-02)
 - [x] **Fixed DevContainer critical bugs**: Fixed disk space validation integer parsing error, corrected postAttachCommand syntax, added ESLint validation settings, enhanced status-check.sh with validation and auto-install, enhanced start-apps.sh with port conflict detection, added debug-extensions.sh troubleshooting script, and changed to manual app startup mode (2025-11-02)
+- [x] **Fixed Docker-in-Docker permissions**: Updated docker-compose.dev.yaml to enable privileged mode and required capabilities for Docker-in-Docker, created docker-helper.sh script for managing Docker daemon and monitoring stack, added comprehensive documentation in docs/CONTAINER-FIXES.md (2025-11-02)
+- [ ] Rebuild dev container to apply Docker-in-Docker fixes (requires user action)
 - [ ] Run full test suite to verify all Jest configuration improvements
 - [ ] Address remaining database connectivity issues (500 errors in tests)
 - [ ] Fix module resolution issues in unit tests (UserService import)
@@ -80,6 +82,26 @@
 - [ ] Fix integration test to work with corrected API endpoints
 - [ ] Conduct ISO 42001 certification readiness assessment
 - [ ] Schedule external audit and certification process for ISO 42001 AMLS
+
+## Universal Audit Implementation Tasks
+
+- [ ] Implement specific game simulation logic validation checks in universal audit
+- [ ] Add performance benchmarking and SLO validation to audit
+- [ ] Develop comprehensive AI neutrality and fairness audit suite
+- [ ] Implement privacy impact assessment and data protection checks
+- [ ] Add anti-manipulation detection algorithms to audit
+- [ ] Create community safety and content moderation validation
+- [ ] Audit proprietary dependencies and identify FOSS replacements
+- [ ] Expand observability audit with OpenTelemetry validation
+- [ ] Add scalability load testing integration
+- [ ] Implement detailed dependency license and health checks
+- [ ] Develop constitutional compliance automated verification
+- [ ] Add infrastructure as code validation (Terraform/K8s)
+- [ ] Implement business logic and fraud prevention audits
+- [ ] Add knowledge systems and onboarding clarity checks
+- [ ] Implement future-proofing and long-term maintainability metrics
+- [ ] Develop democracy-aligned design principle validation
+- [ ] Add legacy debt and zombie code detection automation
 
 ## Completed Tasks
 

@@ -8,10 +8,14 @@ services:
     volumes:
       - ../../..:/workspaces/political-sphere:cached
       - /var/run/docker.sock:/var/run/docker.sock
+    # Enable privileged mode for Docker-in-Docker feature to work properly
+    privileged: true
     security_opt:
-      - no-new-privileges:true
-    cap_drop:
-      - ALL
+      - no-new-privileges:false
+    # Keep some capabilities for Docker-in-Docker
+    cap_add:
+      - SYS_ADMIN
+      - NET_ADMIN
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=256m
       - /var/tmp:rw,noexec,nosuid,nodev,size=256m
