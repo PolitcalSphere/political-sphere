@@ -1,0 +1,145 @@
+{
+  "npmScope": "political",
+  "useDaemonProcess": true,
+  "useInferencePlugins": false,
+  "daemonSettings": {
+    "debounceDelay": 1000,
+    "aggregateChangesDelay": 500
+  },
+  "workspaceLayout": {
+    "appsDir": "apps",
+    "libsDir": "libs"
+  },
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/src/test-setup.[jt]s",
+      "!{projectRoot}/test-setup.[jt]s",
+      "!{projectRoot}/.eslintrc.json",
+      "!{projectRoot}/eslint.config.js"
+    ],
+    "sharedGlobals": [
+      "!{workspaceRoot}/ai-cache/**/*",
+      "!{workspaceRoot}/ai-logs/**/*",
+      "!{workspaceRoot}/ai-metrics/**/*",
+      "!{workspaceRoot}/ai-learning/**/*",
+      "!{workspaceRoot}/ai-index/**/*",
+      "!{workspaceRoot}/ai-knowledge/**/*",
+      "!{workspaceRoot}/.ps/**/*",
+      "!{workspaceRoot}/tmp/**/*",
+      "!{workspaceRoot}/artifacts/**/*",
+      "!{workspaceRoot}/monitoring/data/**/*"
+    ]
+  },
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"],
+      "cache": true
+    },
+    "lint": {
+      "inputs": [
+        "default",
+        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/.eslintignore",
+        "{workspaceRoot}/eslint.config.js"
+      ],
+      "cache": true
+    },
+    "test": {
+      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
+      "cache": true
+    },
+    "test:e2e": { "inputs": ["default", "^production"], "cache": true },
+    "lint:boundaries": {
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"],
+      "cache": true
+    }
+  },
+  "generators": {
+    "@nx/next": { "application": { "style": "css", "linter": "eslint" } },
+    "@nx/react": { "library": { "linter": "eslint" } }
+  },
+  "nxCloudAccessToken": "ZmQ1YmJjMDEtNmQ5OS00ZmY0LWJjNDUtZmIyNjQ1Yzg1ODQyfHJlYWQtd3JpdGU=",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e", "test:e2e", "lint:boundaries"],
+        "parallel": 6,
+        "maxParallel": 8,
+        "runtimeCacheInputs": ["node -v"]
+      }
+    }
+  },
+  "pluginsConfig": {
+    "@nx/js": {
+      "analyzeSourceFiles": false
+    },
+    "@nx/enforce-module-boundaries": {
+      "enforceBuildableLibDependency": true,
+      "allow": [],
+      "depConstraints": [
+        {
+          "sourceTag": "type:app",
+          "onlyDependOnLibsWithTags": ["type:ui", "type:feature", "type:data", "type:util", "*"]
+        },
+        {
+          "sourceTag": "type:ui",
+          "onlyDependOnLibsWithTags": [
+            "type:ui",
+            "type:feature",
+            "type:data",
+            "type:util",
+            "type:library",
+            "*"
+          ]
+        },
+        {
+          "sourceTag": "type:service",
+          "onlyDependOnLibsWithTags": [
+            "type:feature",
+            "type:data",
+            "type:util",
+            "type:library",
+            "*"
+          ]
+        },
+        {
+          "sourceTag": "scope:frontend",
+          "onlyDependOnLibsWithTags": ["*"]
+        },
+        {
+          "sourceTag": "scope:worker",
+          "onlyDependOnLibsWithTags": ["*"]
+        },
+        { "sourceTag": "scope:core", "onlyDependOnLibsWithTags": ["scope:core"] }
+      ]
+    }
+  },
+  "defaultBase": "main",
+  "cacheDirectory": ".nx/cache",
+  "watch": {
+    "ignoreDotfiles": true,
+    "ignore": [
+      "**/ai-cache/**",
+      "**/ai-logs/**",
+      "**/ai-metrics/**",
+      "**/ai-learning/**",
+      "**/ai-index/**",
+      "**/ai-knowledge/**",
+      "**/.ps/**",
+      "**/tmp/**",
+      "**/artifacts/**",
+      "**/monitoring/data/**"
+    ]
+  },
+  "installation": {
+    "version": "22.0.1"
+  },
+  "nxCloudId": "690298b92b74acd1e02e8ff0"
+}

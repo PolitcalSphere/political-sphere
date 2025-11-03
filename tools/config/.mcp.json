@@ -1,0 +1,47 @@
+{
+  "mcpServers": {
+    "political-sphere-filesystem": {
+      "command": "npm",
+      "args": ["run", "mcp:filesystem"],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "political-sphere-github": {
+      "command": "npm",
+      "args": ["run", "mcp:github"],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}",
+        "NODE_ENV": "development"
+      }
+    },
+    "political-sphere-sqlite": {
+      "command": "npm",
+      "args": ["run", "mcp:sqlite"],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "political-sphere-puppeteer": {
+      "command": "npm",
+      "args": ["run", "mcp:puppeteer"],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "political-sphere-git": {
+      "command": "npm",
+      "args": ["run", "mcp:git"],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "political-sphere-ai-assistant": {
+      "command": "npm",
+      "args": ["run", "mcp:ai-assistant"],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    }
+  }
+}

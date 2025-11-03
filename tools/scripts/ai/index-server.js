@@ -1,0 +1,194 @@
+#!/usr/bin/env node
+/*
+  Index Server: In-memory index server for fast interactive queries
+  Usage: node scripts/ai/index-server.js
+*/
+
+import { readFileSync, existsSync } from "fs";
+import http from "http";
+
+const INDEX_FILE = "ai-index/codebase-index.json";
+const PORT = process.env.AI_INDEX_PORT || 3001;
+
+let index = null;
+
+function loadIndex() {
+  if (!existsSync(INDEX_FILE)) {
+    throw new Error("Index file not found. Run code-indexer build first.");
+  }
+  // Lazy load index to reduce memory usage
+  const indexData = readFileSync(INDEX_FILE, "utf8");
+  if (indexData.length > 2000000) {
+    // 2MB threshold
+    console.warn("Index file is large, consider incremental indexing for better performance");
+  }
+  index = JSON.parse(indexData);
+  console.log(`Loaded index with ${Object.keys(index.files).length} files`);
+}
+
+function search(query) {
+  if (!index) return { error: "Index not loaded" };
+
+  // Enhanced query processing with semantic understanding
+  const queryTokens = query
+    .toLowerCase()
+    .split(/[^A-Za-z0-9_]+/)
+    .filter((token) => token.length > 1);
+  const semanticTokens = new Set(queryTokens);
+
+  // Add semantic variations for better recall
+  for (const token of queryTokens) {
+    // Add camelCase splits
+    const camelSplits = token.replace(/([a-z])([A-Z])/g, "$1 $2").split(" ");
+    camelSplits.forEach((split) => {
+      if (split.length > 1) semanticTokens.add(split);
+    });
+
+    // Add common abbreviations
+    if (token === "func") semanticTokens.add("function");
+    if (token === "comp") semanticTokens.add("component");
+    if (token === "iface") semanticTokens.add("interface");
+  }
+
+  const scores = {};
+  const contextMatches = {};
+
+  for (const token of semanticTokens) {
+    if (index.tokens[token]) {
+      for (const file of index.tokens[token]) {
+        scores[file] = (scores[file] || 0) + 1;
+
+        // Track context for better relevance
+        const fileExt = file.split(".").pop();
+        if (!contextMatches[fileExt]) contextMatches[fileExt] = [];
+        contextMatches[fileExt].push(file);
+      }
+    }
+  }
+
+  // Boost scores for files with multiple token matches and semantic relevance
+  const boostedResults = Object.entries(scores).map(([file, score]) => {
+    let boostedScore = score;
+
+    // Boost for files with higher semantic match density
+    const fileTokens = index.files[file]?.tokens?.length || 0;
+    if (fileTokens > 0) {
+      boostedScore *= (score / fileTokens) * 2; // Density bonus
+    }
+
+    // Boost for rule/governance files when relevant
+    if (
+      file.includes(".blackboxrules") ||
+      file.includes("copilot-instructions") ||
+      file.includes("ADR")
+    ) {
+      boostedScore *= 1.5;
+    }
+
+    return { file, score: boostedScore, originalScore: score };
+  });
+
+  const results = boostedResults
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 10) // Reduced from 15 for better performance
+    .map(({ file, score, originalScore }) => ({
+      file,
+      score: Math.round(score * 100) / 100,
+      originalScore,
+    }));
+
+  return {
+    results,
+    query,
+    semanticTokens: Array.from(semanticTokens),
+    contextMatches,
+    timestamp: new Date().toISOString(),
+  };
+}
+
+const server = http.createServer((req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  // Restrict CORS to localhost for security
+  const origin = req.headers.origin;
+  if (
+    origin &&
+    (origin.startsWith("http://localhost:") || origin.startsWith("http://127.0.0.1:"))
+  ) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  } else {
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  }
+
+  // Add observability hooks
+  const startTime = Date.now();
+  const requestId = Math.random().toString(36).substr(2, 9);
+
+  console.log(`[${requestId}] ${req.method} ${req.url} - Request started`);
+
+  // Error handling wrapper
+  const handleRequest = async () => {
+    try {
+      if (req.method === "GET" && req.url === "/health") {
+        const response = { status: "ok", indexLoaded: !!index, requestId };
+        res.end(JSON.stringify(response));
+      } else if (req.method === "GET" && req.url === "/metrics") {
+        const metrics = {
+          files: index ? Object.keys(index.files).length : 0,
+          tokens: index ? Object.keys(index.tokens).length : 0,
+          lastUpdated: index ? index.lastUpdated : null,
+          uptime: process.uptime(),
+          memoryUsage: process.memoryUsage(),
+          requestId,
+        };
+        res.end(JSON.stringify(metrics));
+      } else if (req.method === "POST" && req.url === "/reload") {
+        try {
+          loadIndex();
+          const response = { status: "reloaded", requestId };
+          res.end(JSON.stringify(response));
+        } catch (e) {
+          console.error(`[${requestId}] Reload error:`, e.message);
+          res.statusCode = 500;
+          res.end(JSON.stringify({ error: e.message, requestId }));
+        }
+      } else if (req.method === "GET" && req.url?.startsWith("/search?q=")) {
+        const url = new URL(req.url, `http://localhost:${PORT}`);
+        const query = url.searchParams.get("q") || "";
+
+        // Input validation
+        if (!query.trim()) {
+          res.statusCode = 400;
+          res.end(JSON.stringify({ error: 'Query parameter "q" is required', requestId }));
+          return;
+        }
+
+        const result = search(query);
+        result.requestId = requestId;
+        res.end(JSON.stringify(result));
+      } else {
+        res.statusCode = 404;
+        res.end(JSON.stringify({ error: "Not found", requestId }));
+      }
+    } catch (error) {
+      console.error(`[${requestId}] Unexpected error:`, error);
+      res.statusCode = 500;
+      res.end(JSON.stringify({ error: "Internal server error", requestId }));
+    } finally {
+      const duration = Date.now() - startTime;
+      console.log(`[${requestId}] ${req.method} ${req.url} - Completed in ${duration}ms`);
+    }
+  };
+
+  handleRequest();
+});
+
+try {
+  loadIndex();
+  server.listen(PORT, () => {
+    console.log(`Index server running on port ${PORT}`);
+    console.log(`Endpoints: /health, /metrics, /search?q=query, POST /reload`);
+  });
+} catch (e) {
+  console.error("Failed to start server:", e.message);
+  process.exit(1);
+}

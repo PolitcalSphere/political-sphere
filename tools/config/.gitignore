@@ -1,0 +1,56 @@
+# Node modules
+node_modules/
+
+# Build / output
+dist/
+build/
+coverage/
+playwright-report/
+test-results/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# VitePress / docs build
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+
+# TypeScript build info
+.tsbuildinfo
+
+# OS
+.DS_Store
+
+# Editor
+.vscode/
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+
+# Temporary lock files inside node_modules
+node_modules/.package-lock.json
+node_modules
+
+# AI cache and knowledge base files
+.ps/
+ai-cache/
+ai-logs/
+ai-metrics/
+
+# Nx cache and workspace data
+.nx/cache/
+.nx/workspace-data/

@@ -1,0 +1,492 @@
+# Docker Compose Configuration for Political Sphere
+# Optimized for MacBook Pro (2018) - 16GB RAM, 6-core CPU
+# Version: 1.0.0
+# Last Updated: 2025-11-03
+
+# ============================================================================
+# SERVICES
+# ============================================================================
+services:
+  # ==========================================================================
+  # Core Infrastructure Services
+  # ==========================================================================
+  
+  postgres:
+    image: postgres:15-alpine
+    container_name: political-sphere-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-political}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_DB: ${POSTGRES_DB:-political_dev}
+      POSTGRES_INITDB_ARGS: "-E UTF8 --locale=en_US.UTF-8"
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./apps/dev/scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-political} -d ${POSTGRES_DB:-political_dev}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - political-sphere
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  redis:
+    image: redis:7-alpine
+    container_name: political-sphere-redis
+    restart: unless-stopped
+    command: >
+      redis-server
+      --appendonly yes
+      --requirepass ${REDIS_PASSWORD:-changeme}
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-changeme}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - political-sphere
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ==========================================================================
+  # Authentication Service
+  # ==========================================================================
+  
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0
+    container_name: political-sphere-keycloak
+    restart: unless-stopped
+    command:
+      - start-dev
+      - --http-port=8080
+      - --health-enabled=true
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin123}
+      KC_DB: postgres
+      KC_DB_URL_HOST: postgres
+      KC_DB_URL_PORT: 5432
+      KC_DB_URL_DATABASE: ${POSTGRES_DB:-political_dev}
+      KC_DB_USERNAME: ${POSTGRES_USER:-political}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      KC_DB_SCHEMA: public
+      KC_HOSTNAME_STRICT: 'false'
+      KC_HOSTNAME_STRICT_HTTPS: 'false'
+      KC_HTTP_ENABLED: 'true'
+      KC_HEALTH_ENABLED: 'true'
+      KC_METRICS_ENABLED: 'true'
+    ports:
+      - "${KEYCLOAK_PORT:-8080}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health/ready || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    networks:
+      - political-sphere
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1.5G
+        reservations:
+          cpus: '0.5'
+          memory: 768M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ==========================================================================
+  # Application Services
+  # ==========================================================================
+  
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      target: development
+      args:
+        - NODE_ENV=development
+    container_name: political-sphere-api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: 4000
+      API_PORT: 4000
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-political}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-political_dev}?schema=public"
+      REDIS_URL: "redis://default:${REDIS_PASSWORD:-changeme}@redis:6379/0"
+      AUTH_URL: "http://keycloak:8080"
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-in-production}
+      LOG_LEVEL: ${LOG_LEVEL:-debug}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-http://localhost:4318}
+      OTEL_SERVICE_NAME: political-sphere-api
+    ports:
+      - "${API_PORT:-4000}:4000"
+    volumes:
+      - ./apps/api:/app/apps/api:cached
+      - ./libs:/app/libs:cached
+      - api-node-modules:/app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:4000/healthz || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - political-sphere
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '1.0'
+          memory: 1G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+      target: development
+      args:
+        - NODE_ENV=development
+    container_name: political-sphere-frontend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      API_BASE_URL: http://api:4000
+      AUTH_URL: http://keycloak:8080
+      VITE_API_URL: http://localhost:4000
+      VITE_AUTH_URL: http://localhost:8080
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    volumes:
+      - ./apps/frontend:/app/apps/frontend:cached
+      - ./libs:/app/libs:cached
+      - frontend-node-modules:/app/node_modules
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/healthz || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - political-sphere
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '1.0'
+          memory: 1G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  worker:
+    build:
+      context: .
+      dockerfile: apps/worker/Dockerfile
+      target: development
+      args:
+        - NODE_ENV=development
+    container_name: political-sphere-worker
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-political}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-political_dev}?schema=public"
+      REDIS_URL: "redis://default:${REDIS_PASSWORD:-changeme}@redis:6379/0"
+      API_URL: "http://api:4000"
+      QUEUE_URL: "http://localstack:4566/000000000000/political-sphere"
+      WORKER_INTERVAL_MS: ${WORKER_INTERVAL_MS:-15000}
+      LOG_LEVEL: ${LOG_LEVEL:-debug}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-http://localhost:4318}
+      OTEL_SERVICE_NAME: political-sphere-worker
+    volumes:
+      - ./apps/worker:/app/apps/worker:cached
+      - ./libs:/app/libs:cached
+      - worker-node-modules:/app/node_modules
+      - worker-data:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+      localstack:
+        condition: service_started
+    networks:
+      - political-sphere
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ==========================================================================
+  # Development & Testing Services
+  # ==========================================================================
+  
+  localstack:
+    image: localstack/localstack:3.0
+    container_name: political-sphere-localstack
+    restart: unless-stopped
+    environment:
+      SERVICES: s3,sqs,sts,iam,secretsmanager
+      AWS_DEFAULT_REGION: ${AWS_REGION:-us-east-1}
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      DEBUG: ${LOCALSTACK_DEBUG:-0}
+      DATA_DIR: /tmp/localstack/data
+      DOCKER_HOST: unix:///var/run/docker.sock
+    ports:
+      - "${LOCALSTACK_PORT:-4566}:4566"
+    volumes:
+      - "${TMPDIR:-/tmp}/localstack:/var/lib/localstack"
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - political-sphere
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    container_name: political-sphere-mailhog
+    restart: unless-stopped
+    ports:
+      - "${MAILHOG_SMTP_PORT:-1025}:1025"
+      - "${MAILHOG_HTTP_PORT:-8025}:8025"
+    networks:
+      - political-sphere
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  pgadmin:
+    image: dpage/pgadmin4:8.6
+    container_name: political-sphere-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@political-sphere.local}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - political-sphere
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ==========================================================================
+  # Observability Stack
+  # ==========================================================================
+  
+  prometheus:
+    image: prom/prometheus:v2.48.1
+    container_name: political-sphere-prometheus
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=7d'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+    volumes:
+      - ./apps/dev/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./apps/dev/monitoring/alerts:/etc/prometheus/alerts:ro
+      - prometheus-data:/prometheus
+    networks:
+      - political-sphere
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  grafana:
+    image: grafana/grafana:10.2.3
+    container_name: political-sphere-grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: 'false'
+      GF_SERVER_ROOT_URL: http://localhost:3001
+      GF_INSTALL_PLUGINS: ''
+    ports:
+      - "${GRAFANA_PORT:-3001}:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./apps/dev/monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./apps/dev/monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - prometheus
+    networks:
+      - political-sphere
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# ============================================================================
+# NETWORKS
+# ============================================================================
+networks:
+  political-sphere:
+    name: political-sphere-network
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+
+# ============================================================================
+# VOLUMES
+# ============================================================================
+volumes:
+  postgres-data:
+    name: political-sphere-postgres-data
+  redis-data:
+    name: political-sphere-redis-data
+  prometheus-data:
+    name: political-sphere-prometheus-data
+  grafana-data:
+    name: political-sphere-grafana-data
+  pgadmin-data:
+    name: political-sphere-pgadmin-data
+  api-node-modules:
+    name: political-sphere-api-node-modules
+  frontend-node-modules:
+    name: political-sphere-frontend-node-modules
+  worker-node-modules:
+    name: political-sphere-worker-node-modules
+  worker-data:
+    name: political-sphere-worker-data

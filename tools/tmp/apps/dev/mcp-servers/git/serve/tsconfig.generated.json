@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@political-sphere/shared": ["libs/shared/src/index.ts"],
+      "@political-sphere/ui": ["libs/ui/src/index.ts"],
+      "@political-sphere/platform": ["libs/platform/src/index.ts"],
+      "@political-sphere/ci-utils": ["libs/ci/src/index.ts"],
+      "@political-sphere/infrastructure": ["libs/infrastructure/src/index.ts"]
+    }
+  },
+  "extends": "../../../../../../apps/dev/mcp-servers/git/tsconfig.json"
+}

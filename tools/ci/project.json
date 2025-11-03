@@ -1,0 +1,46 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "ci-automation",
+  "root": "tools/ci",
+  "projectType": "application",
+  "targets": {
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run lint"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run typecheck"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run test"
+      }
+    },
+    "lint-boundaries": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run lint:import-boundaries"
+      }
+    },
+    "security-scan": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "make security-scan"
+      }
+    },
+    "ci-checks": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "make ci-checks"
+      },
+      "dependsOn": ["lint", "typecheck", "test", "lint-boundaries"]
+    }
+  },
+  "tags": ["ci", "automation"]
+}

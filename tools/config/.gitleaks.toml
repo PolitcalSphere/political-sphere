@@ -1,0 +1,30 @@
+title = "gitleaks config"
+
+[allowlist]
+  description = "global allow lists"
+  paths = [
+    '''go\.sum$''',
+    '''go\.mod$''',
+    '''vendor/''',
+    '''\.git/''',
+    '''node_modules/''',
+    '''package-lock\.json$''',
+    '''yarn\.lock$''',
+    '''pnpm-lock\.yaml$''',
+    '''Cargo\.lock$''',
+    '''Pipfile\.lock$''',
+    '''poetry\.lock$''',
+    '''Gemfile\.lock$''',
+    '''composer\.lock$''',
+    '''\.terraform\.lock\.hcl$''',
+    '''\.lock$''',
+  ]
+  # Common false positives in development
+  regexes = [
+    '''TEST_JWT_SECRET''',
+    '''test_jwt_secret''',
+    '''example\.com''',
+    '''localhost''',
+    '''127\.0\.0\.1''',
+    '''0\.0\.0\.0''',
+  ]

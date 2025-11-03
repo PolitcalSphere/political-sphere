@@ -1,0 +1,34 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "bundler",
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "ignoreDeprecations": "5.0",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "useUnknownInCatchVariables": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@political-sphere/shared": ["libs/shared/src/index.ts"],
+      "@political-sphere/ui": ["libs/ui/src/index.ts"],
+      "@political-sphere/platform": ["libs/platform/src/index.ts"],
+      "@political-sphere/ci-utils": ["libs/ci/src/index.ts"],
+      "@political-sphere/infrastructure": ["libs/infrastructure/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

@@ -1,0 +1,23 @@
+rules:
+  - id: forbid-console-log
+    message: 'Use shared logger (libs/shared/src/log.ts); console.log is forbidden in runtime paths.'
+    severity: ERROR
+    languages: [javascript, typescript]
+    pattern-either:
+      - pattern: console.log(...)
+      - pattern: console.error(...)
+      - pattern: console.warn(...)
+    paths:
+      exclude:
+        - '**/*.test.*'
+        - '**/tests/**'
+        - 'scripts/**'
+
+  - id: require-adr-on-dep-change
+    message: 'Add ADR when changing runtime dependencies. See docs/architecture/decisions/ADR-template.md.'
+    severity: ERROR
+    languages: [json]
+    pattern: '"dependencies":'
+    paths:
+      include:
+        - package.json

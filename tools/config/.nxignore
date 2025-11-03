@@ -1,0 +1,45 @@
+# Nx Ignore - Exclude from project graph and cache calculations
+# This prevents Nx from constantly refreshing when these files change
+
+# AI and cache directories (constantly changing)
+ai-cache/
+ai-logs/
+ai-metrics/
+ai-learning/
+ai-index/
+ai-knowledge/
+.ps/
+
+# Temporary files
+tmp/
+*.tmp
+*.log
+*.cache
+
+# Build artifacts already tracked elsewhere
+dist/
+build/
+coverage/
+.nx/cache/
+.nx/workspace-data/
+
+# Documentation builds
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+
+# Test artifacts
+playwright-report/
+test-results/
+.playwright/
+
+# OS and editor
+.DS_Store
+.vscode/
+.idea/
+
+# Monitoring and metrics (frequently updated)
+monitoring/data/
+artifacts/
+
+# Node modules (managed separately)
+node_modules/

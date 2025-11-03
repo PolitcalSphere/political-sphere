@@ -1,0 +1,13 @@
+version = 1
+
+[[annotations]]
+path = "LICENSE"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2024 Political Sphere"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ".**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2024 Political Sphere"
+SPDX-License-Identifier = "MIT"
