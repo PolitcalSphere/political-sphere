@@ -11,7 +11,7 @@ import { createHash } from "crypto";
 
 const INDEX_FILE = "ai-index/codebase-index.json";
 const SUPPORTED_EXTS = [".js", ".ts", ".tsx", ".jsx", ".json", ".md"];
-const MAX_INDEX_SIZE = 2000000; // 2MB limit
+const MAX_INDEX_SIZE = 10_000_000; // 10MB limit
 
 function tokenize(text) {
   // Enhanced tokenization: lowercase, remove duplicates, filter short tokens, include semantic context

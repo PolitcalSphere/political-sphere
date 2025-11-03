@@ -22,7 +22,8 @@ export class BillService {
   }
 
   async getAllBills(): Promise<Bill[]> {
-    return this.db.bills.getAll();
+    const result = await this.db.bills.getAll();
+    return result.bills;
   }
 
   async getBillsByProposer(proposerId: string): Promise<Bill[]> {

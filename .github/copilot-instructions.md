@@ -11,6 +11,7 @@ Generate code, documentation, and infrastructure that:
 - Treats quality as architectural (not post-implementation)
 - Applies zero-trust security at all layers
 - Ensures full traceability and auditability
+- Updates canonical change logs (`CHANGELOG.md` files) immediately after every change
 - Meets WCAG 2.2 AA+ accessibility (mandatory)
 
 ## Meta-Rule: Self-Improving Rule Sets
@@ -21,6 +22,7 @@ Generate code, documentation, and infrastructure that:
    - `.blackboxrules`
    - `.github/copilot-instructions.md` (this file)
 2. **Update When You Notice**:
+
    - Repeated mistakes or anti-patterns
    - Valuable patterns that should be codified
    - Missing guidelines that caused confusion
@@ -77,6 +79,20 @@ Execution Modes (agent-selectable):
 - Audit → T0 + T1 + T2 + T3 + full artefact capture (traces, diffs, SBOMs).
 - R&D → T0 + minimal T1; outputs marked `experimental`; no production merges without a Safe re-run.
 
+### Execution Mode Budgets & Enforcement
+
+To limit blast radius for automated changes, each Execution Mode has measurable budgets and enforcement checks. Guard checks are implemented in `tools/scripts/ai/guard-change-budget.mjs` and run in CI or locally before PRs are created.
+
+- Safe (default): apply T0/T1/T2. Change budget ≤ 300 total changed lines (added+deleted) and ≤ 12 files changed. New runtime or build dependencies are forbidden unless an ADR is attached to the change (file path or PR reference). Exceeding the budget fails the guard script.
+
+- Fast-Secure: apply T0/T1. Change budget ≤ 150 total changed lines and ≤ 6 files changed. Any deferred gates MUST be recorded in `/docs/TODO.md` with an explicit owner and due date (YYYY-MM-DD). The guard script will validate the TODO entry exists; otherwise it fails.
+
+- Audit: no budget cap, but changes must include SBOM and provenance artefacts (e.g., `sbom.json`, `provenance.json`, or `artifacts/sbom*`) and attach test evidence (logs or screenshots). The guard script verifies presence of these artefacts in the change set or repo; missing artefacts fail CI.
+
+- R&D: outputs are auto-tagged `experimental` (agents must add this tag in PR titles or metadata). Changes from R&D mode cannot be merged to protected branches unless the same change is re-run and validated under `Safe` mode. The guard script will emit an advisory and suggest the Safe re-run steps.
+
+Agents must invoke `tools/scripts/ai/guard-change-budget.mjs --mode=<mode> --base=<base-ref>` during local preflight or CI. The script returns non-zero when enforcement fails and prints actionable remediation steps.
+
 Agents must declare the Execution Mode in PR bodies and local logs.
 
 ### Change entry template (required)
@@ -104,10 +120,19 @@ NEVER place files in root. Always use these structured locations:
 /tools         - Build tools and utilities
 /docs          - Comprehensive documentation
 /scripts       - Automation scripts (with subdirectories)
-/ai-learning   - AI training patterns
-/ai-cache      - AI cache data
-/ai-metrics    - AI performance metrics
-.github/       - GitHub workflows and configs
+/ai            - All AI-related assets and configurations
+  /cache       - AI cache data
+  /context-bundles - AI context bundles
+  /governance  - AI governance rules
+  /history     - AI development history
+  /index       - AI codebase index
+  /knowledge   - AI knowledge base
+  /learning    - AI training patterns
+  /metrics     - AI performance metrics
+  /patterns    - AI code patterns
+  /prompts     - AI prompts and templates
+/assets        - Static assets
+/reports       - Reports and metrics
 ```
 
 Exceptions to root placement
@@ -117,6 +142,10 @@ While most project contents must live under structured directories, common top-l
 - `/package.json`, `/pnpm-workspace.yaml`, `/nx.json`, `/tsconfig.base.json`
 - `/.editorconfig`, `/.gitignore`, `/.gitattributes`
 - `/.github/` (workflows, templates)
+- `/.vscode/` (IDE settings)
+- `/.lefthook/` (git hooks)
+- `/ai-controls.json`, `/ai-metrics.json` (legacy, to be moved to `/ai/`)
+- `/TODO-STEPS.md`, `/TODO.md` (project management)
 
 Rationale: These exceptions align with tooling expectations and improve discoverability across developer tools and CI.
 
@@ -158,6 +187,17 @@ Before creating new code:
 4. Reference (don't duplicate) documentation
 5. Suggest refactoring when duplication found
 
+### Enforce Directory Placement
+
+To ensure files are placed in correct locations per governance rules:
+
+- **CI Enforcement**: `tools/scripts/ci/check-file-placement.mjs` validates placements and runs in PR workflows
+- **Pre-commit Hook**: Add to Husky or Lefthook for local enforcement
+- **IDE Guidance**: VS Code settings can warn on incorrect placements
+- **Code Review**: Reviewers must verify placement compliance
+
+Violations will fail CI with clear remediation messages.
+
 ### TODO Management (Single Source of Truth)
 
 Maintain ONE consolidated TODO list at `/docs/TODO.md`:
@@ -169,6 +209,8 @@ Maintain ONE consolidated TODO list at `/docs/TODO.md`:
 - No fragmented TODO-\*.md files in subdirectories
 - **NEVER overwrite the TODO list** - only add new items or mark existing ones as completed
 - Organize by practice area (e.g., Organization, Quality, Security, AI Governance, Testing, Compliance, UX/Accessibility, Operations, Strategy)
+
+- Before marking a task as completed or merging changes, update `/docs/TODO.md` with explicit next steps, assigned owners, and due dates so follow-up work is discoverable and auditable.
 
 ### Separation of Concerns
 
@@ -882,6 +924,10 @@ Agents must follow this SOP for every task to avoid loops, produce auditable out
 7. Self-Review: Run quick checklist (security, accessibility, error paths, observability) and append results to PR description.
 8. Exit / Escalate: If blocked, or if a human trade-off is required, open a draft PR with findings, label `blocked` and `requires-governance`, and add a `/docs/TODO.md` entry.
 
+File hygiene: close files after use
+
+- Agents must close any files they open in the editor after finishing edits. This includes closing buffers/tabs or using the editor API to close the file handle. Include a short file-modification record in the PR or agent logs to help auditors and reviewers verify what was changed and to avoid leaving sensitive artifacts open.
+
 ### Loop & Stall Prevention
 
 - Max Steps: 40 reasoning steps per task; if exceeded, escalate with a concise summary and open an issue labelled `ai-escalation`.
@@ -902,6 +948,19 @@ Agents must follow this SOP for every task to avoid loops, produce auditable out
 - Prefer targeted code search and `nx graph --focus` before workspace-wide scans.
 - For dependency updates prefer minimal semver bumps and include release notes links.
 - Use `ripgrep`/tsserver for fast symbol search; only run broad scans when necessary.
+
+### Mandatory tool usage
+
+- Agents MUST identify and invoke the appropriate tools available in the workspace for a given task. Appropriate tools include (but are not limited to): code search (`file_search`, `grep_search`, semantic/semantic_search), `read_file`, `run_in_terminal`/`run_task` for executing commands, test runners (Vitest/Jest), linters, `tools/scripts/ai/guard-change-budget.mjs`, AI indexers (`scripts/ai/index-server.js`), and any project-specific scripts under `tools/` or `scripts/`.
+
+- When performing code changes agents must at minimum:
+   1. Search the codebase for existing implementations or tests related to the change using semantic or textual search.
+   2. Run targeted tests and linters (or the project's `preflight` script) to validate changes locally where feasible.
+   3. Run the guard script (`tools/scripts/ai/guard-change-budget.mjs`) in the chosen Execution Mode during preflight.
+
+- If a required tool is missing or cannot be run, agents must record the failure reason in the PR body and add a `/docs/TODO.md` entry (owner + due date) so humans can provision or fix the environment before merge.
+
+Rationale: enforcing explicit tool usage improves correctness, reproducibility, and helps agents learn to rely on repeatable verification steps rather than guessing or incomplete heuristics.
 
 ### PR Body & Labels (Agent-produced)
 
@@ -1319,11 +1378,13 @@ AI Deputy Mode enables Copilot and Blackbox to shadow changes and flag governanc
 When making ANY changes to code, infrastructure, or configuration:
 
 1. **Update CHANGELOG.md** (if exists at project/app level)
+
    - Add entry under appropriate version/section
    - Include: date, type of change (Added/Changed/Fixed/Removed), description
    - Link to related issues/PRs when applicable
 
 2. **Update TODO.md** (project root)
+
    - Mark completed tasks as done
    - Remove items that are no longer relevant
    - Add new tasks discovered during work
@@ -1332,6 +1393,8 @@ When making ANY changes to code, infrastructure, or configuration:
    - If adding new features, document usage
    - If changing APIs, update examples
    - If adding dependencies, note requirements
+
+Treat these updates as Tier 1 mandatory gates—work is not complete until the changelog entry and TODO updates are committed.
 
 ### PROHIBITED: Do NOT Create Completion/Summary Documents
 
@@ -1544,8 +1607,17 @@ This instruction set is itself governed by our principles:
 - Accessible to all team members
 - **AI assistants should proactively improve these rules when patterns emerge** (see Meta-Rule above)
 
-**Last updated**: 2025-01-10
-**Version**: 1.3.1
+**Last updated**: 2025-11-03
+**Version**: 1.5.2
+
+## Recent updates (2025-11-03)
+
+- Minor clarifications and helpful examples were added to make rule updates easier to follow for both human and automated authors. These include:
+  - A short example of a CHANGELOG entry and a matching TODO entry to add when updating governance rules.
+  - A reminder to include an `AI-EXECUTION` header in PR bodies when edits are made by automated agents, and to list any deferred gates.
+  - A version bump to 1.5.0 to record this coordinated update across rule files.
+
+These additions are intentionally lightweight and parity-safe: they clarify the update process without changing enforcement behaviour or CI checks.
 **Owned by**: Technical Governance Committee
 **Review cycle**: Quarterly
 
@@ -1636,3 +1708,77 @@ Use `/ai-learning/patterns.json` to identify optimizations:
 
 - Track fast vs slow response patterns
 - Identify cacheable query types
+
+**AI Agent Reading Requirements**: AI assistants must read the relevant sub-files listed above before performing tasks in those areas. For example, read `security.md` for security-related changes and `testing.md` for test implementation. Use `quick-ref.md` for quick rule checks.
+
+### Rule Organization & Reading Protocol
+
+**Rule Location Structure:**
+
+- **Core Rules**: This main file contains foundational principles, meta-rules, and execution modes
+- **Domain-Specific Rules**: Sub-files in `.github/` contain detailed rules for specific areas:
+  - `organization.md` - Project structure, naming, file organization
+  - `quality.md` - Code quality, testing, documentation standards
+  - `security.md` - Security protocols, data protection, zero-trust model
+  - `ai-governance.md` - AI ethics, political neutrality, autonomy boundaries
+  - `testing.md` - Testing strategies, coverage requirements, validation
+  - `compliance.md` - Legal compliance, auditability, data subject rights
+  - `ux-accessibility.md` - User experience, WCAG compliance, inclusive design
+  - `operations.md` - Infrastructure, monitoring, incident management
+  - `strategy.md` - Roadmap alignment, ADRs, risk management
+  - `quick-ref.md` - Condensed reference for rapid lookups
+
+**Mandatory Reading Triggers:**
+
+- **Before any code changes**: Read `quality.md` and relevant domain file
+- **Before security-related work**: Read `security.md` and `compliance.md`
+- **Before AI/ML features**: Read `ai-governance.md` and `security.md`
+- **Before UI/UX changes**: Read `ux-accessibility.md`
+- **Before infrastructure changes**: Read `operations.md`
+- **Before testing**: Read `testing.md`
+- **For project structure changes**: Read `organization.md`
+- **For strategic decisions**: Read `strategy.md`
+
+**Reading Protocol:**
+
+1. Start with `quick-ref.md` for immediate rule checks
+2. Read domain-specific sub-file(s) for detailed requirements
+3. Reference main file for execution modes and meta-rules
+4. Update knowledge base with any clarifications needed
+ 
+## Efficiency Best-Practices (preserve quality)
+
+These are practical, low-risk steps agents and developers should prefer to speed iteration without compromising correctness or security. Follow these unless a strong justification is provided in the PR body.
+
+- Prefer incremental work:
+   - Keep PRs small and focused (minimal diff). Use the guard-change-budget checks to validate budgets.
+   - Make focused commits: one logical change per commit; keep commit messages clear and reference issues/ADRs.
+
+- Faster tests and local feedback:
+   - Prefer running unit tests only for changed files/packages (e.g., Vitest `--changed` or targeted `npm run test:changed`).
+   - Use `npx` to run local tools (`npx vitest`) so contributors needn't install global tooling.
+   - Use watch modes for iterative work (`vitest --watch`) and VS Code test tasks that prefer `--changed` to limit CPU usage.
+
+- Safe fast-mode for development:
+   - Use the `FAST_AI=1` local flag for quick, lower-rigor iterations. Always unset or override for `Safe`/`Audit` CI runs.
+   - Document FAST_AI usage in `/docs/` and ensure CI explicitly sets `FAST_AI=0` for gating workflows.
+
+- Caching and warmed artifacts:
+   - Use warmed AI-index artifacts (e.g., `ai-index-cache` branch) and persisted SBOMs in CI to reduce repeated heavy work.
+   - Cache package manager installs and build artifacts in CI where possible.
+
+- Targeted linting & preflight:
+   - Run linters and typechecks only on affected packages/files where feasible (use `nx affected:*` or similar tools) to shorten feedback loops.
+   - Always run `tools/scripts/ai/guard-change-budget.mjs` (or its shim) during preflight; fail early on budget or artifact violations.
+
+- CI hygiene for speed:
+   - Parallelise jobs where safe (unit tests, linters, build matrix). Use `--changed`/affected strategies to avoid full-suite runs on small PRs.
+   - Rerun failing tests selectively rather than rerunning entire pipelines; quarantine flaky tests and add TODOs to fix them.
+
+- Dependency & ADR discipline (efficiency + safety):
+   - Adding runtime/build dependencies must include an ADR and justification; prefer reusing existing libs to avoid dependency churn.
+
+- Small automation helpers:
+   - Provide short, reusable scripts (e.g., `npm run test:changed`, `npm run lint:staged`) and VS Code tasks so contributors can do the right thing quickly.
+
+Rationale: these steps reduce iteration time while preserving the governance requirements around security, testing, and auditability. Any deviation must be documented in the PR's `AI-EXECUTION` header and justified in the PR body.

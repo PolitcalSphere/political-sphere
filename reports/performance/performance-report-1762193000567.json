@@ -1,0 +1,73 @@
+{
+  "timestamp": "2025-11-03T18:03:20.566Z",
+  "metrics": {
+    "timestamp": "2025-11-03T18:03:20.559Z",
+    "responseTime": 200.0273290661056,
+    "cpuUsage": 45.150368743244805,
+    "memoryUsage": 70.65308127824304,
+    "errorRate": 0.033000310876810955,
+    "throughput": 861.6879455616204,
+    "activeConnections": 565,
+    "databaseLatency": 33.58300551439733
+  },
+  "anomalies": [
+    {
+      "metric": "responseTime",
+      "value": 200.0273290661056,
+      "baseline": 100,
+      "severity": "critical",
+      "zScore": "5.00"
+    },
+    {
+      "metric": "errorRate",
+      "value": 0.033000310876810955,
+      "baseline": 0.01,
+      "severity": "critical",
+      "zScore": "4.60"
+    }
+  ],
+  "recommendations": [
+    {
+      "type": "performance",
+      "priority": "high",
+      "title": "High Response Time Detected",
+      "description": "API response times are elevated. Consider implementing caching or optimizing database queries.",
+      "actions": [
+        "Review slow database queries",
+        "Implement Redis caching for frequently accessed data",
+        "Consider CDN for static assets",
+        "Optimize API endpoints with pagination"
+      ]
+    },
+    {
+      "type": "reliability",
+      "priority": "high",
+      "title": "Elevated Error Rate",
+      "description": "Error rates are above acceptable thresholds.",
+      "actions": [
+        "Review application logs for error patterns",
+        "Implement circuit breakers",
+        "Add retry mechanisms with exponential backoff",
+        "Enhance error handling and monitoring"
+      ]
+    },
+    {
+      "type": "database",
+      "priority": "medium",
+      "title": "High Database Latency",
+      "description": "Database queries are taking longer than expected.",
+      "actions": [
+        "Add database indexes for slow queries",
+        "Implement query result caching",
+        "Consider read replicas for heavy read workloads",
+        "Optimize database connection pooling"
+      ]
+    }
+  ],
+  "summary": {
+    "totalAnomalies": 2,
+    "criticalIssues": 2,
+    "totalRecommendations": 3,
+    "highPriorityActions": 2
+  }
+}

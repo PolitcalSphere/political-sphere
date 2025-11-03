@@ -107,7 +107,12 @@ export function runMigrations(db: Database.Database): void {
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_bills_proposer_id ON bills(proposer_id);
     CREATE INDEX IF NOT EXISTS idx_bills_status ON bills(status);
+    CREATE INDEX IF NOT EXISTS idx_bills_created_at ON bills(created_at);
     CREATE INDEX IF NOT EXISTS idx_votes_bill_id ON votes(bill_id);
     CREATE INDEX IF NOT EXISTS idx_votes_user_id ON votes(user_id);
+    CREATE INDEX IF NOT EXISTS idx_votes_created_at ON votes(created_at);
+    CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);
+    CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+    CREATE INDEX IF NOT EXISTS idx_parties_name ON parties(name);
   `);
 }

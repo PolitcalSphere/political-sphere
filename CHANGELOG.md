@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **API Performance Optimization (Phase 1 & 2)**: Implemented comprehensive database and caching optimizations to address high response times (200ms vs 100ms target) and elevated error rates (3.3% vs 1%):
+  - **Enhanced Caching Layer**: Extended cache keys in `cache.ts` for votes, parties, and users with proper TTL management
+  - **Resilient Store Operations**: Added retry mechanisms with exponential backoff to all store methods (bill, user, vote, party) using `retryWithBackoff` utility
+  - **Database Error Handling**: Integrated `DatabaseError` class for consistent error propagation and monitoring
+  - **Async Store Methods**: Converted synchronous database operations to async with caching for improved performance
+  - **Circuit Breaker Ready**: Prepared infrastructure for external service circuit breakers (available in error-handler.ts)
+  - **Index Verification**: Confirmed existing database indexes for optimal query performance (bills, votes, users, parties)
+  - **Cache Invalidation**: Implemented proper cache invalidation patterns for data consistency
+  - **HTTP Cache Headers**: Added `Cache-Control` headers to all GET endpoints (bills: 5min/1min, parties: 10min/5min, users: 10min, votes: 2min) for client-side caching
+  - **Performance Monitoring Ready**: Prepared for Phase 4 monitoring with structured error logging and metrics hooks
+
+### Changed
+
 - **Production-Grade Docker Infrastructure**: World-class containerization setup with expert-level optimizations:
   - **Base Image Pinning**: All Dockerfiles pin node:22-alpine by SHA256 digest for reproducible builds
   - **NPM Workspaces Pattern**: Committed to npm (removed pnpm-lock.yaml references), using --workspaces=false flag
@@ -84,7 +97,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Helper scripts: dev-up.sh (enhanced), dev-down.sh, seed-db.sh, docker-status.sh (all executable)
   - .dockerignore with 100+ exclusion patterns for faster builds
   - Documentation: docs/DOCKER-SETUP.md and DOCKER-QUICKSTART.md
-  - package.json docker:* npm scripts for common operations
+  - package.json docker:\* npm scripts for common operations
 - **Docker CI/CD Pipeline**: Production-grade GitHub Actions workflow for Docker infrastructure (2025-11-03):
   - **Compose Validation**: Syntax checks, secret detection, required health check verification
   - **Multi-Service Builds**: Parallel builds for API, Frontend, Worker with BuildKit caching
@@ -110,6 +123,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - DevContainer mounts: Removed named volume mounts for `node_modules` and `.nx/cache` from `devcontainer.json` to prevent permission issues for the non-root `node` user during dependency installation. (2025-11-02)
 - DevContainer UX: Improved `docker-socket-perms.sh` to safely skip adjustments when docker.sock GID is 0 and clarified guidance; `status-check.sh` now avoids pnpm workspace warnings and fixes telemetry to be opt-in only. (2025-11-02)
 - **DevContainer critical fixes**: Fixed multiple issues preventing proper container operation and extension loading (2025-11-02):
+
   - Fixed disk space validation in `validate-host.sh` - removed non-numeric characters before integer comparison to prevent "integer expression expected" errors
   - Fixed `postAttachCommand` syntax in `devcontainer.json` - corrected command chaining using proper bash -c syntax with && and || operators
   - Added ESLint validation settings to ensure proper extension activation for JavaScript/TypeScript files
@@ -118,6 +132,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Changed app startup behaviour to manual mode (no auto-start) to prevent port conflicts and give developers control
 
 - Strict TypeScript compliance (exactOptionalPropertyTypes):
+
   - OTEL exporter URL now conditionally provided to avoid passing undefined
   - Playwright e2e config uses `shard: null` when not enabled
   - GitHub MCP server validates `GITHUB_REPOSITORY` format before use

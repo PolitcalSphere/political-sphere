@@ -1,7 +1,12 @@
 {
   "assets": [
-    { "path": "scripts/ai/context-preloader.js", "purpose": "AI context warm-up" },
-    { "path": "scripts/novelty-guard.js", "purpose": "Novelty enforcement" },
-    { "path": "ai/patterns/", "purpose": "Reusable code patterns" }
+    { "path": "tools/scripts/ai/context-preloader.js", "purpose": "AI context warm-up" },
+    { "path": "tools/scripts/novelty-guard.js", "purpose": "Novelty enforcement" },
+    { "path": "tools/scripts/ai/build-context-bundles.js", "purpose": "Generate curated context bundles" },
+    { "path": "tools/scripts/ai/index-if-changed.js", "purpose": "Incremental semantic index guard" },
+    { "path": "tools/scripts/ai/update-recent-changes.js", "purpose": "Summarise recent repository changes" },
+    { "path": "ai/context-bundles/", "purpose": "Pre-built high-signal context packs" },
+    { "path": "ai/patterns/", "purpose": "Reusable code patterns" },
+    { "path": "ai-controls.json", "purpose": "Canonical AI governance controls" }
   ]
 }

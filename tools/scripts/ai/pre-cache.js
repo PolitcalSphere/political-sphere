@@ -8,14 +8,17 @@
 import { promises as fsp } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { recordScriptEvent } from './analytics.js';
+import { updateRecentChanges } from './update-recent-changes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const CACHE_DIR = path.join(__dirname, '../../ai-cache');
+const REPO_ROOT = path.resolve(__dirname, '../../..');
+const CACHE_DIR = path.join(REPO_ROOT, 'ai', 'ai-cache');
 const CACHE_FILE = path.join(CACHE_DIR, 'cache.json');
-const PATTERNS_FILE = path.join(__dirname, '../../ai-learning/patterns.json');
-const METRICS_FILE = path.join(__dirname, '../../ai-metrics.json');
+const PATTERNS_FILE = path.join(REPO_ROOT, 'ai', 'ai-learning', 'patterns.json');
+const METRICS_FILE = path.join(REPO_ROOT, 'ai-metrics.json');
 
 // Configurable cache settings
 const DEFAULT_MAX_ENTRIES = parseInt(process.env.PRE_CACHE_MAX_ENTRIES || '200', 10);
@@ -233,6 +236,9 @@ async function main() {
   try {
     await preCacheQueries();
     await updatePatterns();
+    await updateRecentChanges().catch((error) => {
+      console.warn('Failed to update recent changes bundle:', error.message);
+    });
     console.log('Pre-caching complete!');
     success = true;
   } catch (err) {
@@ -250,6 +256,13 @@ async function main() {
         success,
       });
       await fsp.writeFile(METRICS_FILE, JSON.stringify(metrics, null, 2));
+      await recordScriptEvent('pre-cache', {
+        durationMs: duration,
+        payload: {
+          queriesCached: Object.keys((await loadCache()).queries || {}).length,
+          fastMode: FAST_AI,
+        },
+      });
     } catch (err) {
       console.warn('Failed to write metrics:', err?.message || err);
     }

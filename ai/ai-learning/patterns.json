@@ -1,27 +1,97 @@
 {
+  "version": "1.1.0",
+  "lastUpdated": "2025-11-03T19:01:51Z",
   "patterns": [
     {
-      "pattern": "context-preloader-path-validation",
-      "description": "Skip non-existent paths silently in context preloader",
-      "success": true,
-      "lastUsed": "2025-11-02T14:21:53.255Z",
-      "usageCount": 1
+      "id": "context-preloader-path-validation",
+      "description": "Skip non-existent paths silently in the context preloader to avoid noisy errors.",
+      "status": "stable",
+      "usageCount": 3,
+      "lastUsed": "2025-10-22T09:15:00Z",
+      "references": [
+        "tools/scripts/ai/context-preloader.js"
+      ]
     },
     {
-      "pattern": "cors-security-restriction",
-      "description": "Restrict CORS to localhost origins for security",
-      "success": true,
-      "lastUsed": "2025-11-02T14:21:53.255Z",
-      "usageCount": 1
+      "id": "cors-security-restriction",
+      "description": "Default CORS allow-list to trusted localhost origins for local testing. Expand explicitly for deployed environments.",
+      "status": "stable",
+      "usageCount": 2,
+      "lastUsed": "2025-09-18T12:04:00Z",
+      "references": [
+        "apps/game-server/src/index.js"
+      ]
     },
     {
-      "pattern": "competence-monitor-simplification",
-      "description": "Simplify competence scoring to essential metrics only",
-      "success": true,
-      "lastUsed": "2025-11-02T14:21:53.255Z",
-      "usageCount": 1
+      "id": "sqlite-reset-safeguard",
+      "description": "Detect missing tables and trigger migration resets before running integration suites.",
+      "status": "experimental",
+      "usageCount": 1,
+      "lastUsed": "2025-08-30T16:30:00Z",
+      "references": [
+        "apps/api/src/migrations/index.js"
+      ],
+      "notes": "Promote to stable once automated tests cover rollback scenarios."
+    },
+    {
+      "id": "api-store-change-journal",
+      "description": "Log API store mutations to analytics database for AI review after each script run.",
+      "status": "pilot",
+      "usageCount": 0,
+      "lastUsed": null,
+      "references": [
+        "tools/scripts/ai/analytics.js"
+      ],
+      "notes": "Adopt across new automation once validation scripts incorporate analytics dashboards."
+    },
+    {
+      "id": "context-bundle-generation",
+      "description": "Generate curated Markdown bundles summarising high-signal context for AI assistants.",
+      "status": "stable",
+      "usageCount": 1,
+      "lastUsed": "2025-11-03T19:04:00Z",
+      "references": [
+        "tools/scripts/ai/build-context-bundles.js",
+        "ai/context-bundles/"
+      ]
     }
   ],
-  "lastUpdated": "2025-11-02T14:21:53.255Z",
-  "version": "1.0.1"
+  "notes": "Document new patterns after verifying they work end-to-end. Link to code locations for traceability.",
+  "performancePatterns": {
+    "cacheableQueries": [
+      "What is the project structure?",
+      "How do I run tests?",
+      "What are the coding standards?",
+      "How do I add a new component?",
+      "What is the deployment process?",
+      "How do I handle errors?",
+      "What are the security requirements?",
+      "How do I update dependencies?",
+      "How to run the development server?",
+      "How to run database migrations?",
+      "How to seed test data?",
+      "How to run linting?",
+      "What is FAST_AI and how to enable it?",
+      "Where are the ADRs (architecture decision records)?",
+      "How to run the test smoke suite?",
+      "How to add a new API endpoint?",
+      "How to write an integration test?",
+      "How to create a new React component with accessibility?",
+      "How to run Playwright tests?",
+      "What are the accessibility requirements?",
+      "How to update shared libs?",
+      "Where is the README for apps/api?",
+      "How to contribute (contributing.md)?",
+      "How to run the pre-cache script?",
+      "How to pre-load AI contexts?",
+      "What is the release process?"
+    ],
+    "optimizationTips": [
+      "Pre-cache common queries using scripts/ai/pre-cache.js",
+      "Use FAST_AI=1 for rapid iteration",
+      "Batch similar operations together",
+      "Leverage cached patterns from ai-learning/patterns.json",
+      "Inspect ai/ai-metrics/analytics.db for slow or failing script runs"
+    ]
+  }
 }

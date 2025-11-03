@@ -1,0 +1,36 @@
+name: Guard Change Budget Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  guard-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install dependencies (if needed)
+        run: |
+          if [ -f package.json ]; then npm ci --omit=dev || npm ci || true; fi
+
+      - name: Run CI tools check
+        run: |
+          node --version
+          node tools/scripts/ci/check-tools.mjs
+
+      - name: Check file placement
+        run: node tools/scripts/ci/check-file-placement.mjs
+
+      - name: Run guard-change-budget (Safe mode)
+        run: |
+          node --version
+          node tools/scripts/ai/guard-change-budget.mjs --mode=Safe --base=origin/${{ github.event.pull_request.base.ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
