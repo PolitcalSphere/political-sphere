@@ -88,7 +88,12 @@ services:
   # ==========================================================================
   
   keycloak:
-    image: quay.io/keycloak/keycloak:23.0
+    # Build a small dev image which includes curl so we can use an HTTP
+    # readiness probe in development.
+    build:
+      context: ../keycloak
+      dockerfile: Dockerfile
+    image: political-sphere-keycloak:dev
     container_name: political-sphere-keycloak
     restart: unless-stopped
     command:
@@ -116,6 +121,7 @@ services:
       postgres:
         condition: service_healthy
     healthcheck:
+      # Real HTTP readiness probe (uses curl installed in the dev image)
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health/ready || exit 1"]
       interval: 30s
       timeout: 10s

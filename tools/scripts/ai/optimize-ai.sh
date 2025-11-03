@@ -43,14 +43,14 @@ fi
 cd "$PROJECT_ROOT"
 
 print_status "Running pre-cache script..."
-if node scripts/ai/pre-cache.js; then
+if node tools/scripts/ai/pre-cache.js; then
     print_success "Pre-cache completed successfully"
 else
     print_warning "Pre-cache script failed, but continuing..."
 fi
 
 print_status "Running performance monitor..."
-if node scripts/ai/performance-monitor.js; then
+if node tools/scripts/ai/performance-monitor.js; then
     print_success "Performance analysis completed"
 else
     print_warning "Performance monitor failed, but continuing..."
@@ -90,8 +90,8 @@ fi
 
 print_status "Optimization recommendations:"
 echo "  • Run 'FAST_AI=1 <command>' for faster responses during development"
-echo "  • Use 'node scripts/ai/pre-cache.js' to populate cache with common queries"
-echo "  • Monitor performance with 'node scripts/ai/performance-monitor.js'"
+echo "  • Use 'node tools/scripts/ai/pre-cache.js' to populate cache with common queries"
+echo "  • Monitor performance with 'node tools/scripts/ai/performance-monitor.js'"
 echo "  • Review ai-learning/patterns.json for optimization tips"
 echo "  • Check ai-metrics.json for performance trends"
 
@@ -101,4 +101,4 @@ echo "To enable fast mode for the current session:"
 echo "  export FAST_AI=1"
 echo ""
 echo "To run this optimization script again:"
-echo "  ./scripts/ai/optimize-ai.sh"
+echo "  ./tools/scripts/ai/optimize-ai.sh"

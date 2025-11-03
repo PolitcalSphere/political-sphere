@@ -9,13 +9,15 @@ import fs from 'fs';
 import { promises as fsp } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { recordScriptEvent } from './analytics.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const METRICS_FILE = path.join(__dirname, '../../ai-metrics.json');
-const CACHE_FILE = path.join(__dirname, '../../ai-cache/cache.json');
-const PATTERNS_FILE = path.join(__dirname, '../../ai-learning/patterns.json');
+const REPO_ROOT = path.resolve(__dirname, '../../..');
+const METRICS_FILE = path.join(REPO_ROOT, 'ai-metrics.json');
+const CACHE_FILE = path.join(REPO_ROOT, 'ai', 'ai-cache', 'cache.json');
+const PATTERNS_FILE = path.join(REPO_ROOT, 'ai', 'ai-learning', 'patterns.json');
 
 function loadMetrics() {
   try {
@@ -44,13 +46,14 @@ function loadPatterns() {
   }
 }
 
-function analyzePerformance() {
+async function analyzePerformance() {
   const metrics = loadMetrics();
   const cache = loadCache();
   const patterns = loadPatterns();
 
   if (!metrics) {
     console.error('No metrics data available');
+    await recordScriptEvent('performance-monitor', { payload: { status: 'no-metrics' } });
     return;
   }
 
@@ -112,35 +115,44 @@ function analyzePerformance() {
   console.log('- Monitor patterns in ai-learning/patterns.json for continuous improvement');
 }
 
-function main() {
+async function main() {
   const startedAt = Date.now();
   let success = false;
   try {
-    analyzePerformance();
+    await analyzePerformance();
     success = true;
   } finally {
-    // record run into ai-metrics.json
-    (async () => {
-      try {
-        const raw = await fsp.readFile(METRICS_FILE, 'utf8').catch(() => null);
-        const metrics = raw ? JSON.parse(raw) : { scriptRuns: [] };
-        metrics.scriptRuns = metrics.scriptRuns || [];
-        metrics.scriptRuns.push({
-          script: 'performance-monitor',
-          timestamp: new Date().toISOString(),
-          durationMs: Date.now() - startedAt,
+    const duration = Date.now() - startedAt;
+    try {
+      const raw = await fsp.readFile(METRICS_FILE, 'utf8').catch(() => null);
+      const metrics = raw ? JSON.parse(raw) : { scriptRuns: [] };
+      metrics.scriptRuns = metrics.scriptRuns || [];
+      metrics.scriptRuns.push({
+        script: 'performance-monitor',
+        timestamp: new Date().toISOString(),
+        durationMs: duration,
+        success,
+      });
+      await fsp.writeFile(METRICS_FILE, JSON.stringify(metrics, null, 2));
+      await recordScriptEvent('performance-monitor', {
+        durationMs: duration,
+        payload: {
           success,
-        });
-        await fsp.writeFile(METRICS_FILE, JSON.stringify(metrics, null, 2));
-      } catch (err) {
-        console.warn('Failed to record performance-monitor run:', err?.message || err);
-      }
-    })();
+          totalRequests: metrics.totalRequests ?? 0,
+          cachedQueries: Object.keys(loadCache().queries || {}).length,
+        },
+      });
+    } catch (err) {
+      console.warn('Failed to record performance-monitor run:', err?.message || err);
+    }
   }
 }
 
 if (__filename === process.argv[1]) {
-  main();
+  main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
 }
 
 export { analyzePerformance };

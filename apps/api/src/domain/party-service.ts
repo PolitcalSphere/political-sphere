@@ -9,7 +9,7 @@ export class PartyService {
     CreatePartySchema.parse(input);
 
     // Check if party name already exists
-    const existingParty = this.db.parties.getByName(input.name);
+    const existingParty = await this.db.parties.getByName(input.name);
     if (existingParty) {
       throw new Error('Party name already exists');
     }
@@ -26,6 +26,7 @@ export class PartyService {
   }
 
   async getAllParties(): Promise<Party[]> {
-    return this.db.parties.getAll();
+    const result = await this.db.parties.getAll();
+    return result.parties;
   }
 }

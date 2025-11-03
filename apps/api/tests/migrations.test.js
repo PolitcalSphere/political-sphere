@@ -5,7 +5,7 @@
  * @see docs/architecture/decisions/adr-0001-database-migrations.md
  */
 
-import { describe, it, beforeEach, afterEach } from "node:test";
+import { describe, it, beforeEach, afterEach } from "vitest";
 import assert from "node:assert";
 import fs from "fs";
 import path from "path";
@@ -21,18 +21,20 @@ import {
 } from "../src/migrations/migration-error.js";
 import { DEFAULT_DB_PATH } from "../src/config.js";
 
-// Test database path
-const TEST_DB_PATH = path.join(path.dirname(DEFAULT_DB_PATH || "data"), "test-political-sphere.db");
+// Test database path - make it unique per test run
+const getTestDbPath = () => path.join(path.dirname(DEFAULT_DB_PATH || "data"), `test-political-sphere-${Date.now()}-${Math.random()}.db`);
 
 describe("Database Migrations", () => {
   let db;
+  let testDbPath;
 
   beforeEach(() => {
+    testDbPath = getTestDbPath();
     // Clean up any existing test database
-    if (fs.existsSync(TEST_DB_PATH)) {
-      fs.unlinkSync(TEST_DB_PATH);
+    if (fs.existsSync(testDbPath)) {
+      fs.unlinkSync(testDbPath);
     }
-    db = initializeDatabase(TEST_DB_PATH);
+    db = initializeDatabase(testDbPath);
   });
 
   afterEach(() => {
@@ -40,8 +42,8 @@ describe("Database Migrations", () => {
       db.close();
     }
     // Clean up test database
-    if (fs.existsSync(TEST_DB_PATH)) {
-      fs.unlinkSync(TEST_DB_PATH);
+    if (fs.existsSync(testDbPath)) {
+      fs.unlinkSync(testDbPath);
     }
   });
 
@@ -119,11 +121,12 @@ describe("Database Migrations", () => {
 
       await rollbackAllMigrations(db);
 
-      // Verify tables were dropped
+      // Verify user tables were dropped but _migrations table remains
       tables = db
         .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
         .all();
-      assert.strictEqual(tables.length, 0);
+      assert.strictEqual(tables.length, 1); // Only _migrations table should remain
+      assert.strictEqual(tables[0].name, "_migrations");
     });
 
     it("should clear migration tracking table", async () => {

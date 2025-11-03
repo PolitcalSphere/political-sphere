@@ -21,7 +21,7 @@ describe("Code Indexer", () => {
   });
 
   it("should build index successfully", () => {
-    execSync("node scripts/ai/code-indexer.js build", { stdio: "pipe" });
+    execSync("node tools/scripts/ai/code-indexer.js build", { stdio: "pipe" });
 
     expect(existsSync(indexFile)).toBe(true);
 
@@ -33,10 +33,10 @@ describe("Code Indexer", () => {
 
   it("should search index and return results", () => {
     // First build the index
-    execSync("node scripts/ai/code-indexer.js build", { stdio: "pipe" });
+    execSync("node tools/scripts/ai/code-indexer.js build", { stdio: "pipe" });
 
     // Search for a common term
-    const output = execSync('node scripts/ai/code-indexer.js search "function"', {
+    const output = execSync('node tools/scripts/ai/code-indexer.js search "function"', {
       encoding: "utf8",
       stdio: "pipe",
     });
@@ -47,10 +47,10 @@ describe("Code Indexer", () => {
 
   it("should handle search with no results", () => {
     // First build the index
-    execSync("node scripts/ai/code-indexer.js build", { stdio: "pipe" });
+    execSync("node tools/scripts/ai/code-indexer.js build", { stdio: "pipe" });
 
     // Search for a term that shouldn't exist
-    const output = execSync('node scripts/ai/code-indexer.js search "nonexistentterm12345"', {
+    const output = execSync('node tools/scripts/ai/code-indexer.js search "nonexistentterm12345"', {
       encoding: "utf8",
       stdio: "pipe",
     });
@@ -60,12 +60,12 @@ describe("Code Indexer", () => {
 
   it("should fail gracefully when index does not exist", () => {
     expect(() => {
-      execSync('node scripts/ai/code-indexer.js search "test"', { stdio: "pipe" });
+      execSync('node tools/scripts/ai/code-indexer.js search "test"', { stdio: "pipe" });
     }).toThrow();
   });
 
   it("should include semantic tokens in index", () => {
-    execSync("node scripts/ai/code-indexer.js build", { stdio: "pipe" });
+    execSync("node tools/scripts/ai/code-indexer.js build", { stdio: "pipe" });
 
     const index = JSON.parse(readFileSync(indexFile, "utf8"));
     expect(index).toHaveProperty("tokens");

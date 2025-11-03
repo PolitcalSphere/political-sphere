@@ -1,42 +1,24 @@
-#!/bin/bash
-# Fetch warmed index from CI cache branch
-# Usage: ./scripts/ai/fetch-index.sh
+#!/usr/bin/env bash
+set -euo pipefail
 
-set -e
+# Fetch warmed AI index from ai-index-cache branch and copy to local ai/index/
+# Usage: ./tools/scripts/ai/fetch-index.sh [remote]
+REMOTE=${1:-origin}
+BRANCH=ai-index-cache
 
-BRANCH="ai-index-cache"
-INDEX_DIR="ai-index"
+echo "Fetching warmed AI index from ${REMOTE}/${BRANCH}..."
 
-echo "Fetching warmed index from $BRANCH branch..."
+git fetch ${REMOTE} ${BRANCH} --no-tags || { echo "Branch ${BRANCH} not found on remote ${REMOTE}"; exit 1; }
 
-# Check if branch exists
-if ! git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
-  echo "Cache branch $BRANCH not found. Building fresh index..."
-  node scripts/ai/code-indexer.js build
-  exit 0
-fi
+# Create temporary work tree
+TMPDIR=$(mktemp -d)
+trap 'rm -rf "$TMPDIR"' EXIT
 
-# Fetch and checkout the cache branch temporarily
-git fetch origin "$BRANCH"
-git checkout "origin/$BRANCH" -- "$INDEX_DIR"
+# Checkout the ai-index directory from the remote branch
+git --work-tree="$TMPDIR" checkout ${REMOTE}/${BRANCH} -- ai-index || { echo "No ai-index artifacts in branch"; exit 1; }
 
-echo "Index cache restored from $BRANCH"
+mkdir -p ai/index
+rsync -a --delete "$TMPDIR/ai-index/" ai/index/
 
-# Return to original branch
-git checkout - >/dev/null 2>&1
-
-# Verify index integrity
-if [ -f "$INDEX_DIR/codebase-index.json" ]; then
-  INDEX_SIZE=$(stat -f%z "$INDEX_DIR/codebase-index.json" 2>/dev/null || stat -c%s "$INDEX_DIR/codebase-index.json" 2>/dev/null || echo "0")
-  if [ "$INDEX_SIZE" -gt 1000 ]; then
-    echo "Index verified (size: $INDEX_SIZE bytes)"
-  else
-    echo "Index appears corrupted, rebuilding..."
-    node scripts/ai/code-indexer.js build
-  fi
-else
-  echo "Index file missing, rebuilding..."
-  node scripts/ai/code-indexer.js build
-fi
-
-echo "Ready to use cached index"
+echo "ai/index fetched and populated. Size:" 
+du -sh ai/index || true

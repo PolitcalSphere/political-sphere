@@ -9,8 +9,11 @@ export class UserService {
     CreateUserSchema.parse(input);
 
     // Check if username or email already exists
-    const existingUser =
-      this.db.users.getByUsername(input.username) || this.db.users.getByEmail(input.email);
+    const [byUsername, byEmail] = await Promise.all([
+      this.db.users.getByUsername(input.username),
+      this.db.users.getByEmail(input.email),
+    ]);
+    const existingUser = byUsername || byEmail;
     if (existingUser) {
       throw new Error('Username or email already exists');
     }

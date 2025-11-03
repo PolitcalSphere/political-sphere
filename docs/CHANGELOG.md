@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Game Development Continuation**: Implemented structured debate mechanics, turn-based phases, and basic economy simulation in political simulation game
+  - Added debate phases with speaking order and time limits to game engine
+  - Implemented economy simulation affecting treasury, inflation, and unemployment based on enacted policies
+  - Updated game server API with new actions: start_debate, speak, advance_turn
+  - Enhanced moderation for speech content in debates
+  - Updated documentation with new endpoints and actions
+  - Server tested successfully with health checks and basic API calls (Date: 2025-11-03; Author: automation/assistant)
+
+### Changed
+
+- Consolidated automation scripts under `tools/scripts/` for consistency: moved `scripts/ci/check-tools.mjs` to `tools/scripts/ci/check-tools.mjs`, moved `scripts/ai/fetch-index.sh` to `tools/scripts/ai/fetch-index.sh`, removed shim `scripts/ai/guard-change-budget.mjs`, and updated workflow references. (Date: 2025-11-03; Author: automation/assistant)
+- Added file placement enforcement: `tools/scripts/ci/check-file-placement.mjs` validates directory structure against governance rules and runs in CI workflows. Updated governance rules with enforcement mechanisms. (Date: 2025-11-03; Author: automation/assistant)
+- Reorganized repository structure: Consolidated all AI-related directories under `/ai/` with subdirectories (cache/, index/, metrics/, etc.) for better organization. Updated governance rules to reflect the new structure. (Date: 2025-11-03; Author: automation/assistant)
+
+- Updated governance rule sets: `.github/copilot-instructions.md` and `ai/governance/.blackboxrules` — added minor clarifications, example CHANGELOG/TODO snippets, and a guidance reminder for `AI-EXECUTION` PR headers; bumped versions to 1.5.0. (Date: 2025-11-03; Author: automation/assistant)
+- Added measurable Execution Mode budgets and enforcement guidance; implemented `tools/scripts/ai/guard-change-budget.mjs` to validate change budgets (lines/files), artifact requirements, and TODO deferrals. (Date: 2025-11-03; Author: automation/assistant)
+- Enforced TODO update rule: agents must update `/docs/TODO.md` with explicit next steps, owners, and due dates before marking tasks complete or merging changes. Bumped rule files to 1.5.1. (Date: 2025-11-03; Author: automation/assistant)
+- Added GitHub collaboration excellence guidance to `.github/copilot-instructions.md` and `.blackboxrules`, covering branching, commits, PR protocol, review, issue hygiene, and automation; bumped rule versions to 1.4.0 (2025-11-03)
+- Strengthened changelog enforcement in `.github/copilot-instructions.md` and `.blackboxrules`, requiring immediate log updates after any change and bumping rule versions to 1.3.3 (2025-11-03)
+
+- Added `Efficiency Best-Practices` section to `.github/copilot-instructions.md` and `ai/governance/.blackboxrules` with pragmatic guidance for incremental work, faster tests (Vitest `--changed`), FAST_AI usage, caching/warmed-index artifacts, targeted linting, CI hygiene, ADR discipline for dependencies, and small automation helpers. (Date: 2025-11-03; Author: automation/assistant)
+- Added `Efficiency Best-Practices` section to `.github/copilot-instructions.md` and `ai/governance/.blackboxrules` with pragmatic guidance for incremental work, faster tests (Vitest `--changed`), FAST_AI usage, caching/warmed-index artifacts, targeted linting, CI hygiene, ADR discipline for dependencies, and small automation helpers. (Date: 2025-11-03; Author: automation/assistant)
+
+- Added `Mandatory tool usage` rule to governance files and agent prompts: agents must identify and invoke appropriate workspace tools for a task (code search, semantic search, `read_file`, test runners, linters, guard script, indexers). If a required tool is unavailable, record the failure in the PR and create a `/docs/TODO.md` entry. (Date: 2025-11-03; Author: automation/assistant)
+- Modularized `.github/copilot-instructions.md` into focused sub-files for better maintainability: `organization.md`, `quality.md`, `security.md`, `ai-governance.md`, `testing.md`, `compliance.md`, `ux-accessibility.md`, `operations.md`, `strategy.md`, and `quick-ref.md`. Added Table of Contents with links to sub-files. Updated `.blackboxrules` in parallel per Meta-Rule. Bumped versions to 1.3.2. Added AI Agent Reading Requirements and Rule Organization & Reading Protocol to both rule files. (2025-01-10)
+
 ### Fixed
 
 - DevContainer feature options: Removed unsupported `installYarnUsingApt` from Node feature and corrected `kubectl-helm-minikube` to use `kubectl` version key instead of `version`. Fixes Remote Containers feature parsing/build errors in the dev environment. (2025-11-02)
@@ -48,12 +76,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - AI Deputy Mode: Enables Copilot and Blackbox to shadow changes and flag governance deviations in real-time, with proactive alerts, learning integration, and audit trails. (2025-01-10)
 
 - **Rules Update: Core Engineering Protocols (2025-11-02)**
+
   - Added sections to governance rule sets: Core Engineering Behaviour (AI MUST), Self-Audit Protocol, Technical Guardrails, Testing Doctrine, Security Protocol, Observability & maintainability, Failure Mode Behaviour, Continuous Improvement Loop, and Operational Output Format
   - Updated `.github/copilot-instructions.md` and `.blackboxrules` in lockstep; bumped versions to 1.3.0 and set Last updated to 2025-11-02, per Meta-Rule parity requirements
   - Impact: Tightens AI agent discipline and determinism; improves safety, testing rigour, observability, and auditability across all assistant-driven changes
   - Compliance: CHANGELOG and TODO updated as required (Automation/Assistant, 2025-11-02)
 
 - **Controls: Machine-checkable rules (2025-11-02)**
+
   - Added `docs/controls.yml` catalogue mapping governance controls to executable checks with severity and thresholds
   - Added `scripts/controls-runner.ts` (Node/TS) to parse the catalogue and execute each control, annotating results and failing on blocking violations
   - Added GitHub workflow `.github/workflows/controls.yml` to run controls on PRs and pushes to `main`
@@ -62,6 +92,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Impact: Makes governance rules auditable and enforceable in CI with a single, versioned source of truth; standardises PR structure and validation
 
 - **Architecture: Module boundaries + strict TypeScript (2025-11-02)**
+
   - Enforced Nx module boundaries via `nx.json` pluginsConfig `@nx/enforce-module-boundaries` with `enforceBuildableLibDependency` and dep constraints
   - Added ESLint overrides using `plugin:@nx/typescript` and `@nx/enforce-module-boundaries` rule (error)
   - Enabled stronger TypeScript safety flags in `tsconfig.base.json`: `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noImplicitOverride`, `useUnknownInCatchVariables` (strict already enabled)
@@ -69,16 +100,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Impact: Stronger architectural integrity and type safety; may surface new lint/type errors that require remediation
 
 - **AI Indexing: ANN Recall Integration Test (2025-11-01)**
+
   - Added `apps/dev/tests/integration/ann-recall.test.mjs` to compare ANN-backed `/vector-search` results against brute-force baseline and validate fallback behaviour and metrics exposure
   - Test auto-builds index and embeddings if missing; ANN comparison enabled when `TEST_ANN_URL` or `ANN_BACKEND_URL` is provided, otherwise skips gracefully
   - Impact: Increases confidence in ANN integration correctness and resilience; provides a harness for recall monitoring over time
 
 - **Git Hooks Modernisation (2025-11-01)**
+
   - Standardised on Lefthook; removed legacy Husky hooks to prevent duplicate execution
   - Enhanced `.lefthook.yml` output: staged file overview, clearer banners, per-step timing, robust base-branch detection for `nx affected:*`, SKIP_A11Y support, and improved error tips
   - Impact: Faster, clearer developer feedback during commit/push; fewer false negatives and easier troubleshooting
 
 - **Core Domain Implementation (2025-11-01)**
+
   - Fixed missing domain type exports from `@political-sphere/shared` library
   - Added export of domain models (User, Party, Bill, Vote) and Zod validation schemas from `libs/shared/src/index.ts`
   - Fixed TypeScript compilation output directory in `libs/shared/tsconfig.lib.json` (added `rootDir: "./src"` to prevent nested dist structure)
@@ -91,6 +125,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     (Developer, 2025-11-01)
 
 - **ANN (Approximate Nearest Neighbor) Integration for Vector Search (2025-11-01)**
+
   - Added Python HNSW ANN microservice (`scripts/ai/ann_service/build_and_serve.py`) for fast semantic vector search with cosine similarity
   - Built ANN index from 640 file embeddings (128-dim TF-hashing vectors) → `ai-index/ann/ann_index.bin` and `file_order.json`
   - Integrated ANN backend into `scripts/ai/index-server.js` with graceful fallback to brute-force on failure
@@ -102,14 +137,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     (Automation/Assistant, 2025-11-01)
 
 - **Governance & AI tooling rules updated (2025-11-01)**
+
   - Updated `.github/copilot-instructions.md` and `.blackboxrules` to include operational guidance for AI index warm-start, FAST_AI mode, in-memory index server (`scripts/ai/index-server.js`), CI warmed-index persistence (`ai-index-cache` branch), `scripts/ai/fetch-index.sh`, and smoke tests (`scripts/ai/smoke.sh`). Bumped rule file versions to 1.2.3 and added TODO/CHANGELOG parity requirements per Meta-Rule. (Automation/Assistant, 2025-11-01)
 
 - **Repository cleanup & deduplication (2025-11-01)**
+
   - Consolidated repeated TypeScript configurations under `apps/dev/mcp-servers/tsconfig.base.json` and updated package-level `tsconfig.json` files to extend the shared base. This reduces duplication and centralizes compilerOptions for MCP server packages.
   - Removed duplicate `LICENSE` files from `libs/infrastructure` and `libs/platform` in favor of the canonical project `LICENSE` at repository root. References now rely on the root license. (Updated metadata retained in root LICENSE)
   - Small automated updates: updated per-package tsconfig extends to point at the new shared base. No behavioral changes expected; build configuration is preserved.
 
 - **Rules Update: Enhanced AI Assistant Principles with Reflection (2025-11-01)**
+
   - Updated .blackboxrules and .github/copilot-instructions.md to version 1.2.6
   - Corrected future-dated metadata (2025-11-01 → 2025-11-01)
   - Improved formatting consistency and structure for better readability
@@ -608,6 +646,7 @@ Update this file whenever you make changes to:
 - Archived Docker-related files and directories to `archive/docker-removal-20251103133108/` for repository reset/rehabilitation.
 
 Files archived:
+
 - .devcontainer
 - apps/dev/docker
 - monitoring
@@ -622,4 +661,3 @@ Files archived:
 - apps/dev/scripts/dev-up.sh
 - apps/dev/scripts/dev-down.sh
 - apps/dev/scripts/dev-service.sh
-

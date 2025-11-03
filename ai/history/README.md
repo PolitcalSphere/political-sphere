@@ -50,6 +50,10 @@ High-level summaries of AI work sessions:
 - Use structured formats for consistency
 - Redact sensitive information appropriately
 
+### Templates
+- Use `templates/session-log-template.md` as the baseline for new entries.
+- Copy the template into the appropriate subdirectory (`interaction-logs/`, `decision-records/`, etc.) before filling it out.
+
 ### File Naming Convention
 - `YYYY-MM-DD_HH-MM-SS_session-type_description.md`
 - Example: `2024-01-15_14-30-00_code-review_api-refactor.md`

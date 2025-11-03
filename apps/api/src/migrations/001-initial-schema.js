@@ -8,6 +8,7 @@
 export const name = "001_initial_schema";
 
 export function up(db) {
+  console.log('Running migration up function...');
   db.exec(`
     -- Users table
     CREATE TABLE IF NOT EXISTS users (
@@ -58,6 +59,7 @@ export function up(db) {
     CREATE INDEX IF NOT EXISTS idx_votes_bill ON votes(bill_id);
     CREATE INDEX IF NOT EXISTS idx_votes_user ON votes(user_id);
   `);
+  console.log('Migration up function completed');
 }
 
 export function down(db) {

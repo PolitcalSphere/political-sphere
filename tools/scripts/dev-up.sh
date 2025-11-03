@@ -15,7 +15,9 @@ else
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+# Use repository root to keep docker-compose contexts consistent with repo layout
+# SCRIPT_DIR is tools/scripts, so go up two levels to reach the repo root.
+ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 info()    { echo -e "${BLUE}[INFO]${NC} $*"; }
 ok()      { echo -e "${GREEN}[SUCCESS]${NC} $*"; }
@@ -216,6 +218,9 @@ EOF
   info "Starting Political Sphere development environment (mode: $mode)"
   # This will fail fast if any healthcheck goes unhealthy.
   # If services lack healthchecks, Compose still returns success after containers are up.
+  # Ensure docker compose uses the project's development compose file under tools/docker
+  export COMPOSE_FILE="${ROOT_DIR}/tools/docker/docker-compose.yml"
+
   if ! start_services "$mode"; then
     err "Startup failed. Inspect with: docker compose ps && docker compose logs --since=2m"
     exit 1

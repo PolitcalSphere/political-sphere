@@ -1,0 +1,38 @@
+name: AI Maintenance
+
+on:
+  schedule:
+    - cron: '0 3 * * *' # daily at 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  refresh-ai-state:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Warm AI cache and collect metrics
+        run: |
+          node tools/scripts/ai/pre-cache.js
+          node tools/scripts/ai/performance-monitor.js
+
+      - name: Upload AI artefacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-maintenance-artifacts
+          path: |
+            ai/ai-cache/cache.json
+            ai-metrics.json
+            ai/ai-metrics/stats.json
+            ai/context-bundles/

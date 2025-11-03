@@ -30,9 +30,10 @@ Semantic indexing for AI understanding:
 ### For AI Assistants:
 1. **Always read project-context.md first** when starting work on this project
 2. **Reference knowledge-base.json** for project-specific information
-3. **Use semantic-index.json** for understanding relationships between concepts
-4. **Log significant interactions** in the appropriate history files
-5. **Follow governance rules** outlined in ai/governance/.blackboxrules and GitHub Copilot instructions
+3. **Consult the service quick references** (`api-service.md`, `game-server.md`, `frontend.md`) for focused guidance
+4. **Use semantic-index.json** for understanding relationships between concepts
+5. **Log significant interactions** in the appropriate history files
+6. **Follow governance rules** outlined in ai/governance/.blackboxrules and GitHub Copilot instructions
 
 ### Maintenance:
 - Update project-context.md when major architectural changes occur

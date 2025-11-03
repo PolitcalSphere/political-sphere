@@ -5,8 +5,8 @@
  * Analyzes system metrics and provides intelligent optimization recommendations
  */
 
-import fs from 'fs/promises';
-import path from 'path';
+const fs = require('fs/promises');
+const path = require('path');
 
 class PerformanceMonitor {
   constructor() {

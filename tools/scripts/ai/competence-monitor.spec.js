@@ -21,7 +21,7 @@ describe("Competence Monitor", () => {
   });
 
   it("should assess competence and generate metrics", () => {
-    execSync("node scripts/ai/competence-monitor.js assess", { stdio: "pipe" });
+    execSync("node tools/scripts/ai/competence-monitor.js assess", { stdio: "pipe" });
 
     expect(existsSync(metricsFile)).toBe(true);
 
@@ -33,9 +33,9 @@ describe("Competence Monitor", () => {
   });
 
   it("should generate valid competence scores", () => {
-    execSync("node scripts/ai/competence-monitor.js assess", { stdio: "pipe" });
+    execSync("node tools/scripts/ai/competence-monitor.js assess", { stdio: "pipe" });
 
-    const output = execSync("node scripts/ai/competence-monitor.js assess", {
+    const output = execSync("node tools/scripts/ai/competence-monitor.js assess", {
       encoding: "utf8",
       stdio: "pipe",
     });
@@ -62,7 +62,7 @@ describe("Competence Monitor", () => {
     };
     writeFileSync(metricsFile, JSON.stringify(lowMetrics, null, 2));
 
-    const output = execSync("node scripts/ai/competence-monitor.js assess", {
+    const output = execSync("node tools/scripts/ai/competence-monitor.js assess", {
       encoding: "utf8",
       stdio: "pipe",
     });
@@ -91,7 +91,7 @@ describe("Competence Monitor", () => {
     };
     writeFileSync(metricsFile, JSON.stringify(mockMetrics, null, 2));
 
-    const output = execSync("node scripts/ai/competence-monitor.js assess", {
+    const output = execSync("node tools/scripts/ai/competence-monitor.js assess", {
       encoding: "utf8",
       stdio: "pipe",
     });

@@ -21,7 +21,7 @@ describe("Context Preloader", () => {
   });
 
   it("should preload contexts successfully", () => {
-    execSync("node scripts/ai/context-preloader.js preload", { stdio: "pipe" });
+    execSync("node tools/scripts/ai/context-preloader.js preload", { stdio: "pipe" });
 
     expect(existsSync(cacheFile)).toBe(true);
 
@@ -33,10 +33,10 @@ describe("Context Preloader", () => {
 
   it("should get cached context", () => {
     // First preload
-    execSync("node scripts/ai/context-preloader.js preload", { stdio: "pipe" });
+    execSync("node tools/scripts/ai/context-preloader.js preload", { stdio: "pipe" });
 
     // Get a specific context (assuming 'config' exists)
-    const output = execSync("node scripts/ai/context-preloader.js get config", {
+    const output = execSync("node tools/scripts/ai/context-preloader.js get config", {
       encoding: "utf8",
       stdio: "pipe",
     });
@@ -47,10 +47,10 @@ describe("Context Preloader", () => {
 
   it("should handle non-existent context gracefully", () => {
     // First preload
-    execSync("node scripts/ai/context-preloader.js preload", { stdio: "pipe" });
+    execSync("node tools/scripts/ai/context-preloader.js preload", { stdio: "pipe" });
 
     // Try to get non-existent context
-    const output = execSync("node scripts/ai/context-preloader.js get nonexistent", {
+    const output = execSync("node tools/scripts/ai/context-preloader.js get nonexistent", {
       encoding: "utf8",
       stdio: "pipe",
     });
@@ -60,12 +60,12 @@ describe("Context Preloader", () => {
 
   it("should fail gracefully when cache does not exist", () => {
     expect(() => {
-      execSync("node scripts/ai/context-preloader.js get config", { stdio: "pipe" });
+      execSync("node tools/scripts/ai/context-preloader.js get config", { stdio: "pipe" });
     }).toThrow();
   });
 
   it("should include governance contexts", () => {
-    execSync("node scripts/ai/context-preloader.js preload", { stdio: "pipe" });
+    execSync("node tools/scripts/ai/context-preloader.js preload", { stdio: "pipe" });
 
     const cache = JSON.parse(readFileSync(cacheFile, "utf8"));
     expect(cache.contexts).toHaveProperty("rules-awareness");
