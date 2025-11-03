@@ -1,0 +1,29 @@
+[
+  {
+    "severity": "blocker",
+    "category": "code-quality",
+    "evidence": "see:/workspaces/political-sphere/.audit/ESLint.log",
+    "impact": "Breaks integrity",
+    "fix_recommendation": "Fix ESLint (exit 1)",
+    "todo_entry": "URGENT: Investigate ESLint",
+    "followup_learning_note": "Failure after 18007ms"
+  },
+  {
+    "severity": "warning",
+    "category": "code-quality",
+    "evidence": "package.json:scripts.lint missing",
+    "impact": "Lint not configured",
+    "fix_recommendation": "Add eslint + script",
+    "todo_entry": "Add lint task",
+    "followup_learning_note": "Enable quality gate"
+  },
+  {
+    "severity": "info",
+    "category": "code-quality",
+    "evidence": "TypeScript Typecheck ok in 32181ms",
+    "impact": "Healthy",
+    "fix_recommendation": "None",
+    "todo_entry": "",
+    "followup_learning_note": "Baseline perf 32181ms"
+  }
+]
