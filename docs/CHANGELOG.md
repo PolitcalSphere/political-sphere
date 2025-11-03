@@ -602,3 +602,24 @@ Update this file whenever you make changes to:
 ---
 
 [Unreleased]: https://github.com/PolitcalSphere/political-sphere/compare/main...HEAD
+
+### Archived Docker artefacts - 2025-11-03T13:31:10Z
+
+- Archived Docker-related files and directories to `archive/docker-removal-20251103133108/` for repository reset/rehabilitation.
+
+Files archived:
+- .devcontainer
+- apps/dev/docker
+- monitoring
+- apps/api/Dockerfile
+- apps/frontend/Dockerfile
+- apps/worker/Dockerfile
+- .dockerignore
+- scripts/docker-helper.sh
+- scripts/container-fix-summary.sh
+- scripts/bootstrap-dev.sh
+- scripts/bootstrap-fullstack-dev.sh
+- apps/dev/scripts/dev-up.sh
+- apps/dev/scripts/dev-down.sh
+- apps/dev/scripts/dev-service.sh
+

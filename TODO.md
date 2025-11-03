@@ -201,3 +201,5 @@
 - [ ] Launch external communication channels and reporting
 - [ ] Conduct ISO 42001 certification readiness assessment
 - [ ] Schedule external audit and certification process
+
+- [ ] Review archived Docker artefacts in `archive/docker-removal-20251103133108/` and commit or permanently delete (archived: 2025-11-03T13:31:10Z)
