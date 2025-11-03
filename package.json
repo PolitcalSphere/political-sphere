@@ -44,7 +44,7 @@
     "simple-git": "^3.28.0",
     "time-mcp": "^1.0.5",
     "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4",
+    "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2"
   },
   "scripts": {
