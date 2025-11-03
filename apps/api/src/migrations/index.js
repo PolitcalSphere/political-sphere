@@ -88,7 +88,7 @@ function validateSchema(db) {
     // Check if all expected tables exist
     const tables = db
       .prepare(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE '_%'",
+        "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'",
       )
       .all();
     const expectedTables = ["users", "parties", "bills", "votes", "_migrations"];

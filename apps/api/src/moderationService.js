@@ -7,6 +7,7 @@
 const logger = require('../logger');
 const { OpenAI } = require('openai'); // For AI-based moderation
 const { PerspectiveAPI } = require('perspective-api-client'); // For toxicity detection
+const { CircuitBreaker } = require('./error-handler');
 
 class ModerationService {
   constructor() {
@@ -14,6 +15,10 @@ class ModerationService {
     this.perspective = new PerspectiveAPI(process.env.PERSPECTIVE_API_KEY);
     this.moderationThreshold = 0.7; // Toxicity score threshold
     this.contentCache = new Map(); // Simple in-memory cache for moderation results
+
+    // Circuit breakers for external services
+    this.openaiCircuitBreaker = new CircuitBreaker(5, 60000, 60000); // 5 failures, 1min timeout
+    this.perspectiveCircuitBreaker = new CircuitBreaker(5, 60000, 60000);
   }
 
   /**
@@ -69,10 +74,12 @@ class ModerationService {
     const result = { id: Date.now().toString(), isSafe: true, scores: {}, reasons: [], category: 'safe' };
 
     // 1. OpenAI Moderation API
-    const openaiResponse = await this.openai.moderations.create({
-      input: text,
-      model: 'text-moderation-latest'
-    });
+    const openaiResponse = await this.openaiCircuitBreaker.execute(
+      () => this.openai.moderations.create({
+        input: text,
+        model: 'text-moderation-latest'
+      })
+    );
 
     const openaiFlags = openaiResponse.results[0].flagged;
     if (openaiFlags) {
@@ -83,9 +90,11 @@ class ModerationService {
     }
 
     // 2. Perspective API for toxicity
-    const perspectiveResponse = await this.perspective.analyze(text, {
-      attributes: ['TOXICITY', 'SEVERE_TOXICITY', 'IDENTITY_ATTACK', 'INSULT', 'PROFANITY', 'THREAT']
-    });
+    const perspectiveResponse = await this.perspectiveCircuitBreaker.execute(
+      () => this.perspective.analyze(text, {
+        attributes: ['TOXICITY', 'SEVERE_TOXICITY', 'IDENTITY_ATTACK', 'INSULT', 'PROFANITY', 'THREAT']
+      })
+    );
 
     const toxicityScore = perspectiveResponse.attributeScores.TOXICITY.summaryScore.value;
     result.scores.perspective = perspectiveResponse.attributeScores;
@@ -200,18 +209,20 @@ class ModerationService {
   async analyzeImage(image) {
     // Integrate with OpenAI Vision or Google Vision API
     try {
-      const visionResponse = await this.openai.chat.completions.create({
-        model: 'gpt-4-vision-preview',
-        messages: [
-          {
-            role: 'user',
-            content: [
-              { type: 'text', text: 'Is this image safe for all ages? Describe any harmful content.' },
-              { type: 'image_url', image_url: { url: image } }
-            ]
-          }
-        ]
-      });
+      const visionResponse = await this.openaiCircuitBreaker.execute(
+        () => this.openai.chat.completions.create({
+          model: 'gpt-4-vision-preview',
+          messages: [
+            {
+              role: 'user',
+              content: [
+                { type: 'text', text: 'Is this image safe for all ages? Describe any harmful content.' },
+                { type: 'image_url', image_url: { url: image } }
+              ]
+            }
+          ]
+        })
+      );
 
       const description = visionResponse.choices[0].message.content;
       const isSafe = !description.toLowerCase().includes('harmful') && 
@@ -356,6 +367,34 @@ class ModerationService {
   clearCache() {
     this.contentCache.clear();
     logger.info('Moderation cache cleared');
+  }
+
+  /**
+   * Get moderation statistics for dashboard
+   * @returns {Promise<Object>} Statistics object
+   */
+  async getStats() {
+    try {
+      // Aggregate statistics from database (pseudo-implementation)
+      // In a real implementation, these would be database queries
+
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+      // Mock data - replace with actual database queries
+      const stats = {
+        pendingReviews: await this.getPendingReviewsCount(),
+        reportsToday: await this.getReportsCount(today),
+        averageResponseTime: await this.getAverageResponseTime(),
+        topCategories: await this.getTopCategories()
+      };
+
+      logger.info('Retrieved moderation stats', stats);
+      return stats;
+    } catch (error) {
+      logger.error('Failed to get moderation stats', { error: error.message });
+      throw error;
+    }
   }
 }
 

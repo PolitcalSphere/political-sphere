@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Game Development Continuation**: Implemented structured debate mechanics, turn-based phases, and basic economy simulation in political simulation game
+  - Added debate phases with speaking order and time limits to game engine
+  - Implemented economy simulation affecting treasury, inflation, and unemployment based on enacted policies
+  - Updated game server API with new actions: start_debate, speak, advance_turn
+  - Enhanced moderation for speech content in debates
+  - Updated documentation with new endpoints and actions
+  - Server tested successfully with health checks and basic API calls (Date: 2025-11-03; Author: automation/assistant)
+
 ### Changed
 
 - Consolidated automation scripts under `tools/scripts/` for consistency: moved `scripts/ci/check-tools.mjs` to `tools/scripts/ci/check-tools.mjs`, moved `scripts/ai/fetch-index.sh` to `tools/scripts/ai/fetch-index.sh`, removed shim `scripts/ai/guard-change-budget.mjs`, and updated workflow references. (Date: 2025-11-03; Author: automation/assistant)

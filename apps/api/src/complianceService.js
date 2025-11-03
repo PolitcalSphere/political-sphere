@@ -127,7 +127,88 @@ class ComplianceService {
     });
 
     // In production: send email/SMS to compliance team
-    // this.notifyComplianceTeam(alert);
+    this.notifyComplianceTeam(alert);
+  }
+
+  /**
+   * Notify compliance team of alerts
+   * @param {Object} alert - Alert details
+   */
+  async notifyComplianceTeam(alert) {
+    try {
+      const notification = {
+        subject: `Compliance Alert: ${alert.framework} - ${alert.severity}`,
+        message: `Alert ID: ${alert.id}\nFramework: ${alert.framework}\nSeverity: ${alert.severity}\nDescription: ${alert.description}\nTimestamp: ${alert.timestamp}`,
+        recipients: process.env.COMPLIANCE_TEAM_EMAILS?.split(',') || ['compliance@political-sphere.com'],
+        channels: ['email'] // Could add 'sms', 'slack', etc.
+      };
+
+      // Send notification via configured channels
+      await this.sendNotification(notification);
+
+      logger.info('Compliance team notified', { alertId: alert.id, channels: notification.channels });
+    } catch (error) {
+      logger.error('Failed to notify compliance team', { error: error.message, alertId: alert.id });
+    }
+  }
+
+  /**
+   * Send notification via configured channels
+   * @param {Object} notification - Notification details
+   */
+  async sendNotification(notification) {
+    const { channels, subject, message, recipients } = notification;
+
+    for (const channel of channels) {
+      switch (channel) {
+        case 'email':
+          await this.sendEmail(subject, message, recipients);
+          break;
+        case 'sms':
+          await this.sendSMS(message, recipients);
+          break;
+        case 'slack':
+          await this.sendSlackMessage(subject, message);
+          break;
+        default:
+          logger.warn('Unknown notification channel', { channel });
+      }
+    }
+  }
+
+  /**
+   * Send email notification
+   * @param {string} subject
+   * @param {string} message
+   * @param {string[]} recipients
+   */
+  async sendEmail(subject, message, recipients) {
+    // Placeholder for email service integration (e.g., SendGrid, SES)
+    logger.info('Email notification sent', { subject, recipients: recipients.length });
+    // In production: integrate with email service
+  }
+
+  /**
+   * Send SMS notification
+   * @param {string} message
+   * @param {string[]} recipients
+   */
+  async sendSMS(message, recipients) {
+    // Placeholder for SMS service integration (e.g., Twilio)
+    logger.info('SMS notification sent', { recipients: recipients.length });
+    // In production: integrate with SMS service
+  }
+
+  /**
+   * Send Slack message
+   * @param {string} subject
+   * @param {string} message
+   */
+  async sendSlackMessage(subject, message) {
+    // Placeholder for Slack integration
+    logger.info('Slack notification sent', { subject });
+    // In production: integrate with Slack API
+  }
   }
 
   /**

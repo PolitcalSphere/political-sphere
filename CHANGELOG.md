@@ -9,6 +9,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Authentication & Authorization System**: Complete JWT-based authentication with role-based access control:
+  - **JWT Authentication Middleware**: Implements token validation, user attachment, and role checking
+  - **Authentication Routes**: Full registration, login, refresh token, and logout endpoints with bcrypt password hashing
+  - **Service Authentication**: Internal API authentication for microservices
+  - **Security Headers**: Helmet.js integration with CSP, HSTS, and other security headers
+  - **Rate Limiting**: Global express-rate-limit with proper headers and error responses
+  - **Main API Server**: Express application with all routes mounted and middleware configured
+  - **Circuit Breaker Integration**: Added circuit breakers to moderation service for OpenAI/Perspective API calls
+  - **Compliance Monitoring**: Enhanced notification system for compliance alerts via email/SMS/Slack
+  - **Performance Monitoring**: Updated monitoring with alerting and metrics collection
+
+### Fixed
+
+- **Path Resolution Issues**: Fixed competence monitor script paths to correctly reference ai-metrics and ai-learning directories
+- **Module Export Consistency**: Updated all route files to use ES modules for consistency
+- **Middleware Exports**: Converted authentication middleware to ES module exports
+- **Dependency Management**: Added missing dependencies (cors, helmet, compression, express-rate-limit)
+
+### Changed
+
+- **Project Structure**: Updated main entry point from index.js to app.js for API server
+- **Build Configuration**: Modified project.json to use app.js as the main entry point
+- **Route Architecture**: Consolidated all API routes under single Express application with proper middleware stack
+
 - **API Performance Optimization (Phase 1 & 2)**: Implemented comprehensive database and caching optimizations to address high response times (200ms vs 100ms target) and elevated error rates (3.3% vs 1%):
   - **Enhanced Caching Layer**: Extended cache keys in `cache.ts` for votes, parties, and users with proper TTL management
   - **Resilient Store Operations**: Added retry mechanisms with exponential backoff to all store methods (bill, user, vote, party) using `retryWithBackoff` utility

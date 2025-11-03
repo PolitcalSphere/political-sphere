@@ -338,7 +338,7 @@ router.post('/admin/cleanup-audit', authenticate, requireRole('admin'), async (r
  * Get compliance metrics for monitoring
  * Requires moderator role
  */
-router.get('/metrics', authenticate, requireRole('moderator'), async (req, res) => {
+router.get('/metrics', authenticate, requireRole('moderator'), async (_req, res) => {
   try {
     const metrics = {
       complianceScore: complianceService.calculateComplianceScore(),
@@ -387,4 +387,4 @@ function convertToCSV(data) {
   return csvRows.join('\n');
 }
 
-module.exports = router;
+export default router;

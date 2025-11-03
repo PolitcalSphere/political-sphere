@@ -3,23 +3,35 @@
     "preflight": "npm run lint --if-present && npm run test --if-present && npm run build --if-present",
     "fast-secure": "npm run preflight && npm run security:scan --if-present",
     "audit:full": "npm run preflight && npm run audit --if-present && npm run a11y --if-present",
+    "test": "vitest --run",
     "test:changed": "vitest --run --changed",
     "test:watch": "vitest --watch"
   },
-  "devDependencies": {
-    "puppeteer": "^24.28.0",
-    "axe-core": "^4.6.3",
-    "jest-environment-jsdom": "^29.7.0"
-    ,
-    "@swc/jest": "^0.5.0",
-    "@swc/core": "^1.3.0"
-  },
   "dependencies": {
-    "@types/express": "^5.0.5",
-    "@types/node": "^24.10.0",
     "better-sqlite3": "^12.4.1",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
     "express": "^5.1.0",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0",
     "ioredis": "^5.8.2",
     "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@playwright/test": "^1.40.0",
+    "@swc/jest": "^0.2.36",
+    "@swc/core": "^1.3.0",
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.0",
+    "axe-core": "^4.6.3",
+    "jest-environment-jsdom": "^29.7.0",
+    "jsdom": "^23.0.0",
+    "puppeteer": "^24.28.0",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.3.0",
+    "vite": "^5.0.0",
+    "vitest": "^1.0.0"
   }
 }

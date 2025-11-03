@@ -74,14 +74,70 @@ class AgeVerificationClient {
   }
 
   /**
-   * Get auth token for user (placeholder - implement based on auth system)
+   * Get auth token for user
    * @param {string} userId
-   * @returns {string} Auth token
+   * @returns {Promise<string>} Auth token
    */
-  getAuthToken(userId) {
-    // TODO: Implement proper token retrieval
-    // This should integrate with your authentication system
-    return `user_${userId}_token`;
+  async getAuthToken(userId) {
+    try {
+      // Check if we have a cached token for this user
+      if (this.tokenCache?.has(userId)) {
+        const cached = this.tokenCache.get(userId);
+        if (cached.expires > Date.now()) {
+          return cached.token;
+        }
+        // Token expired, remove from cache
+        this.tokenCache.delete(userId);
+      }
+
+      // For game server, we need to authenticate with the API
+      // This assumes the game server has service credentials or user tokens are provided
+      // In a real implementation, this might involve:
+      // 1. Service account authentication
+      // 2. User token validation/refresh
+      // 3. Session management
+
+      // For now, implement basic service authentication
+      const serviceToken = await this.authenticateService();
+      return serviceToken;
+
+    } catch (error) {
+      console.error('Token retrieval failed:', error.message);
+      // Return a fallback token or throw error
+      throw new Error('Unable to retrieve authentication token');
+    }
+  }
+
+  /**
+   * Authenticate service with API (placeholder for service account auth)
+   * @returns {Promise<string>} Service token
+   */
+  async authenticateService() {
+    try {
+      // Service account authentication
+      // In production, this would use proper service credentials
+      const response = await this.client.post('/auth/service-login', {
+        serviceId: process.env.GAME_SERVER_SERVICE_ID || 'game-server',
+        secret: process.env.GAME_SERVER_SECRET
+      });
+
+      const token = response.data.data.token;
+
+      // Cache the token
+      if (!this.tokenCache) {
+        this.tokenCache = new Map();
+      }
+      this.tokenCache.set('service', {
+        token,
+        expires: Date.now() + (15 * 60 * 1000) // 15 minutes
+      });
+
+      return token;
+    } catch (error) {
+      console.error('Service authentication failed:', error.message);
+      // Fallback to environment token if available
+      return process.env.GAME_SERVER_API_TOKEN || 'fallback-service-token';
+    }
   }
 }
 

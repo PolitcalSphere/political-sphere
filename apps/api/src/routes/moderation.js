@@ -241,16 +241,7 @@ router.post('/admin/clear-cache', authenticate, requireRole('admin'), async (req
  */
 router.get('/stats', authenticate, requireRole('moderator'), async (req, res) => {
   try {
-    // Get basic stats (implement in service)
-    const stats = {
-      pendingReviews: 0,
-      reportsToday: 0,
-      averageResponseTime: 0,
-      topCategories: []
-    };
-
-    // TODO: Implement actual stats calculation
-    // const stats = await moderationService.getStats();
+    const stats = await moderationService.getStats();
 
     res.json({
       success: true,
@@ -266,4 +257,4 @@ router.get('/stats', authenticate, requireRole('moderator'), async (req, res) =>
   }
 });
 
-module.exports = router;
+export default router;

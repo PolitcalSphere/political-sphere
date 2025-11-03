@@ -3,6 +3,8 @@
  * Provides a pure function `advanceGameState(game, actions, seed)` that
  * applies player actions and resolves simple proposal voting deterministically
  * given a numeric seed.
+ *
+ * Updated to include structured debate, turn-based phases, and basic economy simulation.
  */
 
 'use strict';
@@ -21,17 +23,46 @@ function deterministicId(prefix, rng) {
   return `${prefix}-${n.toString(36)}`;
 }
 
+// Economy simulation: simple effects from enacted policies
+function simulateEconomy(economy, enactedPolicies) {
+  let { treasury, inflationRate, unemploymentRate } = economy;
+
+  // Base changes
+  treasury += 10000; // Base income
+  inflationRate = Math.max(0, inflationRate + 0.001); // Slight inflation increase
+  unemploymentRate = Math.max(0, unemploymentRate - 0.001); // Slight decrease
+
+  // Policy effects (simple examples)
+  for (const policy of enactedPolicies) {
+    if (policy.title.toLowerCase().includes('tax')) {
+      treasury += 5000;
+      inflationRate += 0.005;
+    }
+    if (policy.title.toLowerCase().includes('welfare')) {
+      treasury -= 2000;
+      unemploymentRate -= 0.01;
+    }
+    if (policy.title.toLowerCase().includes('austerity')) {
+      treasury += 3000;
+      unemploymentRate += 0.005;
+    }
+  }
+
+  return { treasury: Math.max(0, treasury), inflationRate, unemploymentRate };
+}
+
 /**
  * Advance the provided game state by applying actions in order.
  * Returns a new game state (does not mutate the input).
  *
- * Rules implemented (simple prototype):
- * - 'propose' adds a proposal with status 'voting'
+ * Rules implemented:
+ * - Phases: lobby, debate, voting, enacted
+ * - 'propose' adds a proposal with status 'debate'
+ * - 'start_debate' moves proposal to debate phase with speaking order
+ * - 'speak' adds speech to debate (time-limited)
  * - 'vote' records a vote
- * - After processing actions, proposals in 'voting' are resolved:
- *    if for > against -> enacted
- *    else -> rejected
- * - Abstain votes are ignored for resolution
+ * - 'advance_turn' moves to next phase or turn
+ * - After voting, proposals are resolved and economy simulated
  *
  * @param {Object} game - GameState-like object
  * @param {Array<Object>} actions - array of PlayerAction objects
@@ -42,14 +73,14 @@ function advanceGameState(game, actions = [], seed = 1) {
   // Deep clone simple JSON-serializable state
   const state = JSON.parse(JSON.stringify(game));
 
-  // Track proposals that existed before this advance call so we only resolve
-  // proposals that were already in voting when we started. This prevents
-  // immediately resolving freshly-created proposals in a separate tick.
+  // Track proposals that existed before this advance call
   const preExistingProposalIds = new Set((game.proposals || []).map(p => p.id));
 
   // Safety: ensure arrays exist
   state.proposals = state.proposals || [];
   state.votes = state.votes || [];
+  state.debates = state.debates || [];
+  state.speeches = state.speeches || [];
   let counter = 0;
 
   for (const action of actions) {
@@ -64,9 +95,51 @@ function advanceGameState(game, actions = [], seed = 1) {
           description: payload.description || '',
           proposerId: payload.proposerId || 'unknown',
           createdAt: new Date(1000 * counter + Math.floor(rng() * 1000)).toISOString(),
-          status: 'voting',
+          status: 'proposed',
+          debateId: null,
         };
         state.proposals.push(proposal);
+        break;
+      }
+      case 'start_debate': {
+        const payload = action.payload || {};
+        const proposal = state.proposals.find(p => p.id === payload.proposalId);
+        if (!proposal || proposal.status !== 'proposed') break;
+
+        const debateId = deterministicId('debate', rng);
+        const debate = {
+          id: debateId,
+          proposalId: payload.proposalId,
+          speakingOrder: payload.speakingOrder || state.players.map(p => p.id), // Simple round-robin
+          currentSpeakerIndex: 0,
+          timeLimit: 300000, // 5 minutes per speaker
+          startedAt: new Date(1000 * counter + Math.floor(rng() * 1000)).toISOString(),
+          status: 'active',
+        };
+        state.debates.push(debate);
+        proposal.status = 'debate';
+        proposal.debateId = debateId;
+        break;
+      }
+      case 'speak': {
+        const payload = action.payload || {};
+        const debate = state.debates.find(d => d.id === payload.debateId);
+        if (!debate || debate.status !== 'active') break;
+
+        const speech = {
+          id: deterministicId('speech', rng),
+          debateId: payload.debateId,
+          speakerId: payload.speakerId,
+          content: payload.content || '',
+          timestamp: new Date(1000 * counter + Math.floor(rng() * 1000)).toISOString(),
+        };
+        state.speeches.push(speech);
+
+        // Advance speaker
+        debate.currentSpeakerIndex = (debate.currentSpeakerIndex + 1) % debate.speakingOrder.length;
+        if (debate.currentSpeakerIndex === 0) {
+          debate.status = 'completed';
+        }
         break;
       }
       case 'vote': {
@@ -81,31 +154,47 @@ function advanceGameState(game, actions = [], seed = 1) {
         state.votes.push(vote);
         break;
       }
+      case 'advance_turn': {
+        // Move proposals from debate to voting if debate completed
+        for (const proposal of state.proposals) {
+          if (proposal.status === 'debate') {
+            const debate = state.debates.find(d => d.id === proposal.debateId);
+            if (debate && debate.status === 'completed') {
+              proposal.status = 'voting';
+            }
+          }
+        }
+        // Increment turn
+        state.turn = state.turn || { turnNumber: 0, phase: 'lobby' };
+        state.turn.turnNumber += 1;
+        break;
+      }
       default:
-        // unknown actions are ignored in this prototype
+        // unknown actions are ignored
         break;
     }
   }
-  // inspect votes collected after action processing (no logging in production)
 
-  // Resolve voting proposals deterministically (based on collected votes)
+  // Resolve voting proposals
+  const enactedPolicies = [];
   for (const proposal of state.proposals) {
     if (proposal.status !== 'voting') continue;
-    if (!preExistingProposalIds.has(proposal.id)) {
-      // Skip resolution for proposals that were just created in this advance
-      continue;
-    }
+    if (!preExistingProposalIds.has(proposal.id)) continue;
 
     const votesFor = state.votes.filter(v => v.proposalId === proposal.id && v.choice === 'for').length;
     const votesAgainst = state.votes.filter(v => v.proposalId === proposal.id && v.choice === 'against').length;
-  // deterministically resolve based on collected votes
 
     if (votesFor > votesAgainst) {
       proposal.status = 'enacted';
+      enactedPolicies.push(proposal);
     } else {
-      // ties and greater against -> rejected
       proposal.status = 'rejected';
     }
+  }
+
+  // Simulate economy based on enacted policies
+  if (enactedPolicies.length > 0 && state.economy) {
+    state.economy = simulateEconomy(state.economy, enactedPolicies);
   }
 
   // update metadata

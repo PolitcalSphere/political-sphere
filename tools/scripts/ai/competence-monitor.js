@@ -5,9 +5,14 @@
 */
 
 import { readFileSync, writeFileSync, existsSync } from "fs";
+import { dirname, resolve } from "path";
+import { fileURLToPath } from "url";
 
-const METRICS_FILE = "../../ai-metrics/stats.json";
-const PATTERNS_FILE = "../../ai-learning/patterns.json";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const METRICS_FILE = resolve(__dirname, "../../../ai/ai-metrics/stats.json");
+const PATTERNS_FILE = resolve(__dirname, "../../../ai/ai-learning/patterns.json");
 
 function assessCompetence() {
   if (!existsSync(METRICS_FILE)) {
@@ -112,7 +117,9 @@ function main() {
   const result = assessCompetence();
   console.log(`Competence Score: ${result.score}`);
   console.log("Recommendations:");
-  result.recommendations.forEach((rec) => console.log(`- ${rec}`));
+  for (const rec of result.recommendations) {
+    console.log(`- ${rec}`);
+  }
 }
 
 main();

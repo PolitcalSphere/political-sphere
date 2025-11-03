@@ -954,9 +954,10 @@ File hygiene: close files after use
 - Agents MUST identify and invoke the appropriate tools available in the workspace for a given task. Appropriate tools include (but are not limited to): code search (`file_search`, `grep_search`, semantic/semantic_search), `read_file`, `run_in_terminal`/`run_task` for executing commands, test runners (Vitest/Jest), linters, `tools/scripts/ai/guard-change-budget.mjs`, AI indexers (`scripts/ai/index-server.js`), and any project-specific scripts under `tools/` or `scripts/`.
 
 - When performing code changes agents must at minimum:
-   1. Search the codebase for existing implementations or tests related to the change using semantic or textual search.
-   2. Run targeted tests and linters (or the project's `preflight` script) to validate changes locally where feasible.
-   3. Run the guard script (`tools/scripts/ai/guard-change-budget.mjs`) in the chosen Execution Mode during preflight.
+
+  1.  Search the codebase for existing implementations or tests related to the change using semantic or textual search.
+  2.  Run targeted tests and linters (or the project's `preflight` script) to validate changes locally where feasible.
+  3.  Run the guard script (`tools/scripts/ai/guard-change-budget.mjs`) in the chosen Execution Mode during preflight.
 
 - If a required tool is missing or cannot be run, agents must record the failure reason in the PR body and add a `/docs/TODO.md` entry (owner + due date) so humans can provision or fix the environment before merge.
 
@@ -1745,40 +1746,47 @@ Use `/ai-learning/patterns.json` to identify optimizations:
 2. Read domain-specific sub-file(s) for detailed requirements
 3. Reference main file for execution modes and meta-rules
 4. Update knowledge base with any clarifications needed
- 
+
 ## Efficiency Best-Practices (preserve quality)
 
 These are practical, low-risk steps agents and developers should prefer to speed iteration without compromising correctness or security. Follow these unless a strong justification is provided in the PR body.
 
 - Prefer incremental work:
-   - Keep PRs small and focused (minimal diff). Use the guard-change-budget checks to validate budgets.
-   - Make focused commits: one logical change per commit; keep commit messages clear and reference issues/ADRs.
+
+  - Keep PRs small and focused (minimal diff). Use the guard-change-budget checks to validate budgets.
+  - Make focused commits: one logical change per commit; keep commit messages clear and reference issues/ADRs.
 
 - Faster tests and local feedback:
-   - Prefer running unit tests only for changed files/packages (e.g., Vitest `--changed` or targeted `npm run test:changed`).
-   - Use `npx` to run local tools (`npx vitest`) so contributors needn't install global tooling.
-   - Use watch modes for iterative work (`vitest --watch`) and VS Code test tasks that prefer `--changed` to limit CPU usage.
+
+  - Prefer running unit tests only for changed files/packages (e.g., Vitest `--changed` or targeted `npm run test:changed`).
+  - Use `npx` to run local tools (`npx vitest`) so contributors needn't install global tooling.
+  - Use watch modes for iterative work (`vitest --watch`) and VS Code test tasks that prefer `--changed` to limit CPU usage.
 
 - Safe fast-mode for development:
-   - Use the `FAST_AI=1` local flag for quick, lower-rigor iterations. Always unset or override for `Safe`/`Audit` CI runs.
-   - Document FAST_AI usage in `/docs/` and ensure CI explicitly sets `FAST_AI=0` for gating workflows.
+
+  - Use the `FAST_AI=1` local flag for quick, lower-rigor iterations. Always unset or override for `Safe`/`Audit` CI runs.
+  - Document FAST_AI usage in `/docs/` and ensure CI explicitly sets `FAST_AI=0` for gating workflows.
 
 - Caching and warmed artifacts:
-   - Use warmed AI-index artifacts (e.g., `ai-index-cache` branch) and persisted SBOMs in CI to reduce repeated heavy work.
-   - Cache package manager installs and build artifacts in CI where possible.
+
+  - Use warmed AI-index artifacts (e.g., `ai-index-cache` branch) and persisted SBOMs in CI to reduce repeated heavy work.
+  - Cache package manager installs and build artifacts in CI where possible.
 
 - Targeted linting & preflight:
-   - Run linters and typechecks only on affected packages/files where feasible (use `nx affected:*` or similar tools) to shorten feedback loops.
-   - Always run `tools/scripts/ai/guard-change-budget.mjs` (or its shim) during preflight; fail early on budget or artifact violations.
+
+  - Run linters and typechecks only on affected packages/files where feasible (use `nx affected:*` or similar tools) to shorten feedback loops.
+  - Always run `tools/scripts/ai/guard-change-budget.mjs` (or its shim) during preflight; fail early on budget or artifact violations.
 
 - CI hygiene for speed:
-   - Parallelise jobs where safe (unit tests, linters, build matrix). Use `--changed`/affected strategies to avoid full-suite runs on small PRs.
-   - Rerun failing tests selectively rather than rerunning entire pipelines; quarantine flaky tests and add TODOs to fix them.
+
+  - Parallelise jobs where safe (unit tests, linters, build matrix). Use `--changed`/affected strategies to avoid full-suite runs on small PRs.
+  - Rerun failing tests selectively rather than rerunning entire pipelines; quarantine flaky tests and add TODOs to fix them.
 
 - Dependency & ADR discipline (efficiency + safety):
-   - Adding runtime/build dependencies must include an ADR and justification; prefer reusing existing libs to avoid dependency churn.
+
+  - Adding runtime/build dependencies must include an ADR and justification; prefer reusing existing libs to avoid dependency churn.
 
 - Small automation helpers:
-   - Provide short, reusable scripts (e.g., `npm run test:changed`, `npm run lint:staged`) and VS Code tasks so contributors can do the right thing quickly.
+  - Provide short, reusable scripts (e.g., `npm run test:changed`, `npm run lint:staged`) and VS Code tasks so contributors can do the right thing quickly.
 
 Rationale: these steps reduce iteration time while preserving the governance requirements around security, testing, and auditability. Any deviation must be documented in the PR's `AI-EXECUTION` header and justified in the PR body.
