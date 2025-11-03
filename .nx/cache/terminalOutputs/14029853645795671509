@@ -1,0 +1,8 @@
+> npm run lint
+
+[1G[0K⠙[1G[0K⠹[1G[0K
+> political-sphere-monorepo@0.0.0 lint
+> eslint . --ext .ts,.tsx --max-warnings=0
+
+[1G[0K⠹[1G[0Ksh: eslint: command not found
+[1G[0K⠙[1G[0K

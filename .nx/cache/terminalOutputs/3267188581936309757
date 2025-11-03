@@ -1,0 +1,12 @@
+> npm run test
+
+[1G[0K⠙[1G[0K
+> political-sphere-monorepo@0.0.0 test
+> nx test --parallel
+
+[1G[0K⠙[1G[0K
+[0m[7m[1m[31m NX [39m[22m[27m[0m  [31mBoth project and target have to be specified[39m
+
+Pass --verbose to see the stacktrace.
+
+[1G[0K⠙[1G[0K
