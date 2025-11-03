@@ -1,0 +1,27 @@
+{
+  "fastMode": {
+    "enabled": true,
+    "concurrency": 3,
+    "guardTimeoutMs": 120000
+  },
+  "performanceTuning": {
+    "indexerConcurrency": 25,
+    "cacheMaxEntries": 150,
+    "cacheTtlMs": 86400000,
+    "contextPreloadConcurrency": 5,
+    "incrementalIndexing": true,
+    "maxIndexSize": 1000000
+  },
+  "monitoring": {
+    "metricsCollection": true,
+    "performanceTracking": true,
+    "errorReporting": true,
+    "competenceAssessment": true
+  },
+  "resourceLimits": {
+    "maxMemoryUsage": "512MB",
+    "maxCpuUsage": "80%",
+    "timeoutMs": 300000
+  },
+  "lastUpdated": "2025-11-02T14:21:53.255Z"
+}

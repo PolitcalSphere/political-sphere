@@ -1,129 +1,27 @@
 {
-  "successfulPrompts": [
+  "patterns": [
     {
-      "pattern": "Create a new React component with TypeScript",
-      "successRate": 0.95,
-      "avgResponseTime": 1200,
-      "contextUsed": ["new-component", "architecturalPatterns"],
-      "lastUsed": "2025-10-29T12:00:00.000Z"
+      "pattern": "context-preloader-path-validation",
+      "description": "Skip non-existent paths silently in context preloader",
+      "success": true,
+      "lastUsed": "2025-11-02T14:21:53.255Z",
+      "usageCount": 1
     },
     {
-      "pattern": "Add API endpoint with validation",
-      "successRate": 0.92,
-      "avgResponseTime": 1500,
-      "contextUsed": ["api-endpoint", "security"],
-      "lastUsed": "2025-10-29T12:00:00.000Z"
+      "pattern": "cors-security-restriction",
+      "description": "Restrict CORS to localhost origins for security",
+      "success": true,
+      "lastUsed": "2025-11-02T14:21:53.255Z",
+      "usageCount": 1
+    },
+    {
+      "pattern": "competence-monitor-simplification",
+      "description": "Simplify competence scoring to essential metrics only",
+      "success": true,
+      "lastUsed": "2025-11-02T14:21:53.255Z",
+      "usageCount": 1
     }
   ],
-  "commonIssues": {
-    "importBoundaries": {
-      "frequency": 0.15,
-      "solution": "Check module boundaries with Nx",
-      "prevention": "Use proper import paths from index files"
-    },
-    "accessibility": {
-      "frequency": 0.12,
-      "solution": "Add ARIA labels and semantic HTML",
-      "prevention": "Include accessibility in initial design"
-    },
-    "security": {
-      "frequency": 0.08,
-      "solution": "Use environment variables for secrets",
-      "prevention": "Follow zero-trust security principles"
-    }
-  },
-  "userPreferences": {
-    "responseStyle": "technical and direct",
-    "codeStyle": "consistent with project conventions",
-    "testing": "comprehensive but efficient"
-  },
-  "qualityImprovements": [
-    {
-      "area": "Performance",
-      "improvement": "Added caching and fast mode",
-      "impact": "50% faster responses",
-      "date": "2025-10-29"
-    },
-    {
-      "area": "Intelligence",
-      "improvement": "Codebase indexing and knowledge base",
-      "impact": "Context-aware suggestions",
-      "date": "2025-10-29"
-    },
-    {
-      "area": "Performance",
-      "improvement": "Async codebase indexer, pre-cache TTL/LRU eviction, and FAST_AI scanning limits",
-      "impact": "Lower indexing time, smaller cache, faster cold-start responses",
-      "date": "2025-10-31"
-    }
-  ],
-  "performancePatterns": {
-    "fastResponses": [
-      "Simple component creation",
-      "Basic CRUD operations",
-      "Configuration changes"
-    ],
-    "slowResponses": [
-      "Complex multi-file refactoring",
-      "New architecture decisions",
-      "Security-critical changes"
-    ],
-    "cacheableQueries": [
-      "What is the project structure?",
-      "How do I run tests?",
-      "What are the coding standards?",
-      "How do I add a new component?",
-      "What is the deployment process?",
-      "How do I handle errors?",
-      "What are the security requirements?",
-      "How do I update dependencies?",
-      "How to run the development server?",
-      "How to run database migrations?",
-      "How to seed test data?",
-      "How to run linting?",
-      "What is FAST_AI and how to enable it?",
-      "Where are the ADRs (architecture decision records)?",
-      "How to run the test smoke suite?",
-      "How to add a new API endpoint?",
-      "How to write an integration test?",
-      "How to create a new React component with accessibility?",
-      "How to run Playwright tests?",
-      "What are the accessibility requirements?",
-      "How to update shared libs?",
-      "Where is the README for apps/api?",
-      "How to contribute (contributing.md)?",
-      "How to run the pre-cache script?",
-      "How to pre-load AI contexts?",
-      "What is the release process?"
-    ],
-    "optimizationTips": [
-      "Use caching for repeated queries",
-      "Prioritize essential quality gates for speed",
-      "Batch operations when possible",
-      "Leverage pre-computed results",
-      "Pre-cache common queries using scripts/ai/pre-cache.js",
-      "Use FAST_AI=1 for rapid iteration",
-      "Monitor performance with scripts/ai/performance-monitor.js",
-      "Review slow response patterns in ai-learning/patterns.json",
-      "Batch similar operations together",
-      "Leverage cached patterns from ai-learning/patterns.json"
-    ]
-  },
-  "competenceMetrics": {
-    "architecturalDecisions": {
-      "accuracy": 0.94,
-      "consistency": 0.89,
-      "lastReviewed": "2025-10-29"
-    },
-    "codeQuality": {
-      "lintingPassRate": 0.96,
-      "testCoverage": 0.85,
-      "securityScanPass": 0.98
-    },
-    "errorPrevention": {
-      "caughtIssues": 0.78,
-      "falsePositives": 0.04
-    }
-  },
-  "lastUpdated": "2025-10-31T12:00:00.000Z"
+  "lastUpdated": "2025-11-02T14:21:53.255Z",
+  "version": "1.0.1"
 }
