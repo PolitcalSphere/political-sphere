@@ -128,29 +128,29 @@ This section consolidates all fragmented TODO files into a single source of trut
 
 #### 1. Core API Development
 
-- [ ] Implement JWT authentication middleware with proper token validation
-- [ ] Add rate limiting to all API endpoints (express-rate-limit)
-- [ ] Implement comprehensive error handling with structured logging
-- [ ] Add input validation using Zod schemas for all endpoints
+- [x] Implement JWT authentication middleware with proper token validation
+- [x] Add rate limiting to all API endpoints (express-rate-limit)
+- [x] Implement comprehensive error handling with structured logging
+- [x] Add input validation using Zod schemas for all endpoints
 - [ ] Implement API versioning strategy (/v1/ prefix)
 - [ ] Add OpenAPI/Swagger documentation generation
-- [ ] Implement request/response compression (gzip)
-- [ ] Add CORS configuration for production domains
-- [ ] Implement health check endpoints (/health, /ready)
-- [ ] Add request ID correlation for tracing
+- [x] Implement request/response compression (gzip)
+- [x] Add CORS configuration for production domains
+- [x] Implement health check endpoints (/health, /ready)
+- [x] Add request ID correlation for tracing
 
 #### 2. Database & Data Layer
 
-- [ ] Implement database connection pooling
+- [x] Implement database connection pooling
 - [ ] Add database migration system with rollback capability
 - [ ] Implement data seeding scripts for development
 - [ ] Add database backup automation
 - [ ] Implement database query optimization and indexing
 - [ ] Add database connection retry logic
-- [ ] Implement database transaction management
+- [x] Implement database transaction management
 - [ ] Add database schema validation
 - [ ] Implement data export/import functionality
-- [ ] Add database performance monitoring
+- [x] Add database performance monitoring
 
 #### 3. Frontend Development
 
@@ -498,6 +498,17 @@ This section consolidates all fragmented TODO files into a single source of trut
 - [x] Update CHANGELOG.md with governance reforms
 - [x] Update rule files with new execution modes and budgets
 - [x] Ensure parity between .blackboxrules and copilot-instructions.md
+
+### 5. Testing & Coverage Improvements
+
+- [ ] Restore branch coverage threshold to 90% (currently relaxed to 75% for shared helpers)
+  - Add branch-focused test cases for `libs/shared/src/security.js`
+  - Evaluate adding file-specific thresholds or broader suite coverage to avoid narrowing include surface
+  - Owner: QA/Platform — Due: 2025-11-20
+- [ ] Expand coverage to telemetry and other shared modules
+  - Add safe unit/integration tests for `libs/shared/src/telemetry.ts`
+  - Consider targeted tests for `libs/shared/src/database.js` or exclude from coverage if out-of-scope
+  - Owner: Observability/Platform — Due: 2025-11-22
 
 ### 5. Small fixes: Context Preloader (2025-11-04)
 

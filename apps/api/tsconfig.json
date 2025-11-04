@@ -2,6 +2,8 @@
   "extends": "../../tools/config/tsconfig.base.json",
   "compilerOptions": {
     "rootDir": ".",
+    "ignoreDeprecations": "5.0",
+    "baseUrl": "../../",
     "paths": {
       "@political-sphere/shared": ["libs/shared/src"]
     },

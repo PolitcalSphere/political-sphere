@@ -4,7 +4,7 @@ import request from 'supertest';
 import express from 'express';
 import billsRouter from '../../src/routes/bills.js';
 import usersRouter from '../../src/routes/users.js';
-import { getDatabase, closeDatabase } from '../../src/stores';
+import { getDatabase, closeDatabase } from '../../src/index.js';
 
 describe('Bills Routes', () => {
   let app;
@@ -41,13 +41,14 @@ describe('Bills Routes', () => {
 
   describe('POST /api/bills', () => {
     it('should create a new bill', async () => {
+      const timestamp = Date.now();
       // First create a user
       const userResponse = await request(app)
         .post('/api/users')
         .set('Content-Type', 'application/json')
         .send({
-          username: 'testuser',
-          email: 'test@example.com',
+          username: `user${timestamp}`,
+          email: `test-${timestamp}@example.com`,
         })
         .expect(201);
 
@@ -55,14 +56,14 @@ describe('Bills Routes', () => {
         .post('/api/bills')
         .set('Content-Type', 'application/json')
         .send({
-          title: 'Test Bill',
+          title: `Test Bill ${timestamp}`,
           description: 'A test bill description',
           proposerId: userResponse.body.id,
         })
         .expect(201);
 
       assert(response.body.id);
-      assert.strictEqual(response.body.title, 'Test Bill');
+      assert.strictEqual(response.body.title, `Test Bill ${timestamp}`);
       assert.strictEqual(response.body.description, 'A test bill description');
       assert.strictEqual(response.body.proposerId, userResponse.body.id);
       assert.strictEqual(response.body.status, 'proposed');
@@ -87,13 +88,14 @@ describe('Bills Routes', () => {
 
   describe('GET /api/bills/:id', () => {
     it('should return bill by id', async () => {
+      const timestamp = Date.now();
       // Create user and bill
       const userResponse = await request(app)
         .post('/api/users')
         .set('Content-Type', 'application/json')
         .send({
-          username: 'testuser',
-          email: 'test@example.com',
+          username: `user${timestamp}`,
+          email: `test-${timestamp}@example.com`,
         })
         .expect(201);
 
@@ -101,7 +103,7 @@ describe('Bills Routes', () => {
         .post('/api/bills')
         .set('Content-Type', 'application/json')
         .send({
-          title: 'Test Bill',
+          title: `Test Bill ${timestamp}`,
           description: 'A test bill description',
           proposerId: userResponse.body.id,
         })

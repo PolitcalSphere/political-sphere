@@ -6,7 +6,7 @@ import usersRouter from '../../src/routes/users.js';
 import partiesRouter from '../../src/routes/parties.js';
 import billsRouter from '../../src/routes/bills.js';
 import votesRouter from '../../src/routes/votes.js';
-import { getDatabase, closeDatabase } from '../../src/stores';
+import { getDatabase, closeDatabase } from '../../src/index.js';
 
 describe('Demo Flow Integration Test', () => {
   let app;
@@ -44,6 +44,7 @@ describe('Demo Flow Integration Test', () => {
   });
 
   it('should complete the full demo flow: create user → propose bill → vote', async () => {
+    const timestamp = Date.now();
     console.log('Starting demo flow integration test...');
 
     // Step 1: Create a user
@@ -52,14 +53,14 @@ describe('Demo Flow Integration Test', () => {
       .post('/api/users')
       .set('Content-Type', 'application/json')
       .send({
-        username: 'alice',
-        email: 'alice@example.com',
+        username: `alice${timestamp}`,
+        email: `alice-${timestamp}@example.com`,
       })
       .expect(201);
 
     assert(userResponse.body.id);
-    assert.strictEqual(userResponse.body.username, 'alice');
-    assert.strictEqual(userResponse.body.email, 'alice@example.com');
+    assert.strictEqual(userResponse.body.username, `alice${timestamp}`);
+    assert.strictEqual(userResponse.body.email, `alice-${timestamp}@example.com`);
     console.log('✓ User created:', userResponse.body.username);
 
     // Step 2: Create a party
@@ -68,14 +69,14 @@ describe('Demo Flow Integration Test', () => {
       .post('/api/parties')
       .set('Content-Type', 'application/json')
       .send({
-        name: 'Progressive Party',
+        name: `Progressive Party ${timestamp}`,
         description: 'A party focused on social progress and equality',
         color: '#FF6B6B',
       })
       .expect(201);
 
     assert(partyResponse.body.id);
-    assert.strictEqual(partyResponse.body.name, 'Progressive Party');
+    assert.strictEqual(partyResponse.body.name, `Progressive Party ${timestamp}`);
     console.log('✓ Party created:', partyResponse.body.name);
 
     // Step 3: Propose a bill
@@ -84,14 +85,14 @@ describe('Demo Flow Integration Test', () => {
       .post('/api/bills')
       .set('Content-Type', 'application/json')
       .send({
-        title: 'Environmental Protection Act',
+        title: `Environmental Protection Act ${timestamp}`,
         description: 'A comprehensive bill to protect our environment and reduce carbon emissions',
         proposerId: userResponse.body.id,
       })
       .expect(201);
 
     assert(billResponse.body.id);
-    assert.strictEqual(billResponse.body.title, 'Environmental Protection Act');
+    assert.strictEqual(billResponse.body.title, `Environmental Protection Act ${timestamp}`);
     assert.strictEqual(billResponse.body.proposerId, userResponse.body.id);
     assert.strictEqual(billResponse.body.status, 'proposed');
     console.log('✓ Bill proposed:', billResponse.body.title);
@@ -102,8 +103,8 @@ describe('Demo Flow Integration Test', () => {
       .post('/api/users')
       .set('Content-Type', 'application/json')
       .send({
-        username: 'bob',
-        email: 'bob@example.com',
+        username: `bob${timestamp}`,
+        email: `bob-${timestamp}@example.com`,
       })
       .expect(201);
 

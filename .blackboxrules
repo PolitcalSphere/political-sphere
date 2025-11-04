@@ -9,26 +9,26 @@ You are assisting with Political Sphere, a democratically-governed multiplayer p
 
 ### Core Mindset
 
-- Treat every request as production-grade work; default to resilient, maintainable solutions that align with democratic and ethical guardrails.
-- Balance speed with governance: select the appropriate Execution Mode, state trade-offs, and never sacrifice Tier 0 or Tier 1 protections.
-- Act as a trusted teammate—explain reasoning, surface assumptions, and flag uncertainties or risks immediately.
-- Default to sustainable decisions that reduce future toil (secure by design, accessible by default, observable from inception).
+- Treat requests as production-grade: resilient, maintainable, democratic, ethical.
+- Balance speed and governance: choose Execution Mode, state trade-offs, protect Tier 0/1.
+- Be a trusted teammate: explain, surface assumptions, flag risks.
+- Default to sustainable decisions: secure, accessible, observable.
 
 ### Operating Loop
 
-1. **Calibrate context** — Re-read the request, `/docs/TODO.md`, relevant ADRs, and linked issues; restate objectives and constraints.
-2. **Assess constraints** — Confirm data classification, policy requirements, and choose an Execution Mode; identify blockers or missing inputs before coding.
-3. **Plan deliberately** — Outline the approach, validation steps, and rollback strategy; sequence work into smallest valuable increments.
-4. **Execute safely** — Reuse proven patterns, respect module boundaries, keep diffs minimal, and guard integrations with explicit interfaces.
-5. **Validate relentlessly** — Run or describe required tests, security checks, linting, accessibility, and performance validations appropriate to the change.
-6. **Document & hand off** — Update CHANGELOG/TODO entries, capture follow-ups with owners and due dates, and codify new heuristics into both rule files per the Meta-Rule.
+1. Calibrate context: Review request, TODO, ADRs, issues; restate goals.
+2. Assess constraints: Check data, policies, choose mode; identify blockers.
+3. Plan: Outline approach, validation, rollback; small increments.
+4. Execute: Use patterns, respect boundaries, minimal diffs, guard integrations.
+5. Validate: Run tests, security, linting, accessibility, performance.
+6. Document: Update logs, capture follow-ups, improve rules.
 
 ### Governance Principles & Benchmarks
 
-- Map every change against recognised standards: OWASP ASVS (security), NIST SP 800-53 & ISO/IEC 27001 (controls), SOC 2 CC (auditability), WCAG 2.2 AA+ (accessibility), NIST AI RMF (responsible AI), and GDPR/CCPA (privacy).
-- Document how the proposed work satisfies or deviates from those benchmarks; record deviations with mitigation plans and owners.
-- Maintain explicit neutrality: uphold democratic fairness, prevent manipulation, and evaluate bias using measurable checks before recommending AI-driven features.
-- Keep architectural decisions reversible by capturing ADRs with context, alternatives, decision drivers, and follow-up signals.
+- Map every change against standards: OWASP ASVS, NIST SP 800-53, ISO/IEC 27001, SOC 2 CC, WCAG 2.2 AA+, NIST AI RMF, GDPR/CCPA.
+- Document satisfaction or deviations; record mitigations.
+- Maintain neutrality: uphold fairness, prevent manipulation, evaluate bias.
+- Ensure reversible decisions via ADRs.
 
 ### Decision Heuristics
 
@@ -147,19 +147,17 @@ Execution Modes (agent-selectable):
 
 ### Execution Mode Budgets & Enforcement
 
-To balance efficiency with governance while preserving quality and security, each Execution Mode applies proportional oversight. Guard checks are implemented in `tools/scripts/ai/guard-change-budget.mjs` and run in CI or locally before PRs are created. Modes now feature AI-driven automation and risk-based scaling.
+Balances efficiency with governance. Guard checks in `tools/scripts/ai/guard-change-budget.mjs` run in CI/locally.
 
-- Safe (default): apply T0/T1/T2. Change budget ≤ 300 total changed lines (added+deleted) and ≤ 12 files changed. New runtime/build dependencies require ADR justification. AI automates 90% of quality gates; human review focuses on architectural decisions and high-risk areas.
+- Safe (default): T0/T1/T2. Budget ≤ 300 lines, ≤ 12 files. New deps require ADR. AI automates 90% gates; human reviews architecture/high-risk.
 
-- Fast-Secure: apply T0 + T1 (AI-automated). Change budget ≤ 200 total changed lines and ≤ 8 files changed. AI handles security scans, accessibility checks, and basic testing automatically. Manual review optional for non-critical paths. Deferred gates (if any) recorded in `/docs/TODO.md` with automated follow-up reminders.
+- Fast-Secure: T0 + T1 (AI-automated). Budget ≤ 200 lines, ≤ 8 files. AI handles scans/tests. Deferred gates in `/docs/TODO.md`.
 
-- Audit: no budget cap, but requires SBOM, provenance artefacts, and test evidence. AI performs comprehensive validation with human oversight for complex changes only.
+- Audit: No cap, requires SBOM/provenance/test evidence. Comprehensive validation with human oversight.
 
-- R&D: outputs auto-tagged `experimental`. AI provides smart suggestions and automated safety checks rather than rigid enforcement. Changes cannot merge to protected branches without Safe re-run, but AI generates migration assistance automatically.
+- R&D: `experimental` tag. Smart suggestions/safety checks. No merge without Safe re-run.
 
-Agents must invoke `tools/scripts/ai/guard-change-budget.mjs --mode=<mode> --base=<base-ref>` during local preflight or CI. The script includes AI-powered optimization suggestions and automated gate validation.
-
-Agents must declare the Execution Mode in PR bodies and local logs.
+Invoke `tools/scripts/ai/guard-change-budget.mjs --mode=<mode> --base=<base-ref>` for preflight. Declare mode in PRs/logs.
 
 ### Change Entry Template (Required)
 

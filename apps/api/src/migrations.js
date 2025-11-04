@@ -4,7 +4,10 @@ const path = require("path");
 const DB_PATH = path.join(__dirname, "../../../data/political_sphere.db");
 
 function initializeDatabase() {
-	const db = new Database(DB_PATH);
+	// Use in-memory database for tests to ensure isolation
+	const dbPath = process.env.NODE_ENV === "test" ? ":memory:" : DB_PATH;
+	console.log(`[migrations] NODE_ENV=${process.env.NODE_ENV}, dbPath=${dbPath}`);
+	const db = new Database(dbPath);
 	db.pragma("journal_mode = WAL");
 	db.pragma("foreign_keys = ON");
 	return db;

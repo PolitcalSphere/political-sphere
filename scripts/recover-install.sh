@@ -43,8 +43,17 @@ else
   echo "[recover-install] No node_modules present — nothing to back up."
 fi
 
-echo "[recover-install] Cleaning safe npm temp directories (dot-prefixed) at top-level..."
-find node_modules -maxdepth 1 -type d \( -name ".*-*" -o -name ".*_*" \) -print -exec rm -rf {} \; 2>/dev/null || true
+echo "[recover-install] Cleaning safe npm temp subdirectories under node_modules (if present)..."
+if [ -d node_modules ]; then
+  for d in ".staging" ".pnpm" ".cache" ".vite" ".turbo"; do
+    if [ -d "node_modules/$d" ]; then
+      echo "[recover-install]   - removing node_modules/$d"
+      rm -rf "node_modules/$d"
+    fi
+  done
+else
+  echo "[recover-install] node_modules not present; skipping temp subdir cleanup."
+fi
 
 if [ "${1:-}" = "--install" ]; then
   echo "[recover-install] Running npm ci (no audit/fund). This may take several minutes..."

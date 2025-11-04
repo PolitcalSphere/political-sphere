@@ -86,6 +86,7 @@ This applies all fixes permanently:
 1. **Save your work and commit changes**
 
 2. **Rebuild the container**:
+
    - Press `Cmd/Ctrl + Shift + P`
    - Select "Dev Containers: Rebuild Container"
    - Wait for rebuild to complete (5-10 minutes)
@@ -120,6 +121,7 @@ If you cannot rebuild right now, run Docker commands from your host machine:
    ```
 
 4. **Access services**:
+
    - Grafana: http://localhost:3000 (admin/admin)
    - Prometheus: http://localhost:9090
    - Jaeger: http://localhost:16686
@@ -183,34 +185,36 @@ After rebuilding the container:
 ### npm ENOTEMPTY rename errors during install (macOS)
 
 Symptoms:
+
 - `npm error ENOTEMPTY: directory not empty, rename '/.../node_modules/<pkg>' -> '/.../node_modules/.<pkg>-<random>'`
 - Repeated installs leave many dot‑prefixed temp folders in `node_modules` and VS Code may appear to "buffer" or extensions crash.
 
 Root cause:
+
 - Interrupted installs or file watchers holding open files cause rename/move to fail. Repeated attempts leave partial temp dirs which can cascade into further errors.
 
 Safe recovery (do this outside VS Code or with extensions disabled):
 
-1) Stop lingering processes
+1. Stop lingering processes
    ```bash
    pkill -f npm || true
    pkill -f node || true
    ```
-2) Run the recovery helper (backs up `node_modules`, cleans safe temp dirs)
+2. Run the recovery helper (backs up `node_modules`, cleans safe temp dirs)
    ```bash
    bash scripts/recover-install.sh           # dry run (no install)
    bash scripts/recover-install.sh --install # performs npm ci after backup
    ```
-3) Optional quick smoke test (no coverage)
+3. Optional quick smoke test (no coverage)
    ```bash
    npx vitest --run "libs/shared/src/__tests__/security.spec.js"
    ```
 
 Notes:
+
 - The script never deletes `node_modules` without creating a backup first (`node_modules.bak*`).
 - Restore is easy: `mv node_modules.bak node_modules`.
 - Prefer `npm ci` for deterministic installs; fallback to `npm install` only if lockfile is incompatible.
-
 
 ### Docker daemon still won't start after rebuild
 
@@ -242,7 +246,7 @@ Edit `monitoring/docker-compose.yml`:
 ```yaml
 grafana:
   ports:
-    - '3003:3000' # Changed from 3000:3000
+    - "3003:3000" # Changed from 3000:3000
 ```
 
 **Option 2: Run services separately**

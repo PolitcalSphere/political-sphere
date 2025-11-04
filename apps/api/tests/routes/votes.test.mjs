@@ -5,7 +5,7 @@ import express from 'express';
 import votesRouter from '../../src/routes/votes.js';
 import billsRouter from '../../src/routes/bills.js';
 import usersRouter from '../../src/routes/users.js';
-import { getDatabase, closeDatabase } from '../../src/stores';
+import { getDatabase, closeDatabase } from '../../src/index.js';
 
 describe('Votes Routes', () => {
   let app;
@@ -43,13 +43,14 @@ describe('Votes Routes', () => {
 
   describe('POST /api/votes', () => {
     it('should create a new vote', async () => {
+      const timestamp = Date.now();
       // Create user and bill
       const userResponse = await request(app)
         .post('/api/users')
         .set('Content-Type', 'application/json')
         .send({
-          username: 'testuser',
-          email: 'test@example.com',
+          username: `user${timestamp}`,
+          email: `test-${timestamp}@example.com`,
         })
         .expect(201);
 
@@ -57,7 +58,7 @@ describe('Votes Routes', () => {
         .post('/api/bills')
         .set('Content-Type', 'application/json')
         .send({
-          title: 'Test Bill',
+          title: `Test Bill ${timestamp}`,
           description: 'A test bill',
           proposerId: userResponse.body.id,
         })
@@ -81,13 +82,14 @@ describe('Votes Routes', () => {
     });
 
     it('should return 400 for duplicate vote', async () => {
+      const timestamp = Date.now();
       // Create user and bill
       const userResponse = await request(app)
         .post('/api/users')
         .set('Content-Type', 'application/json')
         .send({
-          username: 'testuser',
-          email: 'test@example.com',
+          username: `user${timestamp}`,
+          email: `test-${timestamp}@example.com`,
         })
         .expect(201);
 
@@ -95,7 +97,7 @@ describe('Votes Routes', () => {
         .post('/api/bills')
         .set('Content-Type', 'application/json')
         .send({
-          title: 'Test Bill',
+          title: `Test Bill ${timestamp}`,
           description: 'A test bill',
           proposerId: userResponse.body.id,
         })
@@ -129,13 +131,14 @@ describe('Votes Routes', () => {
 
   describe('GET /api/bills/:id/votes', () => {
     it('should return votes for a bill', async () => {
+      const timestamp = Date.now();
       // Create users and bill
       const user1Response = await request(app)
         .post('/api/users')
         .set('Content-Type', 'application/json')
         .send({
-          username: 'user1',
-          email: 'user1@example.com',
+          username: `user1-${timestamp}`,
+          email: `user1-${timestamp}@example.com`,
         })
         .expect(201);
 
@@ -143,8 +146,8 @@ describe('Votes Routes', () => {
         .post('/api/users')
         .set('Content-Type', 'application/json')
         .send({
-          username: 'user2',
-          email: 'user2@example.com',
+          username: `user2-${timestamp}`,
+          email: `user2-${timestamp}@example.com`,
         })
         .expect(201);
 
@@ -152,7 +155,7 @@ describe('Votes Routes', () => {
         .post('/api/bills')
         .set('Content-Type', 'application/json')
         .send({
-          title: 'Test Bill',
+          title: `Test Bill ${timestamp}`,
           description: 'A test bill',
           proposerId: user1Response.body.id,
         })
@@ -192,13 +195,14 @@ describe('Votes Routes', () => {
 
   describe('GET /api/bills/:id/vote-counts', () => {
     it('should return vote counts for a bill', async () => {
+      const timestamp = Date.now();
       // Create users and bill
       const user1Response = await request(app)
         .post('/api/users')
         .set('Content-Type', 'application/json')
         .send({
-          username: 'user1',
-          email: 'user1@example.com',
+          username: `user1-${timestamp}`,
+          email: `user1-${timestamp}@example.com`,
         })
         .expect(201);
 
@@ -206,8 +210,8 @@ describe('Votes Routes', () => {
         .post('/api/users')
         .set('Content-Type', 'application/json')
         .send({
-          username: 'user2',
-          email: 'user2@example.com',
+          username: `user2-${timestamp}`,
+          email: `user2-${timestamp}@example.com`,
         })
         .expect(201);
 
@@ -215,8 +219,8 @@ describe('Votes Routes', () => {
         .post('/api/users')
         .set('Content-Type', 'application/json')
         .send({
-          username: 'user3',
-          email: 'user3@example.com',
+          username: `user3-${timestamp}`,
+          email: `user3-${timestamp}@example.com`,
         })
         .expect(201);
 
@@ -224,7 +228,7 @@ describe('Votes Routes', () => {
         .post('/api/bills')
         .set('Content-Type', 'application/json')
         .send({
-          title: 'Test Bill',
+          title: `Test Bill ${timestamp}`,
           description: 'A test bill',
           proposerId: user1Response.body.id,
         })

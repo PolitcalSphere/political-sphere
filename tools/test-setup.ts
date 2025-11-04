@@ -5,6 +5,8 @@ beforeAll(() => {
   // Setup global test environment
   process.env.NODE_ENV = "test";
   process.env.FAST_AI = "1"; // Speed up tests
+  process.env.JWT_SECRET =
+    "test-secret-key-that-is-at-least-32-characters-long-for-security";
 });
 
 afterAll(() => {
@@ -29,4 +31,12 @@ beforeAll(() => {
 
 afterAll(() => {
   Object.assign(console, originalConsole);
+});
+
+// Provide CJS-friendly partial mock for shared schemas used by Express route tests
+// Import the actual CJS shim which has real implementations
+vi.mock("@political-sphere/shared", async () => {
+  // Use dynamic import to load the CJS shim
+  const shim = await import("../libs/shared/cjs-shared.cjs");
+  return shim;
 });

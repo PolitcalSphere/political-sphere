@@ -3,7 +3,7 @@ import assert from 'node:assert';
 import request from 'supertest';
 import express from 'express';
 import usersRouter from '../../src/routes/users.js';
-import { getDatabase, closeDatabase } from '../../src/stores';
+import { getDatabase, closeDatabase } from '../../src/index.js';
 
 describe('Users Routes', () => {
   let app;
@@ -39,13 +39,14 @@ describe('Users Routes', () => {
 
   describe('POST /api/users', () => {
     it('should create a new user', async () => {
+      const timestamp = Date.now();
       // Capture full response for debugging (don't use .expect so we can log body on 415)
       const response = await request(app)
         .post('/api/users')
         .set('Content-Type', 'application/json; charset=utf-8')
         .send({
-          username: 'testuser',
-          email: 'test@example.com',
+          username: `user${timestamp}`,
+          email: `test-${timestamp}@example.com`,
         });
 
       // Debug output to inspect why a 415 is returned
@@ -60,8 +61,8 @@ describe('Users Routes', () => {
 
       assert.strictEqual(response.status, 201, `Expected 201 but got ${response.status}`);
       assert(response.body.id);
-      assert.strictEqual(response.body.username, 'testuser');
-      assert.strictEqual(response.body.email, 'test@example.com');
+      assert.strictEqual(response.body.username, `user${timestamp}`);
+      assert.strictEqual(response.body.email, `test-${timestamp}@example.com`);
       assert(response.body.createdAt);
       assert(response.body.updatedAt);
     });
@@ -80,13 +81,14 @@ describe('Users Routes', () => {
     });
 
     it('should return 400 for duplicate username', async () => {
+      const timestamp = Date.now();
       // Create first user
       await request(app)
         .post('/api/users')
         .set('Content-Type', 'application/json')
         .send({
-          username: 'testuser',
-          email: 'test@example.com',
+          username: `user${timestamp}`,
+          email: `test-${timestamp}@example.com`,
         })
         .expect(201);
 
@@ -95,8 +97,8 @@ describe('Users Routes', () => {
         .post('/api/users')
         .set('Content-Type', 'application/json')
         .send({
-          username: 'testuser',
-          email: 'test2@example.com',
+          username: `user${timestamp}`,
+          email: `test2-${timestamp}@example.com`,
         })
         .expect(400);
 
@@ -106,12 +108,13 @@ describe('Users Routes', () => {
 
   describe('GET /api/users/:id', () => {
     it('should return user by id', async () => {
+      const timestamp = Date.now();
       const createResponse = await request(app)
         .post('/api/users')
         .set('Content-Type', 'application/json')
         .send({
-          username: 'testuser',
-          email: 'test@example.com',
+          username: `user${timestamp}`,
+          email: `test-${timestamp}@example.com`,
         })
         .expect(201);
 

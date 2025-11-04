@@ -4,9 +4,10 @@
     "fast-secure": "npm run preflight && npm run security:scan --if-present",
     "audit:full": "npm run preflight && npm run audit --if-present && npm run a11y --if-present",
     "test": "vitest --run",
-    "test:changed": "vitest --run --changed",
+    "test:changed": "VITEST_CHANGED=1 vitest --run",
+    "test:shared": "VITEST_SCOPE=shared VITEST_CHANGED=0 vitest --run --coverage",
     "test:watch": "vitest --watch",
-    "test:ci": "vitest --run --coverage",
+    "test:ci": "VITEST_CHANGED=0 vitest --run --coverage",
     "test:coverage": "node tools/run-vitest-coverage.js",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "format": "prettier --write .",
@@ -49,7 +50,9 @@
     "ioredis": "^5.8.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "uuid": "^13.0.0"
+    "uuid": "^13.0.0",
+    "winston": "^3.18.3",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@langchain/core": "^1.0.2",

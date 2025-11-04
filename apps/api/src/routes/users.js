@@ -1,53 +1,38 @@
 const express = require("express");
-const fs = require("fs");
 const { CreateUserSchema } = require("@political-sphere/shared");
 const { getDatabase } = require("../index");
+const { validate } = require("../middleware/validation");
+const logger = require("../logger");
 
 const router = express.Router();
 
-router.post("/users", async (req, res) => {
+router.post("/users", validate(CreateUserSchema), async (req, res) => {
 	try {
-		const input = CreateUserSchema.parse(req.body);
 		const db = getDatabase();
-		const user = await db.users.create(input);
-		res.status(201).json(user);
+		const user = await db.users.create(req.body);
+		logger.info("User created", { userId: user.id, email: user.email });
+		res.status(201).json({
+			success: true,
+			data: user,
+			message: "User created successfully",
+		});
 	} catch (error) {
-		console.error("[users.route] error creating user:", error);
-		if (error instanceof Error) {
-			if (process.env.NODE_ENV === "test") {
-				try {
-					fs.writeFileSync(
-						"/tmp/political_sphere_last_users_error.json",
-						JSON.stringify(
-							{
-								error: error.message,
-								name: error.name,
-								stack: error.stack,
-								raw: String(error),
-							},
-							null,
-							2,
-						),
-					);
-				} catch (_err) {
-					// ignore write failures
-				}
-				return res.status(400).json({
-					error: error.message,
-					name: error.name,
-					stack: error.stack,
-					raw: String(error),
-				});
-			}
-			return res.status(400).json({ error: error.message });
+		logger.error("Failed to create user", {
+			error: error.message,
+			email: req.body.email,
+		});
+		if (error.message.includes("UNIQUE constraint failed")) {
+			return res.status(409).json({
+				success: false,
+				error: "User already exists",
+				message: "A user with this email already exists",
+			});
 		}
-
-		if (process.env.NODE_ENV === "test") {
-			return res
-				.status(500)
-				.json({ error: "Internal server error", raw: String(error) });
-		}
-		return res.status(500).json({ error: "Internal server error" });
+		res.status(500).json({
+			success: false,
+			error: "Internal server error",
+			message: "Unable to create user at this time",
+		});
 	}
 });
 
@@ -61,7 +46,10 @@ router.get("/users/:id", async (req, res) => {
 		res.set("Cache-Control", "public, max-age=600");
 		res.json(user);
 	} catch (error) {
-		console.error("Failed to fetch user", error);
+		logger.error("Failed to fetch user", {
+			error: error.message,
+			userId: req.params.id,
+		});
 		res.status(500).json({ error: "Internal server error" });
 	}
 });

@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const { getDatabase } = require("./index");
 const { authenticate, requireRole } = require("./middleware/auth");
+const requestId = require("./middleware/request-id");
 const ageVerificationRoutes = require("./routes/ageVerification");
 const authRoutes = require("./routes/auth");
 const billRoutes = require("./routes/bills");
@@ -40,6 +41,7 @@ app.use(
 	}),
 );
 
+app.use(requestId);
 app.use(compression());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
@@ -62,6 +64,7 @@ app.use(limiter);
 app.use((req, res, next) => {
 	const start = Date.now();
 	logger.log("Request received", {
+		requestId: req.requestId,
 		method: req.method,
 		url: req.url,
 		ip: req.ip,
@@ -71,6 +74,7 @@ app.use((req, res, next) => {
 	res.on("finish", () => {
 		const duration = Date.now() - start;
 		logger.log("Request completed", {
+			requestId: req.requestId,
 			method: req.method,
 			url: req.url,
 			status: res.statusCode,
@@ -81,12 +85,46 @@ app.use((req, res, next) => {
 	next();
 });
 
-app.get("/health", (_req, res) => {
+app.get("/health", (req, res) => {
 	res.json({
 		status: "healthy",
 		timestamp: new Date().toISOString(),
 		service: "api",
+		requestId: req.requestId,
 	});
+});
+
+app.get("/ready", (req, res) => {
+	// Check database connectivity
+	try {
+		const db = getDatabase();
+		if (db && db.open) {
+			res.json({
+				status: "ready",
+				timestamp: new Date().toISOString(),
+				service: "api",
+				database: "connected",
+				requestId: req.requestId,
+			});
+		} else {
+			res.status(503).json({
+				status: "not ready",
+				timestamp: new Date().toISOString(),
+				service: "api",
+				database: "disconnected",
+				requestId: req.requestId,
+			});
+		}
+	} catch (error) {
+		res.status(503).json({
+			status: "not ready",
+			timestamp: new Date().toISOString(),
+			service: "api",
+			database: "error",
+			error: process.env.NODE_ENV === "development" ? error.message : "Database check failed",
+			requestId: req.requestId,
+		});
+	}
 });
 
 app.use("/api/auth", authRoutes);
@@ -95,13 +133,19 @@ app.use("/api/parties", authenticate, partyRoutes);
 app.use("/api/bills", authenticate, billRoutes);
 app.use("/api/votes", authenticate, voteRoutes);
 app.use("/api/moderation", moderationRoutes);
-app.use("/api/compliance", authenticate, requireRole("admin"), complianceRoutes);
+app.use(
+	"/api/compliance",
+	authenticate,
+	requireRole("admin"),
+	complianceRoutes,
+);
 app.use("/api/age-verification", authenticate, ageVerificationRoutes);
 app.use("/api", newsRoutes);
 app.use("/", newsRoutes);
 
 app.use((err, req, res, _next) => {
 	console.error("Unhandled error", {
+		requestId: req.requestId,
 		error: err.message,
 		stack: err.stack,
 		url: req.url,
@@ -120,6 +164,7 @@ app.use((err, req, res, _next) => {
 
 app.use((req, res) => {
 	console.warn("Route not found", {
+		requestId: req.requestId,
 		method: req.method,
 		url: req.url,
 	});

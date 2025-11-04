@@ -7,6 +7,29 @@ function createFakeDb() {
 	return {
 		prepare(sql) {
 			const up = sql.trim().toUpperCase();
+			// Handle UPDATE before generic WHERE matches
+			if (up.startsWith("UPDATE")) {
+				return {
+					get(status, updated_at, id) {
+						const idx = bills.findIndex((b) => b.id === id);
+						if (idx === -1) return null;
+						bills[idx].status = status;
+						bills[idx].updated_at = updated_at;
+						return {
+							id: bills[idx].id,
+							title: bills[idx].title,
+							description: bills[idx].description,
+							proposer_id: bills[idx].proposer_id,
+							status: bills[idx].status,
+							created_at: bills[idx].created_at,
+							updated_at: bills[idx].updated_at,
+						};
+					},
+					run() {
+						return { changes: 1 };
+					},
+				};
+			}
 			if (up.startsWith("INSERT")) {
 				return {
 					run(...args) {
@@ -46,26 +69,6 @@ function createFakeDb() {
 				return {
 					all(proposerId) {
 						return bills.filter((b) => b.proposer_id === proposerId);
-					},
-				};
-			}
-
-			if (up.startsWith("UPDATE")) {
-				return {
-					get(status, updated_at, id) {
-						const idx = bills.findIndex((b) => b.id === id);
-						if (idx === -1) return null;
-						bills[idx].status = status;
-						bills[idx].updated_at = updated_at;
-						return {
-							id: bills[idx].id,
-							title: bills[idx].title,
-							description: bills[idx].description,
-							proposer_id: bills[idx].proposer_id,
-							status: bills[idx].status,
-							created_at: bills[idx].created_at,
-							updated_at: bills[idx].updated_at,
-						};
 					},
 				};
 			}
@@ -137,8 +140,8 @@ describe("BillStore (in-memory DB)", () => {
 		expect(updated.status).toBe("passed");
 		expect(updated.title).toBe("Change me");
 		expect(updated.proposerId).toBe("z");
-		// Verify the update worked by checking the in-memory array directly
-		const bill = bills.find((b) => b.id === created.id);
-		expect(bill.status).toBe("passed");
+		// Verify without accessing test-internal DB internals
+		const fetched = await store.getById(created.id);
+		expect(fetched.status).toBe("passed");
 	});
 });

@@ -7,9 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Unit Test Suite Fixes (2025-11-04)**: Converted failing unit tests to integration tests, improving test reliability:
+  - Fixed `users-route.spec.js`: Removed non-functional vi.mock(), added unique test data with timestamps
+  - Fixed `parties-route.spec.js`: Removed non-functional vi.mock(), added unique test data with timestamps
+  - Root cause: Vitest's `vi.mock()` cannot intercept CommonJS `require()` calls
+  - Solution: Accepted integration testing approach with real database and proper cleanup
+  - Tests now use `closeDatabase()`/`getDatabase()` in lifecycle hooks for isolation
+  - All 6 unit tests now passing (up from 1 passing, 4 failing)
+  - Overall test results improved: 122 passing (was 111), 15 failing (was 19)
+
 ### Added
 
+- **Project-Wide Test Coverage Assessment (2025-11-04)**: Completed comprehensive coverage analysis across entire codebase:
+
+  - Overall coverage: 13.71% statements, 13.69% branches, 18.3% functions, 13.63% lines
+  - High-performing modules: party-store (90%), logger (96%), security (89%), domain services (82% avg)
+  - Zero coverage identified in critical paths: server.js, auth middleware, API routes, compliance service, moderation service
+  - Updated vitest.config.js to measure project-wide coverage with `all: true`
+  - Excluded frontend JSX files pending Babel configuration
+  - Generated coverage from 111 passing tests (24 test files)
+  - Coverage report available in `coverage/` directory
+  - Identified 19 failing tests requiring database isolation fixes and mocking improvements
+
 - **Development Efficiency Improvements (2025-11-04)**: Enhanced developer experience with free/open-source tools compatible with private repositories:
+
   - Enhanced VS Code settings for better DX (bracket pairs, emmet, terminal scrollback, etc.)
   - Added npm scripts for common development tasks (lint:fix, format, type-check, dev shortcuts)
   - Extended CI pipeline with tests, coverage, linting, and type checking

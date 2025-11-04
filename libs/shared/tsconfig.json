@@ -1,6 +1,7 @@
 {
   "extends": "../../tools/config/tsconfig.base.json",
   "compilerOptions": {
+    "ignoreDeprecations": "5.0",
     "baseUrl": ".",
     "module": "es2022",
     "moduleResolution": "bundler",
