@@ -41,6 +41,15 @@ Implement governance reforms to reduce bureaucracy while preserving quality, sec
 - [x] Update rule files with new execution modes and budgets
 - [x] Ensure parity between .blackboxrules and copilot-instructions.md
 
+### 5. Small fixes: Context Preloader (2025-11-04)
+
+- Date: 2025-11-04
+- Author: automation/assistant
+- Files changed: `tools/scripts/ai/context-preloader.js`, `CHANGELOG.md`, `docs/TODO.md`
+- Type: Fixed
+- Summary: Adjusted the AI context preloader to prefer and create repository-root `ai-cache/`, added a robust recursive directory walker and improved error handling. This resolves unit test failures in `tools/scripts/ai/context-preloader.spec.js` that expected `ai-cache/context-cache.json` at the repo root.
+- Impact: Non-breaking; improves test reliability and developer experience. Added changelog entry and marked TODO for traceability.
+
 ### 5. Validation and Final Checks
 
 - [ ] Test updated execution modes in CI pipeline
