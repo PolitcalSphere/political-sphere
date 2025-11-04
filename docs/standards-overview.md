@@ -45,6 +45,20 @@
   </thead>
   <tbody>
     <tr>
+      <td>0</td>
+      <td>Unacceptable. 🚨 "Burn it. Start again."</td>
+      <td>Fundamentally broken, unsafe, or non-compliant. Needs total rework.</td>
+      <td>Crashes, security holes, missing requirements, chaos</td>
+      <td>❌ Fails core acceptance criteria<br>❌ No testing<br>❌ Fails security/accessibility baseline</td>
+      <td>None. Missing docs. Failing builds. No logs.</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>At Risk / Poor 😬 "Works on my machine, kinda."</td>
+      <td>Works in parts, sloppy and unstable.</td>
+      <td>Inconsistent behavior, high failure rate, debugging by luck</td>
+      <td><50% tests passing<br>Coverage <20%<br>Error rate high<br>No SLAs/SLOs</td>
+      <td>Ad-hoc notes, manual scripts, partial configs</td>
     </tr>
     <tr>
       <td>2</td>
