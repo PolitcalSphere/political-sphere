@@ -1,50 +1,43 @@
-import { CreateVoteSchema } from "@political-sphere/shared";
-import express from "express";
-import { VoteService } from "../domain";
+const express = require("express");
+const { CreateVoteSchema } = require("@political-sphere/shared");
+const { getDatabase } = require("../index");
 
 const router = express.Router();
-const voteService = new VoteService();
 
 router.post("/votes", async (req, res) => {
 	try {
-		// Debug: log incoming content-type and body to diagnose 415 failures in tests
-		// (temporary - can be removed after diagnosing)
-		// eslint-disable-next-line no-console
-		console.debug("[votes] headers:", req.headers);
-		// eslint-disable-next-line no-console
-		console.debug("[votes] is json:", req.is("application/json"));
-		// eslint-disable-next-line no-console
-		console.debug("[votes] body present:", typeof req.body !== "undefined");
 		const input = CreateVoteSchema.parse(req.body);
-		const vote = await voteService.castVote(input);
+		const db = getDatabase();
+		const vote = await db.votes.create(input);
 		res.status(201).json(vote);
 	} catch (error) {
-		if (error instanceof Error) {
-			res.status(400).json({ error: error.message });
-		} else {
-			res.status(500).json({ error: "Internal server error" });
-		}
+		const message = error instanceof Error ? error.message : "Invalid request";
+		res.status(400).json({ error: message });
 	}
 });
 
 router.get("/bills/:id/votes", async (req, res) => {
 	try {
-		const votes = await voteService.getBillVotes(req.params.id);
-		res.set("Cache-Control", "public, max-age=120"); // Cache for 2 minutes
+		const db = getDatabase();
+		const votes = await db.votes.getByBillId(req.params.id);
+		res.set("Cache-Control", "public, max-age=120");
 		res.json(votes);
 	} catch (error) {
+		console.error("Failed to fetch bill votes", error);
 		res.status(500).json({ error: "Internal server error" });
 	}
 });
 
 router.get("/bills/:id/vote-counts", async (req, res) => {
 	try {
-		const counts = await voteService.getVoteCounts(req.params.id);
-		res.set("Cache-Control", "public, max-age=120"); // Cache for 2 minutes
+		const db = getDatabase();
+		const counts = await db.votes.getVoteCounts(req.params.id);
+		res.set("Cache-Control", "public, max-age=120");
 		res.json(counts);
 	} catch (error) {
+		console.error("Failed to fetch vote counts", error);
 		res.status(500).json({ error: "Internal server error" });
 	}
 });
 
-export default router;
+module.exports = router;

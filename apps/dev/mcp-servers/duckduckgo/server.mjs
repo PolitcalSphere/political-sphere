@@ -1,27 +1,42 @@
 import express from "express";
-import fetch from "node-fetch";
 
 const app = express();
-const port = process.env.PORT || 4016;
+const port = Number(process.env.PORT ?? 4016);
 
 app.get("/health", (_req, res) => {
 	res.json({ status: "ok", name: "duckduckgo-mcp" });
 });
 
-// Simple search proxy to DuckDuckGo Instant Answer API (CORS-friendly, JSON)
-// Note: this is a convenience stub for local development only. Do not use in production without proper rate-limiting and caching.
 app.get("/search", async (req, res) => {
-	const q = req.query.q;
-	if (!q) return res.status(400).json({ error: "query parameter q required" });
+	const query = req.query.q;
+	if (typeof query !== "string" || query.trim().length === 0) {
+		return res.status(400).json({ error: "query parameter q required" });
+	}
 
 	try {
-		const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(q)}&format=json&no_redirect=1&no_html=1`;
-		const r = await fetch(url, { method: "GET" });
-		const json = await r.json();
-		res.json({ source: "duckduckgo", q, data: json });
-	} catch (err) {
-		console.error("DuckDuckGo proxy error:", err);
-		res.status(502).json({ error: "proxy error", details: String(err) });
+		const endpoint = new URL("https://api.duckduckgo.com/");
+		endpoint.searchParams.set("q", query);
+		endpoint.searchParams.set("format", "json");
+		endpoint.searchParams.set("no_redirect", "1");
+		endpoint.searchParams.set("no_html", "1");
+
+		const response = await fetch(endpoint, {
+			headers: { "User-Agent": "political-sphere-mcp/1.0 (+https://github.com/)" },
+		});
+
+		if (!response.ok) {
+			return res.status(502).json({
+				error: "DuckDuckGo request failed",
+				status: response.status,
+				statusText: response.statusText,
+			});
+		}
+
+		const payload = await response.json();
+		res.json({ source: "duckduckgo", query, data: payload });
+	} catch (error) {
+		console.error("DuckDuckGo proxy error:", error);
+		res.status(502).json({ error: "proxy error", details: String(error) });
 	}
 });
 

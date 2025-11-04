@@ -1,42 +1,38 @@
-import path from "path";
-import { fileURLToPath } from "url";
-import { DEFAULT_DB_PATH } from "./config.js";
-import { initializeDatabase, runMigrations } from "./migrations/index.js";
+const path = require("path");
+const { DEFAULT_DB_PATH } = require("./config");
+const { initializeDatabase, runMigrations } = require("./migrations");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const dbPath = path.join(process.cwd(), DEFAULT_DB_PATH); // Make absolute from root
+const dbPath = path.join(process.cwd(), DEFAULT_DB_PATH);
 
-console.log("DB Path:", dbPath);
+async function main() {
+    console.log("DB Path:", dbPath);
+    try {
+        const db = initializeDatabase(dbPath);
+        console.log("DB created and opened");
 
-try {
-	const db = initializeDatabase(dbPath);
+        db.pragma("journal_mode = WAL");
+        console.log("Pragma WAL set");
 
-	console.log("DB created and opened");
+        const stmt = db.prepare("SELECT 1 as test");
+        const row = stmt.get();
+        console.log("Prepare and query success:", row);
 
-	// Test pragma
-	db.pragma("journal_mode = WAL");
-	console.log("Pragma WAL set");
+        db.exec("CREATE TABLE IF NOT EXISTS test (id INTEGER PRIMARY KEY)");
+        console.log("Exec success");
 
-	// Test prepare
-	const stmt = db.prepare("SELECT 1 as test");
-	const row = stmt.get();
-	console.log("Prepare and query success:", row);
+        console.log("Running migrations...");
+        await runMigrations(db);
+        console.log("Migrations completed successfully");
 
-	// Test exec
-	db.exec("CREATE TABLE IF NOT EXISTS test (id INTEGER PRIMARY KEY)");
-	console.log("Exec success");
-
-	// Test migrations
-	console.log("Running migrations...");
-	await runMigrations(db);
-	console.log("Migrations completed successfully");
-
-	db.close();
-	console.log("Test completed successfully");
-} catch (error) {
-	console.error("Test failed:", error.message);
-	if (error.stack) {
-		console.error("Stack trace:", error.stack);
-	}
+        db.close();
+        console.log("Test completed successfully");
+    } catch (error) {
+        console.error("Test failed:", error.message);
+        if (error.stack) {
+            console.error("Stack trace:", error.stack);
+        }
+        process.exitCode = 1;
+    }
 }
+
+main();

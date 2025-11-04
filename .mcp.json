@@ -1,0 +1,96 @@
+{
+  "mcpServers": {
+    "political-sphere-filesystem": {
+      "command": "npm",
+      "args": ["run", "mcp:filesystem"],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "political-sphere-github": {
+      "command": "npm",
+      "args": ["run", "mcp:github"],
+      "env": {
+        "NODE_ENV": "development",
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "political-sphere-sqlite": {
+      "command": "npm",
+      "args": ["run", "mcp:sqlite"],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "political-sphere-puppeteer": {
+      "command": "npm",
+      "args": ["run", "mcp:puppeteer"],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "political-sphere-git": {
+      "command": "npm",
+      "args": ["run", "mcp:git"],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "political-sphere-ai-assistant": {
+      "command": "npm",
+      "args": ["run", "mcp:ai-assistant"],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "political-sphere-microsoft-learn": {
+      "command": "npm",
+      "args": ["run", "mcp:microsoft-learn"],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "political-sphere": {
+      "command": "npm",
+      "args": ["run", "mcp:political-sphere"],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "playwright": {
+      "command": "npm",
+      "args": ["run", "mcp:playwright"],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "chrome-devtools": {
+      "command": "npm",
+      "args": ["run", "mcp:chrome-devtools"],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "filesystem-official": {
+      "command": "npm",
+      "args": ["run", "mcp:filesystem-official"],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "time": {
+      "command": "npm",
+      "args": ["run", "mcp:time"],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "duckduckgo": {
+      "command": "npm",
+      "args": ["run", "mcp:duckduckgo"],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    }
+  }
+}

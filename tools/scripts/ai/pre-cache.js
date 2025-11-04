@@ -25,6 +25,55 @@ const DEFAULT_MAX_ENTRIES = parseInt(process.env.PRE_CACHE_MAX_ENTRIES || '200',
 const DEFAULT_TTL_MS = parseInt(process.env.PRE_CACHE_TTL_MS || String(1000 * 60 * 60 * 24), 10); // 24h
 const FAST_AI = process.env.FAST_AI === '1' || process.env.FAST_AI === 'true';
 
+function normalizeTimestamp(value, fallback = Date.now()) {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return value;
+  }
+  if (typeof value === 'string') {
+    const numeric = Number(value);
+    if (Number.isFinite(numeric)) {
+      return numeric;
+    }
+    const parsed = Date.parse(value);
+    if (Number.isFinite(parsed)) {
+      return parsed;
+    }
+  }
+  return fallback;
+}
+
+function normalizeCacheShape(cache) {
+  if (!cache || typeof cache !== 'object') {
+    return {
+      responses: {},
+      queries: {},
+      lastUpdated: new Date().toISOString(),
+      maxEntries: DEFAULT_MAX_ENTRIES,
+      ttlMs: DEFAULT_TTL_MS,
+    };
+  }
+
+  cache.responses = cache.responses || {};
+  cache.queries = cache.queries || {};
+
+  const now = Date.now();
+  for (const [key, entry] of Object.entries(cache.queries)) {
+    if (!entry || typeof entry !== 'object') {
+      delete cache.queries[key];
+      continue;
+    }
+    entry.timestamp = normalizeTimestamp(entry.timestamp, now);
+  }
+
+  const normalizedMax = Number(cache.maxEntries);
+  cache.maxEntries = Number.isFinite(normalizedMax) ? normalizedMax : DEFAULT_MAX_ENTRIES;
+
+  const normalizedTtl = Number(cache.ttlMs);
+  cache.ttlMs = Number.isFinite(normalizedTtl) ? normalizedTtl : DEFAULT_TTL_MS;
+
+  return cache;
+}
+
 // Common queries to pre-cache
 const COMMON_QUERIES = [
   'What is the project structure?',
@@ -61,17 +110,19 @@ async function loadCache() {
   try {
     await fsp.mkdir(CACHE_DIR, { recursive: true });
     const raw = await fsp.readFile(CACHE_FILE, 'utf8').catch(() => null);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      return normalizeCacheShape(JSON.parse(raw));
+    }
   } catch (error) {
     console.warn('Failed to load cache:', error.message);
   }
-  return {
+  return normalizeCacheShape({
     responses: {},
     queries: {},
     lastUpdated: new Date().toISOString(),
     maxEntries: DEFAULT_MAX_ENTRIES,
     ttlMs: DEFAULT_TTL_MS,
-  };
+  });
 }
 
 async function saveCache(cache) {
@@ -95,15 +146,16 @@ async function preCacheQueries() {
       .replace(/\s+/g, '_')
       .replace(/[^a-z0-9_]/g, '')
       .slice(0, 200);
-    if (!cache.queries[key]) {
-      cache.queries[key] = {
-        query,
-        cached: true,
-        timestamp: Date.now(),
-        // Placeholder for actual response - would be populated by AI system
-        response: FAST_AI ? `FAST pre-cached: ${query}` : `Pre-cached response for: ${query}`,
-      };
-    }
+    const existing = cache.queries[key] || {};
+    cache.queries[key] = {
+      ...existing,
+      query,
+      cached: true,
+      timestamp: Date.now(),
+      response:
+        existing.response ??
+        (FAST_AI ? `FAST pre-cached: ${query}` : `Pre-cached response for: ${query}`),
+    };
   }
 
   // Also generate queries from README and package.json scripts for better coverage
@@ -124,14 +176,14 @@ async function preCacheQueries() {
           .replace(/\s+/g, '_')
           .replace(/[^a-z0-9_]/g, '')
           .slice(0, 100);
-        if (!cache.queries[key]) {
-          cache.queries[key] = {
-            query: `Explain: ${h}`,
-            cached: true,
-            timestamp: new Date().toISOString(),
-            response: `Pre-cached response for README heading: ${h}`,
-          };
-        }
+        const existing = cache.queries[key] || {};
+        cache.queries[key] = {
+          ...existing,
+          query: `Explain: ${h}`,
+          cached: true,
+          timestamp: Date.now(),
+          response: existing.response ?? `Pre-cached response for README heading: ${h}`,
+        };
       });
     }
 
@@ -142,14 +194,14 @@ async function preCacheQueries() {
       scripts.slice(0, 20).forEach((s) => {
         const key = `script_${s}`.toLowerCase().replace(/\s+/g, '_');
         const q = `How to run: npm run ${s}`;
-        if (!cache.queries[key]) {
-          cache.queries[key] = {
-            query: q,
-            cached: true,
-            timestamp: new Date().toISOString(),
-            response: `Pre-cached response for script: ${s}`,
-          };
-        }
+        const existing = cache.queries[key] || {};
+        cache.queries[key] = {
+          ...existing,
+          query: q,
+          cached: true,
+          timestamp: Date.now(),
+          response: existing.response ?? `Pre-cached response for script: ${s}`,
+        };
       });
     }
   } catch (err) {
@@ -170,28 +222,38 @@ async function preCacheQueries() {
 async function enforceCacheSize(cache) {
   try {
     const maxEntries = cache.maxEntries || DEFAULT_MAX_ENTRIES;
-    const keys = Object.keys(cache.queries || {});
-    if (keys.length <= maxEntries) return cache;
+    const entries = Object.keys(cache.queries || {});
+    const getTimestamp = (entry) => normalizeTimestamp(entry?.timestamp, 0);
+    let evictedCount = 0;
+    let expiredCount = 0;
+    if (entries.length > maxEntries) {
+      const sorted = [...entries].sort(
+        (a, b) => getTimestamp(cache.queries[a]) - getTimestamp(cache.queries[b])
+      );
+      const toRemove = sorted.slice(0, sorted.length - maxEntries);
+      toRemove.forEach((k) => delete cache.queries[k]);
+      evictedCount = toRemove.length;
+    } else {
+      evictedCount = 0;
+    }
 
-    // LRU eviction: sort by timestamp (oldest first)
-    const sorted = keys.sort(
-      (a, b) => (cache.queries[a].timestamp || 0) - (cache.queries[b].timestamp || 0)
-    );
-    const toRemove = sorted.slice(0, keys.length - maxEntries);
-    toRemove.forEach((k) => delete cache.queries[k]);
-    cache.evicted = toRemove.length;
-
-    // Also enforce TTL
     const ttl = cache.ttlMs || DEFAULT_TTL_MS;
-    const now = Date.now();
-    const expiredKeys = keys.filter(k => {
-      const ts = cache.queries[k]?.timestamp || 0;
-      return ttl > 0 && now - ts > ttl;
-    });
-    expiredKeys.forEach(k => delete cache.queries[k]);
-    cache.expired = expiredKeys.length;
+    if (ttl > 0) {
+      const now = Date.now();
+      const currentKeys = Object.keys(cache.queries || {});
+      const expiredKeys = currentKeys.filter((k) => now - getTimestamp(cache.queries[k]) > ttl);
+      expiredKeys.forEach((k) => delete cache.queries[k]);
+      expiredCount = expiredKeys.length;
+    } else {
+      expiredCount = 0;
+    }
 
-    console.log(`Cache maintenance: evicted ${toRemove.length} entries, expired ${expiredKeys.length} entries`);
+    cache.evicted = evictedCount;
+    cache.expired = expiredCount;
+
+    console.log(
+      `Cache maintenance: evicted ${evictedCount} entries, expired ${expiredCount} entries`
+    );
   } catch (err) {
     console.warn('Cache size enforcement failed:', err?.message || err);
   }

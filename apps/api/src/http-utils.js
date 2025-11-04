@@ -5,7 +5,7 @@ function isAllowedJsonContentType(contentType, allowedTypes) {
   return allowedTypes.some((type) => contentType.startsWith(type));
 }
 
-export async function readJsonBody(req, options = {}) {
+async function readJsonBody(req, options = {}) {
   const { limit = DEFAULT_MAX_JSON_BYTES, allowedContentTypes = DEFAULT_ALLOWED_CONTENT_TYPES } =
     options;
 
@@ -49,7 +49,7 @@ export async function readJsonBody(req, options = {}) {
   }
 }
 
-export function sendJson(res, statusCode, payload, headers = {}) {
+function sendJson(res, statusCode, payload, headers = {}) {
   const body = JSON.stringify(payload);
   res.writeHead(statusCode, {
     'Content-Type': 'application/json; charset=utf-8',
@@ -59,7 +59,7 @@ export function sendJson(res, statusCode, payload, headers = {}) {
   res.end(body);
 }
 
-export function sendError(res, statusCode, message, details, headers = {}) {
+function sendError(res, statusCode, message, details, headers = {}) {
   sendJson(
     res,
     statusCode,
@@ -74,10 +74,18 @@ export function sendError(res, statusCode, message, details, headers = {}) {
   );
 }
 
-export function notFound(res, path) {
+function notFound(res, path) {
   sendError(res, 404, `Route ${path} not found`);
 }
 
-export function methodNotAllowed(res) {
+function methodNotAllowed(res) {
   sendError(res, 405, 'Method not allowed');
 }
+
+module.exports = {
+  readJsonBody,
+  sendJson,
+  sendError,
+  notFound,
+  methodNotAllowed,
+};

@@ -1,0 +1,29 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  guard-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Ensure full git history for diff calculations
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install dependencies
+        run: npm ci
+      - name: Run Guard Change Budget Check
+        run: node tools/scripts/ai/guard-change-budget.mjs --mode=safe --base=${{ github.base_ref }}
+      - name: Run Tests
+        run: npm run test:ci
+      - name: Run Coverage
+        run: node tools/run-vitest-coverage.js
+      - name: Run Linting
+        run: npm run lint:fix
+      - name: Type Check
+        run: npm run type-check

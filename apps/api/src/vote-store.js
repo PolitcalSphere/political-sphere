@@ -1,122 +1,173 @@
-import { v4 as uuidv4 } from 'uuid';
+const { v4: uuidv4 } = require("uuid");
+const { cacheKeys, CACHE_TTL } = require("./cache");
 
-export class VoteStore {
-  db;
-  cache;
-  constructor(db, cache = null) {
-    this.db = db;
-    this.cache = cache;
-  }
-  create(input) {
-    const id = uuidv4();
-    const now = new Date();
-    const stmt = this.db.prepare(`
-      INSERT INTO votes (id, bill_id, user_id, vote, created_at)
-      VALUES (?, ?, ?, ?, ?)
-    `);
-    stmt.run(id, input.billId, input.userId, input.vote, now.toISOString());
+class VoteStore {
+	constructor(db, cache = null) {
+		this.db = db;
+		this.cache = cache;
+	}
 
-    // Invalidate vote count cache for this bill
-    if (this.cache) {
-      this.cache.del(`vote_counts:${input.billId}`);
-    }
+	async create(input) {
+		const id = uuidv4();
+		const now = new Date();
+		const stmt = this.db.prepare(
+			`INSERT INTO votes (id, bill_id, user_id, vote, created_at)
+       VALUES (?, ?, ?, ?, ?)`,
+		);
+		stmt.run(id, input.billId, input.userId, input.vote, now.toISOString());
 
-    return {
-      id,
-      billId: input.billId,
-      userId: input.userId,
-      vote: input.vote,
-      createdAt: now,
-    };
-  }
-  getById(id) {
-    const stmt = this.db.prepare(`
-      SELECT id, bill_id, user_id, vote, created_at
-      FROM votes
-      WHERE id = ?
-    `);
-    const row = stmt.get(id);
-    if (!row) return null;
-    return {
-      id: row.id,
-      billId: row.bill_id,
-      userId: row.user_id,
-      vote: row.vote,
-      createdAt: new Date(row.created_at),
-    };
-  }
-  getByBillId(billId) {
-    const stmt = this.db.prepare(`
-      SELECT id, bill_id, user_id, vote, created_at
-      FROM votes
-      WHERE bill_id = ?
-      ORDER BY created_at DESC
-    `);
-    const rows = stmt.all(billId);
-    return rows.map((row) => ({
-      id: row.id,
-      billId: row.bill_id,
-      userId: row.user_id,
-      vote: row.vote,
-      createdAt: new Date(row.created_at),
-    }));
-  }
-  getByUserId(userId) {
-    const stmt = this.db.prepare(`
-      SELECT id, bill_id, user_id, vote, created_at
-      FROM votes
-      WHERE user_id = ?
-      ORDER BY created_at DESC
-    `);
-    const rows = stmt.all(userId);
-    return rows.map((row) => ({
-      id: row.id,
-      billId: row.bill_id,
-      userId: row.user_id,
-      vote: row.vote,
-      createdAt: new Date(row.created_at),
-    }));
-  }
-  hasUserVotedOnBill(userId, billId) {
-    const stmt = this.db.prepare(`
-      SELECT COUNT(*) as count
-      FROM votes
-      WHERE user_id = ? AND bill_id = ?
-    `);
-    const row = stmt.get(userId, billId);
-    return row.count > 0;
-  }
-  getVoteCounts(billId) {
-    const cacheKey = `vote_counts:${billId}`;
+		if (this.cache) {
+			await Promise.all([
+				this.cache.del(cacheKeys.vote(id)),
+				this.cache.del(cacheKeys.votesByBill(input.billId)),
+				this.cache.del(cacheKeys.votesByUser(input.userId)),
+				this.cache.del(cacheKeys.billVotes(input.billId)),
+			]);
+		}
 
-    // Try cache first
-    if (this.cache) {
-      const cached = this.cache.get(cacheKey);
-      if (cached !== null) {
-        return cached;
-      }
-    }
+		return {
+			id,
+			billId: input.billId,
+			userId: input.userId,
+			vote: input.vote,
+			createdAt: now,
+		};
+	}
 
-    const stmt = this.db.prepare(`
-      SELECT
-        SUM(CASE WHEN vote = 'aye' THEN 1 ELSE 0 END) as aye,
-        SUM(CASE WHEN vote = 'nay' THEN 1 ELSE 0 END) as nay,
-        SUM(CASE WHEN vote = 'abstain' THEN 1 ELSE 0 END) as abstain
-      FROM votes
-      WHERE bill_id = ?
-    `);
-    const row = stmt.get(billId);
-    const result = {
-      aye: row.aye || 0,
-      nay: row.nay || 0,
-      abstain: row.abstain || 0,
-    };
+	async getById(id) {
+		const row = this.db
+			.prepare(
+				`SELECT id, bill_id, user_id, vote, created_at
+         FROM votes
+         WHERE id = ?`,
+			)
+			.get(id);
 
-    // Cache the result for 5 minutes
-    if (this.cache) {
-      this.cache.set(cacheKey, result, 300);
-    }
+		if (!row) {
+			return null;
+		}
 
-    return result;
-  }
+		return {
+			id: row.id,
+			billId: row.bill_id,
+			userId: row.user_id,
+			vote: row.vote,
+			createdAt: new Date(row.created_at),
+		};
+	}
+
+	async getByBillId(billId) {
+		const cacheKey = cacheKeys.votesByBill(billId);
+		if (this.cache) {
+			const cached = await this.cache.get(cacheKey);
+			if (cached) {
+				return cached;
+			}
+		}
+
+		const rows = this.db
+			.prepare(
+				`SELECT id, bill_id, user_id, vote, created_at
+         FROM votes
+         WHERE bill_id = ?
+         ORDER BY created_at DESC`,
+			)
+			.all(billId);
+
+		const votes = rows.map((row) => ({
+			id: row.id,
+			billId: row.bill_id,
+			userId: row.user_id,
+			vote: row.vote,
+			createdAt: new Date(row.created_at),
+		}));
+
+		if (this.cache) {
+			await this.cache.set(cacheKey, votes, CACHE_TTL.VOTES);
+		}
+
+		return votes;
+	}
+
+	async getByUserId(userId) {
+		const cacheKey = cacheKeys.votesByUser(userId);
+		if (this.cache) {
+			const cached = await this.cache.get(cacheKey);
+			if (cached) {
+				return cached;
+			}
+		}
+
+		const rows = this.db
+			.prepare(
+				`SELECT id, bill_id, user_id, vote, created_at
+         FROM votes
+         WHERE user_id = ?
+         ORDER BY created_at DESC`,
+			)
+			.all(userId);
+
+		const votes = rows.map((row) => ({
+			id: row.id,
+			billId: row.bill_id,
+			userId: row.user_id,
+			vote: row.vote,
+			createdAt: new Date(row.created_at),
+		}));
+
+		if (this.cache) {
+			await this.cache.set(cacheKey, votes, CACHE_TTL.VOTES);
+		}
+
+		return votes;
+	}
+
+	hasUserVotedOnBill(userId, billId) {
+		const row = this.db
+			.prepare(
+				`SELECT COUNT(*) as count
+         FROM votes
+         WHERE user_id = ? AND bill_id = ?`,
+			)
+			.get(userId, billId);
+
+		return row.count > 0;
+	}
+
+	async getVoteCounts(billId) {
+		const cacheKey = cacheKeys.billVotes(billId);
+		if (this.cache) {
+			const cached = await this.cache.get(cacheKey);
+			if (cached) {
+				return cached;
+			}
+		}
+
+		const row = this.db
+			.prepare(
+				`SELECT
+         SUM(CASE WHEN vote = 'aye' THEN 1 ELSE 0 END) as aye,
+         SUM(CASE WHEN vote = 'nay' THEN 1 ELSE 0 END) as nay,
+         SUM(CASE WHEN vote = 'abstain' THEN 1 ELSE 0 END) as abstain
+       FROM votes
+       WHERE bill_id = ?`,
+			)
+			.get(billId);
+
+		const counts = {
+			aye: row?.aye || 0,
+			nay: row?.nay || 0,
+			abstain: row?.abstain || 0,
+		};
+
+		if (this.cache) {
+			await this.cache.set(cacheKey, counts, CACHE_TTL.VOTES);
+		}
+
+		return counts;
+	}
 }
+
+module.exports = {
+	VoteStore,
+};

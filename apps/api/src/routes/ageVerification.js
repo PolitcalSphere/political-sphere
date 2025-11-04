@@ -319,4 +319,4 @@ router.post('/admin/reverify/:userId', authenticate, requireRole('admin'), async
   }
 });
 
-export default router;
+module.exports = router;

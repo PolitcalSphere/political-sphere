@@ -5,9 +5,9 @@
  * @see docs/architecture/decisions/adr-0001-database-migrations.md
  */
 
-export const name = "002_performance_indexes";
+const name = "002_performance_indexes";
 
-export function up(db) {
+function up(db) {
 	console.log("Running performance optimization migration up function...");
 
 	db.exec(`
@@ -40,7 +40,7 @@ export function up(db) {
 	console.log("Performance optimization migration up function completed");
 }
 
-export function down(db) {
+function down(db) {
 	db.exec(`
     DROP INDEX IF EXISTS idx_votes_recent;
     DROP INDEX IF EXISTS idx_bills_active;
@@ -57,3 +57,9 @@ export function down(db) {
     DROP INDEX IF EXISTS idx_votes_bill_user;
   `);
 }
+
+module.exports = {
+	name,
+	up,
+	down,
+};

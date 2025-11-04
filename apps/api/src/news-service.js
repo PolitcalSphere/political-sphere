@@ -1,11 +1,11 @@
-import {
-  sanitizeHtml,
-  isValidInput,
-  isValidLength,
-  validateCategory,
-  validateTag,
-  isValidUrl,
-} from '@political-sphere/shared';
+const {
+	sanitizeHtml,
+	isValidInput,
+	isValidLength,
+	validateCategory,
+	validateTag,
+	isValidUrl,
+} = require("@political-sphere/shared");
 
 const ALLOWED_CATEGORIES = [
   'politics',
@@ -142,7 +142,7 @@ function sanitizeSourcesInput(sources) {
   return Array.from(new Set(sanitized));
 }
 
-export class NewsService {
+class NewsService {
   constructor(store, nowFn = () => new Date()) {
     this.store = store;
     this.nowFn = nowFn;
@@ -295,3 +295,7 @@ export class NewsService {
     return { total, categories, recent };
   }
 }
+
+module.exports = {
+	NewsService,
+};

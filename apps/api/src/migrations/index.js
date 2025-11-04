@@ -5,26 +5,22 @@
  * @see docs/architecture/decisions/adr-0001-database-migrations.md
  */
 
-import Database from "better-sqlite3";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-import { DB_PATH, DEFAULT_DB_PATH } from "../config.js";
-import {
+const Database = require("better-sqlite3");
+const fs = require("fs");
+const path = require("path");
+const { DB_PATH, DEFAULT_DB_PATH } = require("../config");
+const {
 	MigrationError,
 	MigrationRollbackError,
 	MigrationValidationError,
-} from "./migration-error.js";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+} = require("./migration-error");
 
 /**
  * Initialize the database connection
  * @param {string} [dbPath] - Path to the database file (defaults to data/political-sphere.db)
  * @returns {Database.Database} - Database connection
  */
-export function initializeDatabase(dbPath) {
+function initializeDatabase(dbPath) {
 	const finalPath = dbPath || DB_PATH || DEFAULT_DB_PATH;
 
 	const db = new Database(finalPath, {
@@ -67,7 +63,7 @@ async function loadMigrations() {
 	const migrations = [];
 	for (const file of files) {
 		const filePath = path.join(migrationsDir, file);
-		const migration = await import(filePath);
+		const migration = require(filePath);
 		if (
 			migration.name &&
 			typeof migration.up === "function" &&
@@ -162,7 +158,7 @@ async function rollbackMigration(db, migration) {
  * @param {boolean} [rollbackOnError=true] - Whether to rollback on migration failure
  * @throws {MigrationError} If migration fails
  */
-export async function runMigrations(db, rollbackOnError = true) {
+async function runMigrations(db, rollbackOnError = true) {
 	// Create migrations tracking table
 	db.exec(`
     CREATE TABLE IF NOT EXISTS _migrations (
@@ -232,7 +228,7 @@ export async function runMigrations(db, rollbackOnError = true) {
  * @param {Database.Database} db - Database connection
  * @throws {MigrationRollbackError} If rollback fails
  */
-export async function rollbackAllMigrations(db) {
+async function rollbackAllMigrations(db) {
 	const appliedMigrations = db
 		.prepare("SELECT name FROM _migrations ORDER BY id DESC")
 		.all();
@@ -251,3 +247,9 @@ export async function rollbackAllMigrations(db) {
 
 	console.log("All migrations rolled back successfully");
 }
+
+module.exports = {
+	initializeDatabase,
+	runMigrations,
+	rollbackAllMigrations,
+};

@@ -4,7 +4,7 @@
  * @see docs/architecture/decisions/adr-0001-database-migrations.md
  */
 
-export class MigrationError extends Error {
+class MigrationError extends Error {
   constructor(message, migrationName, originalError = null) {
     super(message);
     this.name = "MigrationError";
@@ -17,16 +17,22 @@ export class MigrationError extends Error {
   }
 }
 
-export class MigrationRollbackError extends MigrationError {
+class MigrationRollbackError extends MigrationError {
   constructor(message, migrationName, originalError = null) {
     super(message, migrationName, originalError);
     this.name = "MigrationRollbackError";
   }
 }
 
-export class MigrationValidationError extends MigrationError {
+class MigrationValidationError extends MigrationError {
   constructor(message, migrationName, originalError = null) {
     super(message, migrationName, originalError);
     this.name = "MigrationValidationError";
   }
 }
+
+module.exports = {
+  MigrationError,
+  MigrationRollbackError,
+  MigrationValidationError,
+};

@@ -1,14 +1,11 @@
-import express from "express";
-import { NewsService } from "../news-service.js";
-import { NewsStore } from "../news-store.js";
+const express = require("express");
+const { NewsService } = require("../news-service");
+const { NewsStore } = require("../news-store");
 
 const router = express.Router();
-
-// Initialize news service with store
 const newsStore = new NewsStore();
 const newsService = new NewsService(newsStore);
 
-// GET /api/news - List news items with optional filters
 router.get("/news", async (req, res) => {
 	try {
 		const { category, tag, search, limit } = req.query;
@@ -30,7 +27,6 @@ router.get("/news", async (req, res) => {
 	}
 });
 
-// POST /api/news - Create a new news item
 router.post("/news", async (req, res) => {
 	try {
 		const newsItem = await newsService.create(req.body);
@@ -45,7 +41,6 @@ router.post("/news", async (req, res) => {
 	}
 });
 
-// GET /api/news/:id - Get a specific news item
 router.get("/news/:id", async (req, res) => {
 	try {
 		const { id } = req.params;
@@ -69,7 +64,6 @@ router.get("/news/:id", async (req, res) => {
 	}
 });
 
-// PUT /api/news/:id - Update a news item
 router.put("/news/:id", async (req, res) => {
 	try {
 		const { id } = req.params;
@@ -92,8 +86,7 @@ router.put("/news/:id", async (req, res) => {
 	}
 });
 
-// GET /metrics/news - Get news analytics summary
-router.get("/metrics/news", async (req, res) => {
+router.get("/metrics/news", async (_req, res) => {
 	try {
 		const summary = await newsService.analyticsSummary();
 		res.json({ success: true, data: summary });
@@ -107,4 +100,4 @@ router.get("/metrics/news", async (req, res) => {
 	}
 });
 
-export default router;
+module.exports = router;

@@ -12,8 +12,8 @@ This repository enforces a fail-closed secrets scanning policy and documents how
 
 **JWT Authentication**:
 
-- `JWT_SECRET` - Secret key for access tokens (minimum 32 characters)
-- `JWT_REFRESH_SECRET` - Secret key for refresh tokens (minimum 32 characters)
+- `JWT_SECRET` - Secret key for access tokens (minimum 32 characters, enforced)
+- `JWT_REFRESH_SECRET` - Secret key for refresh tokens (minimum 32 characters, enforced)
 - `JWT_EXPIRES_IN` - Access token expiry (default: '15m')
 - `JWT_REFRESH_EXPIRES_IN` - Refresh token expiry (default: '7d')
 

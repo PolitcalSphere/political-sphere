@@ -1,41 +1,60 @@
-import { initializeDatabase, runMigrations } from "./migrations/index.js";
-import { UserStore } from "./user-store.js";
-import { PartyStore } from "./party-store.js";
-import { BillStore } from "./bill-store.js";
-import { VoteStore } from "./vote-store.js";
-import { CacheService } from "./cache.ts";
-export class DatabaseConnection {
-  db;
-  cache;
-  users;
-  parties;
-  bills;
-  votes;
-  constructor() {
-    this.db = initializeDatabase();
-    runMigrations(this.db);
-    // Initialize cache service (will use Redis if available, otherwise no-op)
-    this.cache = new CacheService();
-    this.users = new UserStore(this.db, this.cache);
-    this.parties = new PartyStore(this.db, this.cache);
-    this.bills = new BillStore(this.db, this.cache);
-    this.votes = new VoteStore(this.db, this.cache);
-  }
-  close() {
-    this.db.close();
-  }
+const { initializeDatabase, runMigrations } = require("./migrations");
+const { UserStore } = require("./user-store");
+const { PartyStore } = require("./party-store");
+const { BillStore } = require("./bill-store");
+const { VoteStore } = require("./vote-store");
+const { CacheService } = require("./cache");
+
+function shouldEnableCache() {
+	if (process.env.NODE_ENV === "test") {
+		return false;
+	}
+
+	if (process.env.API_ENABLE_CACHE === "true") {
+		return true;
+	}
+
+	if (process.env.API_ENABLE_CACHE === "false") {
+		return false;
+	}
+
+	return Boolean(process.env.REDIS_URL);
 }
-// Singleton pattern for database connection
+
+class DatabaseConnection {
+	constructor() {
+		this.db = initializeDatabase();
+		runMigrations(this.db);
+		this.cache = shouldEnableCache() ? new CacheService() : null;
+		this.users = new UserStore(this.db, this.cache);
+		this.parties = new PartyStore(this.db, this.cache);
+		this.bills = new BillStore(this.db, this.cache);
+		this.votes = new VoteStore(this.db, this.cache);
+	}
+
+	close() {
+		this.db.close();
+	}
+}
+
 let dbConnection = null;
-export function getDatabase() {
-  if (!dbConnection) {
-    dbConnection = new DatabaseConnection();
-  }
-  return dbConnection;
+
+function getDatabase() {
+	if (!dbConnection) {
+		dbConnection = new DatabaseConnection();
+	}
+	return dbConnection;
 }
-export function closeDatabase() {
-  if (dbConnection) {
-    dbConnection.close();
-    dbConnection = null;
-  }
+
+function closeDatabase() {
+	if (dbConnection) {
+		dbConnection.close();
+		dbConnection = null;
+	}
 }
+
+module.exports = {
+	DatabaseConnection,
+	getDatabase,
+	closeDatabase,
+};

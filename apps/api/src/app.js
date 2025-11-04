@@ -1,30 +1,23 @@
-/**
- * Main API Server Application
- * Sets up Express server with all routes and middleware
- */
-
-import compression from "compression";
-import cors from "cors";
-import express from "express";
-import helmet from "helmet";
-// Import services
-import { getDatabase } from "./index.js";
-// Import middleware
-import { authenticate, requireRole } from "./middleware/auth.js";
-import ageVerificationRoutes from "./routes/ageVerification.js";
-// Import routes
-import authRoutes from "./routes/auth.js";
-import billRoutes from "./routes/bills.js";
-import complianceRoutes from "./routes/compliance.js";
-import moderationRoutes from "./routes/moderation.js";
-import partyRoutes from "./routes/parties.js";
-import userRoutes from "./routes/users.js";
-import voteRoutes from "./routes/votes.js";
+const compression = require("compression");
+const cors = require("cors");
+const express = require("express");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+const { getDatabase } = require("./index");
+const { authenticate, requireRole } = require("./middleware/auth");
+const ageVerificationRoutes = require("./routes/ageVerification");
+const authRoutes = require("./routes/auth");
+const billRoutes = require("./routes/bills");
+const complianceRoutes = require("./routes/compliance");
+const moderationRoutes = require("./routes/moderation");
+const partyRoutes = require("./routes/parties");
+const userRoutes = require("./routes/users");
+const voteRoutes = require("./routes/votes");
+const newsRoutes = require("./routes/news");
 
 const app = express();
 const logger = console;
 
-// Security middleware
 app.use(
 	helmet({
 		contentSecurityPolicy: {
@@ -38,7 +31,6 @@ app.use(
 	}),
 );
 
-// CORS configuration
 app.use(
 	cors({
 		origin: process.env.CORS_ORIGIN || "http://localhost:3000",
@@ -48,19 +40,13 @@ app.use(
 	}),
 );
 
-// Compression
 app.use(compression());
-
-// Body parsing
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-// Global rate limiting
-import rateLimit from "express-rate-limit";
-
 const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: 100, // limit each IP to 100 requests per windowMs
+	windowMs: 15 * 60 * 1000,
+	max: 100,
 	message: {
 		success: false,
 		error: "Too many requests",
@@ -73,7 +59,6 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Request logging
 app.use((req, res, next) => {
 	const start = Date.now();
 	logger.log("Request received", {
@@ -96,7 +81,6 @@ app.use((req, res, next) => {
 	next();
 });
 
-// Health check endpoint
 app.get("/health", (_req, res) => {
 	res.json({
 		status: "healthy",
@@ -105,29 +89,23 @@ app.get("/health", (_req, res) => {
 	});
 });
 
-// API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", authenticate, userRoutes);
 app.use("/api/parties", authenticate, partyRoutes);
 app.use("/api/bills", authenticate, billRoutes);
 app.use("/api/votes", authenticate, voteRoutes);
 app.use("/api/moderation", moderationRoutes);
-app.use(
-	"/api/compliance",
-	authenticate,
-	requireRole("admin"),
-	complianceRoutes,
-);
+app.use("/api/compliance", authenticate, requireRole("admin"), complianceRoutes);
 app.use("/api/age-verification", authenticate, ageVerificationRoutes);
 app.use("/api", newsRoutes);
+app.use("/", newsRoutes);
 
-// Error handling middleware
-app.use((err, _req, res, _next) => {
+app.use((err, req, res, _next) => {
 	console.error("Unhandled error", {
 		error: err.message,
 		stack: err.stack,
-		url: _req.url,
-		method: _req.method,
+		url: req.url,
+		method: req.method,
 	});
 
 	res.status(500).json({
@@ -140,7 +118,6 @@ app.use((err, _req, res, _next) => {
 	});
 });
 
-// 404 handler
 app.use((req, res) => {
 	console.warn("Route not found", {
 		method: req.method,
@@ -154,11 +131,9 @@ app.use((req, res) => {
 	});
 });
 
-// Graceful shutdown
 const gracefulShutdown = () => {
 	console.log("Received shutdown signal, closing server...");
 
-	// Close database connection
 	const db = getDatabase();
 	if (db) {
 		db.close();
@@ -181,4 +156,4 @@ app.listen(PORT, HOST, () => {
 	});
 });
 
-export default app;
+module.exports = app;

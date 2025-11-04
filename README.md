@@ -56,17 +56,17 @@ The project follows a modular monorepo architecture:
 ### Installation
 
 ```bash
-npm ci
-npm run bootstrap
+npm install
+# optional: run the default health check bundle
+npm run preflight
 ```
 
 ### Development
 
 ```bash
-npm run dev:all  # Start all services
-# or individual services:
-npm run dev:api
-npm run dev:frontend
+npm run dev        # bring up the docker compose stack used in local dev
+npm run serve:frontend
+npm run build:frontend
 ```
 
 ## Project Structure
@@ -85,24 +85,34 @@ tools/         # Build tools and utilities
 
 ### Available Commands
 
-- `npm run lint` — ESLint across repo with Nx boundary checking
-- `npm run format` — Prettier formatting with Biome integration
-- `npm run test` — Jest unit tests with coverage reporting
-- `npm run test:e2e` — Playwright end-to-end tests
-- `npm run build` — Nx build with caching and parallelization
-- `npm run typecheck` — TypeScript compilation checking
+- `npm run preflight` — lint, test, and build checks when available
+- `npm run lint:fix` — ESLint with auto-fix for JS/TS sources
+- `npm run format` — Prettier formatting for the full workspace
+- `npm run test` — Vitest unit tests (node environment)
+- `npm run test:coverage` — Vitest coverage with Istanbul reporter
+- `npm run type-check` — TypeScript `tsc --noEmit`
 
 ### Development Servers
 
-- `npm run dev:api` — Start API server with hot reload
-- `npm run dev:frontend` — Start frontend with webpack dev server
-- `npm run dev:all` — Start all services with Docker Compose
+- `npm run dev` — Start the docker-compose services used by the API
+- `npm run serve:frontend` — Launch the Vite dev server for the frontend UI
 
 ### AI-Assisted Development
 
 - `npm run ai:review` — AI code review and suggestions
 - `npm run ai:blackbox` — Governance compliance checking
 - `npm run ai:performance` — Performance monitoring and optimization
+
+### Model Context Protocol Servers
+
+- `npm run mcp:filesystem` — repository-aware file navigation
+- `npm run mcp:git` — local Git analytics (`status`, `log`, `diff`)
+- `npm run mcp:political-sphere` — domain documentation & governance insights
+- `npm run mcp:sqlite` — read-only queries against project SQLite datasets
+- `npm run mcp:puppeteer` — headless browser automation helpers
+- `npm run mcp:microsoft-learn` — curated Microsoft Learn recommendations
+
+> Complete catalogue, setup notes, and troubleshooting guidance live in `docs/mcp-servers-setup.md`.
 
 ### Quality Gates & Governance
 

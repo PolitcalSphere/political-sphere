@@ -1,134 +1,157 @@
-import { v4 as uuidv4 } from 'uuid';
-export class PartyStore {
-  db;
-  cache;
-  constructor(db, cache = null) {
-    this.db = db;
-    this.cache = cache;
-  }
-  create(input) {
-    const id = uuidv4();
-    const now = new Date();
-    const stmt = this.db.prepare(`
-      INSERT INTO parties (id, name, description, color, created_at)
-      VALUES (?, ?, ?, ?, ?)
-    `);
-    stmt.run(id, input.name, input.description || null, input.color, now.toISOString());
-    const result = {
-      id,
-      name: input.name,
-      description: input.description,
-      color: input.color,
-      createdAt: now,
-    };
+const { v4: uuidv4 } = require("uuid");
+const { cacheKeys, CACHE_TTL } = require("./cache");
 
-    // Invalidate cache entries
-    if (this.cache) {
-      this.cache.del('parties:all');
-      this.cache.del(`party:id:${id}`);
-      this.cache.del(`party:name:${input.name}`);
-    }
+class PartyStore {
+	constructor(db, cache = null) {
+		this.db = db;
+		this.cache = cache;
+	}
 
-    return result;
-  }
-  getById(id) {
-    const cacheKey = `party:id:${id}`;
+	async create(input) {
+		const id = uuidv4();
+		const now = new Date();
+		const stmt = this.db.prepare(
+			`INSERT INTO parties (id, name, description, color, created_at)
+       VALUES (?, ?, ?, ?, ?)`,
+		);
+		stmt.run(id, input.name, input.description || null, input.color, now.toISOString());
 
-    // Try cache first
-    if (this.cache) {
-      const cached = this.cache.get(cacheKey);
-      if (cached !== null) {
-        return cached;
-      }
-    }
+		const party = {
+			id,
+			name: input.name,
+			description: input.description,
+			color: input.color,
+			createdAt: now,
+		};
 
-    const stmt = this.db.prepare(`
-      SELECT id, name, description, color, created_at
-      FROM parties
-      WHERE id = ?
-    `);
-    const row = stmt.get(id);
-    if (!row) return null;
+		if (this.cache) {
+			await Promise.all([
+				this.cache.del(cacheKeys.party(id)),
+				this.cache.del(cacheKeys.partyByName(input.name)),
+				this.cache.del(cacheKeys.parties()),
+			]);
+		}
 
-    const result = {
-      id: row.id,
-      name: row.name,
-      description: row.description,
-      color: row.color,
-      createdAt: new Date(row.created_at),
-    };
+		return party;
+	}
 
-    // Cache for 15 minutes (parties change less frequently)
-    if (this.cache) {
-      this.cache.set(cacheKey, result, 900);
-    }
+	async getById(id) {
+		const cacheKey = cacheKeys.party(id);
+		if (this.cache) {
+			const cached = await this.cache.get(cacheKey);
+			if (cached) {
+				return cached;
+			}
+		}
 
-    return result;
-  }
-  getByName(name) {
-    const cacheKey = `party:name:${name}`;
+		const row = this.db
+			.prepare(
+				`SELECT id, name, description, color, created_at
+         FROM parties
+         WHERE id = ?`,
+			)
+			.get(id);
 
-    // Try cache first
-    if (this.cache) {
-      const cached = this.cache.get(cacheKey);
-      if (cached !== null) {
-        return cached;
-      }
-    }
+		if (!row) {
+			return null;
+		}
 
-    const stmt = this.db.prepare(`
-      SELECT id, name, description, color, created_at
-      FROM parties
-      WHERE name = ?
-    `);
-    const row = stmt.get(name);
-    if (!row) return null;
+		const party = {
+			id: row.id,
+			name: row.name,
+			description: row.description,
+			color: row.color,
+			createdAt: new Date(row.created_at),
+		};
 
-    const result = {
-      id: row.id,
-      name: row.name,
-      description: row.description,
-      color: row.color,
-      createdAt: new Date(row.created_at),
-    };
+		if (this.cache) {
+			await this.cache.set(cacheKey, party, CACHE_TTL.PARTY);
+		}
 
-    // Cache for 15 minutes
-    if (this.cache) {
-      this.cache.set(cacheKey, result, 900);
-    }
+		return party;
+	}
 
-    return result;
-  }
-  getAll() {
-    const cacheKey = 'parties:all';
+	async getByName(name) {
+		const cacheKey = cacheKeys.partyByName(name);
+		if (this.cache) {
+			const cached = await this.cache.get(cacheKey);
+			if (cached) {
+				return cached;
+			}
+		}
 
-    // Try cache first
-    if (this.cache) {
-      const cached = this.cache.get(cacheKey);
-      if (cached !== null) {
-        return cached;
-      }
-    }
+		const row = this.db
+			.prepare(
+				`SELECT id, name, description, color, created_at
+         FROM parties
+         WHERE name = ?`,
+			)
+			.get(name);
 
-    const stmt = this.db.prepare(`
-      SELECT id, name, description, color, created_at
-      FROM parties
-      ORDER BY created_at DESC
-    `);
-    const rows = stmt.all();
-    const result = rows.map((row) => ({
-      id: row.id,
-      name: row.name,
-      description: row.description,
-      color: row.color,
-      createdAt: new Date(row.created_at),
-    }));
+		if (!row) {
+			return null;
+		}
 
-    // Cache for 15 minutes
-    if (this.cache) {
-      this.cache.set(cacheKey, result, 900);
-    }
+		const party = {
+			id: row.id,
+			name: row.name,
+			description: row.description,
+			color: row.color,
+			createdAt: new Date(row.created_at),
+		};
 
-    return result;
-  }
+		if (this.cache) {
+			await Promise.all([
+				this.cache.set(cacheKey, party, CACHE_TTL.PARTY),
+				this.cache.set(cacheKeys.party(row.id), party, CACHE_TTL.PARTY),
+			]);
+		}
+
+		return party;
+	}
+
+	async getAll() {
+		const cacheKey = cacheKeys.parties();
+		if (this.cache) {
+			const cached = await this.cache.get(cacheKey);
+			if (cached) {
+				return cached;
+			}
+		}
+
+		const rows = this.db
+			.prepare(
+				`SELECT id, name, description, color, created_at
+         FROM parties
+         ORDER BY created_at DESC`,
+			)
+			.all();
+
+		const totalRow = this.db
+			.prepare(`SELECT COUNT(*) as count FROM parties`)
+			.get();
+
+		const parties = rows.map((row) => ({
+			id: row.id,
+			name: row.name,
+			description: row.description,
+			color: row.color,
+			createdAt: new Date(row.created_at),
+		}));
+
+		const payload = {
+			parties,
+			total: totalRow?.count ?? parties.length,
+		};
+
+		if (this.cache) {
+			await this.cache.set(cacheKey, payload, CACHE_TTL.PARTY_LIST);
+		}
+
+		return payload;
+	}
 }
+
+module.exports = {
+	PartyStore,
+};

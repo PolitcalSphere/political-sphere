@@ -188,8 +188,11 @@ function authenticateRefreshToken(req, res, next) {
   }
 }
 
-export {
-  authenticate, authenticateRefreshToken, optionalAuth,
+module.exports = {
+  authenticate,
+  authenticateRefreshToken,
+  optionalAuth,
   requireAdmin,
-  requireModerator, requireRole
+  requireModerator,
+  requireRole,
 };

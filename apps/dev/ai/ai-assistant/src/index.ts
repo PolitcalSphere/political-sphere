@@ -54,10 +54,18 @@ class PoliticalSphereAIAssistant extends Server {
   private metricsCache: { data: MetricsSummary; fetchedAt: number } | null = null;
 
   constructor() {
-    super({
-      name: "political-sphere-ai-assistant",
-      version: "1.0.0",
-    });
+    super(
+      {
+        name: "political-sphere-ai-assistant",
+        version: "1.0.0",
+      },
+      {
+        capabilities: {
+          tools: {},
+          resources: {},
+        },
+      },
+    );
 
     this.setRequestHandler(ListToolsRequestSchema, this.handleListTools.bind(this));
     this.setRequestHandler(CallToolRequestSchema, this.handleCallTool.bind(this));

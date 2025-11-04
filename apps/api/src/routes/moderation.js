@@ -257,4 +257,4 @@ router.get('/stats', authenticate, requireRole('moderator'), async (req, res) =>
   }
 });
 
-export default router;
+module.exports = router;

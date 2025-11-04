@@ -18,7 +18,8 @@ const LOG_LEVEL_NAMES = ["DEBUG", "INFO", "WARN", "ERROR", "FATAL"];
 
 class Logger {
 	constructor(options = {}) {
-		this.level = options.level || LOG_LEVELS.INFO;
+		// Allow level=0 (DEBUG). Use nullish coalescing so 0 is a valid level.
+		this.level = options.level ?? LOG_LEVELS.INFO;
 		this.service = options.service || "political-sphere";
 		this.environment =
 			options.environment || process.env.NODE_ENV || "development";

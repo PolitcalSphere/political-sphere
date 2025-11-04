@@ -4,12 +4,64 @@ controls: [SEC-01, SEC-05, QUAL-02, TEST-03, A11Y-01]
 deferred: []
 rationale: <1–2 lines>
 
-ASSUMPTIONS: - <explicit assumption 1> - <explicit assumption 2>
-CONFIDENCE:
-self_estimate: 0.8
-high_risk_areas: [example-area]
+ASSUMPTIONS:
 
-OUTPUT: - type: unified-diff - includes: tests, rollback steps
+- <explicit assumption 1>
+- <explicit assumption 2>
+  CONFIDENCE:
+  self_estimate: 0.84
+  high_risk_areas: [example-area]
+
+OUTPUT:
+
+- type: unified-diff
+- includes: tests, rollback steps
+
+## Example Usage
+
+For Fast-Secure mode with deferred gates:
+
+```
+AI-EXECUTION:
+mode: Fast-Secure
+controls: [SEC-01, QUAL-02]
+deferred: [TEST-03, A11Y-01]
+rationale: Urgent security fix, deferring full test suite to reduce CI time.
+
+ASSUMPTIONS:
+- No breaking changes to public APIs
+- Existing tests cover critical paths
+
+CONFIDENCE:
+self_estimate: 0.9
+high_risk_areas: []
+
+OUTPUT:
+- type: unified-diff
+- includes: tests, rollback steps
+```
+
+For R&D mode (experimental):
+
+```
+AI-EXECUTION:
+mode: R&D
+controls: [SEC-01]
+deferred: [QUAL-02, TEST-03, A11Y-01]
+rationale: Experimental feature, requires Safe re-run before merge.
+
+ASSUMPTIONS:
+- Feature flagged off by default
+- No production impact
+
+CONFIDENCE:
+self_estimate: 0.7
+high_risk_areas: [new-feature]
+
+OUTPUT:
+- type: unified-diff
+- includes: tests, rollback steps
+```
 
 ## Description
 

@@ -1,0 +1,30 @@
+[
+  {
+    "id": "azure-governance-intro",
+    "title": "Introduction to Azure Governance",
+    "url": "https://learn.microsoft.com/training/modules/azure-governance-intro/",
+    "summary": "Overview of Azure governance pillars, including resource management, policy enforcement, and cost visibility.",
+    "skills": ["azure", "governance", "policy"]
+  },
+  {
+    "id": "automate-azure-with-bicep",
+    "title": "Automate Azure Deployments with Bicep",
+    "url": "https://learn.microsoft.com/training/modules/automate-azure-deployments-with-bicep/",
+    "summary": "Learn how to author, parameterize, and deploy Azure infrastructure using Bicep templates and Azure CLI.",
+    "skills": ["infrastructure as code", "azure", "automation"]
+  },
+  {
+    "id": "secure-ai-solutions",
+    "title": "Secure AI Solutions on Azure",
+    "url": "https://learn.microsoft.com/training/modules/secure-ai-solutions/",
+    "summary": "Security controls and governance considerations for production-grade AI workloads on Azure.",
+    "skills": ["security", "ai", "governance"]
+  },
+  {
+    "id": "data-estate-modernization",
+    "title": "Modernize Your Data Estate",
+    "url": "https://learn.microsoft.com/training/paths/modernize-data-estate/",
+    "summary": "Build data modernization roadmaps with Azure Synapse, Databricks, and governance guardrails.",
+    "skills": ["data", "governance", "modernization"]
+  }
+]

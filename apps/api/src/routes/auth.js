@@ -354,4 +354,4 @@ router.post('/service-login', async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;

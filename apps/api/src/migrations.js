@@ -1,19 +1,18 @@
-import Database from 'better-sqlite3';
-import path from 'path';
-import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const DB_PATH = path.join(__dirname, '../../../data/political_sphere.db');
-export function initializeDatabase() {
-  const db = new Database(DB_PATH);
-  // Enable WAL mode for better concurrency
-  db.pragma('journal_mode = WAL');
-  db.pragma('foreign_keys = ON');
-  return db;
+const Database = require("better-sqlite3");
+const path = require("path");
+
+const DB_PATH = path.join(__dirname, "../../../data/political_sphere.db");
+
+function initializeDatabase() {
+	const db = new Database(DB_PATH);
+	db.pragma("journal_mode = WAL");
+	db.pragma("foreign_keys = ON");
+	return db;
 }
-export function runMigrations(db) {
-  // Create users table
-  db.exec(`
+
+function runMigrations(db) {
+	// Create users table
+	db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
       username TEXT UNIQUE NOT NULL,
@@ -22,8 +21,8 @@ export function runMigrations(db) {
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
   `);
-  // Create parties table
-  db.exec(`
+	// Create parties table
+	db.exec(`
     CREATE TABLE IF NOT EXISTS parties (
       id TEXT PRIMARY KEY,
       name TEXT UNIQUE NOT NULL,
@@ -32,8 +31,8 @@ export function runMigrations(db) {
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
   `);
-  // Create bills table
-  db.exec(`
+	// Create bills table
+	db.exec(`
     CREATE TABLE IF NOT EXISTS bills (
       id TEXT PRIMARY KEY,
       title TEXT NOT NULL,
@@ -45,8 +44,8 @@ export function runMigrations(db) {
       FOREIGN KEY (proposer_id) REFERENCES users(id)
     );
   `);
-  // Create votes table
-  db.exec(`
+	// Create votes table
+	db.exec(`
     CREATE TABLE IF NOT EXISTS votes (
       id TEXT PRIMARY KEY,
       bill_id TEXT NOT NULL,
@@ -58,11 +57,22 @@ export function runMigrations(db) {
       UNIQUE(bill_id, user_id)
     );
   `);
-  // Create indexes for performance
-  db.exec(`
+	// Create indexes for performance
+	db.exec(`
     CREATE INDEX IF NOT EXISTS idx_bills_proposer_id ON bills(proposer_id);
     CREATE INDEX IF NOT EXISTS idx_bills_status ON bills(status);
+    CREATE INDEX IF NOT EXISTS idx_bills_created_at ON bills(created_at);
+    CREATE INDEX IF NOT EXISTS idx_bills_status_created_at ON bills(status, created_at);
     CREATE INDEX IF NOT EXISTS idx_votes_bill_id ON votes(bill_id);
     CREATE INDEX IF NOT EXISTS idx_votes_user_id ON votes(user_id);
+    CREATE INDEX IF NOT EXISTS idx_votes_bill_user ON votes(bill_id, user_id);
+    CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+    CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);
+    CREATE INDEX IF NOT EXISTS idx_parties_name ON parties(name);
   `);
 }
+
+module.exports = {
+	initializeDatabase,
+	runMigrations,
+};

@@ -5,11 +5,11 @@
  * @see docs/architecture/decisions/adr-0001-database-migrations.md
  */
 
-import { v4 as uuidv4 } from "uuid";
+const { v4: uuidv4 } = require("uuid");
 
-export const name = "003_sample_data";
+const name = "003_sample_data";
 
-export function up(db) {
+function up(db) {
 	console.log("Running sample data migration up function...");
 
 	// Sample users
@@ -171,7 +171,7 @@ export function up(db) {
 	console.log("Sample data migration up function completed");
 }
 
-export function down(db) {
+function down(db) {
 	// Remove sample data
 	db.exec(`
     DELETE FROM news WHERE id IN (
@@ -186,3 +186,9 @@ export function down(db) {
     DROP TABLE IF EXISTS news;
   `);
 }
+
+module.exports = {
+	name,
+	up,
+	down,
+};

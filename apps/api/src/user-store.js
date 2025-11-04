@@ -1,136 +1,157 @@
-import { v4 as uuidv4 } from 'uuid';
-export class UserStore {
-  db;
-  cache;
-  constructor(db, cache = null) {
-    this.db = db;
-    this.cache = cache;
-  }
-  create(input) {
-    const id = uuidv4();
-    const now = new Date();
-    const stmt = this.db.prepare(`
-      INSERT INTO users (id, username, email, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?)
-    `);
-    stmt.run(id, input.username, input.email, now.toISOString(), now.toISOString());
-    const result = {
-      id,
-      username: input.username,
-      email: input.email,
-      createdAt: now,
-      updatedAt: now,
-    };
+const { v4: uuidv4 } = require("uuid");
+const { cacheKeys, CACHE_TTL } = require("./cache");
 
-    // Invalidate cache entries for this user (though unlikely to exist for new user)
-    if (this.cache) {
-      this.cache.del(`user:id:${id}`);
-      this.cache.del(`user:username:${input.username}`);
-      this.cache.del(`user:email:${input.email}`);
-    }
+class UserStore {
+	constructor(db, cache = null) {
+		this.db = db;
+		this.cache = cache;
+	}
 
-    return result;
-  }
-  getById(id) {
-    const cacheKey = `user:id:${id}`;
+	async create(input) {
+		const id = uuidv4();
+		const now = new Date();
+		const stmt = this.db.prepare(
+			`INSERT INTO users (id, username, email, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?)`,
+		);
 
-    // Try cache first
-    if (this.cache) {
-      const cached = this.cache.get(cacheKey);
-      if (cached !== null) {
-        return cached;
-      }
-    }
+		stmt.run(id, input.username, input.email, now.toISOString(), now.toISOString());
 
-    const stmt = this.db.prepare(`
-      SELECT id, username, email, created_at, updated_at
-      FROM users
-      WHERE id = ?
-    `);
-    const row = stmt.get(id);
-    if (!row) return null;
+		const user = {
+			id,
+			username: input.username,
+			email: input.email,
+			createdAt: now,
+			updatedAt: now,
+		};
 
-    const result = {
-      id: row.id,
-      username: row.username,
-      email: row.email,
-      createdAt: new Date(row.created_at),
-      updatedAt: new Date(row.updated_at),
-    };
+		if (this.cache) {
+			await Promise.all([
+				this.cache.del(cacheKeys.user(id)),
+				this.cache.del(cacheKeys.userByUsername(input.username)),
+				this.cache.del(cacheKeys.userByEmail(input.email)),
+			]);
+			await Promise.all([
+				this.cache.set(cacheKeys.user(id), user, CACHE_TTL.USER),
+				this.cache.set(cacheKeys.userByUsername(input.username), user, CACHE_TTL.USER),
+				this.cache.set(cacheKeys.userByEmail(input.email), user, CACHE_TTL.USER),
+			]);
+		}
 
-    // Cache for 10 minutes
-    if (this.cache) {
-      this.cache.set(cacheKey, result, 600);
-    }
+		return user;
+	}
 
-    return result;
-  }
-  getByUsername(username) {
-    const cacheKey = `user:username:${username}`;
+	async getById(id) {
+		const cacheKey = cacheKeys.user(id);
+		if (this.cache) {
+			const cached = await this.cache.get(cacheKey);
+			if (cached) {
+				return cached;
+			}
+		}
 
-    // Try cache first
-    if (this.cache) {
-      const cached = this.cache.get(cacheKey);
-      if (cached !== null) {
-        return cached;
-      }
-    }
+		const row = this.db
+			.prepare(
+				`SELECT id, username, email, created_at, updated_at
+         FROM users
+         WHERE id = ?`,
+			)
+			.get(id);
 
-    const stmt = this.db.prepare(`
-      SELECT id, username, email, created_at, updated_at
-      FROM users
-      WHERE username = ?
-    `);
-    const row = stmt.get(username);
-    if (!row) return null;
+		if (!row) {
+			return null;
+		}
 
-    const result = {
-      id: row.id,
-      username: row.username,
-      email: row.email,
-      createdAt: new Date(row.created_at),
-      updatedAt: new Date(row.updated_at),
-    };
+		const user = {
+			id: row.id,
+			username: row.username,
+			email: row.email,
+			createdAt: new Date(row.created_at),
+			updatedAt: new Date(row.updated_at),
+		};
 
-    // Cache for 10 minutes
-    if (this.cache) {
-      this.cache.set(cacheKey, result, 600);
-    }
+		if (this.cache) {
+			await this.cache.set(cacheKey, user, CACHE_TTL.USER);
+		}
 
-    return result;
-  }
-  getByEmail(email) {
-    const cacheKey = `user:email:${email}`;
+		return user;
+	}
 
-    // Try cache first
-    if (this.cache) {
-      const cached = this.cache.get(cacheKey);
-      if (cached !== null) {
-        return cached;
-      }
-    }
+	async getByUsername(username) {
+		const cacheKey = cacheKeys.userByUsername(username);
+		if (this.cache) {
+			const cached = await this.cache.get(cacheKey);
+			if (cached) {
+				return cached;
+			}
+		}
 
-    const stmt = this.db.prepare(`
-      SELECT id, username, email, created_at, updated_at
-      FROM users
-      WHERE email = ?
-    `);
-    const row = stmt.get(email);
-    if (!row) return null;
+		const row = this.db
+			.prepare(
+				`SELECT id, username, email, created_at, updated_at
+         FROM users
+         WHERE username = ?`,
+			)
+			.get(username);
 
-    const result = {
-      id: row.id,
-      username: row.username,
-      email: row.email,
-      createdAt: new Date(row.created_at),
-      updatedAt: new Date(row.updated_at),
-    };
+		if (!row) {
+			return null;
+		}
 
-    // Cache for 10 minutes
-    if (this.cache) {
-      this.cache.set(cacheKey, result, 600);
-    }
+		const user = {
+			id: row.id,
+			username: row.username,
+			email: row.email,
+			createdAt: new Date(row.created_at),
+			updatedAt: new Date(row.updated_at),
+		};
 
-    return result;
-  }
+		if (this.cache) {
+			await this.cache.set(cacheKey, user, CACHE_TTL.USER);
+			await this.cache.set(cacheKeys.user(row.id), user, CACHE_TTL.USER);
+		}
+
+		return user;
+	}
+
+	async getByEmail(email) {
+		const cacheKey = cacheKeys.userByEmail(email);
+		if (this.cache) {
+			const cached = await this.cache.get(cacheKey);
+			if (cached) {
+				return cached;
+			}
+		}
+
+		const row = this.db
+			.prepare(
+				`SELECT id, username, email, created_at, updated_at
+         FROM users
+         WHERE email = ?`,
+			)
+			.get(email);
+
+		if (!row) {
+			return null;
+		}
+
+		const user = {
+			id: row.id,
+			username: row.username,
+			email: row.email,
+			createdAt: new Date(row.created_at),
+			updatedAt: new Date(row.updated_at),
+		};
+
+		if (this.cache) {
+			await this.cache.set(cacheKey, user, CACHE_TTL.USER);
+			await this.cache.set(cacheKeys.user(row.id), user, CACHE_TTL.USER);
+		}
+
+		return user;
+	}
 }
+
+module.exports = {
+	UserStore,
+};

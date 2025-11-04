@@ -1,62 +1,51 @@
-import { CreateBillSchema } from "@political-sphere/shared";
-import express from "express";
-import { BillService } from "../domain";
+const express = require("express");
+const { CreateBillSchema } = require("@political-sphere/shared");
+const { getDatabase } = require("../index");
 
 const router = express.Router();
-const billService = new BillService();
 
 router.post("/bills", async (req, res) => {
 	try {
-		// Debugging: log content-type and req.body presence to diagnose 415 errors in tests
-		// eslint-disable-next-line no-console
-		console.debug("[bills.route] headers:", req.headers);
-		// eslint-disable-next-line no-console
-		console.debug(
-			"[bills.route] is application/json?",
-			req.is("application/json"),
-		);
-		// eslint-disable-next-line no-console
-		console.debug("[bills.route] body present?", !!req.body);
 		const input = CreateBillSchema.parse(req.body);
-		const bill = await billService.proposeBill(input);
+		const db = getDatabase();
+		const bill = await db.bills.create(input);
 		res.status(201).json(bill);
 	} catch (error) {
-		if (error instanceof Error) {
-			res.status(400).json({ error: error.message });
-		} else {
-			res.status(500).json({ error: "Internal server error" });
-		}
+		const message = error instanceof Error ? error.message : "Invalid request";
+		res.status(400).json({ error: message });
 	}
 });
 
 router.get("/bills/:id", async (req, res) => {
 	try {
-		const bill = await billService.getBillById(req.params.id);
+		const db = getDatabase();
+		const bill = await db.bills.getById(req.params.id);
 		if (!bill) {
 			return res.status(404).json({ error: "Bill not found" });
 		}
-		res.set("Cache-Control", "public, max-age=300"); // Cache for 5 minutes
+		res.set("Cache-Control", "public, max-age=300");
 		res.json(bill);
 	} catch (error) {
+		console.error("Failed to fetch bill", error);
 		res.status(500).json({ error: "Internal server error" });
 	}
 });
 
 router.get("/bills", async (req, res) => {
 	try {
-		const page = parseInt(req.query.page) || 1;
-		const limit = Math.min(parseInt(req.query.limit) || 10, 100); // Max 100 per page
-		const result = await billService.getAllBills(page, limit);
-		res.set("Cache-Control", "public, max-age=60"); // Cache for 1 minute
-		// Backwards-compatible: older tests expect an array. If result has a 'bills' array, return it.
+		const db = getDatabase();
+		const page = Number.parseInt(req.query.page, 10) || 1;
+		const limit = Math.min(Number.parseInt(req.query.limit, 10) || 10, 100);
+		const result = await db.bills.getAll(page, limit);
+		res.set("Cache-Control", "public, max-age=60");
 		if (result && Array.isArray(result.bills)) {
 			return res.json(result.bills);
 		}
-		// Otherwise return whatever the service returned.
 		res.json(result);
 	} catch (error) {
+		console.error("Failed to list bills", error);
 		res.status(500).json({ error: "Internal server error" });
 	}
 });
 
-export default router;
+module.exports = router;
