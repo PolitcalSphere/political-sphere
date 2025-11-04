@@ -8,12 +8,29 @@ import {
 	existsSync,
 	readdirSync,
 	readFileSync,
-	statSync,
-	writeFileSync,
+ 	statSync,
+ 	writeFileSync,
+ 	mkdirSync,
 } from "fs";
 import { extname, join } from "path";
 
-const CACHE_FILE = "ai-cache/context-cache.json";
+// Prefer repository-root `ai-cache/`, fall back to `ai/ai-cache/` if present or needed.
+const ROOT_CACHE_DIR = "ai-cache";
+const FALLBACK_CACHE_DIR = join("ai", "ai-cache");
+
+let CACHE_DIR = ROOT_CACHE_DIR;
+
+// Always prefer the repository-root `ai-cache`. Create it if missing.
+try {
+	if (!existsSync(CACHE_DIR)) mkdirSync(CACHE_DIR, { recursive: true });
+} catch (err) {
+	console.warn("Warning: failed to create root cache dir at", CACHE_DIR, "- falling back to ai/ai-cache:", err?.message);
+	// Fall back to `ai/ai-cache` if root creation fails for any reason.
+	if (!existsSync(FALLBACK_CACHE_DIR)) mkdirSync(FALLBACK_CACHE_DIR, { recursive: true });
+	CACHE_DIR = FALLBACK_CACHE_DIR;
+}
+
+const CACHE_FILE = join(CACHE_DIR, "context-cache.json");
 const CONTEXTS = {
 	"api-routes": [
 		"apps/api/src/routes/",
@@ -44,6 +61,33 @@ const CONTEXTS = {
 	patterns: ["ai/patterns/", "ai-learning/patterns.json", "docs/TODO.md"],
 };
 
+/**
+ * Recursively walk a directory and return full file paths.
+ * Uses sync APIs for simplicity and predictable ordering.
+ */
+function walkDir(dir) {
+	const results = [];
+
+	let entries;
+	try {
+		entries = readdirSync(dir, { withFileTypes: true });
+	} catch (err) {
+		console.warn(`Warning: unable to read directory ${dir}: ${err?.message}`);
+		return results;
+	}
+
+	for (const entry of entries) {
+		const res = join(dir, entry.name);
+		if (entry.isDirectory()) {
+			results.push(...walkDir(res));
+		} else if (entry.isFile()) {
+			results.push(res);
+		}
+	}
+
+	return results;
+}
+
 async function preloadContext(contextName) {
 	const paths = CONTEXTS[contextName];
 	if (!paths) return null;
@@ -57,15 +101,10 @@ async function preloadContext(contextName) {
 	const promises = paths.map(async (path) => {
 		if (existsSync(path)) {
 			if (statSync(path).isDirectory()) {
-				const files = readdirSync(path, { recursive: true });
-				for (const file of files) {
-					if (
-						extname(file) === ".ts" ||
-						extname(file) === ".js" ||
-						extname(file) === ".json" ||
-						extname(file) === ".md"
-					) {
-						const fullPath = join(path, file);
+				const files = walkDir(path);
+				for (const fullPath of files) {
+					const ext = extname(fullPath);
+					if (ext === ".ts" || ext === ".js" || ext === ".json" || ext === ".md") {
 						try {
 							const content = readFileSync(fullPath, "utf8");
 							// Validate content integrity
@@ -77,8 +116,8 @@ async function preloadContext(contextName) {
 								content: content.slice(0, 1000),
 								size: content.length,
 							};
-						} catch (e) {
-							console.error(`Error reading file ${fullPath}:`, e.message);
+						} catch (err) {
+							console.error(`Error reading file ${fullPath}:`, err?.message);
 							// Skip unreadable files but log the error
 						}
 					}
