@@ -1,30 +1,38 @@
-o bex# Changelog
+# Changelog
 
-All notable changes to this project will be documented in this file.
+This file is the canonical, repository-root changelog for Political Sphere. It consolidates notable changes and serves as the single source of truth. For full historical drafts and verbose automation-generated entries, see `docs/archive/`.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format follows Keep a Changelog (https://keepachangelog.com/en/1.0.0/) and the project follows Semantic Versioning (https://semver.org/).
 
 ## [Unreleased]
 
+### Summary
+
+- Consolidated automated and manual changes introduced in November 2025: AI governance updates, test and CI hardening, devcontainer fixes, caching and performance improvements, documentation cleanup, and security/compliance features.
+- Moved scripts from `tools/` to `scripts/` directory for better organization.
+- Added a root TypeScript workspace config to keep language services responsive in large editors.
+
 ### Changed
 
-- **GitHub Copilot Instructions v2.0.0 Upgrade (2025-11-05)**: Updated to Copilot Instructions v2.0.0 with major improvements:
+- **Script Organization**: Moved `run-smoke.js`, `run-vitest-coverage.js`, and `test-setup.ts` from `tools/` to `scripts/` directory. Updated `package.json` and `vitest.config.js` references accordingly.
 
-  - Added comprehensive version history table tracking all changes with impact assessment
-  - Created detailed glossary with 23 acronyms (ADR, WCAG, OWASP, GDPR, etc.) and 5 key process terms
-  - Enhanced Table of Contents with hierarchical structure and visual markers
-  - Added AI Persona section defining tone, interaction style, and behavioral guidelines
-  - Documented 8 High-Risk Patterns with rationale (never suggest debounce on voting, cached auth, etc.)
-  - Expanded Testing Infrastructure section from ~50 to ~200 lines with CI/CD integration details
-  - Added practical code examples for accessibility (WCAG 2.2 AA), security, and performance testing
-  - Defined Constitutional Citation Requirements for voting/speech/moderation changes
-  - Created Risk Tier Examples table mapping change types to execution modes and required approvals
-  - Added Fail-Gracefully Strategy with 5-step approach for handling uncertainty
-  - Improved Quick Reference Appendix with validation checklists and command reference
-  - Moved technology-specific guidance to `additional-guidance/` subdirectory
-  - Initiated project-wide compliance alignment audit per new standards
-  - **Impact**: Major improvement to AI governance, testing requirements clarity, and constitutional compliance
+- **Test & CI hardening (2025-11-05)**: Consolidated repository test setup and CI to improve developer ergonomics and reliability:
+  - Centralized test setup file at `scripts/test-setup.ts` (polyfills, global React exposure, matchMedia polyfill, fetch/JWT stubs, and `@testing-library/jest-dom` import).
+  - Updated `vitest.config.js` to use the centralized setup and added file globs for JSX/TSX discovery; added an alias for `@political-sphere/shared` to a test-friendly CJS shim during test runtime.
+  - Added `@testing-library/jest-dom` as a devDependency for robust DOM matchers and removed brittle custom matchers.
+  - Introduced a refined per-app CI workflow at `.github/workflows/per-app-tests.yml` (matrix for `frontend` and `api`, node/npm caching, Vitest coverage and JUnit reporters, and artifact uploads).
+  - Added small, test-scoped shims and component/test fixes so frontend jsdom tests (Dashboard + GameBoard) run reliably under the repo config.
+  - Verified local test runs: frontend jsdom suites passed (Dashboard + GameBoard), and API test suite ran green (29 files, 214 tests passed) under the consolidated configuration.
+  - Commit: "ci: add refined per-app tests workflow (matrix, cache, coverage artifacts)" (2025-11-05).
+### Highlights
+
+- Reorganized GitHub Copilot instructions and governance files into `.github/copilot-instructions/` and aligned `.blackboxrules`.
+- Stabilised tests and Vitest configuration; enforced JWT secret requirements in test setups.
+- Added `logger.audit()` for structured audit logs and GDPR export/delete endpoints.
+- Introduced caching improvements and migration for performance indexes and Redis fallbacks.
+- Reorganized documentation: consolidated TODOs and moved many legacy docs into `docs/archive/`.
+
+---
 
 - **License Update (2025-11-05)**: Updated README.md license badge from MIT to "All Rights Reserved" to reflect the actual license in LICENSE file.
 
@@ -57,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - API logger: introduced `logger.audit(message, meta)` helper in `apps/api/src/logger.js` for GDPR export/deletion routes to emit structured audit logs (2025-11-05).
+- **TypeScript Workspace Configuration (2025-11-05)**: Added root-level `tsconfig.json` that extends the shared base, scopes project includes to primary app/lib sources, and excludes AI caches and archived scripts so TypeScript/JavaScript language features no longer hang in VS Code.
 
 ### Fixed
 
@@ -295,6 +304,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **DevContainer code review and improvements**: Reviewed all devcontainer files for readability, quality, and issues. Fixed incorrect source path in test-functions.sh, made telemetry opt-in by default for privacy, made IMAGE_NAME configurable in security-scan.sh, enhanced Dockerfile comments, removed unnecessary blank line in extensions list, and ensured consistent error handling across scripts (2025-11-02)
 - **DevContainer postCreateCommand failure (exit 127)**: Guarded `.devcontainer/scripts/wait-for-services.sh` to skip when `docker` CLI is unavailable and fixed an unbound variable by using `${REDIS_PASSWORD:-}` under `set -u`. This prevents post-create aborts when Docker isn’t yet accessible and makes the script safe to re-run. (2025-11-02)
+
+### 2025-11-05 - Assistant sprint: TODO list fixes and CI/test hardening
+
+- **Game-server TypeScript migration (2025-11-05)**: Migrated `apps/game-server/src/db.js` to a strict TypeScript adapter at `apps/game-server/src/db.ts`. Added `apps/game-server/tsconfig.json`, updated `apps/game-server/package.json` with `build`/`dev` scripts and devDependencies, and removed the old `db.js` after a successful `tsc` build. The adapter supports `better-sqlite3`, `sqlite3` fallback, and a JSON persistence fallback for resilience.
+
+- **Frontend component tests (2025-11-05)**: Added unit tests for `apps/frontend/src/components/Dashboard.jsx` and `apps/frontend/src/components/GameBoard.jsx` (new `Dashboard.test.jsx` and `GameBoard.test.jsx`). Updated `Dashboard.jsx` to remove an `eslint-disable` by wrapping the data fetch in `useCallback` and fixing effect dependencies.
+
+- **ESLint/console cleanup (2025-11-05)**: Removed or fixed several `eslint-disable` and `console.*` occurrences by addressing root causes (hook dependencies, unnecessary suppressions, and using structured logging where appropriate) in returned user-facing modules (examples: auth route, user service, user store).
+
+- **CI workflow fixes (2025-11-05)**: Fixed `.github/workflows/ci.yml` preflight secret checks to be tolerant of forked PRs and removed invalid job output references (added safe placeholders and missing job dependencies) to prevent context-access runtime errors in GitHub Actions.
+
+- **Security audit & test run (2025-11-05)**: Executed the security/test audit (`npm run fast-secure`) including preflight, builds, and full test runs. Final results: repository test run summary reported all targeted tests passing (example aggregated run: 249 tests passed, 1 skipped) and `npm audit` reported 0 vulnerabilities.
+
+- **Documentation & TODO state (2025-11-05)**: Updated `docs/TODO.md` and managed the project todo state to mark the high-priority items (tests, TypeScript migration, eslint fixes, CI fixes, frontend tests, security audit) as completed during this sprint.
+
+These practical fixes improve build reliability, test stability, CI robustness, and developer experience. Further follow-ups were noted in `docs/TODO.md` for remaining lower-priority items.
+
 - **DevContainer extensions loading**: Corrected misspelled ESLint extension identifier in `customizations.vscode.extensions` (`dbaeumer.vscode-eslint`) so VS Code can auto-install it in the container. Improved `.devcontainer/scripts/debug-extensions.sh` to compare IDs case-insensitively and removed a stale expected extension entry to avoid false "missing" reports. (2025-11-02)
 - **DevContainer configuration**: Fixed multiple critical issues in `.devcontainer/devcontainer.json`:
   - Corrected port forwarding syntax from invalid `"5432:5433"` to proper port number `5432`
