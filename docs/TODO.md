@@ -1,4 +1,4 @@
-thia# TODO: Governance Reforms Implementation & Project Issues Remediation
+# TODO: Governance Reforms Implementation & Project Issues Remediation
 
 <div align="center">
 
