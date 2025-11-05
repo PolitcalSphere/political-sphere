@@ -2,6 +2,7 @@ import type { CreateUserInput, User } from "@political-sphere/shared";
 import type Database from "better-sqlite3";
 import { v4 as uuidv4 } from "uuid";
 import { CACHE_TTL, type CacheService, cacheKeys } from "../cache.js";
+import { log } from "../../../../libs/shared/src/log.js";
 
 interface UserRow {
   id: string;
@@ -33,8 +34,7 @@ export class UserStore {
       );
     } catch (err) {
       // Surface DB insert errors for tests/debugging
-      // eslint-disable-next-line no-console
-      console.error("[UserStore] insert error:", err);
+      log("error", "UserStore insert error", { error: err instanceof Error ? err.message : String(err), username: input.username });
       throw err;
     }
 

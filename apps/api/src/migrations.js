@@ -1,12 +1,13 @@
 const Database = require("better-sqlite3");
 const path = require("path");
+const { log } = require("../../../libs/shared/src/log.js");
 
 const DB_PATH = path.join(__dirname, "../../../data/political_sphere.db");
 
 function initializeDatabase() {
 	// Use in-memory database for tests to ensure isolation
 	const dbPath = process.env.NODE_ENV === "test" ? ":memory:" : DB_PATH;
-	console.log(`[migrations] NODE_ENV=${process.env.NODE_ENV}, dbPath=${dbPath}`);
+	log("info", "Initializing database", { NODE_ENV: process.env.NODE_ENV, dbPath });
 	const db = new Database(dbPath);
 	db.pragma("journal_mode = WAL");
 	db.pragma("foreign_keys = ON");

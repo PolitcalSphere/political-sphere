@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
+import { log } from '../../../libs/shared/src/log.js';
 
 export class ErrorHandler {
   static handleError(err: Error, req: Request, res: Response, next: NextFunction): void {
-    console.error('Error:', {
+    log('error', 'Error', {
       message: err.message,
       stack: err.stack,
       url: req.url,

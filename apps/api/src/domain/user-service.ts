@@ -4,6 +4,7 @@ import {
   type User,
 } from "@political-sphere/shared";
 import { getDatabase } from "../stores";
+import { log } from "../../../../libs/shared/src/log.js";
 
 export class UserService {
   // Use a lazy getter so the service always obtains the current database connection.
@@ -25,8 +26,7 @@ export class UserService {
     const existingUser = byUsername || byEmail;
     // existingUser check performed; details available via store/cache logs
     if (existingUser) {
-      // eslint-disable-next-line no-console
-      console.warn("[UserService] user exists, throwing");
+      log("warn", "User exists, cannot create duplicate", { username: input.username });
       throw new Error("Username or email already exists");
     }
 

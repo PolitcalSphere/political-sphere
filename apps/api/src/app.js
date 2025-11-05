@@ -15,9 +15,9 @@ const partyRoutes = require("./routes/parties");
 const userRoutes = require("./routes/users");
 const voteRoutes = require("./routes/votes");
 const newsRoutes = require("./routes/news");
+const { log } = require("../../../libs/shared/src/log.js");
 
 const app = express();
-const logger = console;
 
 app.use(
 	helmet({
@@ -144,7 +144,7 @@ app.use("/api", newsRoutes);
 app.use("/", newsRoutes);
 
 app.use((err, req, res, _next) => {
-	console.error("Unhandled error", {
+	log("error", "Unhandled error", {
 		requestId: req.requestId,
 		error: err.message,
 		stack: err.stack,
@@ -163,7 +163,7 @@ app.use((err, req, res, _next) => {
 });
 
 app.use((req, res) => {
-	console.warn("Route not found", {
+	log("warn", "Route not found", {
 		requestId: req.requestId,
 		method: req.method,
 		url: req.url,
@@ -177,7 +177,7 @@ app.use((req, res) => {
 });
 
 const gracefulShutdown = () => {
-	console.log("Received shutdown signal, closing server...");
+	log("info", "Received shutdown signal, closing server");
 
 	const db = getDatabase();
 	if (db) {
@@ -194,7 +194,7 @@ const PORT = process.env.PORT || 4000;
 const HOST = process.env.HOST || "0.0.0.0";
 
 app.listen(PORT, HOST, () => {
-	console.log("API server started", {
+	log("info", "API server started", {
 		host: HOST,
 		port: PORT,
 		environment: process.env.NODE_ENV || "development",

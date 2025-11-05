@@ -1,6 +1,7 @@
 const express = require("express");
 const { NewsService } = require("../news-service");
 const { NewsStore } = require("../news-store");
+const { log } = require("../../../../libs/shared/src/log.js");
 
 const router = express.Router();
 const newsStore = new NewsStore();
@@ -18,7 +19,7 @@ router.get("/news", async (req, res) => {
 		const news = await newsService.list(options);
 		res.json({ success: true, data: news });
 	} catch (error) {
-		console.error("Error fetching news:", error);
+		log("error", "Error fetching news", { error: error instanceof Error ? error.message : String(error) });
 		res.status(400).json({
 			success: false,
 			error: error.message,
@@ -32,7 +33,7 @@ router.post("/news", async (req, res) => {
 		const newsItem = await newsService.create(req.body);
 		res.status(201).json({ success: true, data: newsItem });
 	} catch (error) {
-		console.error("Error creating news:", error);
+		log("error", "Error creating news", { error: error instanceof Error ? error.message : String(error) });
 		res.status(400).json({
 			success: false,
 			error: error.message,
@@ -55,7 +56,7 @@ router.get("/news/:id", async (req, res) => {
 		}
 		res.json({ success: true, data: item });
 	} catch (error) {
-		console.error("Error fetching news item:", error);
+		log("error", "Error fetching news item", { error: error instanceof Error ? error.message : String(error), newsId: req.params.id });
 		res.status(500).json({
 			success: false,
 			error: "Internal server error",
@@ -77,7 +78,7 @@ router.put("/news/:id", async (req, res) => {
 		}
 		res.json({ success: true, data: updatedItem });
 	} catch (error) {
-		console.error("Error updating news:", error);
+		log("error", "Error updating news", { error: error instanceof Error ? error.message : String(error), newsId: req.params.id });
 		res.status(400).json({
 			success: false,
 			error: error.message,
@@ -91,7 +92,7 @@ router.get("/metrics/news", async (_req, res) => {
 		const summary = await newsService.analyticsSummary();
 		res.json({ success: true, data: summary });
 	} catch (error) {
-		console.error("Error fetching news metrics:", error);
+		log("error", "Error fetching news metrics", { error: error instanceof Error ? error.message : String(error) });
 		res.status(500).json({
 			success: false,
 			error: "Internal server error",
