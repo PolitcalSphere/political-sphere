@@ -6,7 +6,9 @@ const DB_PATH = path.join(__dirname, "../../../data/political_sphere.db");
 function initializeDatabase() {
 	// Use in-memory database for tests to ensure isolation
 	const dbPath = process.env.NODE_ENV === "test" ? ":memory:" : DB_PATH;
-	console.log(`[migrations] NODE_ENV=${process.env.NODE_ENV}, dbPath=${dbPath}`);
+	console.log(
+		`[migrations] NODE_ENV=${process.env.NODE_ENV}, dbPath=${dbPath}`,
+	);
 	const db = new Database(dbPath);
 	db.pragma("journal_mode = WAL");
 	db.pragma("foreign_keys = ON");
@@ -21,7 +23,10 @@ function runMigrations(db) {
       username TEXT UNIQUE NOT NULL,
       email TEXT UNIQUE NOT NULL,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      deleted_at DATETIME,
+      deletion_reason TEXT,
+      deleted_by TEXT
     );
   `);
 	// Create parties table

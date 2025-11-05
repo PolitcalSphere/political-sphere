@@ -15,7 +15,13 @@ class UserStore {
        VALUES (?, ?, ?, ?, ?)`,
 		);
 
-		stmt.run(id, input.username, input.email, now.toISOString(), now.toISOString());
+		stmt.run(
+			id,
+			input.username,
+			input.email,
+			now.toISOString(),
+			now.toISOString(),
+		);
 
 		const user = {
 			id,
@@ -33,8 +39,16 @@ class UserStore {
 			]);
 			await Promise.all([
 				this.cache.set(cacheKeys.user(id), user, CACHE_TTL.USER),
-				this.cache.set(cacheKeys.userByUsername(input.username), user, CACHE_TTL.USER),
-				this.cache.set(cacheKeys.userByEmail(input.email), user, CACHE_TTL.USER),
+				this.cache.set(
+					cacheKeys.userByUsername(input.username),
+					user,
+					CACHE_TTL.USER,
+				),
+				this.cache.set(
+					cacheKeys.userByEmail(input.email),
+					user,
+					CACHE_TTL.USER,
+				),
 			]);
 		}
 
@@ -149,6 +163,66 @@ class UserStore {
 		}
 
 		return user;
+	}
+
+	async update(id, updates) {
+		const now = new Date();
+		const fields = [];
+		const values = [];
+
+		// Build dynamic update query
+		if (updates.username !== undefined) {
+			fields.push("username = ?");
+			values.push(updates.username);
+		}
+		if (updates.email !== undefined) {
+			fields.push("email = ?");
+			values.push(updates.email);
+		}
+		if (updates.deletedAt !== undefined) {
+			fields.push("deleted_at = ?");
+			values.push(updates.deletedAt);
+		}
+		if (updates.deletionReason !== undefined) {
+			fields.push("deletion_reason = ?");
+			values.push(updates.deletionReason);
+		}
+		if (updates.deletedBy !== undefined) {
+			fields.push("deleted_by = ?");
+			values.push(updates.deletedBy);
+		}
+
+		if (fields.length === 0) {
+			throw new Error("No fields to update");
+		}
+
+		fields.push("updated_at = ?");
+		values.push(now.toISOString());
+		values.push(id);
+
+		const stmt = this.db.prepare(
+			`UPDATE users SET ${fields.join(", ")} WHERE id = ?`,
+		);
+		const result = stmt.run(...values);
+
+		if (result.changes === 0) {
+			return null;
+		}
+
+		// Invalidate cache
+		if (this.cache) {
+			await this.cache.del(cacheKeys.user(id));
+			// Also invalidate by username/email if they were updated
+			if (updates.username) {
+				await this.cache.del(cacheKeys.userByUsername(updates.username));
+			}
+			if (updates.email) {
+				await this.cache.del(cacheKeys.userByEmail(updates.email));
+			}
+		}
+
+		// Return updated user
+		return this.getById(id);
 	}
 }
 

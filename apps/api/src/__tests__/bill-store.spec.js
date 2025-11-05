@@ -1,7 +1,8 @@
-const { describe, it, expect, beforeEach, vi } = require("vitest");
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import BillStore from "../stores/bill-store.js";
 
 // Mock the database
-vi.mock("../index", () => ({
+vi.mock("../index.js", () => ({
 	getDatabase: vi.fn(() => ({
 		bills: {
 			create: vi.fn(),
@@ -14,15 +15,13 @@ vi.mock("../index", () => ({
 	})),
 }));
 
-const BillStore = require("../stores/bill-store");
-
 describe("BillStore", () => {
 	let store;
 	let mockDb;
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		vi.clearAllMocks();
-		const { getDatabase } = require("../index");
+		const { getDatabase } = await import("../index.js");
 		mockDb = getDatabase();
 		store = new BillStore(mockDb.bills);
 	});

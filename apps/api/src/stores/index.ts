@@ -1,10 +1,10 @@
 import type Database from "better-sqlite3";
 import { CacheService } from "../cache.js";
-import { BillStore } from "./bill-store";
-import { initializeDatabase, runMigrations } from "./migrations";
-import { PartyStore } from "./party-store";
-import { UserStore } from "./user-store";
-import { VoteStore } from "./vote-store";
+import { BillStore } from "./bill-store.js";
+import { initializeDatabase, runMigrations } from "./migrations.js";
+import { PartyStore } from "./party-store.js";
+import { UserStore } from "./user-store.js";
+import { VoteStore } from "./vote-store.js";
 
 interface DatabaseOptions {
   cache?: CacheService;

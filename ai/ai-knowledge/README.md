@@ -19,8 +19,8 @@ Structured knowledge base containing:
 - Troubleshooting guides
 - Integration points and APIs
 
-### semantic-index.json
-Semantic indexing for AI understanding:
+### ai/ai-index/semantic-index.json
+Semantic indexing for AI understanding (stored under `ai/ai-index/`):
 - Concept relationships and mappings
 - Contextual embeddings
 - Knowledge graph connections
@@ -31,9 +31,9 @@ Semantic indexing for AI understanding:
 1. **Always read project-context.md first** when starting work on this project
 2. **Reference knowledge-base.json** for project-specific information
 3. **Consult the service quick references** (`api-service.md`, `game-server.md`, `frontend.md`) for focused guidance
-4. **Use semantic-index.json** for understanding relationships between concepts
+4. **Use ai/ai-index/semantic-index.json** for understanding relationships between concepts
 5. **Log significant interactions** in the appropriate history files
-6. **Follow governance rules** outlined in ai/governance/.blackboxrules and GitHub Copilot instructions
+6. **Follow governance rules** outlined in `.blackboxrules` (repository root) and GitHub Copilot instructions
 
 ### Maintenance:
 - Update project-context.md when major architectural changes occur
@@ -44,7 +44,7 @@ Semantic indexing for AI understanding:
 ## Integration Points
 
 This knowledge base integrates with:
-- `.blackboxrules` in ai/governance/ for AI behavior guidelines
+- `.blackboxrules` (repository root) for AI behavior guidelines
 - `ai/patterns/` for reusable code patterns
 - `ai/prompts/` for specialized AI prompts
 - `docs/` for comprehensive project documentation

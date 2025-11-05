@@ -9,6 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **GitHub Copilot Instructions v2.0.0 Upgrade (2025-11-05)**: Updated to Copilot Instructions v2.0.0 with major improvements:
+
+  - Added comprehensive version history table tracking all changes with impact assessment
+  - Created detailed glossary with 23 acronyms (ADR, WCAG, OWASP, GDPR, etc.) and 5 key process terms
+  - Enhanced Table of Contents with hierarchical structure and visual markers
+  - Added AI Persona section defining tone, interaction style, and behavioral guidelines
+  - Documented 8 High-Risk Patterns with rationale (never suggest debounce on voting, cached auth, etc.)
+  - Expanded Testing Infrastructure section from ~50 to ~200 lines with CI/CD integration details
+  - Added practical code examples for accessibility (WCAG 2.2 AA), security, and performance testing
+  - Defined Constitutional Citation Requirements for voting/speech/moderation changes
+  - Created Risk Tier Examples table mapping change types to execution modes and required approvals
+  - Added Fail-Gracefully Strategy with 5-step approach for handling uncertainty
+  - Improved Quick Reference Appendix with validation checklists and command reference
+  - Moved technology-specific guidance to `additional-guidance/` subdirectory
+  - Initiated project-wide compliance alignment audit per new standards
+  - **Impact**: Major improvement to AI governance, testing requirements clarity, and constitutional compliance
+
+- **License Update (2025-11-05)**: Updated README.md license badge from MIT to "All Rights Reserved" to reflect the actual license in LICENSE file.
+
 - **GitHub Copilot Instructions Organization (2025-11-05)**: Reorganized AI governance instruction files into dedicated subfolder:
 
   - Created `.github/copilot-instructions/` directory

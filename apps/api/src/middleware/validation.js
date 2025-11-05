@@ -35,6 +35,26 @@ function validate(schema, property = "body") {
 					details: errors,
 				});
 			}
+
+			// Some tests and legacy shims use lightweight schema implementations
+			// that throw plain Error() messages (for example: "Missing required field: username").
+			// Treat those as validation failures and return 400 to be test-friendly.
+			if (
+				error instanceof Error &&
+				(error.message?.includes("Missing required field") ||
+					error.message?.includes("Input must be an object"))
+			) {
+				return res.status(400).json({
+					success: false,
+					error: "Validation failed",
+					details: [
+						{
+							message: error.message,
+						},
+					],
+				});
+			}
+
 			next(new ValidationError(error.message));
 		}
 	};

@@ -8,8 +8,28 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-const CACHE_DIR = path.join(__dirname, '../../../ai/ai-cache');
-const CACHE_FILE = path.join(CACHE_DIR, 'response-cache.json');
+const ROOT_CACHE_DIR = path.join(__dirname, "../../../ai-cache");
+const LEGACY_CACHE_DIR = path.join(__dirname, "../../../ai/ai-cache");
+
+function resolveCacheDir() {
+  try {
+    if (!fs.existsSync(ROOT_CACHE_DIR)) {
+      fs.mkdirSync(ROOT_CACHE_DIR, { recursive: true });
+    }
+    return ROOT_CACHE_DIR;
+  } catch (error) {
+    console.warn(
+      `Cache manager: unable to initialise ${ROOT_CACHE_DIR}, falling back to ${LEGACY_CACHE_DIR} (${error.message})`,
+    );
+    if (!fs.existsSync(LEGACY_CACHE_DIR)) {
+      fs.mkdirSync(LEGACY_CACHE_DIR, { recursive: true });
+    }
+    return LEGACY_CACHE_DIR;
+  }
+}
+
+const CACHE_DIR = resolveCacheDir();
+const CACHE_FILE = path.join(CACHE_DIR, "response-cache.json");
 const MAX_CACHE_SIZE = 100; // Max number of cached items
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 

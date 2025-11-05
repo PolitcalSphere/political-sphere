@@ -35,7 +35,7 @@ class EmbeddingEngine {
 		this.cache = new Map();
 		this.modelName = options.model || "Xenova/all-MiniLM-L6-v2";
 		this.cacheDir =
-			options.cacheDir || path.join(__dirname, "../../../ai/ai-cache");
+			options.cacheDir || this.resolveCacheDir(path.join(__dirname, "../../../ai-cache"), path.join(__dirname, "../../../ai/ai-cache"));
 		this.maxCacheSize = options.maxCacheSize || 1000;
 		this.dimensions = 384; // all-MiniLM-L6-v2 output dimensions
 
@@ -47,6 +47,23 @@ class EmbeddingEngine {
 		};
 
 		this.ensureCacheDir();
+	}
+
+	resolveCacheDir(primary, fallback) {
+		try {
+			if (!fs.existsSync(primary)) {
+				fs.mkdirSync(primary, { recursive: true });
+			}
+			return primary;
+		} catch (error) {
+			console.warn(
+				`Embedding engine: unable to initialise ${primary}, falling back to ${fallback} (${error.message})`,
+			);
+			if (!fs.existsSync(fallback)) {
+				fs.mkdirSync(fallback, { recursive: true });
+			}
+			return fallback;
+		}
 	}
 
 	ensureCacheDir() {

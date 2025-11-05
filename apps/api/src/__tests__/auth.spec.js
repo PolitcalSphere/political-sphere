@@ -1,9 +1,10 @@
-const { describe, it, expect, beforeEach, vi } = require("vitest");
-const request = require("supertest");
-const express = require("express");
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import request from "supertest";
+import express from "express";
+import authRoutes from "../routes/auth.js";
 
 // Mock the database and auth dependencies
-vi.mock("../index", () => ({
+vi.mock("../index.js", () => ({
 	getDatabase: vi.fn(() => ({
 		users: {
 			create: vi.fn(),
@@ -13,13 +14,13 @@ vi.mock("../index", () => ({
 	})),
 }));
 
-vi.mock("../logger", () => ({
-	info: vi.fn(),
-	warn: vi.fn(),
-	error: vi.fn(),
+vi.mock("../logger.js", () => ({
+	default: {
+		info: vi.fn(),
+		warn: vi.fn(),
+		error: vi.fn(),
+	},
 }));
-
-const authRoutes = require("../routes/auth");
 
 describe("Auth Routes", () => {
 	let app;
@@ -33,7 +34,7 @@ describe("Auth Routes", () => {
 
 	describe("POST /auth/register", () => {
 		it("should register a new user successfully", async () => {
-			const { getDatabase } = require("../index");
+			const { getDatabase } = await import("../index.js");
 			const mockDb = getDatabase();
 			mockDb.users.create.mockResolvedValue({
 				id: "user-123",
@@ -73,7 +74,7 @@ describe("Auth Routes", () => {
 		});
 
 		it("should return 409 for duplicate username", async () => {
-			const { getDatabase } = require("../index");
+			const { getDatabase } = await import("../index.js");
 			const mockDb = getDatabase();
 			mockDb.users.create.mockRejectedValue(
 				new Error("UNIQUE constraint failed: users.username"),
@@ -95,7 +96,7 @@ describe("Auth Routes", () => {
 
 	describe("POST /auth/login", () => {
 		it("should login user successfully", async () => {
-			const { getDatabase } = require("../index");
+			const { getDatabase } = await import("../index.js");
 			const mockDb = getDatabase();
 			mockDb.users.getByUsername.mockResolvedValue({
 				id: "user-123",
@@ -118,7 +119,7 @@ describe("Auth Routes", () => {
 		});
 
 		it("should return 401 for invalid credentials", async () => {
-			const { getDatabase } = require("../index");
+			const { getDatabase } = await import("../index.js");
 			const mockDb = getDatabase();
 			mockDb.users.getByUsername.mockResolvedValue(null);
 

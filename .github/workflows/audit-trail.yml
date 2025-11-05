@@ -21,11 +21,23 @@ name: Immutable Audit Trail
 
 on:
   workflow_run:
-    workflows: ["*"] # Capture all workflow completions
+    workflows:
+      - "Continuous Integration"
+      - "Chaos Engineering Tests"
+      - "CI Performance Optimization"
+      - "Artifact Signing and Verification"
+      - "Security Scanning"
+      - "Vulnerability Scanning"
+      - "End-to-End Tests"
+      - "Pull Request Checks"
+      - "Deployment Pipeline"
+      - "Auto-Remediation - Security Patches"
+      - "Docker CI/CD Pipeline"
     types: [completed]
   
   schedule:
     - cron: '0 0 * * *' # Daily backup at midnight UTC
+    - cron: '0 4 * * 1' # Weekly integrity verification: Monday 04:00 UTC
   
   workflow_dispatch:
     inputs:
@@ -180,7 +192,18 @@ jobs:
           
           [skip ci]" || echo "No changes to commit"
           
-          git push origin main || echo "Failed to push (may need manual intervention)"
+            # Try pushing up to 3 times to reduce race-condition failures
+            ATTEMPT=0
+            until [ $ATTEMPT -ge 3 ]
+            do
+              git push origin main && break
+              ATTEMPT=$((ATTEMPT+1))
+              echo "Push attempt $ATTEMPT failed, retrying..."
+              sleep 5
+            done
+            if [ $ATTEMPT -ge 3 ]; then
+              echo "Failed to push after 3 attempts"
+            fi
           
           echo "✅ Audit log committed to immutable git history"
 
@@ -230,6 +253,7 @@ jobs:
   verify-integrity:
     name: Verify Full Audit Trail Integrity
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     if: github.event.inputs.action == 'verify-integrity' || github.event_name == 'schedule'
     steps:
       - uses: actions/checkout@v4

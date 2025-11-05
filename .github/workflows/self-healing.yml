@@ -20,7 +20,18 @@ name: Self-Healing CI/CD
 
 on:
   workflow_run:
-    workflows: ["*"]
+    workflows:
+      - "Continuous Integration"
+      - "Chaos Engineering Tests"
+      - "CI Performance Optimization"
+      - "Artifact Signing and Verification"
+      - "Security Scanning"
+      - "Vulnerability Scanning"
+      - "End-to-End Tests"
+      - "Pull Request Checks"
+      - "Deployment Pipeline"
+      - "Auto-Remediation - Security Patches"
+      - "Docker CI/CD Pipeline"
     types: [completed]
     # Trigger only on failures
     
@@ -52,10 +63,15 @@ permissions:
   issues: write
   pull-requests: write
 
+concurrency:
+  group: self-healing-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   detect-and-diagnose:
     name: Detect and Diagnose Failure
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     if: github.event.workflow_run.conclusion == 'failure' || github.event_name == 'workflow_dispatch'
     outputs:
       failure-type: ${{ steps.diagnose.outputs.failure-type }}

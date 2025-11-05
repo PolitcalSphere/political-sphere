@@ -1,13 +1,16 @@
-const { describe, it, expect, beforeEach, vi } = require("vitest");
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import ModerationService from "../moderationService.js";
 
 // Mock dependencies
-vi.mock("../logger", () => ({
-	info: vi.fn(),
-	warn: vi.fn(),
-	error: vi.fn(),
+vi.mock("../logger.js", () => ({
+	default: {
+		info: vi.fn(),
+		warn: vi.fn(),
+		error: vi.fn(),
+	},
 }));
 
-vi.mock("../index", () => ({
+vi.mock("../index.js", () => ({
 	getDatabase: vi.fn(() => ({
 		moderation: {
 			create: vi.fn(),
@@ -17,15 +20,13 @@ vi.mock("../index", () => ({
 	})),
 }));
 
-const ModerationService = require("../moderationService");
-
 describe("ModerationService", () => {
 	let service;
 	let mockDb;
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		vi.clearAllMocks();
-		const { getDatabase } = require("../index");
+		const { getDatabase } = await import("../index.js");
 		mockDb = getDatabase();
 		service = new ModerationService(mockDb.moderation);
 	});

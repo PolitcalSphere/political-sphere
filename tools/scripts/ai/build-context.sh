@@ -4,7 +4,7 @@
 
 set -e
 
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 CONTEXT_DIR="$PROJECT_ROOT/ai/context-bundles"
 KNOWLEDGE_BASE="$PROJECT_ROOT/ai/ai-knowledge/knowledge-base.json"
 
@@ -162,13 +162,30 @@ EOF
 # 8. Update knowledge base with current state
 echo "  🧠 Updating knowledge base..."
 if [ -f "$KNOWLEDGE_BASE" ]; then
-    # Update lastUpdated timestamp in knowledge base
+    # Update lastUpdated timestamp in knowledge base and bump patch version semver-style
     node -e "
     const fs = require('fs');
-    const kb = JSON.parse(fs.readFileSync('$KNOWLEDGE_BASE', 'utf8'));
-    kb.lastUpdated = new Date().toISOString();
-    kb.version = (parseFloat(kb.version || '1.0') + 0.1).toFixed(1);
-    fs.writeFileSync('$KNOWLEDGE_BASE', JSON.stringify(kb, null, 2));
+    const path = '$KNOWLEDGE_BASE';
+    const kb = JSON.parse(fs.readFileSync(path, 'utf8'));
+    const now = new Date().toISOString();
+
+    const coerceVersion = (input) => {
+      const normalized = String(input ?? '').trim();
+      const semverMatch = normalized.match(/^(\d+)\.(\d+)\.(\d+)$/);
+      if (!semverMatch) return { major: 1, minor: 0, patch: 0 };
+      return {
+        major: Number.parseInt(semverMatch[1], 10),
+        minor: Number.parseInt(semverMatch[2], 10),
+        patch: Number.parseInt(semverMatch[3], 10),
+      };
+    };
+
+    const nextPatch = ({ major, minor, patch }) => \`\${major}.\${minor}.\${patch + 1}\`;
+
+    kb.lastUpdated = now;
+    kb.version = nextPatch(coerceVersion(kb.version));
+
+    fs.writeFileSync(path, JSON.stringify(kb, null, 2));
     " 2>/dev/null || echo "  (Knowledge base update skipped)"
 fi
 

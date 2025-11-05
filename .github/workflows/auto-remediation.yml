@@ -44,6 +44,10 @@ permissions:
   issues: write
   security-events: read
 
+concurrency:
+  group: auto-remediation-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   detect-vulnerabilities:
     name: Detect Security Vulnerabilities
@@ -96,6 +100,7 @@ jobs:
   auto-patch-critical:
     name: Auto-Patch Critical Vulnerabilities
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     needs: detect-vulnerabilities
     if: needs.detect-vulnerabilities.outputs.critical-count > 0
     steps:
@@ -162,7 +167,17 @@ jobs:
           
           [auto-remediation]"
           
-          git push origin "${BRANCH_NAME}"
+          ATTEMPT=0
+          until [ $ATTEMPT -ge 3 ]
+          do
+            git push origin "${BRANCH_NAME}" && break
+            ATTEMPT=$((ATTEMPT+1))
+            echo "Push attempt $ATTEMPT failed, retrying..."
+            sleep 5
+          done
+          if [ $ATTEMPT -ge 3 ]; then
+            echo "Failed to push after 3 attempts"
+          fi
 
       - name: Create Pull Request
         if: steps.patch.outputs.patched == 'true'
@@ -250,7 +265,17 @@ jobs:
           
           git add package.json package-lock.json
           git commit -m "🔒 Auto-remediation: Patch high-severity vulnerabilities"
-          git push origin "${BRANCH_NAME}"
+          ATTEMPT=0
+          until [ $ATTEMPT -ge 3 ]
+          do
+            git push origin "${BRANCH_NAME}" && break
+            ATTEMPT=$((ATTEMPT+1))
+            echo "Push attempt $ATTEMPT failed, retrying..."
+            sleep 5
+          done
+          if [ $ATTEMPT -ge 3 ]; then
+            echo "Failed to push after 3 attempts"
+          fi
 
       - name: Create Pull Request
         if: steps.patch.outputs.patched == 'true'

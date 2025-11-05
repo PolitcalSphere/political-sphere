@@ -20,9 +20,45 @@ This section addresses the 10 biggest issues identified across the project, prio
 
 ## Consolidated Legacy TODO Items
 
+### 🚧 In Progress (2025-11-05)
+
+**📋 Copilot Instructions v2.0.0 Compliance Alignment**
+
+Per updated GitHub Copilot Instructions v2.0.0, bringing project into full compliance with new standards:
+
+**Critical Priorities (Immediate)**:
+- [ ] Fix 6 failing tests in `apps/api/tests/` (parties.test.mjs, users.test.mjs) - **Testing Infrastructure Core Principle**
+- [ ] Migrate JavaScript files to TypeScript strict mode (`apps/game-server/src/db.js`) - **Core Rule #1: Type-safe**
+- [ ] Remove 7 `eslint-disable` comments by fixing underlying issues - **Code Quality Standards**
+- [ ] Fix GitHub workflow secret context access errors (50+ errors) - **Operations Standards**
+
+**High Priorities (This Sprint)**:
+- [ ] Add React component test coverage (Dashboard.jsx, GameBoard.jsx) - **80%+ coverage requirement**
+- [ ] Enable frontend in coverage config with proper Babel/SWC setup
+- [ ] Run security audit: `npm run fast-secure` - **Zero-Trust Compliance**
+- [ ] Verify no cached auth checks (High-Risk Pattern #2)
+- [ ] Ensure no debounce on voting flows (High-Risk Pattern #1)
+
+**Medium Priorities (This Month)**:
+- [ ] Run accessibility audit: `npm run audit:full` - **WCAG 2.2 AA Mandatory**
+- [ ] Verify voting mechanism constitutional compliance
+- [ ] Review seed data for political neutrality (High-Risk Pattern #6)
+- [ ] Document all changes in CHANGELOG.md - **Change Management requirement**
+
+**Documentation Updates**:
+- [ ] Create ADRs for architectural decisions made during fixes
+- [ ] Update CHANGELOG.md with v2.0.0 alignment work
+- [ ] Document baseline metrics from audit runs
+
+**Reference**: `.github/copilot-instructions/copilot-instructions.md` v2.0.0  
+**Owner**: Development Team | **Started**: 2025-11-05  
+**Priority**: High - Core compliance with governance standards
+
+---
+
 ### ✅ Recently Completed (2025-11-05)
 
-**� GitHub Copilot Instructions Organization**
+**📚 GitHub Copilot Instructions Organization**
 
 - [x] Created `.github/copilot-instructions/` directory for AI governance documentation
 - [x] Moved 11 instruction files into organized subfolder (copilot-instructions.md, ai-governance.md, compliance.md, operations.md, organization.md, quality.md, quick-ref.md, security.md, strategy.md, testing.md, ux-accessibility.md)

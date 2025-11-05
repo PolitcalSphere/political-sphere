@@ -27,23 +27,23 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - 'apps/*/Dockerfile'
-      - 'docker-compose.yml'
-      - '.dockerignore'
-      - 'scripts/dev-*.sh'
-      - 'scripts/docker-*.sh'
-      - 'scripts/seed-db.sh'
-      - '.github/workflows/docker.yml'
+      - "apps/*/Dockerfile"
+      - "docker-compose.yml"
+      - ".dockerignore"
+      - "scripts/dev-*.sh"
+      - "scripts/docker-*.sh"
+      - "scripts/seed-db.sh"
+      - ".github/workflows/docker.yml"
   pull_request:
     branches: [main, develop]
     paths:
-      - 'apps/*/Dockerfile'
-      - 'docker-compose.yml'
-      - '.dockerignore'
-      - 'scripts/dev-*.sh'
-      - 'scripts/docker-*.sh'
-      - 'scripts/seed-db.sh'
-      - '.github/workflows/docker.yml'
+      - "apps/*/Dockerfile"
+      - "docker-compose.yml"
+      - ".dockerignore"
+      - "scripts/dev-*.sh"
+      - "scripts/docker-*.sh"
+      - "scripts/seed-db.sh"
+      - ".github/workflows/docker.yml"
   workflow_dispatch:
 
 # Cancel superseded runs for faster feedback and lower costs
@@ -164,15 +164,15 @@ jobs:
         run: |
           IMAGE_TAG=$(echo "${{ steps.meta.outputs.tags }}" | head -1)
           echo "Testing image: $IMAGE_TAG"
-          
+
           # Start container
           CONTAINER_ID=$(docker run -d \
             -e NODE_ENV=test \
             -e PORT=3000 \
             "$IMAGE_TAG")
-          
+
           echo "Container started: $CONTAINER_ID"
-          
+
           # Wait up to 30s for container to be ready
           timeout=30
           while [ $timeout -gt 0 ]; do
@@ -183,10 +183,10 @@ jobs:
             sleep 1
             timeout=$((timeout - 1))
           done
-          
+
           # Show logs
           docker logs "$CONTAINER_ID"
-          
+
           # Cleanup
           docker stop "$CONTAINER_ID"
           docker rm "$CONTAINER_ID"
@@ -247,7 +247,7 @@ jobs:
           format: sarif
           output: trivy-results-${{ matrix.service }}.sarif
           severity: CRITICAL,HIGH
-          exit-code: '0'
+          exit-code: "0"
           cache: true
 
       - name: Upload Trivy results to GitHub Security
@@ -384,7 +384,7 @@ jobs:
         uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: apps/${{ matrix.service }}/Dockerfile
-          ignore: DL3018  # Allow apk add --no-cache without pinning
+          ignore: DL3018 # Allow apk add --no-cache without pinning
 
   # ============================================================================
   # Job 7: Semgrep - Code Security Scanning
@@ -445,7 +445,7 @@ jobs:
           echo "Validate Scripts: ${{ needs.validate-scripts.result }}"
           echo "Hadolint: ${{ needs.hadolint.result }}"
           echo "Semgrep: ${{ needs.semgrep.result }}"
-          
+
           # Critical checks (must pass)
           if [ "${{ needs.validate-compose.result }}" != "success" ] || \
              [ "${{ needs.build-images.result }}" != "success" ] || \
@@ -454,7 +454,7 @@ jobs:
             echo "❌ Pipeline failed - critical checks"
             exit 1
           fi
-          
+
           # Optional checks (warning only)
           if [ "${{ needs.hadolint.result }}" != "success" ]; then
             echo "⚠️  Hadolint checks failed"
@@ -462,5 +462,5 @@ jobs:
           if [ "${{ needs.semgrep.result }}" != "success" ]; then
             echo "⚠️  Semgrep checks failed"
           fi
-          
+
           echo "✓ All critical checks passed"

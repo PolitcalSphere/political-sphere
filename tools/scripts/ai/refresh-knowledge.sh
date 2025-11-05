@@ -4,7 +4,7 @@
 
 set -e
 
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 PATTERNS_FILE="$PROJECT_ROOT/ai/ai-learning/patterns.json"
 
 mkdir -p "$PROJECT_ROOT/ai/ai-learning"

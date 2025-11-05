@@ -15,6 +15,7 @@
 # @workflow-adr-ref: docs/adr/001-github-actions-as-ci-platform.md
 # ==============================================================================
 
+name: Continuous Integration
 on:
   push:
     branches: [main, docs/observability-improvements]
@@ -47,6 +48,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Validate required secrets
+        run: |
+          # Ensure required secrets are present to avoid runtime failures
+          if [ -z "${{ secrets.NX_CLOUD_ACCESS_TOKEN }}" ]; then
+            echo "::error::Missing required secret: NX_CLOUD_ACCESS_TOKEN"
+            exit 1
+          fi
 
       - name: Validate workflow files
         run: |

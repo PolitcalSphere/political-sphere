@@ -4,11 +4,29 @@
     "description": "Democratically-governed political simulation with strong compliance and audit requirements",
     "architecture": "Workspace of handcrafted Node.js services, React dashboard, and shared utility libraries",
     "techStack": {
-      "frontend": ["React", "JavaScript", "Node HTTP server"],
-      "backend": ["Node.js", "Express", "Custom HTTP server"],
-      "data": ["SQLite", "better-sqlite3"],
-      "testing": ["Node test runner", "Jest (partial)", "Playwright"],
-      "automation": ["Custom scripts in tools/scripts", "GitHub Actions"]
+      "frontend": [
+        "React",
+        "JavaScript",
+        "Node HTTP server"
+      ],
+      "backend": [
+        "Node.js",
+        "Express",
+        "Custom HTTP server"
+      ],
+      "data": [
+        "SQLite",
+        "better-sqlite3"
+      ],
+      "testing": [
+        "Node test runner",
+        "Jest (partial)",
+        "Playwright"
+      ],
+      "automation": [
+        "Custom scripts in tools/scripts",
+        "GitHub Actions"
+      ]
     },
     "keyPrinciples": [
       "Democratic governance",
@@ -93,6 +111,6 @@
     "frontend": "Defer heavy API fetching to server.js; cache template contents in memory",
     "monitoring": "Leverage libs/shared telemetry hooks; review ai-metrics.json, ai/ai-metrics/stats.json, and analytics.db after automated runs"
   },
-  "lastUpdated": "2025-11-03T19:11:30Z",
-  "version": "1.2.0"
+  "lastUpdated": "2025-11-05T14:57:37.655Z",
+  "version": "1.2.3"
 }

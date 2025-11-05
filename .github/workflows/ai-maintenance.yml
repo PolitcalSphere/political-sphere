@@ -1,5 +1,9 @@
 name: AI maintenance (index / cache)
 
+concurrency:
+  group: ai-maintenance-${{ github.ref }}
+  cancel-in-progress: false
+
 on:
   push:
     branches: [main]
