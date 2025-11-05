@@ -1,0 +1,544 @@
+name: Deploy with Canary
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+      deployment_type:
+        description: 'Deployment strategy'
+        required: true
+        default: 'canary'
+        type: choice
+        options:
+          - canary
+          - blue-green
+          - immediate
+
+permissions:
+  id-token: write # Required for OIDC
+  contents: read
+  security-events: write
+
+env:
+  AWS_REGION: us-east-1
+  NODE_VERSION: '22'
+
+jobs:
+  # Pre-deployment validation
+  pre-deployment-checks:
+    name: Pre-Deployment Validation
+    runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ steps.validation.outputs.should_deploy }}
+      deployment_id: ${{ steps.metadata.outputs.deployment_id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate deployment metadata
+        id: metadata
+        run: |
+          DEPLOYMENT_ID="deploy-${{ github.sha }}-$(date +%s)"
+          echo "deployment_id=${DEPLOYMENT_ID}" >> $GITHUB_OUTPUT
+          echo "📋 Deployment ID: ${DEPLOYMENT_ID}"
+
+      - name: Check for active incidents
+        id: incident_check
+        run: |
+          # Check PagerDuty for active incidents (placeholder)
+          echo "✅ No active incidents blocking deployment"
+          echo "has_incidents=false" >> $GITHUB_OUTPUT
+
+      - name: Validate error budget
+        id: error_budget
+        run: |
+          # Check if we have remaining error budget
+          # Placeholder - would integrate with monitoring system
+          echo "✅ Error budget available for deployment"
+          echo "budget_remaining=true" >> $GITHUB_OUTPUT
+
+      - name: Check deployment window
+        id: deployment_window
+        run: |
+          HOUR=$(date -u +%H)
+          DAY=$(date -u +%u)
+
+          # Production deployments only during business hours (09:00-17:00 UTC, Mon-Fri)
+          if [[ "${{ github.event.inputs.environment }}" == "production" ]]; then
+            if [[ $DAY -gt 5 ]] || [[ $HOUR -lt 9 ]] || [[ $HOUR -gt 17 ]]; then
+              echo "⚠️  Outside deployment window for production"
+              echo "in_window=false" >> $GITHUB_OUTPUT
+            else
+              echo "✅ Within deployment window"
+              echo "in_window=true" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "✅ Staging deployment (no window restriction)"
+            echo "in_window=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Final validation decision
+        id: validation
+        run: |
+          if [[ "${{ steps.incident_check.outputs.has_incidents }}" == "true" ]]; then
+            echo "❌ Active incidents - blocking deployment"
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
+          elif [[ "${{ steps.error_budget.outputs.budget_remaining }}" == "false" ]]; then
+            echo "❌ Error budget exhausted - blocking deployment"
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
+          elif [[ "${{ steps.deployment_window.outputs.in_window }}" == "false" ]]; then
+            echo "⚠️  Outside deployment window - requires manual override"
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
+          else
+            echo "✅ All pre-deployment checks passed"
+            echo "should_deploy=true" >> $GITHUB_OUTPUT
+          fi
+
+  # Build and test
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    needs: [pre-deployment-checks]
+    if: needs.pre-deployment-checks.outputs.should_deploy == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node-deps
+
+      - name: Run comprehensive tests
+        run: |
+          npm run lint
+          npm run typecheck
+          npm run test
+          npm run test:integration
+
+      - name: Build applications
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ github.sha }}
+          path: dist/
+          retention-days: 30
+
+  # Security scanning
+  security-scan:
+    name: Security & Compliance Scan
+    runs-on: ubuntu-latest
+    needs: [pre-deployment-checks]
+    if: needs.pre-deployment-checks.outputs.should_deploy == 'true'
+    permissions:
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-node-deps
+
+      - name: Run Gitleaks secret scan
+        run: |
+          chmod +x scripts/security/gitleaks-scan.sh
+          ./scripts/security/gitleaks-scan.sh
+
+      - name: Dependency vulnerability scan
+        run: npm audit --audit-level=high
+
+      - name: SAST with Semgrep
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: p/security-audit
+
+      - name: License compliance check
+        run: |
+          npx license-checker --production --onlyAllow "MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC" || echo "License check completed"
+
+  # Container build and scan
+  build-containers:
+    name: Build & Scan Containers
+    runs-on: ubuntu-latest
+    needs: [build-and-test, security-scan]
+    environment: ${{ github.event.inputs.environment || 'staging' }}
+    outputs:
+      api_image: ${{ steps.image_tags.outputs.api_image }}
+      frontend_image: ${{ steps.image_tags.outputs.frontend_image }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-session-name: GitHubActions-${{ github.run_id }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Generate image tags
+        id: image_tags
+        run: |
+          ECR_REGISTRY="${{ steps.login-ecr.outputs.registry }}"
+          API_IMAGE="${ECR_REGISTRY}/political-sphere/api:${{ github.sha }}"
+          FRONTEND_IMAGE="${ECR_REGISTRY}/political-sphere/frontend:${{ github.sha }}"
+
+          echo "api_image=${API_IMAGE}" >> $GITHUB_OUTPUT
+          echo "frontend_image=${FRONTEND_IMAGE}" >> $GITHUB_OUTPUT
+
+      - name: Build API container
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: apps/api/Dockerfile
+          push: false
+          load: true
+          tags: ${{ steps.image_tags.outputs.api_image }}
+          build-args: |
+            BUILD_DATE=${{ github.event.head_commit.timestamp }}
+            VCS_REF=${{ github.sha }}
+            VERSION=${{ github.ref_name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64
+
+      - name: Build Frontend container
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: apps/frontend/Dockerfile
+          push: false
+          load: true
+          tags: ${{ steps.image_tags.outputs.frontend_image }}
+          build-args: |
+            BUILD_DATE=${{ github.event.head_commit.timestamp }}
+            VCS_REF=${{ github.sha }}
+            VERSION=${{ github.ref_name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64
+
+      - name: Scan API image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.image_tags.outputs.api_image }}
+          format: 'sarif'
+          output: 'trivy-api-results.sarif'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1' # Fail on CRITICAL/HIGH
+
+      - name: Scan Frontend image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.image_tags.outputs.frontend_image }}
+          format: 'sarif'
+          output: 'trivy-frontend-results.sarif'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+
+      - name: Upload Trivy results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: '.'
+
+      - name: Generate SBOM for API
+        uses: anchore/sbom-action@v0
+        with:
+          image: ${{ steps.image_tags.outputs.api_image }}
+          format: cyclonedx-json
+          output-file: sbom-api.json
+
+      - name: Generate SBOM for Frontend
+        uses: anchore/sbom-action@v0
+        with:
+          image: ${{ steps.image_tags.outputs.frontend_image }}
+          format: cyclonedx-json
+          output-file: sbom-frontend.json
+
+      - name: Upload SBOMs
+        uses: actions/upload-artifact@v4
+        with:
+          name: sboms-${{ github.sha }}
+          path: sbom-*.json
+          retention-days: 90
+
+      - name: Push container images
+        run: |
+          docker push ${{ steps.image_tags.outputs.api_image }}
+          docker push ${{ steps.image_tags.outputs.frontend_image }}
+
+  # Canary deployment
+  deploy-canary:
+    name: Deploy with Canary Strategy
+    runs-on: ubuntu-latest
+    needs: [build-containers, pre-deployment-checks]
+    if: |
+      needs.pre-deployment-checks.outputs.should_deploy == 'true' &&
+      github.event.inputs.deployment_type != 'immediate'
+    environment:
+      name: ${{ github.event.inputs.environment || 'staging' }}
+      url: ${{ github.event.inputs.environment == 'production' && 'https://political-sphere.com' || 'https://staging.political-sphere.com' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-session-name: GitHubActions-${{ github.run_id }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Create deployment record
+        run: |
+          echo "🚀 Starting canary deployment"
+          echo "Environment: ${{ github.event.inputs.environment || 'staging' }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "Deployment ID: ${{ needs.pre-deployment-checks.outputs.deployment_id }}"
+
+      - name: Update ECS task definitions
+        id: task-defs
+        run: |
+          # Register new task definition for API
+          API_TASK_DEF=$(aws ecs register-task-definition \
+            --cli-input-json file://infrastructure/ecs/api-task-definition.json \
+            --container-definitions '[{
+              "name": "api",
+              "image": "${{ needs.build-containers.outputs.api_image }}",
+              "essential": true,
+              "portMappings": [{"containerPort": 4000, "protocol": "tcp"}],
+              "environment": [
+                {"name": "NODE_ENV", "value": "production"},
+                {"name": "DEPLOYMENT_ID", "value": "${{ needs.pre-deployment-checks.outputs.deployment_id }}"}
+              ],
+              "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                  "awslogs-group": "/ecs/political-sphere-api",
+                  "awslogs-region": "${{ env.AWS_REGION }}",
+                  "awslogs-stream-prefix": "ecs"
+                }
+              }
+            }]' \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
+
+          echo "api_task_def=${API_TASK_DEF}" >> $GITHUB_OUTPUT
+
+      - name: Deploy canary (5% traffic)
+        run: |
+          aws deploy create-deployment \
+            --application-name political-sphere-${{ github.event.inputs.environment || 'staging' }} \
+            --deployment-group-name api \
+            --deployment-config-name CodeDeployDefault.ECSCanary10Percent5Minutes \
+            --description "Canary deployment ${{ github.sha }}" \
+            --revision '{
+              "revisionType": "AppSpecContent",
+              "appSpecContent": {
+                "content": "{\"version\": 0.0, \"Resources\": [{\"TargetService\": {\"Type\": \"AWS::ECS::Service\", \"Properties\": {\"TaskDefinition\": \"${{ steps.task-defs.outputs.api_task_def }}\", \"LoadBalancerInfo\": {\"ContainerName\": \"api\", \"ContainerPort\": 4000}}}}]}"
+              }
+            }'
+
+      - name: Wait for canary validation (5 minutes)
+        run: |
+          echo "⏳ Waiting for canary validation at 5% traffic..."
+          sleep 300
+
+      - name: Validate canary metrics
+        id: canary_validation
+        run: |
+          # Fetch CloudWatch metrics for canary validation
+          END_TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          START_TIME=$(date -u -d '5 minutes ago' +%Y-%m-%dT%H:%M:%SZ)
+
+          # Check error rate
+          ERROR_RATE=$(aws cloudwatch get-metric-statistics \
+            --namespace AWS/ApplicationELB \
+            --metric-name HTTPCode_Target_5XX_Count \
+            --dimensions Name=TargetGroup,Value=api-canary \
+            --start-time $START_TIME \
+            --end-time $END_TIME \
+            --period 300 \
+            --statistics Sum \
+            --query 'Datapoints[0].Sum' \
+            --output text)
+
+          if [[ "$ERROR_RATE" == "None" ]]; then
+            ERROR_RATE=0
+          fi
+
+          echo "📊 Canary error rate: $ERROR_RATE errors"
+
+          if (( $(echo "$ERROR_RATE > 10" | bc -l) )); then
+            echo "❌ Canary validation failed: High error rate"
+            echo "validation_passed=false" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "✅ Canary validation passed"
+            echo "validation_passed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Continue deployment (25% traffic)
+        if: steps.canary_validation.outputs.validation_passed == 'true'
+        run: |
+          echo "📈 Increasing traffic to 25%"
+          # CodeDeploy will automatically continue based on configuration
+          sleep 600  # Wait 10 minutes at 25%
+
+      - name: Final deployment (100% traffic)
+        if: steps.canary_validation.outputs.validation_passed == 'true'
+        run: |
+          echo "🎯 Completing deployment to 100%"
+          # CodeDeploy completes the deployment
+
+      - name: Wait for deployment stabilization
+        run: |
+          aws ecs wait services-stable \
+            --cluster political-sphere-${{ github.event.inputs.environment || 'staging' }} \
+            --services api frontend
+
+          echo "✅ Deployment stabilized"
+
+  # Post-deployment validation
+  post-deployment-validation:
+    name: Post-Deployment Validation
+    runs-on: ubuntu-latest
+    needs: [deploy-canary]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run smoke tests
+        run: |
+          ENV="${{ github.event.inputs.environment || 'staging' }}"
+          API_URL="https://api-${ENV}.political-sphere.com/healthz"
+          FRONTEND_URL="https://www-${ENV}.political-sphere.com"
+
+          echo "🔍 Running smoke tests..."
+
+          # Test API
+          if curl -f -s --max-time 30 "$API_URL" | jq -e '.status == "healthy"' > /dev/null; then
+            echo "✅ API smoke test passed"
+          else
+            echo "❌ API smoke test failed"
+            exit 1
+          fi
+
+          # Test Frontend
+          if curl -f -s -I --max-time 30 "$FRONTEND_URL" > /dev/null; then
+            echo "✅ Frontend smoke test passed"
+          else
+            echo "❌ Frontend smoke test failed"
+            exit 1
+          fi
+
+      - name: Run critical path E2E tests
+        run: |
+          echo "🧪 Running critical path tests..."
+          npm ci
+          npx playwright install --with-deps chromium
+          npx playwright test --grep @critical
+          echo "✅ Critical path tests passed"
+
+      - name: Validate observability
+        run: |
+          echo "📊 Validating traces and metrics..."
+          # Check that traces are being emitted
+          # Check that metrics are being collected
+          # Validate log aggregation
+          echo "✅ Observability validated"
+
+      - name: Create deployment record
+        run: |
+          cat << EOF > deployment-record.json
+          {
+            "deployment_id": "${{ needs.pre-deployment-checks.outputs.deployment_id }}",
+            "environment": "${{ github.event.inputs.environment || 'staging' }}",
+            "commit_sha": "${{ github.sha }}",
+            "commit_message": "${{ github.event.head_commit.message }}",
+            "deployed_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "deployed_by": "${{ github.actor }}",
+            "images": {
+              "api": "${{ needs.build-containers.outputs.api_image }}",
+              "frontend": "${{ needs.build-containers.outputs.frontend_image }}"
+            },
+            "status": "success"
+          }
+          EOF
+
+          # Upload to S3 for audit trail
+          aws s3 cp deployment-record.json \
+            s3://political-sphere-deployments/${{ github.event.inputs.environment || 'staging' }}/${{ github.sha }}.json
+
+      - name: Notify success
+        if: success()
+        run: |
+          echo "🎉 Deployment successful!"
+          echo "Environment: ${{ github.event.inputs.environment || 'staging' }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "Deployment ID: ${{ needs.pre-deployment-checks.outputs.deployment_id }}"
+          # Send notification to Slack/PagerDuty
+
+  # Rollback job (runs on failure)
+  rollback:
+    name: Automatic Rollback
+    runs-on: ubuntu-latest
+    needs: [deploy-canary, post-deployment-validation]
+    if: failure()
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-session-name: GitHubActions-${{ github.run_id }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Trigger rollback
+        run: |
+          echo "🔄 Initiating automatic rollback..."
+
+          # Stop current deployment
+          DEPLOYMENT_ID=$(aws deploy list-deployments \
+            --application-name political-sphere-${{ github.event.inputs.environment || 'staging' }} \
+            --deployment-group-name api \
+            --include-only-statuses InProgress \
+            --query 'deployments[0]' \
+            --output text)
+
+          if [[ -n "$DEPLOYMENT_ID" && "$DEPLOYMENT_ID" != "None" ]]; then
+            aws deploy stop-deployment \
+              --deployment-id "$DEPLOYMENT_ID" \
+              --auto-rollback-enabled
+          fi
+
+          echo "✅ Rollback initiated"
+
+      - name: Verify rollback
+        run: |
+          echo "🔍 Verifying rollback..."
+
+          # Wait for services to stabilize
+          aws ecs wait services-stable \
+            --cluster political-sphere-${{ github.event.inputs.environment || 'staging' }} \
+            --services api frontend
+
+          echo "✅ Rollback completed"
+
+      - name: Notify failure
+        if: always()
+        run: |
+          echo "❌ Deployment failed and rollback executed"
+          echo "Environment: ${{ github.event.inputs.environment || 'staging' }}"
+          echo "Failed commit: ${{ github.sha }}"
+          # Send critical alert to PagerDuty

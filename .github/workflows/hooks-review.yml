@@ -1,0 +1,144 @@
+name: Hooks Review & Validation
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - '.husky/**'
+      - '.lefthook.yml'
+      - 'lint-staged.config.js'
+      - 'scripts/ci/husky-lefthook-*.mjs'
+  pull_request:
+    paths:
+      - '.husky/**'
+      - '.lefthook.yml'
+      - 'lint-staged.config.js'
+      - 'scripts/ci/husky-lefthook-*.mjs'
+
+jobs:
+  review-hooks:
+    name: Review Hooks Configuration
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run hooks review
+        run: npm run hooks:review
+
+      - name: Run security scan
+        run: npm run hooks:security
+
+      - name: Run bug detection
+        run: npm run hooks:bugs
+
+      - name: Run improvement analysis
+        run: npm run hooks:improve
+
+      - name: Run integration tests
+        run: npm run hooks:test
+
+  validate-hooks-execution:
+    name: Validate Hooks Execution
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install lefthook
+        run: npm run prepare
+
+      - name: Test pre-commit hooks
+        run: |
+          # Create a test file
+          echo "console.log('test');" > test-commit.js
+          git add test-commit.js
+
+          # Test hook execution (should pass)
+          npx lefthook run pre-commit || exit 1
+
+      - name: Test commit-msg hooks
+        run: |
+          # Test commit message validation
+          echo "feat: add test feature" > .git/COMMIT_EDITMSG
+          npx lefthook run commit-msg .git/COMMIT_EDITMSG || exit 1
+
+      - name: Cleanup test files
+        run: |
+          rm -f test-commit.js
+          git reset HEAD test-commit.js 2>/dev/null || true
+          rm -f test-commit.js
+
+  performance-benchmark:
+    name: Performance Benchmark
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install lefthook
+        run: npm run prepare
+
+      - name: Run performance benchmark
+        run: |
+          # Create multiple test files
+          for i in {1..10}; do
+            echo "console.log('test $i');" > "test-$i.js"
+          done
+
+          # Stage files
+          git add test-*.js
+
+          # Measure execution time
+          start_time=$(date +%s%3N)
+          npx lefthook run pre-commit
+          end_time=$(date +%s%3N)
+
+          execution_time=$((end_time - start_time))
+          echo "Hooks execution time: ${execution_time}ms"
+
+          # Check if execution time is reasonable (< 30 seconds)
+          if [ "$execution_time" -gt 30000 ]; then
+            echo "❌ Hooks execution too slow: ${execution_time}ms"
+            exit 1
+          else
+            echo "✅ Hooks execution time acceptable: ${execution_time}ms"
+          fi
+
+      - name: Cleanup test files
+        run: |
+          git reset HEAD test-*.js 2>/dev/null || true
+          rm -f test-*.js

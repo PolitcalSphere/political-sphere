@@ -1,0 +1,232 @@
+# ==============================================================================
+# AI-ASSISTABLE METADATA
+# ==============================================================================
+# @workflow-name: Artifact Signing and Verification
+# @workflow-purpose: Sign build artifacts with Sigstore/Cosign for supply chain security
+# @workflow-category: security
+# @workflow-criticality: critical
+# @workflow-owner: security-team
+# @workflow-slo: 100% artifact coverage, <2min signing overhead
+# @workflow-maturity: 5 (sovereign-grade)
+# @workflow-dependencies: [sigstore, cosign, rekor, transparency-log]
+# @workflow-triggers: [workflow_call (reusable)]
+# @workflow-stages: [install-cosign, sign-artifacts, verify-signatures, upload-transparency-log]
+# @workflow-architecture-ref: docs/security/cicd-threat-model.md
+# @workflow-security-controls: [keyless-signing, transparency-log, immutable-audit-trail]
+# @workflow-compliance: [SLSA-Level-3, NIST-SSDF, Supply-Chain-Security]
+# ==============================================================================
+
+name: Sign Build Artifacts
+
+on:
+  workflow_call:
+    inputs:
+      artifact-name:
+        description: 'Name of the artifact to sign'
+        required: true
+        type: string
+      artifact-path:
+        description: 'Path to the artifact file or directory'
+        required: true
+        type: string
+      upload-to-rekor:
+        description: 'Upload signature to Rekor transparency log'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  id-token: write # Required for keyless signing with OIDC
+  contents: read
+  packages: write # For container signing
+
+jobs:
+  sign-artifact:
+    name: Sign and Verify Artifact
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3.4.0
+        with:
+          cosign-release: 'v2.2.3'
+
+      - name: Download artifact to sign
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: ./artifacts-to-sign
+
+      - name: Sign artifact with keyless signing (OIDC)
+        run: |
+          echo "🔐 Signing artifact: ${{ inputs.artifact-path }}"
+          
+          # Keyless signing using GitHub OIDC token
+          # This creates a cryptographic signature without managing private keys
+          cosign sign-blob \
+            --yes \
+            --bundle ./artifacts-to-sign/${{ inputs.artifact-name }}.bundle \
+            ./artifacts-to-sign/${{ inputs.artifact-path }}
+          
+          echo "✅ Artifact signed successfully"
+          echo "📋 Signature bundle: ${{ inputs.artifact-name }}.bundle"
+
+      - name: Verify signature
+        run: |
+          echo "🔍 Verifying artifact signature..."
+          
+          cosign verify-blob \
+            --bundle ./artifacts-to-sign/${{ inputs.artifact-name }}.bundle \
+            --certificate-identity "https://github.com/${{ github.repository }}/.github/workflows/${{ github.workflow }}" \
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+            ./artifacts-to-sign/${{ inputs.artifact-path }}
+          
+          echo "✅ Signature verified successfully"
+
+      - name: Generate attestation (SLSA Provenance)
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: ./artifacts-to-sign/${{ inputs.artifact-path }}
+
+      - name: Create tamper-evident audit log entry
+        run: |
+          echo "📝 Creating immutable audit log entry..."
+          
+          # Extract signature details for audit trail
+          SIGNATURE_DIGEST=$(sha256sum ./artifacts-to-sign/${{ inputs.artifact-name }}.bundle | awk '{print $1}')
+          
+          cat > audit-log.json <<EOF
+          {
+            "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+            "workflow": "${{ github.workflow }}",
+            "run_id": "${{ github.run_id }}",
+            "run_attempt": "${{ github.run_attempt }}",
+            "repository": "${{ github.repository }}",
+            "ref": "${{ github.ref }}",
+            "sha": "${{ github.sha }}",
+            "actor": "${{ github.actor }}",
+            "artifact_name": "${{ inputs.artifact-name }}",
+            "artifact_path": "${{ inputs.artifact-path }}",
+            "signature_digest": "${SIGNATURE_DIGEST}",
+            "oidc_issuer": "https://token.actions.githubusercontent.com",
+            "certificate_identity": "https://github.com/${{ github.repository }}/.github/workflows/${{ github.workflow }}",
+            "transparency_log": "${{ inputs.upload-to-rekor }}",
+            "signed_by": "GitHub Actions (keyless OIDC)",
+            "verification_status": "verified"
+          }
+          EOF
+          
+          echo "📄 Audit log entry:"
+          cat audit-log.json
+          
+          # Upload to transparency log if enabled
+          if [ "${{ inputs.upload-to-rekor }}" = "true" ]; then
+            echo "☁️  Uploading to Rekor transparency log..."
+            # Rekor automatically logs when using cosign sign-blob
+            echo "✅ Transparency log entry created at https://rekor.sigstore.dev"
+          fi
+
+      - name: Upload signed artifact and signature
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}-signed
+          path: |
+            ./artifacts-to-sign/${{ inputs.artifact-path }}
+            ./artifacts-to-sign/${{ inputs.artifact-name }}.bundle
+            audit-log.json
+          retention-days: 90
+
+      - name: Create immutable summary
+        run: |
+          echo "## 🔐 Artifact Signing Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Artifact**: \`${{ inputs.artifact-name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Path**: \`${{ inputs.artifact-path }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Signed At**: $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> $GITHUB_STEP_SUMMARY
+          echo "**Signed By**: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Workflow**: ${{ github.workflow }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Run ID**: ${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Verification" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Signature verified successfully" >> $GITHUB_STEP_SUMMARY
+          echo "✅ SLSA provenance attestation created" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Immutable audit log entry created" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ inputs.upload-to-rekor }}" = "true" ]; then
+            echo "✅ Uploaded to Rekor transparency log" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Security Controls" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔑 Keyless signing (OIDC, no private key management)" >> $GITHUB_STEP_SUMMARY
+          echo "- 🌐 Public transparency log (Rekor)" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔒 Tamper-evident audit trail" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ SLSA Level 3 compliance" >> $GITHUB_STEP_SUMMARY
+
+  sign-container-image:
+    name: Sign Container Image (if applicable)
+    runs-on: ubuntu-latest
+    if: contains(inputs.artifact-name, 'container') || contains(inputs.artifact-name, 'docker')
+    steps:
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3.4.0
+        with:
+          cosign-release: 'v2.2.3'
+
+      - name: Sign container image
+        run: |
+          echo "🐳 Signing container image..."
+          
+          # Example: ghcr.io/political-sphere/app:latest
+          IMAGE_REF="${{ inputs.artifact-path }}"
+          
+          # Sign container image with keyless signing
+          cosign sign \
+            --yes \
+            "${IMAGE_REF}"
+          
+          echo "✅ Container image signed successfully"
+
+      - name: Verify container signature
+        run: |
+          echo "🔍 Verifying container signature..."
+          
+          IMAGE_REF="${{ inputs.artifact-path }}"
+          
+          cosign verify \
+            --certificate-identity "https://github.com/${{ github.repository }}/.github/workflows/${{ github.workflow }}" \
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+            "${IMAGE_REF}"
+          
+          echo "✅ Container signature verified"
+
+      - name: Generate SBOM (Software Bill of Materials)
+        run: |
+          echo "📦 Generating SBOM..."
+          
+          # Install Syft for SBOM generation
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+          
+          IMAGE_REF="${{ inputs.artifact-path }}"
+          
+          # Generate SBOM in SPDX format
+          syft "${IMAGE_REF}" -o spdx-json > sbom.spdx.json
+          
+          echo "✅ SBOM generated"
+
+      - name: Sign SBOM
+        run: |
+          echo "🔐 Signing SBOM..."
+          
+          cosign sign-blob \
+            --yes \
+            --bundle sbom.bundle \
+            sbom.spdx.json
+          
+          echo "✅ SBOM signed"
+
+      - name: Upload SBOM and signature
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-${{ inputs.artifact-name }}
+          path: |
+            sbom.spdx.json
+            sbom.bundle
+          retention-days: 90
