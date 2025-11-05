@@ -1,0 +1,211 @@
+name: Workspace Integrity Check
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  verify-workspace:
+    name: Verify Workspace Structure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check Critical Files Exist
+        run: |
+          echo "🔍 Verifying critical files..."
+
+          # package.json is expected at repo root
+          if [ -f "package.json" ]; then
+            echo "✅ Found: package.json"
+          else
+            echo "❌ Missing: package.json"
+            exit 1
+          fi
+
+          # nx.json may live in tools/config/ or repo root
+          if [ -f "tools/config/nx.json" ]; then
+            echo "✅ Found: tools/config/nx.json"
+          elif [ -f "nx.json" ]; then
+            echo "✅ Found: nx.json"
+          else
+            echo "❌ Missing: nx.json (expected in tools/config/ or repo root)"
+            exit 1
+          fi
+
+          # tsconfig.base.json may live in tools/config/ or repo root
+          if [ -f "tools/config/tsconfig.base.json" ]; then
+            echo "✅ Found: tools/config/tsconfig.base.json"
+          elif [ -f "tsconfig.base.json" ]; then
+            echo "✅ Found: tsconfig.base.json"
+          else
+            echo "❌ Missing: tsconfig.base.json (expected in tools/config/ or repo root)"
+            exit 1
+          fi
+
+          # CI workflow directory check
+          if ls .github/workflows/ci/*.yml 1> /dev/null 2>&1 || ls .github/workflows/ci/*.yaml 1> /dev/null 2>&1; then
+            echo "✅ Found CI workflows under .github/workflows/ci/"
+          else
+            echo "⚠️  CI workflows not found under .github/workflows/ci/ (ensure CI files are present)"
+          fi
+
+          echo ""
+          echo "✅ Critical file checks completed"
+
+      - name: Verify Source Code Presence
+        run: |
+          echo "🔍 Checking for source code files..."
+
+          # Count TypeScript files (excluding node_modules, .nx, dist)
+          ts_count=$(find . -name "*.ts" -o -name "*.tsx" | \
+            grep -v node_modules | \
+            grep -v ".nx/cache" | \
+            grep -v "dist/" | \
+            wc -l | tr -d ' ')
+
+          # Count JavaScript files (excluding node_modules, .nx, dist, build artifacts)
+          js_count=$(find . -name "*.js" -o -name "*.mjs" | \
+            grep -v node_modules | \
+            grep -v ".nx/cache" | \
+            grep -v "dist/" | \
+            grep -v "playwright-report" | \
+            wc -l | tr -d ' ')
+
+          echo "📊 TypeScript files: $ts_count"
+          echo "📊 JavaScript files: $js_count"
+
+          # Alert if counts are suspiciously low
+          if [ "$ts_count" -lt 3 ]; then
+            echo "⚠️  WARNING: Very few TypeScript files detected ($ts_count)"
+          fi
+
+          if [ "$js_count" -lt 10 ]; then
+            echo "⚠️  WARNING: Very few JavaScript files detected ($js_count)"
+          fi
+
+          # Fail if BOTH are too low (likely means source is missing)
+          if [ "$ts_count" -lt 3 ] && [ "$js_count" -lt 10 ]; then
+            echo ""
+            echo "❌ ERROR: Workspace appears to be missing source code!"
+            echo "This could indicate an incomplete commit or merge."
+            exit 1
+          fi
+
+          echo ""
+          echo "✅ Source code files present"
+
+      - name: Verify Apps Structure
+        run: |
+          echo "🔍 Checking apps directory structure..."
+
+          if [ ! -d "apps" ]; then
+            echo "❌ ERROR: apps/ directory missing!"
+            exit 1
+          fi
+
+          app_count=$(find apps -maxdepth 1 -mindepth 1 -type d | wc -l | tr -d ' ')
+          echo "📊 Found $app_count apps"
+
+          # Check each app has either src/ or package.json or project.json
+          for app_dir in apps/*/; do
+            if [ -d "$app_dir" ]; then
+              app_name=$(basename "$app_dir")
+              has_src=false
+              has_pkg=false
+              has_proj=false
+              
+              [ -d "${app_dir}src" ] && has_src=true
+              [ -f "${app_dir}package.json" ] && has_pkg=true
+              [ -f "${app_dir}project.json" ] && has_proj=true
+              
+              if [ "$has_src" = true ] || [ "$has_pkg" = true ] || [ "$has_proj" = true ]; then
+                echo "✅ $app_name: OK"
+              else
+                echo "⚠️  $app_name: No src/, package.json, or project.json found"
+              fi
+            fi
+          done
+
+          echo ""
+          echo "✅ Apps structure verified"
+
+      - name: Verify Libs Structure
+        run: |
+          echo "🔍 Checking libs directory structure..."
+
+          if [ ! -d "libs" ]; then
+            echo "⚠️  WARNING: libs/ directory missing (may be intentional)"
+          else
+            lib_count=$(find libs -maxdepth 1 -mindepth 1 -type d | wc -l | tr -d ' ')
+            echo "📊 Found $lib_count libraries"
+            echo "✅ Libs directory present"
+          fi
+
+      - name: Check GitHub Workflows
+        run: |
+          echo "🔍 Checking GitHub workflows..."
+
+          if [ ! -d ".github/workflows" ]; then
+            echo "❌ ERROR: .github/workflows/ directory missing!"
+            exit 1
+          fi
+
+          workflow_count=$(find .github/workflows -name "*.yml" -o -name "*.yaml" | wc -l | tr -d ' ')
+          echo "📊 Found $workflow_count workflow files"
+
+          if [ "$workflow_count" -lt 1 ]; then
+            echo "❌ ERROR: No workflow files found!"
+            exit 1
+          fi
+
+          echo "✅ GitHub workflows present"
+
+      - name: Generate Workspace Report
+        if: always()
+        run: |
+          echo ""
+          echo "═══════════════════════════════════════"
+          echo "📋 WORKSPACE INTEGRITY REPORT"
+          echo "═══════════════════════════════════════"
+          echo ""
+          echo "📊 File Counts:"
+          echo "   • Total files: $(git ls-files | wc -l)"
+          echo "   • TypeScript: $(find . -name "*.ts" -o -name "*.tsx" | grep -v node_modules | grep -v .nx | wc -l)"
+          echo "   • JavaScript: $(find . -name "*.js" -o -name "*.mjs" | grep -v node_modules | grep -v .nx | grep -v dist | wc -l)"
+          echo "   • Markdown: $(find . -name "*.md" | grep -v node_modules | wc -l)"
+          echo ""
+          echo "📁 Directory Structure:"
+          echo "   • Apps: $(find apps -maxdepth 1 -mindepth 1 -type d 2>/dev/null | wc -l)"
+          echo "   • Libs: $(find libs -maxdepth 1 -mindepth 1 -type d 2>/dev/null | wc -l)"
+          echo "   • Workflows: $(find .github/workflows -name "*.yml" -o -name "*.yaml" 2>/dev/null | wc -l)"
+          echo ""
+          echo "✅ Workspace integrity check complete"
+          echo "═══════════════════════════════════════"
+
+      - name: Fail Job on Error
+        if: failure()
+        run: |
+          echo ""
+          echo "═══════════════════════════════════════"
+          echo "❌ WORKSPACE INTEGRITY CHECK FAILED"
+          echo "═══════════════════════════════════════"
+          echo ""
+          echo "Your workspace may be missing critical files."
+          echo ""
+          echo "Common causes:"
+          echo "  • Incomplete merge or cherry-pick"
+          echo "  • Partial commit (not all files added)"
+          echo "  • .gitignore excluding too much"
+          echo ""
+          echo "To fix:"
+          echo "  1. Check what files are in your working directory"
+          echo "  2. Ensure all source files are staged: git status"
+          echo "  3. Review recent commits for missing files"
+          echo "  4. Compare with other branches if needed"
+          echo ""
+          exit 1
