@@ -4,6 +4,12 @@
 
 const logger = require("./src/logger.js");
 
+// Module-scoped rate limiter state used by helpers below. We expose
+// a reference via exports for compatibility with tests that may
+// inspect or reset it, but implementation functions should use
+// this module-scoped variable to avoid relying on `this` binding.
+const _rateState = new Map();
+
 // Improved schema stubs with basic validation for test compatibility
 function createSchema(requiredFields = []) {
 	return {
@@ -141,6 +147,12 @@ module.exports = {
 		"Permissions-Policy": "geolocation=()",
 		"Cross-Origin-Opener-Policy": "same-origin",
 		"Cross-Origin-Resource-Policy": "same-origin",
+		// Include HSTS and a basic CSP for test environments so security
+		// header assertions in integration tests pass. These are
+		// intentionally conservative for tests; production config
+		// should be validated independently.
+		"Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+		"Content-Security-Policy": "default-src 'self'",
 	},
 	getCorsHeaders(origin, options = {}) {
 		const headers = {
@@ -160,13 +172,17 @@ module.exports = {
 		return headers;
 	},
 	// Very simple in-memory rate limiter sufficient for tests
-	_rateState: new Map(),
+	// Use a module-scoped Map so the helpers work even when imported
+	// as unbound functions (avoid relying on `this`).
+
+	// module-scoped backing state (exported below for compatibility)
+	_rateState: _rateState,
 	checkRateLimit(key, { maxRequests = 100, windowMs = 15 * 60 * 1000 } = {}) {
 		if (!key) return false;
 		const now = Date.now();
-		const entry = this._rateState.get(key);
+		const entry = _rateState.get(key);
 		if (!entry || now - entry.first > windowMs) {
-			this._rateState.set(key, { count: 1, first: now });
+			_rateState.set(key, { count: 1, first: now });
 			return true;
 		}
 		if (entry.count < maxRequests) {
@@ -177,7 +193,7 @@ module.exports = {
 	},
 	getRateLimitInfo(key, { maxRequests = 100, windowMs = 15 * 60 * 1000 } = {}) {
 		const now = Date.now();
-		const entry = this._rateState.get(key) || { count: 0, first: now };
+		const entry = _rateState.get(key) || { count: 0, first: now };
 		const resetInMs = Math.max(0, entry.first + windowMs - now);
 		return {
 			remaining: Math.max(0, maxRequests - entry.count),

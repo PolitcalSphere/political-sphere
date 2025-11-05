@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
 
-import { resolve } from "path";
+import { resolve } from "node:path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
@@ -17,8 +17,8 @@ export default defineConfig({
 		],
 		include:
 			process.env.VITEST_SCOPE === "shared"
-				? ["libs/shared/src/__tests__/**/*.{test,spec}.{js,mjs,ts,tsx}"]
-				: ["**/*.{test,spec}.{js,mjs,ts,tsx}"],
+				? ["libs/shared/src/__tests__/**/*.{test,spec}.{js,mjs,ts,tsx,jsx,tsx}"]
+				: ["**/*.{test,spec}.{js,mjs,ts,tsx,jsx,tsx}"],
 		coverage: {
 			provider: "istanbul",
 			reporter: ["text", "json", "html"],
@@ -67,7 +67,7 @@ export default defineConfig({
 		},
 		maxThreads: 1,
 		minThreads: 1,
-		setupFiles: ["./tools/test-setup.ts"],
+		setupFiles: ["./scripts/test-setup.ts"],
 		// Add caching to speed up repeated test runs (use Vite's cacheDir)
 		// NOTE: Vitest deprecated test.cache.dir; use top-level cacheDir instead.
 		// We'll set cacheDir at the root of this config object below.

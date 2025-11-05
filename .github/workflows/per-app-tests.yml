@@ -6,9 +6,9 @@ on:
 
     on:
       push:
-        branches: [ main ]
+        branches: [main]
       pull_request:
-        branches: [ main ]
+        branches: [main]
 
     permissions:
       contents: read
@@ -20,7 +20,7 @@ on:
         timeout-minutes: 30
         strategy:
           matrix:
-            app: [ frontend, api ]
+            app: [frontend, api]
         steps:
           - name: Checkout repository
             uses: actions/checkout@v4
@@ -28,8 +28,8 @@ on:
           - name: Use Node.js
             uses: actions/setup-node@v4
             with:
-              node-version: '18'
-              cache: 'npm'
+              node-version: "18"
+              cache: "npm"
 
           - name: Cache vitest & npm
             uses: actions/cache@v4
@@ -81,5 +81,5 @@ on:
                 junit.xml
                 junit-*.xml
                 test-results.xml
-                **/junit-*.xml
-    branches: [ main ]
+                **/junit-*.xmlwh
+    branches: [main]
