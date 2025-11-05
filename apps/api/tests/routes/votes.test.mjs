@@ -54,13 +54,15 @@ describe('Votes Routes', () => {
         })
         .expect(201);
 
+      const userId = userResponse.body.data.id;
+
       const billResponse = await request(app)
         .post('/api/bills')
         .set('Content-Type', 'application/json')
         .send({
           title: `Test Bill ${timestamp}`,
           description: 'A test bill',
-          proposerId: userResponse.body.id,
+          proposerId: userId,
         })
         .expect(201);
 
@@ -69,14 +71,14 @@ describe('Votes Routes', () => {
         .set('Content-Type', 'application/json')
         .send({
           billId: billResponse.body.id,
-          userId: userResponse.body.id,
+          userId: userId,
           vote: 'aye',
         })
         .expect(201);
 
       assert(response.body.id);
       assert.strictEqual(response.body.billId, billResponse.body.id);
-      assert.strictEqual(response.body.userId, userResponse.body.id);
+      assert.strictEqual(response.body.userId, userId);
       assert.strictEqual(response.body.vote, 'aye');
       assert(response.body.createdAt);
     });
@@ -93,13 +95,15 @@ describe('Votes Routes', () => {
         })
         .expect(201);
 
+      const userId = userResponse.body.data.id;
+
       const billResponse = await request(app)
         .post('/api/bills')
         .set('Content-Type', 'application/json')
         .send({
           title: `Test Bill ${timestamp}`,
           description: 'A test bill',
-          proposerId: userResponse.body.id,
+          proposerId: userId,
         })
         .expect(201);
 
@@ -109,7 +113,7 @@ describe('Votes Routes', () => {
         .set('Content-Type', 'application/json')
         .send({
           billId: billResponse.body.id,
-          userId: userResponse.body.id,
+          userId: userId,
           vote: 'aye',
         })
         .expect(201);
@@ -120,7 +124,7 @@ describe('Votes Routes', () => {
         .set('Content-Type', 'application/json')
         .send({
           billId: billResponse.body.id,
-          userId: userResponse.body.id,
+          userId: userId,
           vote: 'nay',
         })
         .expect(400);
@@ -151,13 +155,16 @@ describe('Votes Routes', () => {
         })
         .expect(201);
 
+      const user1Id = user1Response.body.data.id;
+      const user2Id = user2Response.body.data.id;
+
       const billResponse = await request(app)
         .post('/api/bills')
         .set('Content-Type', 'application/json')
         .send({
           title: `Test Bill ${timestamp}`,
           description: 'A test bill',
-          proposerId: user1Response.body.id,
+          proposerId: user1Id,
         })
         .expect(201);
 
@@ -167,7 +174,7 @@ describe('Votes Routes', () => {
         .set('Content-Type', 'application/json')
         .send({
           billId: billResponse.body.id,
-          userId: user1Response.body.id,
+          userId: user1Id,
           vote: 'aye',
         })
         .expect(201);
@@ -177,7 +184,7 @@ describe('Votes Routes', () => {
         .set('Content-Type', 'application/json')
         .send({
           billId: billResponse.body.id,
-          userId: user2Response.body.id,
+          userId: user2Id,
           vote: 'nay',
         })
         .expect(201);
@@ -224,13 +231,17 @@ describe('Votes Routes', () => {
         })
         .expect(201);
 
+      const user1Id = user1Response.body.data.id;
+      const user2Id = user2Response.body.data.id;
+      const user3Id = user3Response.body.data.id;
+
       const billResponse = await request(app)
         .post('/api/bills')
         .set('Content-Type', 'application/json')
         .send({
           title: `Test Bill ${timestamp}`,
           description: 'A test bill',
-          proposerId: user1Response.body.id,
+          proposerId: user1Id,
         })
         .expect(201);
 
@@ -240,7 +251,7 @@ describe('Votes Routes', () => {
         .set('Content-Type', 'application/json')
         .send({
           billId: billResponse.body.id,
-          userId: user1Response.body.id,
+          userId: user1Id,
           vote: 'aye',
         })
         .expect(201);
@@ -250,7 +261,7 @@ describe('Votes Routes', () => {
         .set('Content-Type', 'application/json')
         .send({
           billId: billResponse.body.id,
-          userId: user2Response.body.id,
+          userId: user2Id,
           vote: 'aye',
         })
         .expect(201);
@@ -260,7 +271,7 @@ describe('Votes Routes', () => {
         .set('Content-Type', 'application/json')
         .send({
           billId: billResponse.body.id,
-          userId: user3Response.body.id,
+          userId: user3Id,
           vote: 'nay',
         })
         .expect(201);

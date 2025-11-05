@@ -1,7 +1,7 @@
 // Compatibility wrapper: export a BillStore class that delegates to
 // either a test-friendly repository object (with create/getById/update/etc.)
 // or to the real SQL-backed BillStore implementation.
-const RealBillStore = require("../bill-store.js");
+const { BillStore: RealBillStore } = require("../bill-store.js");
 
 class BillStore {
 	constructor(dbOrRepo, cache) {
@@ -29,7 +29,7 @@ class BillStore {
 	async update(id, data) {
 		if (this._isRepo) return this._repo.update(id, data);
 		// Real store exposes updateStatus; attempt a best-effort mapping
-			if (data?.status && typeof this._real.updateStatus === "function") {
+		if (data?.status && typeof this._real.updateStatus === "function") {
 			return this._real.updateStatus(id, data.status);
 		}
 		// Not supported on real store
@@ -95,3 +95,4 @@ class BillStore {
 }
 
 module.exports = BillStore;
+module.exports.BillStore = BillStore;

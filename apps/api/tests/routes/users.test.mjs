@@ -60,11 +60,11 @@ describe('Users Routes', () => {
       console.log('[test-debug] text:', response.text);
 
       assert.strictEqual(response.status, 201, `Expected 201 but got ${response.status}`);
-      assert(response.body.id);
-      assert.strictEqual(response.body.username, `user${timestamp}`);
-      assert.strictEqual(response.body.email, `test-${timestamp}@example.com`);
-      assert(response.body.createdAt);
-      assert(response.body.updatedAt);
+      assert(response.body.data.id);
+      assert.strictEqual(response.body.data.username, `user${timestamp}`);
+      assert.strictEqual(response.body.data.email, `test-${timestamp}@example.com`);
+      assert(response.body.data.createdAt);
+      assert(response.body.data.updatedAt);
     });
 
     it('should return 400 for invalid input', async () => {
@@ -118,11 +118,13 @@ describe('Users Routes', () => {
         })
         .expect(201);
 
+      const userId = createResponse.body.data.id;
+
       const getResponse = await request(app)
-        .get(`/api/users/${createResponse.body.id}`)
+        .get(`/api/users/${userId}`)
         .expect(200);
 
-      assert.deepStrictEqual(getResponse.body, createResponse.body);
+      assert.deepStrictEqual(getResponse.body, createResponse.body.data);
     });
 
     it('should return 404 for non-existent user', async () => {

@@ -58,10 +58,10 @@ describe('Demo Flow Integration Test', () => {
       })
       .expect(201);
 
-    assert(userResponse.body.id);
-    assert.strictEqual(userResponse.body.username, `alice${timestamp}`);
-    assert.strictEqual(userResponse.body.email, `alice-${timestamp}@example.com`);
-    console.log('✓ User created:', userResponse.body.username);
+    assert(userResponse.body.data.id);
+    assert.strictEqual(userResponse.body.data.username, `alice${timestamp}`);
+    assert.strictEqual(userResponse.body.data.email, `alice-${timestamp}@example.com`);
+    console.log('✓ User created:', userResponse.body.data.username);
 
     // Step 2: Create a party
     console.log('Step 2: Creating party...');
@@ -75,9 +75,9 @@ describe('Demo Flow Integration Test', () => {
       })
       .expect(201);
 
-    assert(partyResponse.body.id);
-    assert.strictEqual(partyResponse.body.name, `Progressive Party ${timestamp}`);
-    console.log('✓ Party created:', partyResponse.body.name);
+    assert(partyResponse.body.data.id);
+    assert.strictEqual(partyResponse.body.data.name, `Progressive Party ${timestamp}`);
+    console.log('✓ Party created:', partyResponse.body.data.name);
 
     // Step 3: Propose a bill
     console.log('Step 3: Proposing bill...');
@@ -87,13 +87,13 @@ describe('Demo Flow Integration Test', () => {
       .send({
         title: `Environmental Protection Act ${timestamp}`,
         description: 'A comprehensive bill to protect our environment and reduce carbon emissions',
-        proposerId: userResponse.body.id,
+        proposerId: userResponse.body.data.id,
       })
       .expect(201);
 
     assert(billResponse.body.id);
     assert.strictEqual(billResponse.body.title, `Environmental Protection Act ${timestamp}`);
-    assert.strictEqual(billResponse.body.proposerId, userResponse.body.id);
+    assert.strictEqual(billResponse.body.proposerId, userResponse.body.data.id);
     assert.strictEqual(billResponse.body.status, 'proposed');
     console.log('✓ Bill proposed:', billResponse.body.title);
 
@@ -108,7 +108,7 @@ describe('Demo Flow Integration Test', () => {
       })
       .expect(201);
 
-    console.log('✓ Second user created:', user2Response.body.username);
+    console.log('✓ Second user created:', user2Response.body.data.username);
 
     // Step 5: Cast votes
     console.log('Step 5: Casting votes...');
@@ -117,7 +117,7 @@ describe('Demo Flow Integration Test', () => {
       .set('Content-Type', 'application/json')
       .send({
         billId: billResponse.body.id,
-        userId: userResponse.body.id,
+        userId: userResponse.body.data.id,
         vote: 'aye',
       })
       .expect(201);
@@ -131,7 +131,7 @@ describe('Demo Flow Integration Test', () => {
       .set('Content-Type', 'application/json')
       .send({
         billId: billResponse.body.id,
-        userId: user2Response.body.id,
+        userId: user2Response.body.data.id,
         vote: 'nay',
       })
       .expect(201);
@@ -157,7 +157,7 @@ describe('Demo Flow Integration Test', () => {
       .get(`/api/bills/${billResponse.body.id}`)
       .expect(200);
 
-    assert.strictEqual(billDetailsResponse.body.title, 'Environmental Protection Act');
+    assert.strictEqual(billDetailsResponse.body.title, `Environmental Protection Act ${timestamp}`);
     assert.strictEqual(billDetailsResponse.body.status, 'proposed');
     console.log('✓ Bill details verified');
 

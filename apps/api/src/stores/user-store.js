@@ -1,5 +1,5 @@
 // CJS proxy to the JS build of the UserStore used by tests
-const RealUserStore = require("../user-store.js");
+const { UserStore: RealUserStore } = require("../user-store.js");
 
 class UserStore {
 	constructor(dbOrRepo, cache) {
@@ -51,14 +51,24 @@ class UserStore {
 
 	validateUserData(data) {
 		// If the mock repo provides its own validator, use it (synchronous)
-		if (this._isRepo && typeof this._repo.validateUserData === "function") return this._repo.validateUserData(data);
+		if (this._isRepo && typeof this._repo.validateUserData === "function")
+			return this._repo.validateUserData(data);
 
 		// Basic validation used by tests: synchronous and throws on invalid input
-		if (!data || typeof data !== "object") throw new Error("Missing required fields");
-		if (!data.username || typeof data.username !== "string" || data.username.length < 3) {
+		if (!data || typeof data !== "object")
+			throw new Error("Missing required fields");
+		if (
+			!data.username ||
+			typeof data.username !== "string" ||
+			data.username.length < 3
+		) {
 			throw new Error("Invalid username");
 		}
-		if (!data.email || typeof data.email !== "string" || !/@/.test(data.email)) {
+		if (
+			!data.email ||
+			typeof data.email !== "string" ||
+			!/@/.test(data.email)
+		) {
 			throw new Error("Invalid email");
 		}
 
@@ -67,3 +77,4 @@ class UserStore {
 }
 
 module.exports = UserStore;
+module.exports.UserStore = UserStore;

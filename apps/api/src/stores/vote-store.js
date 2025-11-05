@@ -1,5 +1,5 @@
 // CJS proxy to the JS build of the VoteStore used by tests
-const RealVoteStore = require("../vote-store.js");
+const { VoteStore: RealVoteStore } = require("../vote-store.js");
 
 class VoteStore {
 	constructor(dbOrRepo, cache) {
@@ -23,12 +23,14 @@ class VoteStore {
 	}
 
 	async getByBillId(billId) {
-		if (this._isRepo && typeof this._repo.getByBillId === "function") return this._repo.getByBillId(billId);
+		if (this._isRepo && typeof this._repo.getByBillId === "function")
+			return this._repo.getByBillId(billId);
 		return this._real.getByBillId ? this._real.getByBillId(billId) : [];
 	}
 
 	async getByUserId(userId) {
-		if (this._isRepo && typeof this._repo.getByUserId === "function") return this._repo.getByUserId(userId);
+		if (this._isRepo && typeof this._repo.getByUserId === "function")
+			return this._repo.getByUserId(userId);
 		return this._real.getByUserId ? this._real.getByUserId(userId) : [];
 	}
 
@@ -48,7 +50,8 @@ class VoteStore {
 	}
 
 	async hasUserVotedOnBill(userId, billId) {
-		if (this._isRepo && typeof this._repo.hasUserVotedOnBill === "function") return this._repo.hasUserVotedOnBill(userId, billId);
+		if (this._isRepo && typeof this._repo.hasUserVotedOnBill === "function")
+			return this._repo.hasUserVotedOnBill(userId, billId);
 		if (this._isRepo) {
 			// Many tests mock getByBillId (not getByUserId) for this check — prefer that if present
 			if (typeof this._repo.getByBillId === "function") {
@@ -58,15 +61,18 @@ class VoteStore {
 			const votes = await this._repo.getByUserId(userId);
 			return (votes || []).some((v) => v.billId === billId);
 		}
-		return this._real.hasUserVotedOnBill ? this._real.hasUserVotedOnBill(userId, billId) : false;
+		return this._real.hasUserVotedOnBill
+			? this._real.hasUserVotedOnBill(userId, billId)
+			: false;
 	}
 
 	async getVoteCounts(billId) {
-		if (this._isRepo && typeof this._repo.getVoteCounts === "function") return this._repo.getVoteCounts(billId);
+		if (this._isRepo && typeof this._repo.getVoteCounts === "function")
+			return this._repo.getVoteCounts(billId);
 		// Fallback: compute from getByBillId
 		const votes = await this.getByBillId(billId);
 		const counts = { yes: 0, no: 0, abstain: 0, total: 0 };
-		for (const v of (votes || [])) {
+		for (const v of votes || []) {
 			if (v.vote === "yes") counts.yes += 1;
 			else if (v.vote === "no") counts.no += 1;
 			else if (v.vote === "abstain") counts.abstain += 1;
@@ -76,13 +82,18 @@ class VoteStore {
 	}
 
 	validateVoteData(data) {
-		if (this._isRepo && typeof this._repo.validateVoteData === "function") return this._repo.validateVoteData(data);
+		if (this._isRepo && typeof this._repo.validateVoteData === "function")
+			return this._repo.validateVoteData(data);
 
-		if (!data || typeof data !== "object") throw new Error("Missing required fields");
-		if (!data.billId || !data.userId) throw new Error("Missing required fields");
-		if (!["yes", "no", "abstain"].includes(data.vote)) throw new Error("Invalid vote type");
+		if (!data || typeof data !== "object")
+			throw new Error("Missing required fields");
+		if (!data.billId || !data.userId)
+			throw new Error("Missing required fields");
+		if (!["yes", "no", "abstain"].includes(data.vote))
+			throw new Error("Invalid vote type");
 		return true;
 	}
 }
 
 module.exports = VoteStore;
+module.exports.VoteStore = VoteStore;

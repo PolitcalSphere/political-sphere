@@ -1,6 +1,6 @@
 // Compatibility wrapper for PartyStore so tests that pass a mock repo
 // (with CRUD methods) continue to work without changing tests.
-const RealPartyStore = require("../party-store.js");
+const { PartyStore: RealPartyStore } = require("../party-store.js");
 
 class PartyStore {
 	constructor(dbOrRepo, cache) {
@@ -24,7 +24,8 @@ class PartyStore {
 	}
 
 	async getByName(name) {
-		if (this._isRepo && typeof this._repo.getByName === "function") return this._repo.getByName(name);
+		if (this._isRepo && typeof this._repo.getByName === "function")
+			return this._repo.getByName(name);
 		return this._real.getByName ? this._real.getByName(name) : null;
 	}
 
@@ -45,3 +46,4 @@ class PartyStore {
 }
 
 module.exports = PartyStore;
+module.exports.PartyStore = PartyStore;

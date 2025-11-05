@@ -52,20 +52,22 @@ describe('Bills Routes', () => {
         })
         .expect(201);
 
+      const userId = userResponse.body.data.id;
+
       const response = await request(app)
         .post('/api/bills')
         .set('Content-Type', 'application/json')
         .send({
           title: `Test Bill ${timestamp}`,
           description: 'A test bill description',
-          proposerId: userResponse.body.id,
+          proposerId: userId,
         })
         .expect(201);
 
       assert(response.body.id);
       assert.strictEqual(response.body.title, `Test Bill ${timestamp}`);
       assert.strictEqual(response.body.description, 'A test bill description');
-      assert.strictEqual(response.body.proposerId, userResponse.body.id);
+      assert.strictEqual(response.body.proposerId, userId);
       assert.strictEqual(response.body.status, 'proposed');
       assert(response.body.createdAt);
       assert(response.body.updatedAt);
@@ -99,13 +101,15 @@ describe('Bills Routes', () => {
         })
         .expect(201);
 
+      const userId = userResponse.body.data.id;
+
       const billResponse = await request(app)
         .post('/api/bills')
         .set('Content-Type', 'application/json')
         .send({
           title: `Test Bill ${timestamp}`,
           description: 'A test bill description',
-          proposerId: userResponse.body.id,
+          proposerId: userId,
         })
         .expect(201);
 
@@ -133,13 +137,15 @@ describe('Bills Routes', () => {
         })
         .expect(201);
 
+      const userId = userResponse.body.data.id;
+
       const bill1Response = await request(app)
         .post('/api/bills')
         .set('Content-Type', 'application/json')
         .send({
           title: 'Bill 1',
           description: 'First bill',
-          proposerId: userResponse.body.id,
+          proposerId: userId,
         })
         .expect(201);
 
@@ -149,7 +155,7 @@ describe('Bills Routes', () => {
         .send({
           title: 'Bill 2',
           description: 'Second bill',
-          proposerId: userResponse.body.id,
+          proposerId: userId,
         })
         .expect(201);
 
