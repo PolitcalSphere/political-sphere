@@ -1,8 +1,12 @@
-import Database from "better-sqlite3";
+import type {
+  Bill,
+  BillStatus,
+  CreateBillInput,
+} from "@political-sphere/shared";
+import type Database from "better-sqlite3";
 import { v4 as uuidv4 } from "uuid";
-import { Bill, CreateBillInput, BillStatus } from "@political-sphere/shared";
-import { CacheService, cacheKeys, CACHE_TTL } from "../cache.js";
-import { retryWithBackoff, DatabaseError } from "../error-handler.js";
+import { CACHE_TTL, type CacheService, cacheKeys } from "../cache.js";
+import { DatabaseError, retryWithBackoff } from "../error-handler.js";
 
 interface BillRow {
   id: string;
@@ -34,7 +38,7 @@ export class BillStore {
         input.proposerId,
         "proposed",
         now.toISOString(),
-        now.toISOString(),
+        now.toISOString()
       );
 
       const bill: Bill = {
@@ -50,14 +54,16 @@ export class BillStore {
       if (this.cache) {
         await Promise.all([
           this.cache.del(cacheKeys.bill(id)),
-          this.cache.invalidatePattern('bills:*'),
+          this.cache.invalidatePattern("bills:*"),
           this.cache.del(cacheKeys.userBills(input.proposerId)),
         ]);
       }
 
       return bill;
     } catch (error) {
-      throw new DatabaseError(`Failed to create bill: ${error.message}`);
+      throw new DatabaseError(
+        `Failed to create bill: ${(error as Error).message}`
+      );
     }
   }
 
@@ -72,7 +78,7 @@ export class BillStore {
       return await retryWithBackoff(async () => {
         const row = this.db
           .prepare<[string], BillRow>(
-            `SELECT id, title, description, proposer_id, status, created_at, updated_at FROM bills WHERE id = ?`,
+            `SELECT id, title, description, proposer_id, status, created_at, updated_at FROM bills WHERE id = ?`
           )
           .get(id) as BillRow | undefined;
         if (!row) return null;
@@ -95,7 +101,9 @@ export class BillStore {
         return bill;
       });
     } catch (error) {
-      throw new DatabaseError(`Failed to get bill ${id}: ${error.message}`);
+      throw new DatabaseError(
+        `Failed to get bill ${id}: ${(error as Error).message}`
+      );
     }
   }
 
@@ -107,7 +115,7 @@ export class BillStore {
         `UPDATE bills
          SET status = ?, updated_at = ?
          WHERE id = ?
-         RETURNING id, title, description, proposer_id, status, created_at, updated_at`,
+         RETURNING id, title, description, proposer_id, status, created_at, updated_at`
       );
 
       const row = stmt.get(status, now.toISOString(), id);
@@ -127,39 +135,46 @@ export class BillStore {
       if (this.cache) {
         await Promise.all([
           this.cache.del(cacheKeys.bill(id)),
-          this.cache.invalidatePattern('bills:*'),
+          this.cache.invalidatePattern("bills:*"),
         ]);
       }
 
       return bill;
     } catch (error) {
-      throw new DatabaseError(`Failed to update bill status ${id}: ${error.message}`);
+      throw new DatabaseError(
+        `Failed to update bill status ${id}: ${(error as Error).message}`
+      );
     }
   }
 
-  async getAll(page: number = 1, limit: number = 10): Promise<{ bills: Bill[]; total: number }> {
+  async getAll(
+    page: number = 1,
+    limit: number = 10
+  ): Promise<{ bills: Bill[]; total: number }> {
     const offset = (page - 1) * limit;
 
     // Try cache first
     const cacheKey = cacheKeys.bills(page, limit);
     if (this.cache) {
-      const cached = await this.cache.get<{ bills: Bill[]; total: number }>(cacheKey);
+      const cached = await this.cache.get<{ bills: Bill[]; total: number }>(
+        cacheKey
+      );
       if (cached) return cached;
     }
 
     try {
       // Get total count
       const countStmt = this.db.prepare<[], { count: number }>(
-        `SELECT COUNT(*) as count FROM bills`,
+        `SELECT COUNT(*) as count FROM bills`
       );
-      const total = countStmt.get().count;
+      const total = countStmt.get()?.count ?? 0;
 
       // Get paginated results
       const stmt = this.db.prepare<[number, number], BillRow>(
         `SELECT id, title, description, proposer_id, status, created_at, updated_at
          FROM bills
          ORDER BY created_at DESC
-         LIMIT ? OFFSET ?`,
+         LIMIT ? OFFSET ?`
       );
 
       const rows = stmt.all(limit, offset);
@@ -189,7 +204,9 @@ export class BillStore {
   async getByProposerId(proposerId: string): Promise<Bill[]> {
     // Try cache first
     if (this.cache) {
-      const cached = await this.cache.get<Bill[]>(cacheKeys.userBills(proposerId));
+      const cached = await this.cache.get<Bill[]>(
+        cacheKeys.userBills(proposerId)
+      );
       if (cached) return cached;
     }
 
@@ -198,7 +215,7 @@ export class BillStore {
         `SELECT id, title, description, proposer_id, status, created_at, updated_at
          FROM bills
          WHERE proposer_id = ?
-         ORDER BY created_at DESC`,
+         ORDER BY created_at DESC`
       );
 
       const rows = stmt.all(proposerId);
@@ -214,12 +231,18 @@ export class BillStore {
 
       // Cache the result
       if (this.cache) {
-        await this.cache.set(cacheKeys.userBills(proposerId), bills, CACHE_TTL.BILLS_LIST);
+        await this.cache.set(
+          cacheKeys.userBills(proposerId),
+          bills,
+          CACHE_TTL.BILLS_LIST
+        );
       }
 
       return bills;
     } catch (error) {
-      throw new DatabaseError(`Failed to get bills for proposer ${proposerId}: ${error.message}`);
+      throw new DatabaseError(
+        `Failed to get bills for proposer ${proposerId}: ${error.message}`
+      );
     }
   }
 }

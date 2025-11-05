@@ -50,4 +50,4 @@ class CircuitBreaker {
 	}
 }
 
-module.exports = { DatabaseError, retryWithBackoff, CircuitBreaker };
+export { DatabaseError, retryWithBackoff, CircuitBreaker };

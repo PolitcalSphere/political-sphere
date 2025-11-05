@@ -1,11 +1,11 @@
 name: Renovate
 on:
-  schedule: [{ cron: '0 7 * * *' }]
+  schedule: [{ cron: "0 7 * * *" }]
   workflow_dispatch:
 jobs:
   renovate:
     runs-on: ubuntu-latest
     steps:
-      - uses: renovatebot/github-action@v40.1.11
+      - uses: renovatebot/github-action@b9486682a19fe4ea2dd1263890d0c8b34e5f7a0f # v40.1.11
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

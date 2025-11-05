@@ -4,8 +4,8 @@
  * Supports multiple regulatory frameworks (DSA, GDPR, ISO 27001, etc.)
  */
 
-const logger = require("../logger");
-const crypto = require("crypto");
+import logger from "../logger.js";
+import crypto from "crypto";
 
 class ComplianceService {
 	// accept optional complianceDb for tests
@@ -638,4 +638,4 @@ Object.getOwnPropertyNames(ComplianceService.prototype).forEach((name) => {
 });
 ComplianceService.defaultInstance = _defaultComplianceInstance;
 
-module.exports = ComplianceService;
+export default ComplianceService;

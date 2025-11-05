@@ -1,10 +1,10 @@
-const express = require("express");
-const crypto = require("crypto");
+import crypto from "crypto";
+import express from "express";
+import { getDatabase } from "../index.js";
+import logger from "../logger.js";
+import { validate } from "../middleware/validation.js";
 // Use local CJS shim for shared schemas in test/runtime
-const { CreateUserSchema } = require("../shared-shim.js");
-const { getDatabase } = require("../index");
-const { validate } = require("../middleware/validation");
-const logger = require("../logger");
+import { CreateUserSchema } from "../shared-shim.js";
 
 const router = express.Router();
 
@@ -122,8 +122,8 @@ router.delete("/users/:id/gdpr", async (req, res) => {
 		});
 
 		// Log compliance event
-		const complianceService = require("../complianceService");
-		complianceService.logComplianceEvent({
+		const complianceService = await import("../complianceService.js");
+		complianceService.default.logComplianceEvent({
 			category: "data_deletion",
 			action: "gdpr_erasure",
 			userId: req.params.id,
@@ -158,4 +158,4 @@ router.delete("/users/:id/gdpr", async (req, res) => {
 	}
 });
 
-module.exports = router;
+export default router;

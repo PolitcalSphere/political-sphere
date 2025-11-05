@@ -1,4 +1,4 @@
-const winston = require("winston");
+import winston from "winston";
 
 // Create logger instance
 const logger = winston.createLogger({
@@ -36,4 +36,4 @@ logger.audit = (message, meta = {}) => {
 	logger.log({ level: "info", message, audit: true, ...meta });
 };
 
-module.exports = logger;
+export default logger;

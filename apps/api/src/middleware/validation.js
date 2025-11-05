@@ -1,4 +1,4 @@
-const { z } = require("zod");
+import { z } from "zod";
 
 // Custom error classes for validation
 class ValidationError extends Error {
@@ -156,7 +156,4 @@ const schemas = {
 	}),
 };
 
-module.exports = {
-	validate,
-	schemas,
-};
+export { validate, schemas };

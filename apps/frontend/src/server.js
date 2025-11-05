@@ -9,7 +9,8 @@ const logger = console;
 // Override port if it conflicts with Grafana (port 3000)
 const ACTUAL_PORT = 3002;
 const HOST = "0.0.0.0";
-const API_BASE_URL = "http://localhost:4000";
+// Prefer environment-provided API base URL; default to localhost for dev
+const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:4000";
 const ENABLE_SECURITY_HEADERS = true;
 
 const __filename = fileURLToPath(import.meta.url);
@@ -20,6 +21,15 @@ const indexPath = path.join(publicDir, "index.html");
 let template = "";
 
 // Security headers for frontend
+// Derive connect-src from configured API_BASE_URL
+const apiOrigin = (() => {
+	try {
+		return new URL(API_BASE_URL).origin;
+	} catch {
+		return "http://localhost:4000";
+	}
+})();
+
 const SECURITY_HEADERS = {
 	"Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
 	"X-Content-Type-Options": "nosniff",
@@ -33,7 +43,7 @@ const SECURITY_HEADERS = {
 		"style-src 'self' 'unsafe-inline'",
 		"img-src 'self' data: https:",
 		"font-src 'self'",
-		"connect-src 'self' http://localhost:4000 http://localhost:3000",
+		`connect-src 'self' ${apiOrigin} http://localhost:3000`,
 		"frame-ancestors 'none'",
 		"base-uri 'self'",
 		"form-action 'self'",
@@ -55,8 +65,8 @@ async function loadTemplate() {
 await loadTemplate();
 
 function safeSerialize(value) {
-  const json = JSON.stringify(value ?? null);
-  return json.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+	const json = JSON.stringify(value ?? null);
+	return json.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
 }
 
 async function fetchJson(pathname) {

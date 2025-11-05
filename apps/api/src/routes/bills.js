@@ -1,7 +1,7 @@
-const express = require("express");
+import express from "express";
 // Use local CJS shim for shared schemas in test/runtime
-const { CreateBillSchema } = require("../shared-shim.js");
-const { getDatabase } = require("../index");
+import { CreateBillSchema } from "../shared-shim.js";
+import { getDatabase } from "../index.js";
 
 const router = express.Router();
 
@@ -52,4 +52,4 @@ router.get("/bills", async (req, res) => {
 	}
 });
 
-module.exports = router;
+export default router;

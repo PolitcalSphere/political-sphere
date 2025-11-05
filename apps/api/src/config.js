@@ -9,7 +9,4 @@ const DEFAULT_DB_PATH =
 		? ":memory:"
 		: "apps/data/political_sphere.db";
 
-module.exports = {
-	DB_PATH,
-	DEFAULT_DB_PATH,
-};
+export { DB_PATH, DEFAULT_DB_PATH };

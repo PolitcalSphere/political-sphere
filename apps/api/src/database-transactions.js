@@ -147,20 +147,24 @@ async function withTransaction(fn, options = {}) {
 		try {
 			// Set isolation level
 			connection.db.exec(`PRAGMA read_uncommitted = 0`);
-			connection.db.exec(`BEGIN ${isolationLevel} TRANSACTION`);
+			// Validate isolation level against allowed set to avoid SQL injection
+			const allowedLevels = new Set(["DEFERRED", "IMMEDIATE", "EXCLUSIVE"]);
+			const level = String(isolationLevel).toUpperCase();
+			if (!allowedLevels.has(level)) {
+				throw new Error(`Invalid isolation level: ${isolationLevel}`);
+			}
+			connection.db.exec(`BEGIN ${level} TRANSACTION`);
 
 			const transaction = new Transaction(connection);
 			transaction.isActive = true;
 
 			// Set timeout
 			const timeoutId = setTimeout(() => {
-				transaction
-					.rollback()
-					.catch((err) =>
-						logger.error("Failed to rollback timed out transaction", {
-							error: err.message,
-						}),
-					);
+				transaction.rollback().catch((err) =>
+					logger.error("Failed to rollback timed out transaction", {
+						error: err.message,
+					}),
+				);
 			}, timeout);
 
 			try {

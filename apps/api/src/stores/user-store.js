@@ -1,5 +1,5 @@
 // CJS proxy to the JS build of the UserStore used by tests
-const { UserStore: RealUserStore } = require("../user-store.js");
+import { UserStore as RealUserStore } from "../user-store.js";
 
 class UserStore {
 	constructor(dbOrRepo, cache) {
@@ -76,5 +76,5 @@ class UserStore {
 	}
 }
 
-module.exports = UserStore;
-module.exports.UserStore = UserStore;
+export default UserStore;
+export { UserStore };

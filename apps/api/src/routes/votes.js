@@ -1,7 +1,7 @@
-const express = require("express");
+import express from "express";
 // Use local CJS shim for shared schemas in test/runtime
-const { CreateVoteSchema } = require("../shared-shim.js");
-const { getDatabase } = require("../index");
+import { CreateVoteSchema } from "../shared-shim.js";
+import { getDatabase } from "../index.js";
 
 const router = express.Router();
 
@@ -41,4 +41,4 @@ router.get("/bills/:id/vote-counts", async (req, res) => {
 	}
 });
 
-module.exports = router;
+export default router;

@@ -1,5 +1,9 @@
-const { mkdir, readFile, writeFile } = require("node:fs/promises");
-const path = require("node:path");
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 class JsonNewsStore {
 	constructor(filePath) {
@@ -41,7 +45,4 @@ class NewsStore extends JsonNewsStore {
 	}
 }
 
-module.exports = {
-	JsonNewsStore,
-	NewsStore,
-};
+export { JsonNewsStore, NewsStore };

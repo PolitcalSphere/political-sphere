@@ -4,11 +4,13 @@
  * Implements Online Safety Act and DSA compliance requirements
  */
 
-const logger = require("../logger");
+import logger from "../logger.js";
+
 let OpenAI;
 let PerspectiveAPI;
 try {
-	({ OpenAI } = require("openai"));
+	const openaiModule = await import("openai");
+	OpenAI = openaiModule.OpenAI;
 } catch (e) {
 	// Provide a lightweight stub for tests when OpenAI package isn't installed
 	OpenAI = class {
@@ -26,7 +28,8 @@ try {
 }
 
 try {
-	({ PerspectiveAPI } = require("perspective-api-client"));
+	const perspectiveModule = await import("perspective-api-client");
+	PerspectiveAPI = perspectiveModule.PerspectiveAPI;
 } catch (e) {
 	// Minimal stub for Perspective API used in tests
 	PerspectiveAPI = class {
@@ -37,7 +40,7 @@ try {
 	};
 }
 
-const { CircuitBreaker } = require("./error-handler");
+import { CircuitBreaker } from "./error-handler.js";
 
 class ModerationService {
 	// Accept an optional moderationDb (tests pass mockDb.moderation)
@@ -682,4 +685,4 @@ Object.getOwnPropertyNames(ModerationService.prototype).forEach((name) => {
 });
 ModerationService.defaultInstance = _defaultModerationInstance;
 
-module.exports = ModerationService;
+export default ModerationService;

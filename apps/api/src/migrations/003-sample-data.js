@@ -5,7 +5,7 @@
  * @see docs/architecture/decisions/adr-0001-database-migrations.md
  */
 
-const { v4: uuidv4 } = require("uuid");
+import { v4 as uuidv4 } from "uuid";
 
 const name = "003_sample_data";
 
@@ -187,8 +187,4 @@ function down(db) {
   `);
 }
 
-module.exports = {
-	name,
-	up,
-	down,
-};
+export { name, up, down };

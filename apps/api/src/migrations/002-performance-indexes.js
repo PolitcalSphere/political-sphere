@@ -58,8 +58,4 @@ function down(db) {
   `);
 }
 
-module.exports = {
-	name,
-	up,
-	down,
-};
+export { name, up, down };
