@@ -1,9 +1,0 @@
-name: otel-smoke
-on: [pull_request]
-jobs:
-  otel:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Validate OTEL envs present for services
-        run: node scripts/ci/validate-otel.js

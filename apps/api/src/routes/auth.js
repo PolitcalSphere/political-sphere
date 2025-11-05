@@ -3,9 +3,9 @@
  * Handles user registration, login, token refresh, and logout
  */
 
+import crypto from "node:crypto";
 import express from "express";
 import jwt from "jsonwebtoken";
-import crypto from "crypto";
 import rateLimit from "express-rate-limit";
 
 // These will be lazily loaded on first use to allow mocks to be set up first
@@ -291,7 +291,6 @@ router.post("/login", authLimiter, async (req, res) => {
 		if (sharedSecurity?.verifyPassword) {
 			// shared.verifyPassword(user, password) may be mocked in tests
 			// allow it to return a boolean or a promise
-			// eslint-disable-next-line no-await-in-loop
 			isValidPassword = await sharedSecurity.verifyPassword(user, password);
 		} else if (user.passwordHash) {
 			isValidPassword = await bcrypt.compare(password, user.passwordHash);

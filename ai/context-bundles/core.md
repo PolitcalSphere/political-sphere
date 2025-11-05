@@ -4,7 +4,7 @@
 
 ## README.md
 
-```
+````
 # Political Sphere — Monorepo (developer workspace)
 
 [![Version](https://img.shields.io/badge/version-1.2.6-blue.svg)](CHANGELOG.md)
@@ -66,7 +66,7 @@ The project follows a modular monorepo architecture:
 npm install
 # optional: run the default health check bundle
 npm run preflight
-```
+````
 
 ### Development
 
@@ -233,7 +233,7 @@ See [Contributing Guide](docs/contributing.md) and [.blackboxrules](.blackboxrul
 
 ### Core Documentation
 
-- [Architecture Decision Records](docs/architecture/decisions/) — Technical decisions with context and alternatives
+- [Architecture Decision Records](docs/04-architecture/decisions/) — Technical decisions with context and alternatives
 - [API Documentation](docs/api.md) — REST and GraphQL endpoint references
 - [Security Guidelines](docs/SECURITY.md) — Threat model, compliance, and reporting
 - [Contributing Guide](docs/contributing.md) — Development workflow and standards
@@ -308,11 +308,13 @@ Enable fast mode with `FAST_AI=1` for reduced latency during development.
 ---
 
 _Last updated: 2025-11-02_
+
 ```
 
 ## docs/TODO.md
 
 ```
+
 thia# TODO: Governance Reforms Implementation & Project Issues Remediation
 
 <div align="center">
@@ -1240,192 +1242,208 @@ Notes: These are initial, curated references sourced from Microsoft Learn. Revie
   - Owner: @ci-team
   - Due: 2025-11-10
   - Description: Created `tools/scripts/ci/check-file-placement.mjs` to enforce governance directory rules. Added to guard-check.yml and affected-tests.yml workflows. Updated governance rules with enforcement mechanisms.
+
 ```
 
 ## docs/controls.yml
 
 ```
+
 # Controls Catalogue for Political Sphere
+
 # Typed source for governance controls - compiled to YAML
 
 controls:
-  # Foundation & Governance
-  GOV-01:
-    name: 'Constitutional Compliance'
-    category: 'governance'
-    severity: 'blocker'
-    description: 'Project must comply with .blackboxrules constitution'
-    evidence: '.blackboxrules exists and contains neutrality/anti-manipulation clauses'
-    fix: 'Add missing constitutional safeguards'
-    owner: 'Technical Governance Committee'
 
-  GOV-02:
-    name: 'Rule Parity'
-    category: 'governance'
-    severity: 'blocker'
-    description: 'Changes to .blackboxrules must be mirrored in .github/copilot-instructions.md'
-    evidence: 'Both files updated simultaneously with matching version/date'
-    fix: 'Update both rule files and increment version'
-    owner: 'Technical Governance Committee'
+# Foundation & Governance
 
-  # Security Controls
-  SEC-01:
-    name: 'Secret Scanning'
-    category: 'security'
-    severity: 'blocker'
-    description: 'No secrets committed to repository'
-    evidence: 'gitleaks scan passes'
-    fix: 'Remove secrets and rotate if exposed'
-    owner: 'Security Team'
+GOV-01:
+name: 'Constitutional Compliance'
+category: 'governance'
+severity: 'blocker'
+description: 'Project must comply with .blackboxrules constitution'
+evidence: '.blackboxrules exists and contains neutrality/anti-manipulation clauses'
+fix: 'Add missing constitutional safeguards'
+owner: 'Technical Governance Committee'
 
-  SEC-02:
-    name: 'Dependency Vulnerabilities'
-    category: 'security'
-    severity: 'warning'
-    description: 'No high/critical vulnerabilities in dependencies'
-    evidence: 'pnpm audit/npm audit clean'
-    fix: 'Update vulnerable packages'
-    owner: 'Platform Team'
+GOV-02:
+name: 'Rule Parity'
+category: 'governance'
+severity: 'blocker'
+description: 'Changes to .blackboxrules must be mirrored in .github/copilot-instructions.md'
+evidence: 'Both files updated simultaneously with matching version/date'
+fix: 'Update both rule files and increment version'
+owner: 'Technical Governance Committee'
 
-  SEC-03:
-    name: 'SAST Scanning'
-    category: 'security'
-    severity: 'warning'
-    description: 'No security issues in source code'
-    evidence: 'Semgrep scan passes'
-    fix: 'Fix identified security issues'
-    owner: 'Development Teams'
+# Security Controls
 
-  # Quality Controls
-  QUAL-01:
-    name: 'Code Linting'
-    category: 'code-quality'
-    severity: 'blocker'
-    description: 'Code passes ESLint/Biome rules'
-    evidence: 'Linting passes with zero errors'
-    fix: 'Fix linting violations'
-    owner: 'Development Teams'
+SEC-01:
+name: 'Secret Scanning'
+category: 'security'
+severity: 'blocker'
+description: 'No secrets committed to repository'
+evidence: 'gitleaks scan passes'
+fix: 'Remove secrets and rotate if exposed'
+owner: 'Security Team'
 
-  QUAL-02:
-    name: 'Type Safety'
-    category: 'code-quality'
-    severity: 'blocker'
-    description: 'TypeScript compilation succeeds'
-    evidence: 'tsc --noEmit passes'
-    fix: 'Fix type errors'
-    owner: 'Development Teams'
+SEC-02:
+name: 'Dependency Vulnerabilities'
+category: 'security'
+severity: 'warning'
+description: 'No high/critical vulnerabilities in dependencies'
+evidence: 'pnpm audit/npm audit clean'
+fix: 'Update vulnerable packages'
+owner: 'Platform Team'
 
-  QUAL-03:
-    name: 'Test Coverage'
-    category: 'testing'
-    severity: 'warning'
-    description: 'Unit tests cover critical paths'
-    evidence: 'Coverage meets thresholds'
-    fix: 'Add missing test coverage'
-    owner: 'Development Teams'
+SEC-03:
+name: 'SAST Scanning'
+category: 'security'
+severity: 'warning'
+description: 'No security issues in source code'
+evidence: 'Semgrep scan passes'
+fix: 'Fix identified security issues'
+owner: 'Development Teams'
 
-  # Accessibility Controls
-  A11Y-01:
-    name: 'WCAG Compliance'
-    category: 'accessibility'
-    severity: 'blocker'
-    description: 'UI meets WCAG 2.2 AA standards'
-    evidence: 'Automated a11y tests pass'
-    fix: 'Fix accessibility violations'
-    owner: 'UX Team'
+# Quality Controls
 
-  # AI Governance Controls
-  AI-01:
-    name: 'AI Neutrality'
-    category: 'ai-governance'
-    severity: 'blocker'
-    description: 'AI systems maintain political neutrality'
-    evidence: 'Neutrality tests pass'
-    fix: 'Implement neutrality safeguards'
-    owner: 'AI Governance Committee'
+QUAL-01:
+name: 'Code Linting'
+category: 'code-quality'
+severity: 'blocker'
+description: 'Code passes ESLint/Biome rules'
+evidence: 'Linting passes with zero errors'
+fix: 'Fix linting violations'
+owner: 'Development Teams'
 
-  AI-02:
-    name: 'AI Fairness'
-    category: 'ai-governance'
-    severity: 'warning'
-    description: 'AI outputs are fair and unbiased'
-    evidence: 'Bias detection passes'
-    fix: 'Address identified biases'
-    owner: 'AI Governance Committee'
+QUAL-02:
+name: 'Type Safety'
+category: 'code-quality'
+severity: 'blocker'
+description: 'TypeScript compilation succeeds'
+evidence: 'tsc --noEmit passes'
+fix: 'Fix type errors'
+owner: 'Development Teams'
 
-  # Privacy Controls
-  PRIV-01:
-    name: 'Data Minimization'
-    category: 'privacy'
-    severity: 'warning'
-    description: 'Only necessary data collected'
-    evidence: 'Privacy impact assessment completed'
-    fix: 'Remove unnecessary data collection'
-    owner: 'Privacy Officer'
+QUAL-03:
+name: 'Test Coverage'
+category: 'testing'
+severity: 'warning'
+description: 'Unit tests cover critical paths'
+evidence: 'Coverage meets thresholds'
+fix: 'Add missing test coverage'
+owner: 'Development Teams'
 
-  # Operational Controls
-  OPS-01:
-    name: 'Observability'
-    category: 'operations'
-    severity: 'warning'
-    description: 'Systems are observable'
-    evidence: 'Monitoring/logging/tracing implemented'
-    fix: 'Add observability instrumentation'
-    owner: 'Platform Team'
+# Accessibility Controls
 
-  OPS-02:
-    name: 'Incident Response'
-    category: 'operations'
-    severity: 'info'
-    description: 'Incident response procedures exist'
-    evidence: 'Runbooks and playbooks documented'
-    fix: 'Create incident response documentation'
-    owner: 'Operations Team'
+A11Y-01:
+name: 'WCAG Compliance'
+category: 'accessibility'
+severity: 'blocker'
+description: 'UI meets WCAG 2.2 AA standards'
+evidence: 'Automated a11y tests pass'
+fix: 'Fix accessibility violations'
+owner: 'UX Team'
+
+# AI Governance Controls
+
+AI-01:
+name: 'AI Neutrality'
+category: 'ai-governance'
+severity: 'blocker'
+description: 'AI systems maintain political neutrality'
+evidence: 'Neutrality tests pass'
+fix: 'Implement neutrality safeguards'
+owner: 'AI Governance Committee'
+
+AI-02:
+name: 'AI Fairness'
+category: 'ai-governance'
+severity: 'warning'
+description: 'AI outputs are fair and unbiased'
+evidence: 'Bias detection passes'
+fix: 'Address identified biases'
+owner: 'AI Governance Committee'
+
+# Privacy Controls
+
+PRIV-01:
+name: 'Data Minimization'
+category: 'privacy'
+severity: 'warning'
+description: 'Only necessary data collected'
+evidence: 'Privacy impact assessment completed'
+fix: 'Remove unnecessary data collection'
+owner: 'Privacy Officer'
+
+# Operational Controls
+
+OPS-01:
+name: 'Observability'
+category: 'operations'
+severity: 'warning'
+description: 'Systems are observable'
+evidence: 'Monitoring/logging/tracing implemented'
+fix: 'Add observability instrumentation'
+owner: 'Platform Team'
+
+OPS-02:
+name: 'Incident Response'
+category: 'operations'
+severity: 'info'
+description: 'Incident response procedures exist'
+evidence: 'Runbooks and playbooks documented'
+fix: 'Create incident response documentation'
+owner: 'Operations Team'
 
 # Control Execution Modes
+
 execution_modes:
-  safe:
-    controls: [GOV-01, GOV-02, SEC-01, QUAL-01, QUAL-02, A11Y-01, AI-01]
-    description: 'Full compliance required'
+safe:
+controls: [GOV-01, GOV-02, SEC-01, QUAL-01, QUAL-02, A11Y-01, AI-01]
+description: 'Full compliance required'
 
-  fast-secure:
-    controls: [SEC-01, QUAL-02, AI-01]
-    description: 'Security and types only, defer others to TODO'
+fast-secure:
+controls: [SEC-01, QUAL-02, AI-01]
+description: 'Security and types only, defer others to TODO'
 
-  audit:
-    controls:
-      [
-        GOV-01,
-        GOV-02,
-        SEC-01,
-        SEC-02,
-        SEC-03,
-        QUAL-01,
-        QUAL-02,
-        QUAL-03,
-        A11Y-01,
-        AI-01,
-        AI-02,
-        PRIV-01,
-        OPS-01,
-        OPS-02,
-      ]
-    description: 'Comprehensive audit with full artefact capture'
+audit:
+controls:
+[
+GOV-01,
+GOV-02,
+SEC-01,
+SEC-02,
+SEC-03,
+QUAL-01,
+QUAL-02,
+QUAL-03,
+A11Y-01,
+AI-01,
+AI-02,
+PRIV-01,
+OPS-01,
+OPS-02,
+]
+description: 'Comprehensive audit with full artefact capture'
 
-  r-and-d:
-    controls: [SEC-01, AI-01]
-    description: 'Minimal controls for experimental work'
+r-and-d:
+controls: [SEC-01, AI-01]
+description: 'Minimal controls for experimental work'
+
 ```
 
 ## ai/ai-knowledge/project-context.md
 
 ```
+
 # Political Sphere Project Context
 
 ## Overview
+
 Political Sphere is a democratically-governed political simulation platform. The current codebase focuses on a lightweight gameplay loop, compliance tooling, and auditing of AI interventions. The repository is organised as a multi-package workspace with a mixture of JavaScript and TypeScript services rather than a fully-generated Nx environment.
 
 ## Active Components
+
 - **API Service (`apps/api`)**  
   Plain Node.js HTTP server that exposes JSON endpoints for political entities (users, parties, bills, votes). Persistence relies on SQLite via `better-sqlite3`, with hand-written migration files.
 - **Game Server (`apps/game-server`)**  
@@ -1434,28 +1452,33 @@ Political Sphere is a democratically-governed political simulation platform. The
   Static-serving Node.js server that renders a React dashboard from prebuilt assets in `apps/frontend/public`, enriching the template with live API data at request time.
 
 ## Supporting Libraries
+
 - **`libs/shared`** – Precompiled CommonJS utilities (logging, security helpers, telemetry adapters) consumed by the runtime services.
 - **`libs/game-engine`** – Turn progression helpers referenced by the game server.
 - Additional libraries (`libs/platform`, `libs/ui`, …) are in-progress scaffolding and may contain TypeScript sources that are not part of the active runtime.
 
 ## Data & Storage
+
 - Primary store: SQLite databases that live under `apps/api/data/` and `apps/game-server/data/`.
 - Migrations: `apps/api/src/migrations/` contains sequential SQL/JS migration scripts plus validation helpers.
 - Observability: Structured logging funnels through `libs/shared/logger`. No central metrics stack is wired up yet; AI-facing metrics are JSON files under `ai/`.
 
 ## Tooling & Build
+
 - **Runtime**: Node.js ≥ 18 with ECMAScript modules enabled for most services.
 - **Package management**: Root `package-lock.json` pins dependencies; many packages are marked `extraneous`, so prefer `npm install` at the repository root to hydrate `node_modules/`.
 - **Nx configuration**: `tools/config/nx.json` exists for future modular orchestration, but the current workflow relies on direct `node` invocations and a handful of ad-hoc scripts.
 - **Testing**: Jest-style unit tests and Node test runners are present but not yet wired into a single command. Accessibility tests use Playwright under `apps/frontend/tests/`.
 
 ## Governance & Compliance
+
 - `.blackboxrules` (under `ai/governance/`) and `.github/copilot-instructions.md` define binding AI behaviour.
 - Compliance scripts under `apps/game-server/scripts/` exercise age verification, logging, and moderation flows.
 - `ai-controls.json` at the repository root centralises rate limits, quality gates, and monitoring expectations for AI automation.
 - Audit trails and interaction logs belong in `ai/history/` (see README and templates).
 
 ## Key Directories
+
 - `ai/` – AI-facing documentation, indexes, patterns, and governance rules.
 - `ai/context-bundles/` – Auto-generated, high-signal context packs for rapid loading.
 - `apps/` – Runtime services (`api`, `frontend`, `game-server`) plus scaffolding for dev tooling.
@@ -1464,11 +1487,15 @@ Political Sphere is a democratically-governed political simulation platform. The
 - `tools/` – Automation scripts, CI helpers, and the dormant Nx configuration.
 
 ## AI Assistant Expectations
+
 - Load this context together with `ai/ai-knowledge/architecture-overview.md` before making changes.
 - Work within zero-trust, accessibility-first constraints; never bypass `.blackboxrules`.
 - Prefer small, auditable changes; document non-obvious decisions in `ai/history/`.
 - Start from the relevant quick reference (`ai/ai-knowledge/api-service.md`, etc.) or context bundle before diving into source.
 - Raise a TODO in `docs/TODO.md` if you defer required gates or discover gaps that need human follow-up.
 
-For deeper architectural questions, inspect the service-specific READMEs or architectural ADRs under `docs/architecture/`.
+For deeper architectural questions, inspect the service-specific READMEs or architectural ADRs under `docs/04-architecture/`.
+
+```
+
 ```

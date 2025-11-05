@@ -6,8 +6,8 @@ const { advanceGameState } = require("../../../libs/game-engine/src/engine");
 const complianceClient = require("./complianceClient");
 const { CircuitBreaker } = require("../api/src/error-handler");
 
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 
 // DB adapter (SQLite) handles persistence
 const dbModule = require("./db");
@@ -425,13 +425,11 @@ app.post("/games/:id/action", async (req, res) => {
 				true,
 			);
 
-			return res
-				.status(201)
-				.json({
-					proposal: flagged,
-					flagged: true,
-					reasons: moderation.reasons,
-				});
+			return res.status(201).json({
+				proposal: flagged,
+				flagged: true,
+				reasons: moderation.reasons,
+			});
 		}
 
 		// Safe — apply via engine
@@ -483,12 +481,10 @@ app.post("/games/:id/action", async (req, res) => {
 		const moderation = remote ?? localModeration(content);
 
 		if (!moderation.isSafe) {
-			return res
-				.status(400)
-				.json({
-					error: "Speech content flagged for moderation",
-					reasons: moderation.reasons,
-				});
+			return res.status(400).json({
+				error: "Speech content flagged for moderation",
+				reasons: moderation.reasons,
+			});
 		}
 
 		const newState = advanceGameState(game, [action], Date.now());

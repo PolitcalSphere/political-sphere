@@ -23,20 +23,13 @@ export class UserStore {
       VALUES (?, ?, ?, ?, ?)
     `);
 
-    try {
-      stmt.run(
-        id,
-        input.username,
-        input.email,
-        now.toISOString(),
-        now.toISOString()
-      );
-    } catch (err) {
-      // Surface DB insert errors for tests/debugging
-      // eslint-disable-next-line no-console
-      console.error("[UserStore] insert error:", err);
-      throw err;
-    }
+    stmt.run(
+      id,
+      input.username,
+      input.email,
+      now.toISOString(),
+      now.toISOString()
+    );
 
     const user: User = {
       id,

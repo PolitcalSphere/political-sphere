@@ -27,12 +27,14 @@ This section addresses the 10 biggest issues identified across the project, prio
 Per updated GitHub Copilot Instructions v2.0.0, bringing project into full compliance with new standards:
 
 **Critical Priorities (Immediate)**:
+
 - [ ] Fix 6 failing tests in `apps/api/tests/` (parties.test.mjs, users.test.mjs) - **Testing Infrastructure Core Principle**
 - [ ] Migrate JavaScript files to TypeScript strict mode (`apps/game-server/src/db.js`) - **Core Rule #1: Type-safe**
 - [ ] Remove 7 `eslint-disable` comments by fixing underlying issues - **Code Quality Standards**
 - [ ] Fix GitHub workflow secret context access errors (50+ errors) - **Operations Standards**
 
 **High Priorities (This Sprint)**:
+
 - [ ] Add React component test coverage (Dashboard.jsx, GameBoard.jsx) - **80%+ coverage requirement**
 - [ ] Enable frontend in coverage config with proper Babel/SWC setup
 - [ ] Run security audit: `npm run fast-secure` - **Zero-Trust Compliance**
@@ -40,12 +42,14 @@ Per updated GitHub Copilot Instructions v2.0.0, bringing project into full compl
 - [ ] Ensure no debounce on voting flows (High-Risk Pattern #1)
 
 **Medium Priorities (This Month)**:
+
 - [ ] Run accessibility audit: `npm run audit:full` - **WCAG 2.2 AA Mandatory**
 - [ ] Verify voting mechanism constitutional compliance
 - [ ] Review seed data for political neutrality (High-Risk Pattern #6)
 - [ ] Document all changes in CHANGELOG.md - **Change Management requirement**
 
 **Documentation Updates**:
+
 - [ ] Create ADRs for architectural decisions made during fixes
 - [ ] Update CHANGELOG.md with v2.0.0 alignment work
 - [ ] Document baseline metrics from audit runs
@@ -53,6 +57,8 @@ Per updated GitHub Copilot Instructions v2.0.0, bringing project into full compl
 **Reference**: `.github/copilot-instructions/copilot-instructions.md` v2.0.0  
 **Owner**: Development Team | **Started**: 2025-11-05  
 **Priority**: High - Core compliance with governance standards
+
+**Script Organization**: Moved `run-smoke.js`, `run-vitest-coverage.js`, and `test-setup.ts` from `tools/` to `scripts/` directory. Updated `package.json` and `vitest.config.js` references accordingly. (2025-11-05)
 
 ---
 
@@ -252,6 +258,37 @@ Per updated GitHub Copilot Instructions v2.0.0, bringing project into full compl
 - [ ] Reconcile route status codes with test expectations (201/400/409 semantics)
   - Owner: API Team
   - Due: 2025-11-09
+
+## Per-app test runner & shims (added 2025-11-05)
+
+We added convenience tooling and lightweight test shims to make local per-application
+test runs fast and reliable without changing the repo's test runner.
+
+- Use Vitest as the test runner (no Jest required).
+
+- Run frontend tests (jsdom):
+
+```bash
+VITEST_APP=frontend VITEST_ENV=jsdom npx vitest --environment jsdom --run apps/frontend
+```
+
+- Run API tests (node environment):
+
+```bash
+npx vitest --run "apps/api/**/*.{test,spec}.{js,mjs,ts,tsx,jsx,tsx}"
+# or if you prefer the npm helper
+npm run test:api
+```
+
+- Notes on test shims and why they exist:
+  - `scripts/test-setup.ts` provides test-time polyfills and shims used across suites:
+    - Exposes `React` on `globalThis` for legacy components that use the classic JSX transform.
+    - Imports `@testing-library/jest-dom` to provide robust DOM matchers (toBeInTheDocument, toBeDisabled, etc.).
+    - Provides a `matchMedia` polyfill for jsdom so accessibility utilities can run during tests.
+    - Loads a small CJS-friendly shim for `@political-sphere/shared` used by server tests (rate-limiter, SECURITY_HEADERS helpers).
+  - These shims are intentionally lightweight and test-scoped. They are used to stabilize the developer experience and CI while we incrementally remove legacy patterns (require() usage, JSX in .js files, etc.).
+
+If you prefer not to use the jest-dom dependency, revert the `import "@testing-library/jest-dom"` line in `scripts/test-setup.ts` and the package can be removed. The minimal matchers can also be restored, but the official package provides more comprehensive assertions and is recommended.
 
 ### From TODO 3.md (Expansion Plan)
 

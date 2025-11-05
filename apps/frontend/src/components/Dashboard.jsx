@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from "react";
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = "/api";
 
 function Dashboard() {
   const [news, setNews] = useState([]);
@@ -10,14 +10,10 @@ function Dashboard() {
     tags: {},
     latest: null,
   });
-  const [statusMessage, setStatusMessage] = useState('Loading...');
+  const [statusMessage, setStatusMessage] = useState("Loading...");
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const [newsResponse, summaryResponse] = await Promise.all([
@@ -25,34 +21,54 @@ function Dashboard() {
         fetch(`${API_BASE_URL}/metrics/news`),
       ]);
 
-      if (!newsResponse.ok) throw new Error(`News API responded with ${newsResponse.status}`);
-      if (!summaryResponse.ok) throw new Error(`Metrics API responded with ${summaryResponse.status}`);
+      if (!newsResponse.ok)
+        throw new Error(`News API responded with ${newsResponse.status}`);
+      if (!summaryResponse.ok)
+        throw new Error(`Metrics API responded with ${summaryResponse.status}`);
 
       const newsData = await newsResponse.json();
       const summaryData = await summaryResponse.json();
 
       setNews(newsData.data || []);
-      setSummary(summaryData.data || summary);
-      setStatusMessage('Live data retrieved from API.');
+      setSummary(
+        summaryData.data || {
+          total: 0,
+          categories: {},
+          tags: {},
+          latest: null,
+        }
+      );
+      setStatusMessage("Live data retrieved from API.");
     } catch (error) {
       setStatusMessage(`API unavailable: ${error.message}`);
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const renderNews = () => {
     if (news.length === 0) {
-      return <li>No stories yet. The data pipeline will populate this feed shortly.</li>;
+      return (
+        <li>
+          No stories yet. The data pipeline will populate this feed shortly.
+        </li>
+      );
     }
     return news.map((item) => (
       <li key={item.id}>
         <h2>{item.title}</h2>
-        <p>{item.excerpt || item.summary || ''}</p>
+        <p>{item.excerpt || item.summary || ""}</p>
         <p className="status">
-          Last updated: <time dateTime={item.updatedAt || item.createdAt}>
-            {item.updatedAt || item.createdAt ? new Date(item.updatedAt || item.createdAt).toLocaleString() : 'n/a'}
+          Last updated:{" "}
+          <time dateTime={item.updatedAt || item.createdAt}>
+            {item.updatedAt || item.createdAt
+              ? new Date(item.updatedAt || item.createdAt).toLocaleString()
+              : "n/a"}
           </time>
         </p>
       </li>
@@ -60,37 +76,55 @@ function Dashboard() {
   };
 
   const renderSummary = () => {
-    const { categories, tags, latest } = summary;
+    const { categories = {}, tags = {}, latest } = summary;
     const latestMarkup = latest ? (
       <p className="status">
-        Latest: <strong>{latest.title}</strong> ({new Date(latest.updatedAt).toLocaleString()})
+        Latest: <strong>{latest.title}</strong> (
+        {new Date(latest.updatedAt).toLocaleString()})
       </p>
     ) : (
       <p className="status">No recent updates yet.</p>
     );
 
-    const categoriesMarkup = Object.keys(categories).length === 0 ? (
-      <li>No categories recorded.</li>
-    ) : (
-      Object.entries(categories).map(([name, count]) => (
-        <li key={name}><strong>{name}:</strong> {count}</li>
-      ))
-    );
+    const categoriesMarkup =
+      Object.keys(categories).length === 0 ? (
+        <li>No categories recorded.</li>
+      ) : (
+        Object.entries(categories).map(([name, count]) => (
+          <li key={name}>
+            <strong>{name}:</strong> {count}
+          </li>
+        ))
+      );
 
-    const tagsMarkup = Object.keys(tags).length === 0 ? (
-      <li>No tags recorded.</li>
-    ) : (
-      Object.entries(tags).map(([name, count]) => (
-        <li key={name}><strong>{name}:</strong> {count}</li>
-      ))
-    );
+    const tagsMarkup =
+      Object.keys(tags).length === 0 ? (
+        <li>No tags recorded.</li>
+      ) : (
+        Object.entries(tags).map(([name, count]) => (
+          <li key={name}>
+            <strong>{name}:</strong> {count}
+          </li>
+        ))
+      );
 
     return (
       <>
-        <p>Total stories: <strong>{summary.total}</strong></p>
-        <p className="status">Summary generated at: {new Date().toLocaleString()}</p>
+        <p>
+          Total stories: <strong>{summary.total}</strong>
+        </p>
+        <p className="status">
+          Summary generated at: {new Date().toLocaleString()}
+        </p>
         {latestMarkup}
-        <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', marginTop: '1rem' }}>
+        <div
+          style={{
+            display: "grid",
+            gap: "1rem",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            marginTop: "1rem",
+          }}
+        >
           <div>
             <h3>By category</h3>
             <ul>{categoriesMarkup}</ul>
@@ -107,29 +141,40 @@ function Dashboard() {
   return (
     <main>
       <header>
-        <h1>Political Sphere Platform</h1>
-        <span className="status" aria-live="polite">{statusMessage}</span>
+        <h1>Dashboard</h1>
+        <span className="status" aria-live="polite">
+          {statusMessage}
+        </span>
       </header>
       <section>
-        <h2>Latest policy signals</h2>
+        <h2 id="latest-policy-signals">Latest policy signals</h2>
         <p className="status">
-          Tracking emerging narratives and transparency signals from civic data pipelines.
+          Tracking emerging narratives and transparency signals from civic data
+          pipelines.
         </p>
-        <ul aria-label="List of latest policy signals">{renderNews()}</ul>
-        <button onClick={fetchData} disabled={loading} aria-describedby="refresh-description">
-          {loading ? 'Refreshing...' : 'Refresh'}
+        <ul aria-labelledby="latest-policy-signals">{renderNews()}</ul>
+        <button
+          type="button"
+          onClick={fetchData}
+          disabled={loading}
+          aria-describedby="refresh-description"
+        >
+          {loading ? "Refreshing..." : "Refresh"}
         </button>
         <div id="refresh-description" className="sr-only">
           Refresh the list of policy signals from the API
         </div>
       </section>
       <section>
-        <h2>Coverage summary</h2>
-        <p className="status">Quick breakdown of categories and tags in the latest dataset.</p>
-        <div aria-label="News coverage summary">{renderSummary()}</div>
+        <h2 id="coverage-summary">Coverage summary</h2>
+        <p className="status">
+          Quick breakdown of categories and tags in the latest dataset.
+        </p>
+        <div>{renderSummary()}</div>
       </section>
       <p className="status">
-        Last updated: <span aria-live="polite">{new Date().toLocaleString()}</span>
+        Last updated:{" "}
+        <span aria-live="polite">{new Date().toLocaleString()}</span>
       </p>
     </main>
   );

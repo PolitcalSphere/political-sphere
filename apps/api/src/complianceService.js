@@ -280,6 +280,7 @@ class ComplianceService {
 		// Placeholder for email service integration (e.g., SendGrid, SES)
 		logger.info("Email notification sent", {
 			subject,
+			message: message.substring(0, 50),
 			recipients: recipients.length,
 		});
 		// In production: integrate with email service
@@ -292,7 +293,10 @@ class ComplianceService {
 	 */
 	async sendSMS(message, recipients) {
 		// Placeholder for SMS service integration (e.g., Twilio)
-		logger.info("SMS notification sent", { recipients: recipients.length });
+		logger.info("SMS notification sent", {
+			message: message.substring(0, 50),
+			recipients: recipients.length,
+		});
 		// In production: integrate with SMS service
 	}
 
@@ -303,7 +307,10 @@ class ComplianceService {
 	 */
 	async sendSlackMessage(subject, message) {
 		// Placeholder for Slack integration
-		logger.info("Slack notification sent", { subject });
+		logger.info("Slack notification sent", {
+			subject,
+			message: message.substring(0, 50),
+		});
 		// In production: integrate with Slack API
 	}
 

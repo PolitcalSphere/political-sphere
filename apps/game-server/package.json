@@ -2,10 +2,12 @@
   "name": "game-server",
   "version": "0.1.0",
   "private": true,
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon --watch src --exec node src/index.js"
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc --watch & nodemon --watch dist --exec node dist/index.js",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "axios": "^1.13.1",
@@ -16,5 +18,15 @@
     "node-fetch": "^3.3.2",
     "sqlite3": "^5.1.6",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.4",
+    "@types/body-parser": "^1.19.2",
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.0.0",
+    "@types/uuid": "^9.0.2",
+    "nodemon": "^3.0.1",
+    "typescript": "^5.0.0"
   }
 }

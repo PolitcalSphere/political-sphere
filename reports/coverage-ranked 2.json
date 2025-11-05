@@ -1,0 +1,128 @@
+[
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/agent.ts",
+    "total": 1,
+    "covered": 0,
+    "pct": 0
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/database.js",
+    "total": 62,
+    "covered": 0,
+    "pct": 0
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/index.ts",
+    "total": 3,
+    "covered": 0,
+    "pct": 0
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/log.ts",
+    "total": 7,
+    "covered": 0,
+    "pct": 0
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/logger.ts",
+    "total": 53,
+    "covered": 0,
+    "pct": 0
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/security.ts",
+    "total": 116,
+    "covered": 0,
+    "pct": 0
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/domain/bill-stage.ts",
+    "total": 1,
+    "covered": 0,
+    "pct": 0
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/domain/bill.ts",
+    "total": 3,
+    "covered": 0,
+    "pct": 0
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/domain/debate.ts",
+    "total": 2,
+    "covered": 0,
+    "pct": 0
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/domain/division.ts",
+    "total": 2,
+    "covered": 0,
+    "pct": 0
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/domain/election.ts",
+    "total": 2,
+    "covered": 0,
+    "pct": 0
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/domain/mp.ts",
+    "total": 2,
+    "covered": 0,
+    "pct": 0
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/domain/order-paper-item.ts",
+    "total": 1,
+    "covered": 0,
+    "pct": 0
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/domain/party.ts",
+    "total": 2,
+    "covered": 0,
+    "pct": 0
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/domain/session.ts",
+    "total": 1,
+    "covered": 0,
+    "pct": 0
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/domain/sitting-day.ts",
+    "total": 1,
+    "covered": 0,
+    "pct": 0
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/domain/user.ts",
+    "total": 2,
+    "covered": 0,
+    "pct": 0
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/domain/vote.ts",
+    "total": 3,
+    "covered": 0,
+    "pct": 0
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/telemetry.ts",
+    "total": 30,
+    "covered": 14,
+    "pct": 46.67
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/security.js",
+    "total": 161,
+    "covered": 130,
+    "pct": 80.75
+  },
+  {
+    "file": "/Users/morganlowman/Documents/GitHub/political-sphere/libs/shared/src/logger.js",
+    "total": 50,
+    "covered": 48,
+    "pct": 96
+  }
+]

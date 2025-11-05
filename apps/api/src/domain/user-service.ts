@@ -25,8 +25,6 @@ export class UserService {
     const existingUser = byUsername || byEmail;
     // existingUser check performed; details available via store/cache logs
     if (existingUser) {
-      // eslint-disable-next-line no-console
-      console.warn("[UserService] user exists, throwing");
       throw new Error("Username or email already exists");
     }
 

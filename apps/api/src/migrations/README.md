@@ -18,7 +18,7 @@ Migrations are used to manage database schema changes in a controlled, versioned
 ### Running Migrations
 
 ```javascript
-import { initializeDatabase, runMigrations } from './migrations/index.js';
+import { initializeDatabase, runMigrations } from "./migrations/index.js";
 
 const db = initializeDatabase();
 await runMigrations(db);
@@ -27,7 +27,7 @@ await runMigrations(db);
 ### Rolling Back Migrations
 
 ```javascript
-import { rollbackAllMigrations } from './migrations/index.js';
+import { rollbackAllMigrations } from "./migrations/index.js";
 
 await rollbackAllMigrations(db);
 ```
@@ -38,7 +38,7 @@ await rollbackAllMigrations(db);
 2. Export `name`, `up`, and `down` functions:
 
 ```javascript
-export const name = '00N_migration_name';
+export const name = "00N_migration_name";
 
 export function up(db) {
   // Apply changes
@@ -54,6 +54,7 @@ export function down(db) {
 ## Error Handling
 
 Migrations use custom error classes:
+
 - `MigrationError`: General migration failures
 - `MigrationRollbackError`: Rollback-specific failures
 - `MigrationValidationError`: Schema validation failures
@@ -61,6 +62,7 @@ Migrations use custom error classes:
 ## Validation
 
 After migrations, the system validates:
+
 - All expected tables exist
 - Foreign key constraints are satisfied
 - No orphaned records
@@ -68,4 +70,4 @@ After migrations, the system validates:
 ## Ownership
 
 Owned by: API Team
-@see docs/architecture/decisions/adr-0001-database-migrations.md
+@see docs/04-architecture/decisions/adr-0001-database-migrations.md

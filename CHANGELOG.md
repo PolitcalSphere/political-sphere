@@ -24,6 +24,7 @@ The format follows Keep a Changelog (https://keepachangelog.com/en/1.0.0/) and t
   - Added small, test-scoped shims and component/test fixes so frontend jsdom tests (Dashboard + GameBoard) run reliably under the repo config.
   - Verified local test runs: frontend jsdom suites passed (Dashboard + GameBoard), and API test suite ran green (29 files, 214 tests passed) under the consolidated configuration.
   - Commit: "ci: add refined per-app tests workflow (matrix, cache, coverage artifacts)" (2025-11-05).
+
 ### Highlights
 
 - Reorganized GitHub Copilot instructions and governance files into `.github/copilot-instructions/` and aligned `.blackboxrules`.

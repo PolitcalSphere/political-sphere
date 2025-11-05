@@ -433,17 +433,17 @@ class AgeVerificationService {
 	}
 
 	// Placeholder methods for external integrations
-	async estimateAgeFromPayment(cardToken) {
+	async estimateAgeFromPayment(_cardToken) {
 		// Integrate with payment processor
 		return { age: 25, confidence: 0.9 };
 	}
 
-	async verifyGovernmentId(document, selfie) {
+	async verifyGovernmentId(_document, _selfie) {
 		// Integrate with ID verification service
 		return { isValid: true, age: 25 };
 	}
 
-	async createChildAccount(consent) {
+	async createChildAccount(_consent) {
 		// Create child user account with restrictions
 		return `child_${crypto.randomUUID()}`;
 	}

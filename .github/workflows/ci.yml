@@ -52,9 +52,14 @@ jobs:
       - name: Validate required secrets
         run: |
           # Ensure required secrets are present to avoid runtime failures
-          if [ -z "${{ secrets.NX_CLOUD_ACCESS_TOKEN }}" ]; then
-            echo "::error::Missing required secret: NX_CLOUD_ACCESS_TOKEN"
-            exit 1
+            # Only require secrets for pushes to main or PRs from same repo (not forks)
+            if [ "${{ github.event_name }}" == "push" ] || [ "${{ github.event.pull_request.head.repo.full_name }}" == "${{ github.repository }}" ]; then
+              if [ -z "$NX_CLOUD_ACCESS_TOKEN" ]; then
+                echo "::error::Missing required secret: NX_CLOUD_ACCESS_TOKEN"
+                exit 1
+              fi
+            else
+              echo "::notice::Skipping secret validation for fork PR"
           fi
 
       - name: Validate workflow files
@@ -494,6 +499,7 @@ jobs:
       [
         lint-and-typecheck,
         test,
+        coverage-aggregation,
         build,
         security-scan,
         integration-test,
@@ -517,35 +523,35 @@ jobs:
             "jobs": {
               "lint-and-typecheck": {
                 "result": "${{ needs.lint-and-typecheck.result }}",
-                "duration_seconds": ${{ needs.lint-and-typecheck.outputs.duration || 0 }}
+                  "duration_seconds": 0
               },
               "test": {
                 "result": "${{ needs.test.result }}",
-                "duration_seconds": ${{ needs.test.outputs.duration || 0 }}
+                  "duration_seconds": 0
               },
               "coverage-aggregation": {
                 "result": "${{ needs.coverage-aggregation.result }}",
-                "duration_seconds": ${{ needs.coverage-aggregation.outputs.duration || 0 }}
+                  "duration_seconds": 0
               },
               "build": {
                 "result": "${{ needs.build.result }}",
-                "duration_seconds": ${{ needs.build.outputs.duration || 0 }}
+                  "duration_seconds": 0
               },
               "security-scan": {
                 "result": "${{ needs.security-scan.result }}",
-                "duration_seconds": ${{ needs.security-scan.outputs.duration || 0 }}
+                  "duration_seconds": 0
               },
               "integration-test": {
                 "result": "${{ needs.integration-test.result }}",
-                "duration_seconds": ${{ needs.integration-test.outputs.duration || 0 }}
+                  "duration_seconds": 0
               },
               "e2e-test": {
                 "result": "${{ needs.e2e-test.result }}",
-                "duration_seconds": ${{ needs.e2e-test.outputs.duration || 0 }}
+                  "duration_seconds": 0
               },
               "accessibility-test": {
                 "result": "${{ needs.accessibility-test.result }}",
-                "duration_seconds": ${{ needs.accessibility-test.outputs.duration || 0 }}
+                  "duration_seconds": 0
               }
             }
           }

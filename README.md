@@ -203,6 +203,27 @@ npm run test:a11y         # Accessibility tests (axe-core)
 npm run test:integration  # Integration test suite
 ```
 
+### Developer test scripts (fast iteration)
+
+For faster local feedback and per-app testing we've added a few convenience npm scripts:
+
+- `npm run test:fast` — run only changed tests (VITEST_CHANGED=1). Fast iteration loop for quick feedback.
+- `npm run test:full` — run the full Vitest suite.
+- `npm run test:api` — run tests scoped to the `apps/api` package.
+- `npm run test:frontend` — run tests scoped to the `apps/frontend` package.
+
+Example: to iterate quickly on API changes use:
+
+```bash
+npm run test:fast
+```
+
+Or run only API tests when focusing on backend changes:
+
+```bash
+npm run test:api
+```
+
 ### Test Configuration
 
 - **Jest**: ESM-compatible with TypeScript transformation
@@ -226,7 +247,7 @@ See [Contributing Guide](docs/contributing.md) and [.blackboxrules](.blackboxrul
 
 ### Core Documentation
 
-- [Architecture Decision Records](docs/architecture/decisions/) — Technical decisions with context and alternatives
+- [Architecture Decision Records](docs/04-architecture/decisions/) — Technical decisions with context and alternatives
 - [API Documentation](docs/api.md) — REST and GraphQL endpoint references
 - [Security Guidelines](docs/SECURITY.md) — Threat model, compliance, and reporting
 - [Contributing Guide](docs/contributing.md) — Development workflow and standards
