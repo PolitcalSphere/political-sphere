@@ -1,3 +1,11 @@
+# AI-ASSISTABLE METADATA
+# @action-name: Setup Node and Dependencies
+# @action-purpose: Install Node.js and project dependencies with caching for npm/pnpm/yarn
+# @action-category: setup
+# @action-criticality: medium
+# @action-owner: platform-engineering
+# @action-dependencies: [actions/setup-node, corepack]
+#
 # Setup Node Dependencies Composite Action
 # This composite action sets up Node.js and installs dependencies with caching support
 # for npm, pnpm, and yarn

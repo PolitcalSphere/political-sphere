@@ -1,3 +1,12 @@
+# AI-ASSISTABLE METADATA
+# @action-name: Run Quality Checks
+# @action-purpose: Composite action to run lint, typecheck, import-boundary, and optional security scans
+# @action-category: quality
+# @action-criticality: high
+# @action-owner: platform-engineering
+# @action-dependencies: [actions/setup-node, semgrep]
+# @action-outputs: [lint-result, typecheck-result, boundaries-result, semgrep-result, overall-result]
+#
 # Quality Checks Composite Action
 # This composite action runs comprehensive quality checks for Node.js projects
 # including linting, type checking, import boundary validation, and optional security scanning
