@@ -1,9 +1,9 @@
-const express = require("express");
+import express from "express";
 // Use local CJS shim for shared schemas in test/runtime
-const { CreatePartySchema } = require("../shared-shim.js");
-const { getDatabase } = require("../index");
-const { validate } = require("../middleware/validation");
-const logger = require("../logger");
+import { CreatePartySchema } from "../shared-shim.js";
+import { getDatabase } from "../index.js";
+import { validate } from "../middleware/validation.js";
+import logger from "../logger.js";
 
 const router = express.Router();
 
@@ -70,4 +70,4 @@ router.get("/parties", async (_req, res) => {
 	}
 });
 
-module.exports = router;
+export default router;

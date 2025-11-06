@@ -1,9 +1,9 @@
-const { initializeDatabase, runMigrations } = require("./migrations");
-const { UserStore } = require("./user-store");
-const { PartyStore } = require("./party-store");
-const { BillStore } = require("./bill-store");
-const { VoteStore } = require("./vote-store");
-const { CacheService } = require("./cache");
+import { BillStore } from "./bill-store.js";
+import { CacheService } from "./cache.js";
+import { initializeDatabase, runMigrations } from "./migrations.js";
+import { PartyStore } from "./party-store.js";
+import { UserStore } from "./user-store.js";
+import { VoteStore } from "./vote-store.js";
 
 function shouldEnableCache() {
 	if (process.env.NODE_ENV === "test") {
@@ -53,8 +53,4 @@ function closeDatabase() {
 	}
 }
 
-module.exports = {
-	DatabaseConnection,
-	getDatabase,
-	closeDatabase,
-};
+export { DatabaseConnection, getDatabase, closeDatabase };

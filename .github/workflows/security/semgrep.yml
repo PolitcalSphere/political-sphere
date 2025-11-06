@@ -2,7 +2,7 @@ name: Semgrep Security Scan
 on:
   push: { branches: [main] }
   pull_request:
-  schedule: [{ cron: '0 9 * * 1' }]
+  schedule: [{ cron: "0 9 * * 1" }]
   workflow_dispatch:
 
 jobs:
@@ -16,11 +16,13 @@ jobs:
       pull-requests: write
       checks: write
     container:
-      image: returntocorp/semgrep:latest
+      # Pin to a specific Semgrep version to avoid floating latest tag
+      image: returntocorp/semgrep:1.67.0
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
+          persist-credentials: false
           fetch-depth: 0
 
       - name: Validate Semgrep configuration
@@ -38,7 +40,8 @@ jobs:
           echo "🔒 Running Semgrep security scan..."
           # Mask sensitive data in logs
           echo "::add-mask::${{ secrets.SEMGREP_APP_TOKEN }}"
-          semgrep ci --config auto --json > semgrep-results.json || {
+          # Output both JSON (artifact) and SARIF (code scanning)
+          semgrep ci --config auto --json --sarif --output semgrep-results.sarif > semgrep-results.json || {
             echo "❌ Semgrep scan found issues - review results above"
             exit 1
           }
@@ -61,7 +64,7 @@ jobs:
 
       - name: Upload SARIF Results to GitHub Security Tab
         if: always()
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@e2b3eafc8d227b0241d48be5f425d47c2d750a13 # v3.26.10
         with:
           sarif_file: semgrep-results.sarif
           category: semgrep
@@ -69,7 +72,7 @@ jobs:
 
       - name: Upload Scan Results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
         with:
           name: semgrep-scan-results
           path: |
@@ -79,7 +82,7 @@ jobs:
 
       - name: Comment on PR with Results
         if: github.event_name == 'pull_request' && always()
-        uses: actions/github-script@v7
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           script: |
             const findings = ${{ steps.process.outputs.findings || 0 }};

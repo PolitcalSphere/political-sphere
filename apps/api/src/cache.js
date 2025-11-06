@@ -1,4 +1,4 @@
-const Redis = require("ioredis");
+import Redis from "ioredis";
 
 function isRedisInstance(input) {
 	return input instanceof Redis;
@@ -146,8 +146,4 @@ const CACHE_TTL = {
 	PARTY_LIST: 120, // 2 minutes
 };
 
-module.exports = {
-	CacheService,
-	cacheKeys,
-	CACHE_TTL,
-};
+export { CacheService, cacheKeys, CACHE_TTL };

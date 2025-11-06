@@ -1,7 +1,7 @@
 // Compatibility wrapper: export a BillStore class that delegates to
 // either a test-friendly repository object (with create/getById/update/etc.)
 // or to the real SQL-backed BillStore implementation.
-const { BillStore: RealBillStore } = require("../bill-store.js");
+import { BillStore as RealBillStore } from "../bill-store.js";
 
 class BillStore {
 	constructor(dbOrRepo, cache) {
@@ -94,5 +94,5 @@ class BillStore {
 	}
 }
 
-module.exports = BillStore;
-module.exports.BillStore = BillStore;
+export default BillStore;
+export { BillStore };

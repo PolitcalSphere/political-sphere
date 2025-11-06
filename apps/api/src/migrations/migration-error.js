@@ -5,34 +5,30 @@
  */
 
 class MigrationError extends Error {
-  constructor(message, migrationName, originalError = null) {
-    super(message);
-    this.name = "MigrationError";
-    this.migrationName = migrationName;
-    this.originalError = originalError;
-  }
+	constructor(message, migrationName, originalError = null) {
+		super(message);
+		this.name = "MigrationError";
+		this.migrationName = migrationName;
+		this.originalError = originalError;
+	}
 
-  toString() {
-    return `${this.name}: ${this.message} (Migration: ${this.migrationName})`;
-  }
+	toString() {
+		return `${this.name}: ${this.message} (Migration: ${this.migrationName})`;
+	}
 }
 
 class MigrationRollbackError extends MigrationError {
-  constructor(message, migrationName, originalError = null) {
-    super(message, migrationName, originalError);
-    this.name = "MigrationRollbackError";
-  }
+	constructor(message, migrationName, originalError = null) {
+		super(message, migrationName, originalError);
+		this.name = "MigrationRollbackError";
+	}
 }
 
 class MigrationValidationError extends MigrationError {
-  constructor(message, migrationName, originalError = null) {
-    super(message, migrationName, originalError);
-    this.name = "MigrationValidationError";
-  }
+	constructor(message, migrationName, originalError = null) {
+		super(message, migrationName, originalError);
+		this.name = "MigrationValidationError";
+	}
 }
 
-module.exports = {
-  MigrationError,
-  MigrationRollbackError,
-  MigrationValidationError,
-};
+export { MigrationError, MigrationRollbackError, MigrationValidationError };

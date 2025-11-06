@@ -1,5 +1,5 @@
 // CJS proxy to the JS build of the VoteStore used by tests
-const { VoteStore: RealVoteStore } = require("../vote-store.js");
+import { VoteStore as RealVoteStore } from "../vote-store.js";
 
 class VoteStore {
 	constructor(dbOrRepo, cache) {
@@ -96,5 +96,5 @@ class VoteStore {
 	}
 }
 
-module.exports = VoteStore;
-module.exports.VoteStore = VoteStore;
+export default VoteStore;
+export { VoteStore };

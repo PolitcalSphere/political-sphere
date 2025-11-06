@@ -1,11 +1,11 @@
-const {
-	sanitizeHtml,
+import {
 	isValidInput,
 	isValidLength,
+	isValidUrl,
+	sanitizeHtml,
 	validateCategory,
 	validateTag,
-	isValidUrl,
-} = require("./shared-shim.js");
+} from "./shared-shim.js";
 
 const ALLOWED_CATEGORIES = [
 	"politics",
@@ -353,6 +353,5 @@ class NewsService {
 	}
 }
 
-module.exports = {
-	NewsService,
-};
+export { NewsService };
+export default { NewsService };

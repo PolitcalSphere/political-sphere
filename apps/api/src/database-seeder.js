@@ -1,5 +1,4 @@
 const { withTransaction } = require("./database-transactions");
-const { getConnection } = require("./database-connection");
 const logger = require("./logger");
 const fs = require("fs");
 const path = require("path");
@@ -39,8 +38,9 @@ class DatabaseSeeder {
 			return;
 		}
 
-		const files = fs.readdirSync(seedersDir)
-			.filter(file => file.endsWith(".js") && file !== "index.js")
+		const files = fs
+			.readdirSync(seedersDir)
+			.filter((file) => file.endsWith(".js") && file !== "index.js")
 			.sort();
 
 		for (const file of files) {
@@ -51,14 +51,22 @@ class DatabaseSeeder {
 				if (typeof seederModule === "function") {
 					const name = path.basename(file, ".js");
 					this.register(name, seederModule);
-				} else if (seederModule.default && typeof seederModule.default === "function") {
+				} else if (
+					seederModule.default &&
+					typeof seederModule.default === "function"
+				) {
 					const name = path.basename(file, ".js");
 					this.register(name, seederModule.default);
 				} else {
-					logger.warn("Seeder file does not export a function", { file: filePath });
+					logger.warn("Seeder file does not export a function", {
+						file: filePath,
+					});
 				}
 			} catch (error) {
-				logger.error("Failed to load seeder", { file: filePath, error: error.message });
+				logger.error("Failed to load seeder", {
+					file: filePath,
+					error: error.message,
+				});
 			}
 		}
 
@@ -81,7 +89,9 @@ class DatabaseSeeder {
 		} = options;
 
 		if (environment === "production" && !force) {
-			throw new Error("Seeding is disabled in production. Use force=true to override.");
+			throw new Error(
+				"Seeding is disabled in production. Use force=true to override.",
+			);
 		}
 
 		if (this.isSeeded && !force) {
@@ -128,7 +138,9 @@ class DatabaseSeeder {
 
 						// Continue with other seeders unless it's a critical error
 						if (error.message.includes("UNIQUE constraint failed")) {
-							logger.warn("Skipping seeder due to constraint violation", { name });
+							logger.warn("Skipping seeder due to constraint violation", {
+								name,
+							});
 							results.seeders.push({
 								name,
 								status: "skipped",
@@ -184,7 +196,9 @@ class DatabaseSeeder {
 		} = options;
 
 		if (environment === "production" && !force) {
-			throw new Error("Seeding is disabled in production. Use force=true to override.");
+			throw new Error(
+				"Seeding is disabled in production. Use force=true to override.",
+			);
 		}
 
 		const result = {
@@ -224,10 +238,26 @@ class DatabaseSeeder {
 	async clear(tables = []) {
 		const defaultTables = ["votes", "bills", "parties", "users"];
 
-		await withTransaction(async (transaction, connection) => {
+		await withTransaction(async (_transaction, connection) => {
+			// Build allowlist of existing tables to avoid SQL injection via table names
+			const isValidIdentifier = (name) =>
+				/^[A-Za-z_][A-Za-z0-9_]*$/.test(String(name));
+			let existingTables = new Set();
+			try {
+				const rows = connection.db
+					.prepare(
+						"SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'",
+					)
+					.all();
+				existingTables = new Set(rows.map((r) => r.name));
+			} catch {}
 			const tablesToClear = tables.length > 0 ? tables : defaultTables;
 
 			for (const table of tablesToClear) {
+				if (!isValidIdentifier(table) || !existingTables.has(table)) {
+					logger.warn("Skipping clear for invalid or unknown table", { table });
+					continue;
+				}
 				try {
 					connection.db.exec(`DELETE FROM ${table}`);
 					logger.debug("Table cleared", { table });
@@ -240,13 +270,15 @@ class DatabaseSeeder {
 			try {
 				connection.db.exec("DELETE FROM sqlite_sequence");
 				logger.debug("Auto-increment counters reset");
-			} catch (error) {
+			} catch {
 				// Ignore if table doesn't exist
 			}
 		});
 
 		this.isSeeded = false;
-		logger.info("Seeded data cleared", { tables: tables.length > 0 ? tables : defaultTables });
+		logger.info("Seeded data cleared", {
+			tables: tables.length > 0 ? tables : defaultTables,
+		});
 	}
 
 	/**
@@ -270,7 +302,7 @@ class DatabaseSeeder {
 const seeder = new DatabaseSeeder();
 
 // Register default seeders
-seeder.register("users", async (transaction, connection) => {
+seeder.register("users", async (_transaction, connection) => {
 	const users = [
 		{ id: "user-1", username: "alice", email: "alice@example.com" },
 		{ id: "user-2", username: "bob", email: "bob@example.com" },
@@ -288,11 +320,26 @@ seeder.register("users", async (transaction, connection) => {
 	}
 });
 
-seeder.register("parties", async (transaction, connection) => {
+seeder.register("parties", async (_transaction, connection) => {
 	const parties = [
-		{ id: "party-1", name: "Democratic Party", description: "Progressive policies", color: "#0015BC" },
-		{ id: "party-2", name: "Republican Party", description: "Conservative policies", color: "#E9141D" },
-		{ id: "party-3", name: "Green Party", description: "Environmental focus", color: "#0B9A4A" },
+		{
+			id: "party-1",
+			name: "Democratic Party",
+			description: "Progressive policies",
+			color: "#0015BC",
+		},
+		{
+			id: "party-2",
+			name: "Republican Party",
+			description: "Conservative policies",
+			color: "#E9141D",
+		},
+		{
+			id: "party-3",
+			name: "Green Party",
+			description: "Environmental focus",
+			color: "#0B9A4A",
+		},
 	];
 
 	const stmt = connection.db.prepare(`
@@ -306,7 +353,7 @@ seeder.register("parties", async (transaction, connection) => {
 	}
 });
 
-seeder.register("bills", async (transaction, connection) => {
+seeder.register("bills", async (_transaction, connection) => {
 	const bills = [
 		{
 			id: "bill-1",
@@ -338,11 +385,19 @@ seeder.register("bills", async (transaction, connection) => {
 
 	for (const bill of bills) {
 		const now = new Date().toISOString();
-		stmt.run(bill.id, bill.title, bill.description, bill.proposerId, bill.status, now, now);
+		stmt.run(
+			bill.id,
+			bill.title,
+			bill.description,
+			bill.proposerId,
+			bill.status,
+			now,
+			now,
+		);
 	}
 });
 
-seeder.register("votes", async (transaction, connection) => {
+seeder.register("votes", async (_transaction, connection) => {
 	const votes = [
 		{ billId: "bill-1", userId: "user-2", vote: "aye" },
 		{ billId: "bill-1", userId: "user-3", vote: "nay" },

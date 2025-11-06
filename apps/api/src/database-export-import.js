@@ -259,13 +259,11 @@ class DatabaseExportImportManager {
 			}
 
 			await withTransaction(
-				async (transaction, connection) => {
+				async (_transaction, connection) => {
 					// Validate schema if requested
 					if (validateSchema && importData.schema) {
 						await this.validateImportSchema(connection, importData.schema);
-					}
-
-					// Determine tables to import
+					} // Determine tables to import
 					let tablesToImport = tables;
 					if (!tablesToImport) {
 						tablesToImport = Object.keys(importData.tables);
@@ -326,6 +324,13 @@ class DatabaseExportImportManager {
 		clearExisting,
 		dryRun,
 	) {
+		// Validate identifiers to prevent SQL injection via table/column names
+		const isValidIdentifier = (name) =>
+			/^[A-Za-z_][A-Za-z0-9_]*$/.test(String(name));
+		if (!isValidIdentifier(tableName)) {
+			throw new Error(`Invalid table name: ${tableName}`);
+		}
+
 		// Clear existing data if requested
 		if (clearExisting && !dryRun) {
 			connection.db.exec(`DELETE FROM ${tableName}`);
@@ -336,8 +341,13 @@ class DatabaseExportImportManager {
 		const records = tableData.records;
 		if (records.length === 0) return;
 
-		// Get column names from first record
+		// Get column names from first record and validate them
 		const columns = Object.keys(records[0]);
+		for (const col of columns) {
+			if (!isValidIdentifier(col)) {
+				throw new Error(`Invalid column name on table ${tableName}: ${col}`);
+			}
+		}
 		const placeholders = columns.map(() => "?").join(", ");
 		const columnList = columns.join(", ");
 

@@ -63,11 +63,33 @@ The format follows Keep a Changelog (https://keepachangelog.com/en/1.0.0/) and t
   - Improved compliance with governance rules and file placement standards
 
 - **GitHub Workflow Cleanup (2025-11-05)**: Consolidated and reorganized `.github` folder structure for improved maintainability:
+
   - Removed 6 empty duplicate directories (`ci 2`, `deployment 2`, `maintenance 2`, `monitoring 2`, `security 2`, `testing 2`)
   - Moved 9 workflow files from `.github/actions/` to `.github/workflows/` (affected-tests.yml, adr-validate.yml, hooks-review.yml, copilot-experiment-summary.yml, integration.yml, docker.yml, guard-check.yml, secret-rotation.yml, ai-maintenance.yml)
   - Resolved duplicate ai-maintenance.yml files by keeping the comprehensive version with code indexing, embeddings, ANN building, and smoke tests
   - Removed duplicate `lefthook.yml` template file (kept active `.lefthook.yml` configuration)
   - Improved discoverability and alignment with GitHub Actions best practices
+
+- **Security Hardening (2025-11-05)**:
+  - Fixed potential SQL injection vectors by validating dynamic identifiers:
+    - `apps/api/src/database-export-import.js`: Validate table and column names against a strict identifier regex before constructing SQL; continue using prepared statements for values.
+    - `apps/api/src/database-seeder.js`: Validate requested tables and ensure they exist before issuing `DELETE FROM` statements; skip invalid/unknown tables safely.
+    - `apps/api/src/database-transactions.js`: Sanitize `isolationLevel` to one of [DEFERRED, IMMEDIATE, EXCLUSIVE] prior to `BEGIN ... TRANSACTION`.
+  - Reduced SSRF/open-redirect risk:
+    - `apps/api/src/server.js`: Avoid trusting Host header when constructing URL objects for request parsing.
+    - `apps/frontend/src/server.js`: Read API_BASE_URL from env and derive CSP connect-src dynamically from API origin (no hard-coded http URLs).
+  - Removed unused imports that trigger security scanners:
+    - `apps/api/src/database-backup.js`: Removed unused child_process import to avoid spawn/exec usage warnings.
+  - CI security improvements:
+    - `.github/workflows/security/semgrep.yml`: Avoid floating `latest` container tag by pinning to a specific Semgrep version and generate SARIF output for Code Scanning.
+    - Disabled credential persistence (`persist-credentials: false`) on all `actions/checkout` steps across security and ops workflows to reduce token exposure.
+    - **Pinned all GitHub Actions to commit SHAs** across security, ops, and CI workflows to eliminate supply-chain attack surface:
+      - Core actions: `actions/checkout@b4ffde65`, `actions/setup-node@60edb5dd`, `actions/upload-artifact@834a144e`, `actions/download-artifact@fa0a91b8`
+      - Security scanners: `github/codeql-action@e2b3eafc`, `returntocorp/semgrep-action@713efdd4`, `aquasecurity/trivy-action@6e7b7d1f`
+      - Infrastructure: `hashicorp/setup-terraform@b9cd54a3`, `bridgecrewio/checkov-action@0e64fe69`
+      - Utilities: `actions/github-script@60a0d830`, `codecov/codecov-action@7afa10ed`, `actions/dependency-review-action@5a2ce3f5`
+      - Third-party: `renovatebot/github-action@b9486682`, `docker/*`, `dependency-check/Dependency-Check_Action`
+  - Verified unit tests after changes; no regressions detected.
 
 ### Fixed
 

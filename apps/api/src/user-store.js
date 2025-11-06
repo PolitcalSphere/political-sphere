@@ -1,5 +1,5 @@
-const { v4: uuidv4 } = require("uuid");
-const { cacheKeys, CACHE_TTL } = require("./cache");
+import { v4 as uuidv4 } from "uuid";
+import { CACHE_TTL, cacheKeys } from "./cache.js";
 
 class UserStore {
 	constructor(db, cache = null) {
@@ -226,6 +226,4 @@ class UserStore {
 	}
 }
 
-module.exports = {
-	UserStore,
-};
+export { UserStore };

@@ -135,7 +135,7 @@ jobs:
           fi
 
       - name: Upload diagnostic logs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
         with:
           name: diagnostic-logs
           path: workflow-logs.txt
@@ -146,7 +146,9 @@ jobs:
     needs: detect-and-diagnose
     if: needs.detect-and-diagnose.outputs.failure-type == 'cache-corruption'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          persist-credentials: false
 
       - name: Record recommended cache action (manual)
         run: |
@@ -247,7 +249,9 @@ jobs:
     needs: detect-and-diagnose
     if: needs.detect-and-diagnose.outputs.failure-type == 'dependency-conflict'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          persist-credentials: false
 
       - name: Fix dependency conflicts
         run: |

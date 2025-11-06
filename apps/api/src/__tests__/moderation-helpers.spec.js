@@ -1,55 +1,14 @@
 import { beforeEach, describe, expect, it } from "vitest";
+import ModerationService from "../moderationService.js";
 
-// Provide minimal stubs for external modules used by moderationService so we can
-// require it and test the pure helper methods.
-const Module = require("module");
-const originalLoad = Module._load;
-Module._load = (request, parent, isMain) => {
-	if (request === "openai") {
-		return {
-			OpenAI: class OpenAI {
-				constructor() {}
-				moderation = {
-					create: async () => ({
-						results: [{ flagged: false, categories: {} }],
-					}),
-				};
-			},
-		};
-	}
-	if (request === "perspective-api-client") {
-		return {
-			PerspectiveAPI: class PerspectiveAPI {
-				constructor() {}
-				async analyze() {
-					return {
-						attributeScores: { TOXICITY: { summaryScore: { value: 0 } } },
-					};
-				}
-			},
-		};
-	}
-	if (request === "./error-handler" || request === "./error-handler.js") {
-		return {
-			CircuitBreaker: class CircuitBreaker {
-				constructor() {}
-				async execute(fn) {
-					return typeof fn === "function" ? fn() : fn;
-				}
-			},
-		};
-	}
-	return originalLoad(request, parent, isMain);
-};
-
-const moderationInstance = require("../moderationService");
-Module._load = originalLoad;
+// The moderationService now uses ESM dynamic imports instead of require,
+// so we can import it directly without module patching
 
 describe("ModerationService helper functions (pure)", () => {
 	let svc;
 	beforeEach(() => {
 		// moderationService exports a singleton instance; reuse it for helper tests
-		svc = moderationInstance;
+		svc = ModerationService;
 		if (typeof svc.clearCache === "function") svc.clearCache();
 	});
 

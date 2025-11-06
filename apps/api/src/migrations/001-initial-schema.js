@@ -8,8 +8,8 @@
 const name = "001_initial_schema";
 
 function up(db) {
-  console.log("Running migration up function...");
-  db.exec(`
+	console.log("Running migration up function...");
+	db.exec(`
     -- Users table
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
@@ -59,11 +59,11 @@ function up(db) {
     CREATE INDEX IF NOT EXISTS idx_votes_bill ON votes(bill_id);
     CREATE INDEX IF NOT EXISTS idx_votes_user ON votes(user_id);
   `);
-  console.log("Migration up function completed");
+	console.log("Migration up function completed");
 }
 
 function down(db) {
-  db.exec(`
+	db.exec(`
     DROP INDEX IF EXISTS idx_votes_user;
     DROP INDEX IF EXISTS idx_votes_bill;
     DROP INDEX IF EXISTS idx_bills_status;
@@ -75,8 +75,4 @@ function down(db) {
   `);
 }
 
-module.exports = {
-  name,
-  up,
-  down,
-};
+export { name, up, down };

@@ -1,6 +1,6 @@
-const { v4: uuidv4 } = require("uuid");
-const dbConnection = require("./database-connection");
-const { cacheKeys, CACHE_TTL } = require("./cache");
+import { v4 as uuidv4 } from "uuid";
+import { CACHE_TTL, cacheKeys } from "./cache.js";
+import dbConnection from "./database-connection.js";
 
 class BillStore {
 	constructor(db = dbConnection.getConnection(), cache = null) {
@@ -208,6 +208,4 @@ class BillStore {
 	}
 }
 
-module.exports = {
-	BillStore,
-};
+export { BillStore };

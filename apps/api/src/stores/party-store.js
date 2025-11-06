@@ -1,6 +1,6 @@
 // Compatibility wrapper for PartyStore so tests that pass a mock repo
 // (with CRUD methods) continue to work without changing tests.
-const { PartyStore: RealPartyStore } = require("../party-store.js");
+import { PartyStore as RealPartyStore } from "../party-store.js";
 
 class PartyStore {
 	constructor(dbOrRepo, cache) {
@@ -45,5 +45,5 @@ class PartyStore {
 	}
 }
 
-module.exports = PartyStore;
-module.exports.PartyStore = PartyStore;
+export default PartyStore;
+export { PartyStore };

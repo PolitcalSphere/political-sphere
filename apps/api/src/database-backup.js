@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { spawn } = require("child_process");
+// Note: Avoid using child_process for backup operations; prefer library APIs
 const logger = require("./logger");
 
 /**
@@ -43,7 +43,14 @@ class DatabaseBackupManager {
 		// Queue backup if too many are running
 		if (this.activeBackups >= this.maxConcurrentBackups) {
 			return new Promise((resolve, reject) => {
-				this.backupQueue.push({ dbPath, backupPath, compress, verify, resolve, reject });
+				this.backupQueue.push({
+					dbPath,
+					backupPath,
+					compress,
+					verify,
+					resolve,
+					reject,
+				});
 			});
 		}
 
@@ -98,7 +105,6 @@ class DatabaseBackupManager {
 				compressed: compress,
 				verified: result.verified,
 			});
-
 		} catch (error) {
 			logger.error("Database backup failed", {
 				dbPath,
@@ -110,9 +116,17 @@ class DatabaseBackupManager {
 			this.activeBackups--;
 
 			// Process next queued backup
-			if (this.backupQueue.length > 0 && this.activeBackups < this.maxConcurrentBackups) {
+			if (
+				this.backupQueue.length > 0 &&
+				this.activeBackups < this.maxConcurrentBackups
+			) {
 				const next = this.backupQueue.shift();
-				this.performBackup(next.dbPath, next.backupPath, next.compress, next.verify)
+				this.performBackup(
+					next.dbPath,
+					next.backupPath,
+					next.compress,
+					next.verify,
+				)
 					.then(next.resolve)
 					.catch(next.reject);
 			}
@@ -155,7 +169,7 @@ class DatabaseBackupManager {
 		});
 	}
 
-	async verifyBackup(backupPath, originalDbPath) {
+	async verifyBackup(backupPath, _originalDbPath) {
 		// For compressed backups, we need to decompress first
 		let tempPath = backupPath;
 		if (backupPath.endsWith(".gz")) {
@@ -169,9 +183,11 @@ class DatabaseBackupManager {
 			// Open backup database and verify it has the expected tables
 			const backupDb = sqlite3(tempPath);
 
-			const tables = backupDb.prepare(
-				"SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
-			).all();
+			const tables = backupDb
+				.prepare(
+					"SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'",
+				)
+				.all();
 
 			if (tables.length === 0) {
 				throw new Error("Backup database contains no tables");
@@ -180,7 +196,9 @@ class DatabaseBackupManager {
 			// Verify foreign key constraints
 			const fkViolations = backupDb.prepare("PRAGMA foreign_key_check").all();
 			if (fkViolations.length > 0) {
-				throw new Error(`Backup has foreign key violations: ${JSON.stringify(fkViolations)}`);
+				throw new Error(
+					`Backup has foreign key violations: ${JSON.stringify(fkViolations)}`,
+				);
 			}
 
 			backupDb.close();
@@ -266,7 +284,6 @@ class DatabaseBackupManager {
 				dbPath,
 				duration: result.duration,
 			});
-
 		} catch (error) {
 			logger.error("Database restore failed", {
 				backupPath,
@@ -308,7 +325,6 @@ class DatabaseBackupManager {
 					retentionDays: this.retentionDays,
 				});
 			}
-
 		} catch (error) {
 			logger.error("Failed to cleanup old backups", { error: error.message });
 		}
@@ -389,10 +405,13 @@ class DatabaseBackupManager {
 				// Check if we exceed max backups
 				const stats = this.getBackupStats();
 				if (stats.totalBackups > maxBackups) {
-					logger.warn("Too many backups, consider increasing retention or reducing schedule", {
-						totalBackups: stats.totalBackups,
-						maxBackups,
-					});
+					logger.warn(
+						"Too many backups, consider increasing retention or reducing schedule",
+						{
+							totalBackups: stats.totalBackups,
+							maxBackups,
+						},
+					);
 				}
 			} catch (error) {
 				logger.error("Automated backup failed", { error: error.message });
