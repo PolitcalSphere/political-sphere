@@ -1,0 +1,45 @@
+{
+  "recommendations": [
+    // Essential - Core development tools (Level 4: Comprehensive tooling)
+    "dbaeumer.vscode-eslint", // Code quality and consistency
+    "esbenp.prettier-vscode", // Code formatting
+    "streetsidesoftware.code-spell-checker", // Documentation quality
+    "ms-vscode.vscode-typescript-next", // TypeScript support
+
+    // Testing - Keep only necessary test runners (Level 4: Integrated testing)
+    "vitest.explorer", // Test exploration and running
+    "ms-playwright.playwright", // E2E testing
+
+    // Git (Level 4: Version control excellence)
+    "eamodio.gitlens", // Advanced Git features
+
+    // AI Assistance (Level 5: Sovereign-grade AI integration)
+    "github.copilot", // AI-powered code completion
+    "github.copilot-chat", // AI-powered chat assistance
+    "ms-windows-ai-studio.windows-ai-studio", // Additional AI tools
+
+    // Utilities (Level 4: Developer experience)
+    "yoavbls.pretty-ts-errors", // Enhanced error display
+    "redhat.vscode-yaml", // YAML editing support
+    "bradlc.vscode-tailwindcss", // CSS framework support
+    "ms-vscode.vscode-json", // JSON editing with schema support
+    "ms-vscode-remote.remote-containers" // Dev container support
+  ],
+
+  // Extensions with known performance issues - avoid or disable (Level 4: Performance optimization)
+  "unwantedRecommendations": [
+    // Heavy/slow extensions (removed for performance)
+    "usernamehw.errorlens", // Resource intensive
+    "gruntfuggly.todo-tree", // High memory usage
+
+    // Duplicate functionality (conflicts with recommended tools)
+    "firsttris.vscode-jest-runner", // Conflicts with Vitest
+    "hookyqr.beautify", // Conflicts with Prettier
+    "HookyQR.beautify", // Duplicate beautify extension
+
+    // Security concerns
+    "ms-vscode-remote.remote-ssh", // Potential security risks in shared environments
+    "ms-vscode.vscode-json", // Already included in recommendations above
+    "ms-vscode-remote.remote-containers" // Already included in recommendations above
+  ]
+}

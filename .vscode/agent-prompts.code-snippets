@@ -1,0 +1,58 @@
+{
+  "Safety prefix": {
+    "scope": "markdown,plaintext,js,json,ts,tsserver",
+    "prefix": "agent:safety",
+    "body": [
+      "Act in Safe mode unless explicitly instructed otherwise; obey change budgets; never add deps without ADR; redact secrets."
+    ],
+    "description": "Prepend safety prefix for agent prompts"
+  },
+  "Output contract": {
+    "scope": "markdown,plaintext,js,json,ts,tsserver",
+    "prefix": "agent:contract",
+    "body": [
+      "Return: plan → minimal diff → tests → risks → rollback. Include AI-EXECUTION header, list deferred gates."
+    ],
+    "description": "Insert standard output contract for agent responses"
+  },
+  "Political neutrality check": {
+    "scope": "markdown,plaintext,js,json,ts,tsserver",
+    "prefix": "agent:neutrality",
+    "body": [
+      "If content touches politics/policy UX, run neutrality checklist + bias note; otherwise block & escalate."
+    ],
+    "description": "Insert political neutrality check prompt"
+  },
+  "Agent: close active editor": {
+    "scope": "javascript,typescript,python,markdown",
+    "prefix": "agent:close-editor",
+    "body": [
+      "// Close active editor (VS Code command)",
+      "await vscode.commands.executeCommand('workbench.action.closeActiveEditor');",
+      "// If running in an automation runner, ensure file handles are closed and logged"
+    ],
+    "description": "Snippet for agents to programmatically close the active editor in VS Code and log file closure."
+  },
+  "Neutrality: checklist template": {
+    "scope": "markdown",
+    "prefix": "neutrality:checklist",
+    "body": [
+      "## Neutrality Check Results:",
+      "- **Demographic targeting**: $1",
+      "- **Persuasive framing**: $2",
+      "- **Verifiability**: $3",
+      "- **Manipulation risk**: $4",
+      "- **Bias assessment**: $5",
+      "",
+      "## Bias Note:",
+      "$6"
+    ],
+    "description": "Template for documenting political neutrality checklist results."
+  },
+  "Security: risk mitigation note": {
+    "scope": "json,markdown",
+    "prefix": "security:risk-note",
+    "body": ["// Risk Mitigation: $1", "// $2"],
+    "description": "Template for adding security risk mitigation comments."
+  }
+}

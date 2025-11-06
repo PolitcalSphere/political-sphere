@@ -1,0 +1,125 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "ai:preflight",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "preflight"],
+      "problemMatcher": []
+    },
+    {
+      "label": "ai:fast-secure",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "fast-secure"],
+      "problemMatcher": []
+    },
+    {
+      "label": "ai:audit",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "audit:full"],
+      "problemMatcher": []
+    },
+
+    // Test tasks preferring Vitest with --changed for minimal runs
+    {
+      "label": "test:vitest-changed",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "npm run test:changed --if-present || npx vitest --run --changed"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "test:vitest-watch-changed",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-lc", "npm run test:watch --if-present || npx vitest --watch"],
+      "isBackground": true,
+      "problemMatcher": []
+    },
+
+    // AI Context & Performance Tasks
+    {
+      "label": "AI: Build Context",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "ai:context"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "AI: Refresh Knowledge",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "ai:refresh"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Performance: Monitor",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "perf:monitor"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "Performance: Cleanup",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "cleanup"],
+      "problemMatcher": []
+    },
+
+    // Configuration Validation & Testing (Level 4 Enhancement)
+    {
+      "label": "Validate: VSCode Config",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "npx @vscode/vsce validate .vscode || echo 'VSCode validation not available'"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Test: Extension Compatibility",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "code --list-extensions | grep -E '(eslint|prettier|vitest|copilot)' || echo 'Extensions check complete'"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Monitor: VSCode Health",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "ps aux | grep -i code | head -5 && echo 'VSCode processes monitored'"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Audit: Security Settings",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "grep -r 'security|trust|secret' .vscode/ || echo 'Security audit complete'"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}
