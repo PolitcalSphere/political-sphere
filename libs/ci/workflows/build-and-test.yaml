@@ -6,23 +6,23 @@ on:
       node_version:
         description: Node.js version to use
         type: string
-        default: '20'
+        default: "20"
       services:
         description: Comma delimited list of Nx projects to build (e.g. "api,frontend")
         type: string
-        default: 'api'
+        default: "api"
       dockerfile:
         description: Path to Dockerfile relative to repo root
         type: string
-        default: 'apps/api/Dockerfile'
+        default: "apps/api/Dockerfile"
       image_name:
         description: Image name (repository portion only)
         type: string
-        default: 'api'
+        default: "api"
       working_directory:
         description: Path to repository working directory
         type: string
-        default: '.'
+        default: "."
       enable_trivy:
         description: Run Trivy scan on built image
         type: boolean
@@ -112,11 +112,16 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build Docker image
+        env:
+          ECR_REGISTRY: ${{ secrets.ecr_registry }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          IMAGE_NAME: ${{ inputs.image_name }}
+          DOCKERFILE: ${{ inputs.dockerfile }}
         run: |
           IMAGE_TAG=${GITHUB_SHA::12}
-          IMAGE_URI=${{ secrets.ecr_registry || format('{0}/{1}', github.repository_owner, inputs.image_name) }}:${IMAGE_TAG}
+          IMAGE_URI=${ECR_REGISTRY:-${REPO_OWNER}/${IMAGE_NAME}}:${IMAGE_TAG}
           echo "IMAGE_URI=${IMAGE_URI}" >> $GITHUB_ENV
-          docker build -t ${IMAGE_URI} -f ${{ inputs.dockerfile }} .
+          docker build -t "${IMAGE_URI}" -f "${DOCKERFILE}" .
 
       - name: Trivy scan
         if: inputs.enable_trivy

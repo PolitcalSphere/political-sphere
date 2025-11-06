@@ -79,22 +79,22 @@ jobs:
         id: logs
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WORKFLOW_RUN_ID: ${{ github.event.workflow_run.id || github.event.inputs.workflow-run-id }}
         run: |
-          WORKFLOW_RUN_ID="${{ github.event.workflow_run.id || github.event.inputs.workflow-run-id }}"
-
           echo "📊 Fetching logs for workflow run: ${WORKFLOW_RUN_ID}"
 
           # Download workflow logs
-          gh run view ${WORKFLOW_RUN_ID} --log > workflow-logs.txt || echo "Failed to fetch logs"
+          gh run view "${WORKFLOW_RUN_ID}" --log > workflow-logs.txt || echo "Failed to fetch logs"
 
           echo "✅ Logs downloaded"
 
       - name: Diagnose failure type
         id: diagnose
+        env:
+          WORKFLOW_NAME: ${{ github.event.workflow_run.name }}
         run: |
           echo "🔍 Analyzing failure patterns..."
 
-          WORKFLOW_NAME="${{ github.event.workflow_run.name }}"
           echo "workflow-name=${WORKFLOW_NAME}" >> $GITHUB_OUTPUT
 
           # Pattern matching for common failures
@@ -151,6 +151,8 @@ jobs:
           persist-credentials: false
 
       - name: Record recommended cache action (manual)
+        env:
+          WORKFLOW_RUN_ID: ${{ github.event.workflow_run.id }}
         run: |
           echo "🗑️  Cache corruption suspected. Automated clearing is disabled for safety."
           echo "Please review cache usage and clear relevant caches if needed."
@@ -159,10 +161,10 @@ jobs:
       - name: Re-run failed workflow (safe)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WORKFLOW_RUN_ID: ${{ github.event.workflow_run.id }}
         run: |
-          WORKFLOW_RUN_ID="${{ github.event.workflow_run.id }}"
           echo "🔄 Re-running failed jobs (no global cache deletion)..."
-          gh run rerun ${WORKFLOW_RUN_ID} --failed || echo "Failed to re-run; please retry manually"
+          gh run rerun "${WORKFLOW_RUN_ID}" --failed || echo "Failed to re-run; please retry manually"
           echo "✅ Re-run attempted"
 
       - name: Log healing action
@@ -190,13 +192,12 @@ jobs:
       - name: Re-run with increased timeout
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WORKFLOW_RUN_ID: ${{ github.event.workflow_run.id }}
         run: |
-          WORKFLOW_RUN_ID="${{ github.event.workflow_run.id }}"
-
           echo "🔄 Re-running workflow with retry..."
 
           # Re-run failed jobs
-          gh run rerun ${WORKFLOW_RUN_ID} --failed
+          gh run rerun "${WORKFLOW_RUN_ID}" --failed
 
           echo "✅ Workflow re-triggered with network recovery time"
 
@@ -221,8 +222,9 @@ jobs:
       - name: Re-run failed workflow
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WORKFLOW_RUN_ID: ${{ github.event.workflow_run.id }}
         run: |
-          gh run rerun ${{ github.event.workflow_run.id }} --failed
+          gh run rerun "${WORKFLOW_RUN_ID}" --failed
 
   heal-rate-limit:
     name: Fix API Rate Limit
@@ -239,8 +241,9 @@ jobs:
       - name: Re-run failed workflow
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WORKFLOW_RUN_ID: ${{ github.event.workflow_run.id }}
         run: |
-          gh run rerun ${{ github.event.workflow_run.id }} --failed
+          gh run rerun "${WORKFLOW_RUN_ID}" --failed
           echo "✅ Workflow re-triggered after rate limit reset"
 
   heal-dependency-conflict:
@@ -298,10 +301,11 @@ jobs:
       - name: Re-run with retries
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WORKFLOW_RUN_ID: ${{ github.event.workflow_run.id }}
         run: |
           echo "🎲 Re-running flaky tests with retry logic..."
 
-          gh run rerun ${{ github.event.workflow_run.id }} --failed
+          gh run rerun "${WORKFLOW_RUN_ID}" --failed
 
           echo "ℹ️  Note: Persistent flaky tests should be investigated manually"
 

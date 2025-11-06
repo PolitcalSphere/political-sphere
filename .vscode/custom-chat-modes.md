@@ -3,6 +3,7 @@
 ## Quick Mode Usage (No Extension Needed)
 
 ### 1. Safe Mode (Constitutional Compliance)
+
 ```
 @workspace Act in Safe mode unless explicitly instructed otherwise; obey change budgets; never add deps without ADR; redact secrets.
 
@@ -10,6 +11,7 @@
 ```
 
 ### 2. Political Neutrality Mode
+
 ```
 @workspace If content touches politics/policy UX, run neutrality checklist + bias note; otherwise block & escalate.
 
@@ -17,6 +19,7 @@
 ```
 
 ### 3. Structured Output Mode
+
 ```
 @workspace Return: plan → minimal diff → tests → risks → rollback. Include AI-EXECUTION header, list deferred gates.
 
@@ -30,11 +33,13 @@ If you want a persistent `@political-sphere` participant, you can create a VS Co
 ### Steps to Create Extension:
 
 1. **Install Yeoman and VS Code Extension Generator**:
+
    ```bash
    npm install -g yo generator-code
    ```
 
 2. **Generate Extension**:
+
    ```bash
    yo code
    # Choose "New Extension (TypeScript)"
@@ -52,59 +57,63 @@ If you want a persistent `@political-sphere` participant, you can create a VS Co
 Create `src/extension.ts`:
 
 ```typescript
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
 export function activate(context: vscode.ExtensionContext) {
-    // Create chat participant
-    const participant = vscode.chat.createChatParticipant(
-        'political-sphere.governance',
-        async (
-            request: vscode.ChatRequest,
-            context: vscode.ChatContext,
-            stream: vscode.ChatResponseStream,
-            token: vscode.CancellationToken
-        ) => {
-            // Safety prefix
-            const safetyPrompt = "Act in Safe mode unless explicitly instructed otherwise; obey change budgets; never add deps without ADR; redact secrets.";
-            
-            // Neutrality check
-            const neutralityCheck = request.prompt.toLowerCase().includes('politic') || 
-                                   request.prompt.toLowerCase().includes('policy');
-            
-            if (neutralityCheck) {
-                stream.markdown('⚠️ **Political Content Detected** - Running neutrality checklist...\n\n');
-            }
-            
-            // Build enhanced prompt
-            const enhancedPrompt = `${safetyPrompt}\n\n${request.prompt}\n\nReturn: plan → minimal diff → tests → risks → rollback.`;
-            
-            // Use the model
-            const messages = [
-                vscode.LanguageModelChatMessage.User(enhancedPrompt)
-            ];
-            
-            const model = await vscode.lm.selectChatModels({ family: 'gpt-4' })[0];
-            if (!model) {
-                stream.markdown('⚠️ No language model available');
-                return;
-            }
-            
-            const chatResponse = await model.sendRequest(messages, {}, token);
-            
-            for await (const fragment of chatResponse.text) {
-                stream.markdown(fragment);
-            }
-            
-            if (neutralityCheck) {
-                stream.markdown('\n\n---\n**Neutrality Review**: Please verify political content meets governance standards.');
-            }
-        }
-    );
-    
-    // Set icon and metadata
-    participant.iconPath = new vscode.ThemeIcon('shield');
-    
-    context.subscriptions.push(participant);
+  // Create chat participant
+  const participant = vscode.chat.createChatParticipant(
+    "political-sphere.governance",
+    async (
+      request: vscode.ChatRequest,
+      context: vscode.ChatContext,
+      stream: vscode.ChatResponseStream,
+      token: vscode.CancellationToken
+    ) => {
+      // Safety prefix
+      const safetyPrompt =
+        "Act in Safe mode unless explicitly instructed otherwise; obey change budgets; never add deps without ADR; redact secrets.";
+
+      // Neutrality check
+      const neutralityCheck =
+        request.prompt.toLowerCase().includes("politic") ||
+        request.prompt.toLowerCase().includes("policy");
+
+      if (neutralityCheck) {
+        stream.markdown(
+          "⚠️ **Political Content Detected** - Running neutrality checklist...\n\n"
+        );
+      }
+
+      // Build enhanced prompt
+      const enhancedPrompt = `${safetyPrompt}\n\n${request.prompt}\n\nReturn: plan → minimal diff → tests → risks → rollback.`;
+
+      // Use the model
+      const messages = [vscode.LanguageModelChatMessage.User(enhancedPrompt)];
+
+      const model = await vscode.lm.selectChatModels({ family: "gpt-4" })[0];
+      if (!model) {
+        stream.markdown("⚠️ No language model available");
+        return;
+      }
+
+      const chatResponse = await model.sendRequest(messages, {}, token);
+
+      for await (const fragment of chatResponse.text) {
+        stream.markdown(fragment);
+      }
+
+      if (neutralityCheck) {
+        stream.markdown(
+          "\n\n---\n**Neutrality Review**: Please verify political content meets governance standards."
+        );
+      }
+    }
+  );
+
+  // Set icon and metadata
+  participant.iconPath = new vscode.ThemeIcon("shield");
+
+  context.subscriptions.push(participant);
 }
 ```
 
@@ -122,15 +131,14 @@ export function activate(context: vscode.ExtensionContext) {
       }
     ]
   },
-  "activationEvents": [
-    "onChatParticipant:political-sphere.governance"
-  ]
+  "activationEvents": ["onChatParticipant:political-sphere.governance"]
 }
 ```
 
 ## Usage After Installation
 
 Once installed, you can use:
+
 ```
 @governance Create a new voting endpoint
 
@@ -140,12 +148,14 @@ Once installed, you can use:
 ## Recommended Approach for Your Project
 
 **Start with Option 1** (Quick Custom Prompts) because:
+
 1. ✅ No extension development needed
 2. ✅ Works immediately in VS Code chat
 3. ✅ You already have the snippets set up
 4. ✅ Can use `agent:safety`, `agent:contract`, `agent:neutrality` snippets
 
 **Consider Option 2** (Extension) if you want:
+
 - Persistent `@political-sphere` or `@governance` participant
 - Automatic enforcement of governance rules
 - Custom UI/icons in chat
@@ -154,12 +164,13 @@ Once installed, you can use:
 ## Quick Start (Option 1)
 
 1. Open VS Code chat (Cmd+I or Ctrl+I)
-2. Type: `@workspace ` 
+2. Type: `@workspace `
 3. Insert snippet: Type `agent:safety` + Tab
 4. Add your request
 5. Press Enter
 
 Example:
+
 ```
 @workspace agent:safety
 

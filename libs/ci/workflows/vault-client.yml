@@ -5,7 +5,7 @@ on:
   workflow_call:
     inputs:
       secret_path:
-        description: 'Vault KV path (e.g. secret/data/myapp/config)'
+        description: "Vault KV path (e.g. secret/data/myapp/config)"
         required: true
         type: string
     secrets:
@@ -39,13 +39,14 @@ jobs:
         env:
           VAULT_ADDR: ${{ secrets.vault_addr }}
           VAULT_TOKEN: ${{ secrets.vault_token }}
+          SECRET_PATH: ${{ inputs.secret_path }}
         run: |
           set -euo pipefail
           # default VAULT_ADDR to localhost if not provided (useful for dev clusters / port-forward)
           VAULT_ADDR=${VAULT_ADDR:-http://127.0.0.1:8200}
           export VAULT_ADDR
           # Attempt to read the KV v2 secret at inputs.secret_path
-          out=$(vault kv get -format=json "${{ inputs.secret_path }}" 2>/dev/null || true)
+          out=$(vault kv get -format=json "${SECRET_PATH}" 2>/dev/null || true)
           if [[ -z "$out" ]]; then
             echo "error=secret_not_found" >> $GITHUB_OUTPUT
             exit 1

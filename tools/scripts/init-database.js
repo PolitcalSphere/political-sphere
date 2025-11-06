@@ -5,49 +5,62 @@
  * Initializes SQLite database with proper schema and security settings
  */
 
-import Database from 'better-sqlite3';
-import path from 'path';
-import fs from 'fs';
+import Database from "better-sqlite3";
+import fs from "fs";
+import path from "path";
 
 // Simple console logger for database initialization
 const logger = {
-  info: (message, meta = {}) =>
-    console.log(`[INFO] ${message}`, Object.keys(meta).length ? JSON.stringify(meta) : ''),
-  warn: (message, meta = {}) =>
-    console.warn(`[WARN] ${message}`, Object.keys(meta).length ? JSON.stringify(meta) : ''),
-  error: (message, meta = {}) =>
-    console.error(`[ERROR] ${message}`, Object.keys(meta).length ? JSON.stringify(meta) : ''),
-  fatal: (message, meta = {}) =>
-    console.error(`[FATAL] ${message}`, Object.keys(meta).length ? JSON.stringify(meta) : ''),
+	info: (message, meta = {}) =>
+		console.log(
+			`[INFO] ${message}`,
+			Object.keys(meta).length ? JSON.stringify(meta) : "",
+		),
+	warn: (message, meta = {}) =>
+		console.warn(
+			`[WARN] ${message}`,
+			Object.keys(meta).length ? JSON.stringify(meta) : "",
+		),
+	error: (message, meta = {}) =>
+		console.error(
+			`[ERROR] ${message}`,
+			Object.keys(meta).length ? JSON.stringify(meta) : "",
+		),
+	fatal: (message, meta = {}) =>
+		console.error(
+			`[FATAL] ${message}`,
+			Object.keys(meta).length ? JSON.stringify(meta) : "",
+		),
 };
 
 // Database configuration
 const DB_PATH =
-  process.env.SQLITE_DB_PATH || path.join(process.cwd(), 'data', 'political_sphere.db');
+	process.env.SQLITE_DB_PATH ||
+	path.join(process.cwd(), "data", "political_sphere.db");
 const DB_DIR = path.dirname(DB_PATH);
 
 // Ensure data directory exists
 if (!fs.existsSync(DB_DIR)) {
-  fs.mkdirSync(DB_DIR, { recursive: true });
-  logger.info('Created data directory', { path: DB_DIR });
+	fs.mkdirSync(DB_DIR, { recursive: true });
+	logger.info("Created data directory", { path: DB_DIR });
 }
 
 let db;
 
 try {
-  // Create database connection
-  db = new Database(DB_PATH);
+	// Create database connection
+	db = new Database(DB_PATH);
 
-  // Enable WAL mode for better concurrency
-  db.pragma('journal_mode = WAL');
+	// Enable WAL mode for better concurrency
+	db.pragma("journal_mode = WAL");
 
-  // Enable foreign keys
-  db.pragma('foreign_keys = ON');
+	// Enable foreign keys
+	db.pragma("foreign_keys = ON");
 
-  logger.info('Database connection established', { path: DB_PATH });
+	logger.info("Database connection established", { path: DB_PATH });
 
-  // Create users table
-  const createUsersTable = `
+	// Create users table
+	const createUsersTable = `
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
       email TEXT UNIQUE NOT NULL,
@@ -77,8 +90,8 @@ try {
     );
   `;
 
-  // Create password history table
-  const createPasswordHistoryTable = `
+	// Create password history table
+	const createPasswordHistoryTable = `
     CREATE TABLE IF NOT EXISTS password_history (
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL,
@@ -90,8 +103,8 @@ try {
     );
   `;
 
-  // Create sessions table
-  const createSessionsTable = `
+	// Create sessions table
+	const createSessionsTable = `
     CREATE TABLE IF NOT EXISTS sessions (
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL,
@@ -105,8 +118,8 @@ try {
     );
   `;
 
-  // Create rate limiting table
-  const createRateLimitTable = `
+	// Create rate limiting table
+	const createRateLimitTable = `
     CREATE TABLE IF NOT EXISTS rate_limits (
       id TEXT PRIMARY KEY,
       identifier TEXT NOT NULL, -- IP, user ID, or email
@@ -120,8 +133,8 @@ try {
     );
   `;
 
-  // Create audit log table
-  const createAuditLogTable = `
+	// Create audit log table
+	const createAuditLogTable = `
     CREATE TABLE IF NOT EXISTS audit_log (
       id TEXT PRIMARY KEY,
       user_id TEXT,
@@ -137,24 +150,24 @@ try {
     );
   `;
 
-  // Execute table creation
-  db.exec(createUsersTable);
-  logger.info('Created users table');
+	// Execute table creation
+	db.exec(createUsersTable);
+	logger.info("Created users table");
 
-  db.exec(createPasswordHistoryTable);
-  logger.info('Created password_history table');
+	db.exec(createPasswordHistoryTable);
+	logger.info("Created password_history table");
 
-  db.exec(createSessionsTable);
-  logger.info('Created sessions table');
+	db.exec(createSessionsTable);
+	logger.info("Created sessions table");
 
-  db.exec(createRateLimitTable);
-  logger.info('Created rate_limits table');
+	db.exec(createRateLimitTable);
+	logger.info("Created rate_limits table");
 
-  db.exec(createAuditLogTable);
-  logger.info('Created audit_log table');
+	db.exec(createAuditLogTable);
+	logger.info("Created audit_log table");
 
-  // Create indexes for performance
-  const createIndexes = `
+	// Create indexes for performance
+	const createIndexes = `
     CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
     CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
     CREATE INDEX IF NOT EXISTS idx_users_active ON users(is_active);
@@ -167,11 +180,11 @@ try {
     CREATE INDEX IF NOT EXISTS idx_password_history_user ON password_history(user_id);
   `;
 
-  db.exec(createIndexes);
-  logger.info('Created database indexes');
+	db.exec(createIndexes);
+	logger.info("Created database indexes");
 
-  // Create triggers for updated_at
-  const createTriggers = `
+	// Create triggers for updated_at
+	const createTriggers = `
     CREATE TRIGGER IF NOT EXISTS update_users_updated_at
       AFTER UPDATE ON users
       FOR EACH ROW
@@ -190,34 +203,80 @@ try {
       END;
   `;
 
-  db.exec(createTriggers);
-  logger.info('Created database triggers');
+	db.exec(createTriggers);
+	logger.info("Created database triggers");
 
-  // Insert default admin user if no users exist
-  const userCount = db.prepare('SELECT COUNT(*) as count FROM users').get();
-  if (userCount.count === 0) {
-    const adminId = 'admin-' + Date.now();
-    const adminEmail = 'admin@political-sphere.local';
-    const adminPassword = '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj8ZJcKvqMyW'; // 'Admin123!'
+	// Insert default admin user if no users exist
+	const userCount = db.prepare("SELECT COUNT(*) as count FROM users").get();
+	if (userCount.count === 0) {
+		const adminId = "admin-" + Date.now();
+		const adminEmail =
+			process.env.ADMIN_EMAIL || "admin@political-sphere.local";
+		const adminPasswordHashEnv = process.env.ADMIN_PASSWORD_HASH;
+		const adminPasswordPlainEnv = process.env.ADMIN_PASSWORD;
 
-    const insertAdmin = db.prepare(`
+		// Validate bcrypt hash format if provided
+		const isValidBcrypt = (hash) =>
+			typeof hash === "string" &&
+			/^\$2[aby]?\$[0-9]{2}\$[./A-Za-z0-9]{53}$/.test(hash);
+
+		let resolvedPasswordHash;
+		if (adminPasswordHashEnv) {
+			if (!isValidBcrypt(adminPasswordHashEnv)) {
+				logger.error(
+					"ADMIN_PASSWORD_HASH provided but does not look like a valid bcrypt hash.",
+				);
+			} else {
+				resolvedPasswordHash = adminPasswordHashEnv;
+			}
+		} else if (adminPasswordPlainEnv) {
+			// For security, avoid committing hashing libs; only hash if bcryptjs is available at runtime
+			try {
+				// Dynamically import bcryptjs if available; otherwise instruct to set ADMIN_PASSWORD_HASH
+				const bcrypt = await import("bcryptjs");
+				const rounds = Number(process.env.BCRYPT_ROUNDS || 12);
+				resolvedPasswordHash = bcrypt.hashSync(adminPasswordPlainEnv, rounds);
+			} catch (_e) {
+				logger.warn(
+					"ADMIN_PASSWORD provided but bcryptjs is not installed. Please set ADMIN_PASSWORD_HASH with a precomputed bcrypt hash or add bcryptjs as a dependency for runtime hashing.",
+				);
+			}
+		} else {
+			logger.warn(
+				"No ADMIN_PASSWORD_HASH or ADMIN_PASSWORD provided; skipping default admin creation to avoid committing credentials. Set ADMIN_PASSWORD_HASH to create an initial admin user.",
+			);
+		}
+
+		const insertAdmin = db.prepare(`
       INSERT INTO users (id, email, password_hash, role, is_active, email_verified)
       VALUES (?, ?, ?, 'admin', 1, 1)
     `);
 
-    insertAdmin.run(adminId, adminEmail, adminPassword);
-    logger.info('Created default admin user', { email: adminEmail, id: adminId });
-  }
+		if (resolvedPasswordHash) {
+			insertAdmin.run(adminId, adminEmail, resolvedPasswordHash);
+			logger.info("Created default admin user", {
+				email: adminEmail,
+				id: adminId,
+			});
+		} else {
+			logger.info(
+				"Default admin user not created due to missing valid password hash.",
+			);
+		}
+	}
 
-  logger.info('Database initialization completed successfully');
+	logger.info("Database initialization completed successfully");
 } catch (error) {
-  logger.fatal('Database initialization failed', { error: error.message, stack: error.stack });
-  throw error;
+	logger.fatal("Database initialization failed", {
+		error: error.message,
+		stack: error.stack,
+	});
+	throw error;
 } finally {
-  if (db) {
-    db.close();
-    logger.info('Database connection closed');
-  }
+	if (db) {
+		db.close();
+		logger.info("Database connection closed");
+	}
 }
 
 // Export for use as module

@@ -22,8 +22,16 @@ console.log(
 	`Running tests for app: ${app} -> patterns: ${patternSrc} ${patternTests}`,
 );
 
-// Use a shell invocation so the glob pattern is passed in the same way npm scripts do
-// Prefer scoping through VITEST_APP for reliable discovery via vitest.config.js
-const cmd = `VITEST_APP=${app} npx vitest --run`;
-const res = spawnSync(cmd, { stdio: "inherit", shell: true });
+// Validate app name to prevent injection
+if (!/^[a-zA-Z0-9_-]+$/.test(app)) {
+	console.error(`Invalid app name: ${app}`);
+	process.exit(2);
+}
+
+// Use shell: false for security - pass arguments as array
+const res = spawnSync("npx", ["vitest", "--run"], {
+	stdio: "inherit",
+	shell: false,
+	env: { ...process.env, VITEST_APP: app },
+});
 process.exit(res.status || 0);

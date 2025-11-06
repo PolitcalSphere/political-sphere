@@ -1,15 +1,16 @@
-name: 'Setup Terraform'
-description: 'Install Terraform and configure plugin cache'
-author: 'Political Sphere Platform Team'
+name: "Setup Terraform"
+description: "Install Terraform and configure plugin cache"
+author: "Political Sphere Platform Team"
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - id: install
       name: Install Terraform
       shell: bash
+      env:
+        TERRAFORM_VERSION: ${{ inputs.terraform_version }}
       run: |
-        TERRAFORM_VERSION="${{ inputs.terraform_version }}"
-        if [[ -z "$TERRAFORM_VERSION" ]]; then
+        if [[ -z "${TERRAFORM_VERSION}" ]]; then
           echo "terraform_version input is required" >&2
           exit 1
         fi
@@ -27,9 +28,9 @@ runs:
         echo "plugin_cache_dir=$HOME/.terraform.d/plugin-cache" >> $GITHUB_OUTPUT
 inputs:
   terraform_version:
-    description: 'Terraform version to install'
+    description: "Terraform version to install"
     required: true
 outputs:
   plugin_cache_dir:
-    description: 'Path to Terraform plugin cache'
+    description: "Path to Terraform plugin cache"
     value: ${{ steps.configure.outputs.plugin_cache_dir }}

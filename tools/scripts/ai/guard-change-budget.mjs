@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-import { execSync } from "child_process";
+import { execFileSync } from "child_process";
 import fs from "fs";
 
-function run(cmd) {
+function run(cmd, args = []) {
 	try {
-		return execSync(cmd, { encoding: "utf8" }).trim();
+		return execFileSync(cmd, args, { encoding: "utf8" }).trim();
 	} catch {
 		return "";
 	}
@@ -27,10 +27,16 @@ const base = args.base || process.env.BASE_REF || "origin/main";
 
 console.log(`guard-change-budget: mode=${mode} base=${base}`);
 
+// Validate base parameter to prevent injection
+if (!/^[a-zA-Z0-9/_.-]+$/.test(base)) {
+	console.error(`Invalid base ref: ${base}`);
+	process.exit(1);
+}
+
 // Ensure base exists (try to fetch minimal)
 try {
-	run(`git rev-parse --verify ${base}`) ||
-		run(`git fetch origin ${base} --depth=1`);
+	run("git", ["rev-parse", "--verify", base]) ||
+		run("git", ["fetch", "origin", base, "--depth=1"]);
 } catch {
 	// ignore
 }
@@ -61,8 +67,8 @@ console.log(
 );
 console.log("");
 
-const diffNumstat = run(`git diff --numstat ${base}...HEAD`);
-const diffNameOnly = run(`git diff --name-only ${base}...HEAD`);
+const diffNumstat = run("git", ["diff", "--numstat", `${base}...HEAD`]);
+const diffNameOnly = run("git", ["diff", "--name-only", `${base}...HEAD`]);
 
 if (!diffNameOnly) {
 	console.log("No changes detected between base and HEAD — nothing to check.");
@@ -102,7 +108,12 @@ function pass(msg) {
 // Helper: detect added dependencies in package.json
 function detectNewDeps(baseRef) {
 	try {
-		const basePkg = run(`git show ${baseRef}:package.json`);
+		// Validate baseRef to prevent injection
+		if (!/^[a-zA-Z0-9/_.-]+$/.test(baseRef)) {
+			console.error(`Invalid base ref: ${baseRef}`);
+			return [];
+		}
+		const basePkg = run("git", ["show", `${baseRef}:package.json`]);
 		const headPkg = fs.readFileSync("package.json", "utf8");
 		const baseJson = JSON.parse(basePkg || "{}");
 		const headJson = JSON.parse(headPkg || "{}");
