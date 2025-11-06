@@ -106,3 +106,9 @@ variable "eks_instance_types" {
   type        = list(string)
   default     = ["t3.medium"]
 }
+
+variable "enable_jaeger_https" {
+  description = "Enable HTTPS listener for Jaeger (internal). If false, HTTP listener will forward to target group without redirect."
+  type        = bool
+  default     = false
+}

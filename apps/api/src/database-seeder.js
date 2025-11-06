@@ -2,6 +2,10 @@ const { withTransaction } = require("./database-transactions");
 const logger = require("./logger");
 const fs = require("fs");
 const path = require("path");
+const {
+	validateFilename,
+	safeJoin,
+} = require("../../../libs/shared/src/path-security");
 
 /**
  * Database Seeder
@@ -44,18 +48,20 @@ class DatabaseSeeder {
 			.sort();
 
 		for (const file of files) {
-			const filePath = path.join(seedersDir, file);
 			try {
+				// Validate filename before joining to prevent path traversal
+				const sanitizedFile = validateFilename(file);
+				const filePath = safeJoin(seedersDir, sanitizedFile);
 				const seederModule = require(filePath);
 
 				if (typeof seederModule === "function") {
-					const name = path.basename(file, ".js");
+					const name = path.basename(sanitizedFile, ".js");
 					this.register(name, seederModule);
 				} else if (
 					seederModule.default &&
 					typeof seederModule.default === "function"
 				) {
-					const name = path.basename(file, ".js");
+					const name = path.basename(sanitizedFile, ".js");
 					this.register(name, seederModule.default);
 				} else {
 					logger.warn("Seeder file does not export a function", {

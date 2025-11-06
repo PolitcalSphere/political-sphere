@@ -32,9 +32,32 @@ app.use(
 	}),
 );
 
+// Configure CORS with secure origin allowlist
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+	? process.env.ALLOWED_ORIGINS.split(",").map((origin) => origin.trim())
+	: [
+			"http://localhost:3000",
+			"http://localhost:3001",
+			"http://localhost:5173", // Vite dev server
+		];
+
 app.use(
 	cors({
-		origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+		origin: (origin, callback) => {
+			// Allow requests with no origin (e.g., mobile apps, server-to-server)
+			if (!origin) {
+				return callback(null, true);
+			}
+
+			if (allowedOrigins.includes(origin)) {
+				callback(null, true);
+			} else {
+				logger.warn(
+					`CORS: Blocked request from unauthorized origin: ${origin}`,
+				);
+				callback(new Error(`Origin ${origin} not allowed by CORS policy`));
+			}
+		},
 		credentials: true,
 		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 		allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
@@ -121,7 +144,10 @@ app.get("/ready", (req, res) => {
 			timestamp: new Date().toISOString(),
 			service: "api",
 			database: "error",
-			error: process.env.NODE_ENV === "development" ? error.message : "Database check failed",
+			error:
+				process.env.NODE_ENV === "development"
+					? error.message
+					: "Database check failed",
 			requestId: req.requestId,
 		});
 	}

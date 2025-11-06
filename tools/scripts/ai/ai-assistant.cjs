@@ -8,6 +8,10 @@
 const fs = require("fs");
 const path = require("path");
 const { execSync } = require("child_process");
+const {
+	validateFilename,
+	safeJoin,
+} = require("../../../libs/shared/src/path-security");
 
 // Import all AI systems
 const ExpertKnowledge = require("./expert-knowledge.cjs");
@@ -16,7 +20,10 @@ const CodeAnalyzer = require("./code-analyzer.cjs");
 const AIHub = require("./ai-hub.cjs");
 
 const ROOT = path.join(__dirname, "../../..");
-const WORKSPACE_CACHE_PRIMARY = path.join(ROOT, "ai-cache/workspace-state.json");
+const WORKSPACE_CACHE_PRIMARY = path.join(
+	ROOT,
+	"ai-cache/workspace-state.json",
+);
 const WORKSPACE_CACHE_LEGACY = path.join(
 	ROOT,
 	"ai/ai-cache/workspace-state.json",
@@ -102,16 +109,18 @@ class AIAssistant {
 			if (depth > 4) return;
 			try {
 				fs.readdirSync(dir).forEach((file) => {
-					const full = path.join(dir, file);
+					// Validate filename to prevent path traversal
+					const sanitizedFile = validateFilename(file);
+					const full = safeJoin(dir, sanitizedFile);
 					const stat = fs.statSync(full);
 					if (
 						stat.isDirectory() &&
-						!file.startsWith(".") &&
-						file !== "node_modules"
+						!sanitizedFile.startsWith(".") &&
+						sanitizedFile !== "node_modules"
 					) {
 						walk(full, depth + 1);
 					} else if (stat.isFile()) {
-						const ext = path.extname(file);
+						const ext = path.extname(sanitizedFile);
 						if (ext in extensions) extensions[ext]++;
 					}
 				});

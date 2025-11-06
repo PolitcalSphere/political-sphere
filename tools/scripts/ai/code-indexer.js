@@ -123,7 +123,7 @@ async function buildIndex(rootDir = ".") {
 		const relPath = relative(rootDir, fullPath);
 		const content = readFileSync(fullPath, "utf8");
 		const tokens = tokenize(content);
-		const hash = createHash("md5").update(content).digest("hex");
+		const hash = createHash("sha256").update(content).digest("hex");
 
 		index.files[relPath] = {
 			hash,

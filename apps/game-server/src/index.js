@@ -19,8 +19,37 @@ const dbReady =
 let db = null;
 let games = new Map();
 
+// Configure CORS with secure origin allowlist
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+	? process.env.ALLOWED_ORIGINS.split(",").map((origin) => origin.trim())
+	: [
+			"http://localhost:3000", // Frontend dev
+			"http://localhost:3001", // Alternative frontend port
+			"http://localhost:5173", // Vite dev server
+		];
+
+const corsOptions = {
+	origin: (origin, callback) => {
+		// Allow requests with no origin (e.g., mobile apps, Postman, server-to-server)
+		if (!origin) {
+			return callback(null, true);
+		}
+
+		if (allowedOrigins.includes(origin)) {
+			callback(null, true);
+		} else {
+			console.warn(`CORS: Blocked request from unauthorized origin: ${origin}`);
+			callback(new Error(`Origin ${origin} not allowed by CORS policy`));
+		}
+	},
+	credentials: true, // Allow cookies/auth headers
+	optionsSuccessStatus: 200,
+	methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+	allowedHeaders: ["Content-Type", "Authorization"],
+};
+
 const app = express();
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 // Circuit breakers for external service calls

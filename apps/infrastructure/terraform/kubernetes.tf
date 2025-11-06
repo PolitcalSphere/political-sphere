@@ -7,7 +7,11 @@ resource "aws_eks_cluster" "political_sphere" {
   vpc_config {
     subnet_ids              = aws_subnet.private[*].id
     endpoint_private_access = true
-    endpoint_public_access  = var.environment == "prod" ? false : true
+    # Explicitly disable the public endpoint to reduce attack surface.
+    # If public access is required for development, use a bastion/jump host
+    # or a controlled VPN instead of exposing the control plane.
+    endpoint_public_access  = false
+    public_access_cidrs     = []
     security_group_ids      = [aws_security_group.eks_cluster.id]
   }
 
@@ -106,6 +110,7 @@ resource "aws_iam_role_policy_attachment" "eks_nodes" {
 resource "aws_cloudwatch_log_group" "eks" {
   name              = "/aws/eks/${var.environment}-political-sphere/cluster"
   retention_in_days = 30
+  kms_key_id        = aws_kms_key.cloudwatch_logs.arn
 
   tags = {
     Environment = var.environment

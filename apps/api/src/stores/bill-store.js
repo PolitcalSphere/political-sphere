@@ -1,6 +1,8 @@
 // Compatibility wrapper: export a BillStore class that delegates to
 // either a test-friendly repository object (with create/getById/update/etc.)
 // or to the real SQL-backed BillStore implementation.
+
+import { pick } from "../../../../libs/shared/src/safe-assign.mjs";
 import { BillStore as RealBillStore } from "../bill-store.js";
 
 class BillStore {
@@ -62,10 +64,10 @@ class BillStore {
 		if (this._isRepo) {
 			const bill = await this._repo.getById(id);
 			if (!bill) throw new Error("Bill not found");
-			const votes = Object.assign(
-				{ yes: 0, no: 0, abstain: 0 },
-				bill.votes || {},
-			);
+			// Only copy allowed vote keys to avoid mass-assignment of unexpected fields
+			const votes = { yes: 0, no: 0, abstain: 0 };
+			const safe = pick(bill.votes || {}, ["yes", "no", "abstain"]);
+			Object.assign(votes, safe);
 			if (voteType === "yes") votes.yes += 1;
 			else if (voteType === "no") votes.no += 1;
 			else if (voteType === "abstain") votes.abstain += 1;

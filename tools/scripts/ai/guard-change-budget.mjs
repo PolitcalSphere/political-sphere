@@ -117,16 +117,17 @@ function detectNewDeps(baseRef) {
 		const headPkg = fs.readFileSync("package.json", "utf8");
 		const baseJson = JSON.parse(basePkg || "{}");
 		const headJson = JSON.parse(headPkg || "{}");
-		const depsBase = Object.assign(
-			{},
-			baseJson.dependencies || {},
-			baseJson.devDependencies || {},
-		);
-		const depsHead = Object.assign(
-			{},
-			headJson.dependencies || {},
-			headJson.devDependencies || {},
-		);
+		// Use object spread to construct dependency maps explicitly and avoid
+		// passing potentially unvalidated objects into Object.assign; spread
+		// creates a shallow copy safely.
+		const depsBase = {
+			...(baseJson.dependencies || {}),
+			...(baseJson.devDependencies || {}),
+		};
+		const depsHead = {
+			...(headJson.dependencies || {}),
+			...(headJson.devDependencies || {}),
+		};
 		const newDeps = [];
 		for (const k of Object.keys(depsHead)) {
 			if (!depsBase[k]) newDeps.push(k);

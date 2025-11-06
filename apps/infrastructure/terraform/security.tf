@@ -227,7 +227,8 @@ resource "aws_lb_listener" "https" {
   load_balancer_arn = aws_lb.political_sphere.arn
   port              = "443"
   protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  # Use a modern, secure TLS policy (TLS 1.2+ and TLS 1.3 compatible)
+  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-Res-2021-06"
   certificate_arn   = aws_acm_certificate.political_sphere.arn
 
   default_action {

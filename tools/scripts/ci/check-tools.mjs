@@ -35,11 +35,11 @@ try {
 	const pkgPath = path.resolve(process.cwd(), "package.json");
 	if (fileExists(pkgPath)) {
 		const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8") || "{}");
-		const deps = Object.assign(
-			{},
-			pkg.dependencies || {},
-			pkg.devDependencies || {},
-		);
+		// Prefer object spread to produce a shallow copy of dependency maps.
+		const deps = {
+			...(pkg.dependencies || {}),
+			...(pkg.devDependencies || {}),
+		};
 		if (deps.vitest || deps.jest) hasTestRunner = true;
 	}
 } catch {

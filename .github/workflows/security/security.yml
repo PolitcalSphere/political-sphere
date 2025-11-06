@@ -69,7 +69,7 @@ jobs:
       - name: Check for hardcoded secrets in workflows
         run: |
           echo "🔍 Scanning workflows for potential hardcoded secrets..."
-          
+
           if find .github/workflows .github/actions libs/ci -type f \( -name "*.yml" -o -name "*.yaml" \) -exec \
             grep -iE '(password|secret|token|api[_-]?key|access[_-]?key|private[_-]?key)(\s*[:=]\s*["\x27][^\x27"]+["\x27])' {} + 2>/dev/null | \
             grep -v 'secrets\.' | grep -v 'inputs\.' | grep -v 'env\.' | grep -v '#'; then
@@ -78,6 +78,11 @@ jobs:
           else
             echo "✅ No hardcoded secrets detected"
           fi
+
+      - name: Validate Cryptographic Algorithms
+        run: |
+          echo "🔐 Running cryptographic algorithm validator..."
+          bash scripts/validate-crypto.sh
 
   # ===========================================================================
   # Job 2: SAST - Static Application Security Testing
@@ -99,7 +104,7 @@ jobs:
         run: |
           echo "🔒 Running Semgrep security scan..."
           semgrep ci --config auto --json --sarif --output semgrep-results.sarif > semgrep-results.json || true
-          
+
           if [ -f semgrep-results.json ]; then
             findings=$(jq '.results | length' semgrep-results.json 2>/dev/null || echo "0")
             echo "findings=$findings" >> $GITHUB_OUTPUT
@@ -182,7 +187,7 @@ jobs:
         run: |
           echo "🔍 Running npm audit..."
           npm audit --audit-level=moderate --json > npm-audit-results.json || true
-          
+
           # Display summary
           if [ -f npm-audit-results.json ]; then
             echo "📊 Audit Summary:"
@@ -204,7 +209,7 @@ jobs:
         run: |
           echo "🔍 Running Trivy scan..."
           trivy fs --exit-code 0 --severity CRITICAL,HIGH --format json --output trivy-results.json .
-          
+
           # Display summary
           if [ -f trivy-results.json ]; then
             echo "📊 Trivy found:"
@@ -284,7 +289,8 @@ jobs:
   security-summary:
     name: Security Summary
     runs-on: ubuntu-latest
-    needs: [secrets-and-workflows, sast-scanning, dependency-scanning, supply-chain]
+    needs:
+      [secrets-and-workflows, sast-scanning, dependency-scanning, supply-chain]
     if: always()
     steps:
       - name: Generate Security Summary
@@ -320,17 +326,17 @@ jobs:
           SAST_STATUS="${{ needs.sast-scanning.result }}"
           DEPS_STATUS="${{ needs.dependency-scanning.result }}"
           SUPPLY_STATUS="${{ needs.supply-chain.result }}"
-          
+
           echo "Job Results:"
           echo "  Secrets & Workflows: $SECRETS_STATUS"
           echo "  SAST Scanning: $SAST_STATUS"
           echo "  Dependency Scanning: $DEPS_STATUS"
           echo "  Supply Chain: $SUPPLY_STATUS"
-          
+
           # Fail if any critical job failed
           if [[ "$SECRETS_STATUS" == "failure" ]] || [[ "$SAST_STATUS" == "failure" ]] || [[ "$DEPS_STATUS" == "failure" ]]; then
             echo "❌ One or more security scans failed!"
             exit 1
           fi
-          
+
           echo "✅ All security scans completed"

@@ -3,6 +3,11 @@ const path = require("path");
 const { getConnection } = require("./database-connection");
 const { withTransaction } = require("./database-transactions");
 const logger = require("./logger");
+const {
+	validateTableName,
+	validateFilename,
+	safeJoin,
+} = require("../../../libs/shared/src/path-security");
 
 /**
  * Database Export/Import Manager
@@ -475,7 +480,9 @@ class DatabaseExportImportManager {
 	}
 
 	async exportTableToCSV(connection, tableName, includeHeaders) {
-		const csvPath = path.join(this.exportDir, `${tableName}.csv`);
+		// Validate table name to prevent SQL injection and path traversal
+		const validatedTableName = validateTableName(tableName);
+		const csvPath = safeJoin(this.exportDir, `${validatedTableName}.csv`);
 		const writeStream = fs.createWriteStream(csvPath);
 
 		return new Promise((resolve, reject) => {
@@ -483,7 +490,7 @@ class DatabaseExportImportManager {
 
 			// Get table schema for headers
 			const columns = connection.db
-				.prepare(`PRAGMA table_info(${tableName})`)
+				.prepare(`PRAGMA table_info(${validatedTableName})`)
 				.all();
 			const columnNames = columns.map((col) => col.name);
 
@@ -492,7 +499,9 @@ class DatabaseExportImportManager {
 			}
 
 			// Export data
-			const rows = connection.db.prepare(`SELECT * FROM ${tableName}`).all();
+			const rows = connection.db
+				.prepare(`SELECT * FROM ${validatedTableName}`)
+				.all();
 
 			for (const row of rows) {
 				const values = columnNames.map((col) => {
@@ -552,10 +561,12 @@ class DatabaseExportImportManager {
 				.readdirSync(this.exportDir)
 				.filter((file) => file.endsWith(".json") || file.endsWith(".zip"))
 				.map((file) => {
-					const filePath = path.join(this.exportDir, file);
+					// Validate filename before joining to prevent path traversal
+					const sanitizedFile = validateFilename(file);
+					const filePath = safeJoin(this.exportDir, sanitizedFile);
 					const stats = fs.statSync(filePath);
 					return {
-						name: file,
+						name: sanitizedFile,
 						path: filePath,
 						size: stats.size,
 						created: stats.birthtime,

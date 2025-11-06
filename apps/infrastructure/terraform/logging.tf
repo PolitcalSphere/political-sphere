@@ -282,6 +282,7 @@ resource "aws_security_group" "efs" {
 resource "aws_cloudwatch_log_group" "fluent_bit" {
   name              = "/ecs/${var.environment}-fluent-bit"
   retention_in_days = 30
+  kms_key_id        = aws_kms_key.cloudwatch_logs.arn
 
   tags = {
     Environment = var.environment
@@ -292,6 +293,7 @@ resource "aws_cloudwatch_log_group" "fluent_bit" {
 resource "aws_cloudwatch_log_group" "ai_anomaly_detector" {
   name              = "/ecs/${var.environment}-ai-anomaly-detector"
   retention_in_days = 30
+  kms_key_id        = aws_kms_key.cloudwatch_logs.arn
 
   tags = {
     Environment = var.environment

@@ -25,6 +25,12 @@ const PATTERNS = {
 	errors: /throw\s+new\s+(\w+Error)|console\.error/g,
 };
 
+// Pre-compile regex patterns for performance and security
+const COMPILED_PATTERNS = {};
+Object.entries(PATTERNS).forEach(([key, pattern]) => {
+	COMPILED_PATTERNS[key] = new RegExp(pattern.source, pattern.flags);
+});
+
 class SemanticIndexer {
 	constructor() {
 		this.index = {
@@ -64,7 +70,11 @@ class SemanticIndexer {
 	}
 
 	hashContent(content) {
-		return crypto.createHash("md5").update(content).digest("hex").slice(0, 8);
+		return crypto
+			.createHash("sha256")
+			.update(content)
+			.digest("hex")
+			.slice(0, 8);
 	}
 
 	extractSymbols(content, filePath) {
@@ -79,9 +89,8 @@ class SemanticIndexer {
 			errors: [],
 		};
 
-		Object.entries(PATTERNS).forEach(([key, pattern]) => {
+		Object.entries(COMPILED_PATTERNS).forEach(([key, regex]) => {
 			let match;
-			const regex = new RegExp(pattern);
 			while ((match = regex.exec(content)) !== null) {
 				const symbol = match[1] || match[2];
 				if (symbol && symbol.length > 1) {

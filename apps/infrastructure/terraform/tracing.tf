@@ -17,7 +17,12 @@ resource "aws_ecs_service" "jaeger" {
     container_port   = 16686
   }
 
-  depends_on = [aws_lb_listener.jaeger]
+  # Depend on whichever listener variant is created (redirect+https or forward).
+  depends_on = concat(
+    aws_lb_listener.jaeger_redirect[*],
+    aws_lb_listener.jaeger_forward[*],
+    aws_lb_listener.jaeger_https[*],
+  )
 
   tags = {
     Environment = var.environment
@@ -114,10 +119,46 @@ resource "aws_lb_target_group" "jaeger" {
   }
 }
 
-resource "aws_lb_listener" "jaeger" {
+// Two alternatives for the HTTP listener: either redirect -> HTTPS (secure) or
+// forward directly to the target group. We create only one of these depending
+// on var.enable_jaeger_https to avoid requiring certificates in non-prod.
+resource "aws_lb_listener" "jaeger_redirect" {
+  count             = var.enable_jaeger_https ? 1 : 0
   load_balancer_arn = aws_lb.jaeger.arn
   port              = "80"
   protocol          = "HTTP"
+
+  default_action {
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+resource "aws_lb_listener" "jaeger_forward" {
+  count             = var.enable_jaeger_https ? 0 : 1
+  load_balancer_arn = aws_lb.jaeger.arn
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.jaeger.arn
+  }
+}
+
+// HTTPS listener for Jaeger (internal). Use a modern TLS policy when enabled.
+resource "aws_lb_listener" "jaeger_https" {
+  count             = var.enable_jaeger_https ? 1 : 0
+  load_balancer_arn = aws_lb.jaeger.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-Res-2021-06"
+  certificate_arn   = aws_acm_certificate.political_sphere.arn
 
   default_action {
     type             = "forward"
@@ -185,6 +226,7 @@ resource "aws_security_group" "jaeger_lb" {
 resource "aws_cloudwatch_log_group" "jaeger" {
   name              = "/ecs/${var.environment}-jaeger"
   retention_in_days = 30
+  kms_key_id        = aws_kms_key.cloudwatch_logs.arn
 
   tags = {
     Environment = var.environment

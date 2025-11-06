@@ -89,7 +89,10 @@ resource "aws_eks_cluster" "this" {
     security_group_ids      = [aws_security_group.cluster.id]
     subnet_ids              = concat(var.private_subnet_ids, var.public_subnet_ids)
     endpoint_private_access = true
-    endpoint_public_access  = true
+    # Disable public control-plane endpoint to ensure API server is reachable
+    # only from within the VPC (private subnets). This reduces exposure.
+    endpoint_public_access  = false
+    public_access_cidrs     = []
   }
 
   enabled_cluster_log_types = var.cluster_log_types

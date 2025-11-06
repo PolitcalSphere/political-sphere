@@ -14,6 +14,37 @@ const COMPILED_PATTERNS = path.join(PATTERNS_DIR, "compiled-patterns.json");
 class PatternMatcher {
 	constructor() {
 		this.patterns = this.loadPatterns();
+		// Pre-compile regex objects from the loaded string patterns.
+		// This avoids creating RegExp from variables repeatedly at match-time
+		// and centralizes validation/try-catch for malformed patterns.
+		this.compiledPatterns = this._compileRegexes(this.patterns);
+	}
+
+	_compileRegexes(patterns) {
+		const out = {};
+		Object.entries(patterns).forEach(([category, categoryPatterns]) => {
+			out[category] = [];
+			categoryPatterns.forEach(({ pattern, flags, severity, message }) => {
+				try {
+					if (
+						typeof pattern !== "string" ||
+						pattern.length === 0 ||
+						pattern.length > 2000
+					) {
+						// skip suspiciously large or non-string patterns
+						return;
+					}
+					const regex = new RegExp(pattern, flags || "");
+					out[category].push({ regex, severity, message });
+				} catch (_) {
+					// If a pattern fails to compile, skip it but log for debugging.
+					console.warn(
+						`Pattern compile failed for category=${category}: ${pattern}`,
+					);
+				}
+			});
+		});
+		return out;
 	}
 
 	loadPatterns() {
@@ -100,15 +131,12 @@ class PatternMatcher {
 
 	scanFile(filePath) {
 		const content = fs.readFileSync(filePath, "utf8");
-		const patterns = this.patterns;
 		const issues = [];
 
-		Object.entries(patterns).forEach(([category, categoryPatterns]) => {
-			categoryPatterns.forEach(({ pattern, flags, severity, message }) => {
-				// Convert string to RegExp at runtime (NOT before JSON serialization)
-				const regex = new RegExp(pattern, flags || "");
+		// Use pre-compiled regex objects for matching
+		Object.entries(this.compiledPatterns).forEach(([category, compiled]) => {
+			compiled.forEach(({ regex, severity, message }) => {
 				const matches = content.match(regex) || [];
-
 				matches.forEach(() => {
 					issues.push({ category, severity, message, file: filePath });
 				});
@@ -120,14 +148,12 @@ class PatternMatcher {
 
 	// API compatibility for code-analyzer
 	analyzeCode(code, filePath) {
-		const patterns = this.patterns;
 		const issues = [];
 
-		Object.entries(patterns).forEach(([category, categoryPatterns]) => {
-			categoryPatterns.forEach(({ pattern, flags, severity, message }) => {
-				const regex = new RegExp(pattern, flags || "");
+		// Use pre-compiled regex objects for analyzeCode
+		Object.entries(this.compiledPatterns).forEach(([category, compiled]) => {
+			compiled.forEach(({ regex, severity, message }) => {
 				const matches = code.match(regex) || [];
-
 				matches.forEach(() => {
 					issues.push({ category, severity, message, file: filePath });
 				});

@@ -21,3 +21,143 @@ rules:
     paths:
       include:
         - package.json
+
+  - id: weak-crypto-md5
+    message: 'MD5 is cryptographically broken and should not be used. Use SHA-256 or higher instead: crypto.createHash("sha256")'
+    severity: ERROR
+    languages: [javascript, typescript]
+    pattern-either:
+      - pattern: crypto.createHash("md5")
+      - pattern: crypto.createHash('md5')
+      - pattern: createHash("md5")
+      - pattern: createHash('md5')
+    fix: crypto.createHash("sha256")
+    metadata:
+      cwe: "CWE-327: Use of a Broken or Risky Cryptographic Algorithm"
+      owasp: "A02:2021 - Cryptographic Failures"
+      references:
+        - https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/09-Testing_for_Weak_Cryptography/04-Testing_for_Weak_Encryption
+        - https://csrc.nist.gov/projects/hash-functions
+
+  - id: weak-crypto-sha1
+    message: 'SHA-1 is cryptographically weak and should not be used. Use SHA-256 or higher instead: crypto.createHash("sha256")'
+    severity: ERROR
+    languages: [javascript, typescript]
+    pattern-either:
+      - pattern: crypto.createHash("sha1")
+      - pattern: crypto.createHash('sha1')
+      - pattern: createHash("sha1")
+      - pattern: createHash('sha1')
+    fix: crypto.createHash("sha256")
+    metadata:
+      cwe: "CWE-327: Use of a Broken or Risky Cryptographic Algorithm"
+      owasp: "A02:2021 - Cryptographic Failures"
+      references:
+        - https://shattered.io/
+        - https://csrc.nist.gov/projects/hash-functions
+
+  - id: insecure-cors-wildcard
+    message: 'CORS wildcard (*) or empty origin allows any website to access your API. Use a specific allowlist of origins instead.'
+    severity: ERROR
+    languages: [javascript, typescript]
+    pattern-either:
+      - pattern: |
+          cors()
+      - pattern: |
+          cors({})
+      - pattern: |
+          cors({ origin: "*" })
+      - pattern: |
+          cors({ origin: '*' })
+    metadata:
+      cwe: "CWE-942: Permissive Cross-domain Policy with Untrusted Domains"
+      owasp: "A05:2021 - Security Misconfiguration"
+      references:
+        - https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/11-Client-side_Testing/07-Testing_Cross_Origin_Resource_Sharing
+
+  - id: insecure-cors-origin-true
+    message: 'Setting CORS origin to true reflects the requesting origin, allowing any website to access your API. Use a specific allowlist instead.'
+    severity: ERROR
+    languages: [javascript, typescript]
+    pattern: |
+      cors({ origin: true })
+    metadata:
+      cwe: "CWE-942: Permissive Cross-domain Policy with Untrusted Domains"
+      owasp: "A05:2021 - Security Misconfiguration"
+
+  - id: path-traversal-join
+    message: 'Potential path traversal vulnerability: user input used in path.join() without validation. Use safeJoin() or validateFilename() from libs/shared/src/path-security.js'
+    severity: ERROR
+    languages: [javascript, typescript]
+    patterns:
+      - pattern-either:
+          - pattern: path.join($DIR, $INPUT)
+          - pattern: path.resolve($DIR, $INPUT)
+      - pattern-not: path.join("...", "...")
+      - pattern-not: path.resolve("...", "...")
+      - metavariable-pattern:
+          metavariable: $INPUT
+          patterns:
+            - pattern-not: |
+                "..."
+            - pattern-not: |
+                '...'
+    metadata:
+      cwe: "CWE-22: Improper Limitation of a Pathname to a Restricted Directory"
+      owasp: "A01:2021 - Broken Access Control"
+      references:
+        - https://owasp.org/www-community/attacks/Path_Traversal
+        - https://cwe.mitre.org/data/definitions/22.html
+
+  - id: detect-non-literal-regexp
+    message: 'Avoid creating RegExp from variables or user input to prevent ReDoS attacks. Pre-compile regex patterns or escape special characters before use.'
+    severity: WARNING
+    languages: [javascript, typescript]
+    patterns:
+      - pattern-either:
+          - pattern: new RegExp($VAR)
+          - pattern: new RegExp($VAR, $FLAGS)
+          - pattern: RegExp($VAR)
+          - pattern: RegExp($VAR, $FLAGS)
+      - pattern-not: new RegExp("...")
+      - pattern-not: new RegExp('...')
+      - pattern-not: RegExp("...")
+      - pattern-not: RegExp('...')
+      - metavariable-pattern:
+          metavariable: $VAR
+          patterns:
+            - pattern-not: |
+                "..."
+            - pattern-not: |
+                '...'
+    metadata:
+      cwe: "CWE-1333: Inefficient Regular Expression Complexity"
+      owasp: "A03:2021 - Injection"
+      references:
+        - https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS
+        - https://cwe.mitre.org/data/definitions/1333.html
+      remediation: |
+        1. Pre-compile regex patterns outside loops/functions as constants
+        2. Escape special regex characters: str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        3. Validate and limit input length before creating RegExp
+        4. Use safe regex libraries for complex patterns
+
+    - id: detect-insecure-object-assign
+      message: 'Potential insecure Object.assign usage. Avoid copying user-controlled objects directly with Object.assign — prefer whitelisting keys via a safeAssign/pick helper.'
+      severity: WARNING
+      languages: [javascript, typescript]
+      patterns:
+        - pattern-either:
+            - pattern: Object.assign($TARGET, $SRC)
+            - pattern: Object.assign($TARGET, $A, $SRC)
+        - pattern-not: Object.assign($TARGET, {...})
+        - pattern-not: Object.assign($TARGET, {}, {...})
+      metadata:
+        cwe: "CWE-MassAssignment"
+        owasp: "A03:2021 - Injection"
+        references:
+          - https://owasp.org/www-community/vulnerabilities/Mass_assignment
+        remediation: |
+          1. Use a pick/safeAssign helper that whitelists allowed keys from untrusted sources.
+          2. Avoid passing user-controlled objects directly into Object.assign or spreading them into responses.
+          3. Add unit tests to ensure only expected fields are copied from inputs.
