@@ -50,10 +50,14 @@ jobs:
           fetch-depth: 0
 
       - name: Validate required secrets
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          CURRENT_REPO: ${{ github.repository }}
         run: |
           # Ensure required secrets are present to avoid runtime failures
             # Only require secrets for pushes to main or PRs from same repo (not forks)
-            if [ "${{ github.event_name }}" == "push" ] || [ "${{ github.event.pull_request.head.repo.full_name }}" == "${{ github.repository }}" ]; then
+            if [ "${EVENT_NAME}" == "push" ] || [ "${PR_HEAD_REPO}" == "${CURRENT_REPO}" ]; then
               if [ -z "$NX_CLOUD_ACCESS_TOKEN" ]; then
                 echo "::error::Missing required secret: NX_CLOUD_ACCESS_TOKEN"
                 exit 1
@@ -99,11 +103,12 @@ jobs:
 
       - name: Run guard-change-budget (Safe mode)
         if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          node --version
-          node tools/scripts/ai/guard-change-budget.mjs --mode=Safe --base=origin/${{ github.event.pull_request.base.ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_BASE_REF: ${{ github.event.pull_request.base.ref }}
+        run: |
+          node --version
+          node tools/scripts/ai/guard-change-budget.mjs --mode=Safe --base="origin/${PR_BASE_REF}"
 
   lint-and-typecheck:
     name: Lint & Type Check
@@ -145,7 +150,9 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Run tests (shard ${{ matrix.shard }}/3)
-        run: npm run test -- --shard=${{ matrix.shard }}/3 --maxWorkers=2 --coverage --coverageDirectory=coverage-shard-${{ matrix.shard }}
+        env:
+          SHARD_INDEX: ${{ matrix.shard }}
+        run: npm run test -- --shard=${SHARD_INDEX}/3 --maxWorkers=2 --coverage --coverageDirectory=coverage-shard-${SHARD_INDEX}
       - name: Upload shard coverage
         uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
         with:

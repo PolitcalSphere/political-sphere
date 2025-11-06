@@ -3,33 +3,33 @@
 # for npm, pnpm, and yarn
 # See: https://github.com/actions/runner/blob/main/docs/adrs/0549-composite-run-steps.md
 
-name: 'Setup Node and Dependencies'
-description: 'Sets up Node.js and installs npm dependencies with caching'
+name: "Setup Node and Dependencies"
+description: "Sets up Node.js and installs npm dependencies with caching"
 
 inputs:
   node-version:
-    description: 'Node.js version to use'
+    description: "Node.js version to use"
     required: false
-    default: '22'
+    default: "22"
   package-manager:
-    description: 'npm | pnpm | yarn'
+    description: "npm | pnpm | yarn"
     required: false
-    default: 'npm'
+    default: "npm"
   cache-dependency-path:
-    description: 'Lockfile path(s) for caching (e.g., **/package-lock.json, pnpm-lock.yaml)'
+    description: "Lockfile path(s) for caching (e.g., **/package-lock.json, pnpm-lock.yaml)"
     required: false
-    default: ''
+    default: ""
   ignore-scripts:
-    description: 'Set to true to run install with --ignore-scripts'
+    description: "Set to true to run install with --ignore-scripts"
     required: false
-    default: 'false'
+    default: "false"
   enable-corepack:
-    description: 'Enable Corepack for package manager version locking'
+    description: "Enable Corepack for package manager version locking"
     required: false
-    default: 'true'
+    default: "true"
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -41,14 +41,16 @@ runs:
     - name: Enable Corepack (lock package managers)
       if: ${{ inputs.enable-corepack == 'true' }}
       shell: bash
+      env:
+        PKG_MGR: ${{ inputs.package-manager }}
       run: |
         corepack enable
-        corepack prepare ${{ inputs.package-manager }}@latest --activate || true
+        corepack prepare "${PKG_MGR}"@latest --activate || true
 
     - name: Install dependencies
       shell: bash
       env:
-        CI: 'true'
+        CI: "true"
         PM: ${{ inputs.package-manager }}
         IGNORE: ${{ inputs.ignore-scripts == 'true' && '--ignore-scripts' || '' }}
       run: |
