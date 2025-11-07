@@ -3,5 +3,5 @@
 // See: https://k6.io/docs/
 
 export default function () {
-  // TODO: implement load scenario
+	// TODO: implement load scenario
 }

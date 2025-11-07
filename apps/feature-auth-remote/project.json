@@ -1,7 +1,7 @@
 {
   "name": "feature-auth-remote",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/feature-auth-remote",
+  "sourceRoot": "apps/feature-auth-remote/src",
   "projectType": "application",
   "tags": ["app"],
   "targets": {

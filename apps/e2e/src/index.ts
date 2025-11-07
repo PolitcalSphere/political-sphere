@@ -4,5 +4,5 @@
 // ESTIMATED_READINESS: After framework decision and environment provisioning
 
 export function placeholderE2E() {
-  return 'e2e tests placeholder';
+  return "e2e tests placeholder";
 }
