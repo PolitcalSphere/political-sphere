@@ -1,20 +1,20 @@
 {
-  "name": "remote",
+  "name": "shell",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/remote",
+  "sourceRoot": "apps/shell",
   "projectType": "application",
   "tags": ["app"],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "echo 'Build remote app (copy Module Federation config into your builder)'"
+        "command": "echo 'Build host app (copy Module Federation config into your builder)'"
       }
     },
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "echo 'Serve remote app (configure webpack-dev-server with MF)'"
+        "command": "echo 'Serve host app (configure webpack-dev-server with MF)'"
       }
     }
   }
