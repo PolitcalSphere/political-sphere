@@ -66,7 +66,7 @@ jobs:
 
       - name: Upload build artifacts
         if: steps.semantic-release.outputs.new-release-published == 'true'
-        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: release-artifacts-${{ steps.semantic-release.outputs.new-release-version }}
           path: |
