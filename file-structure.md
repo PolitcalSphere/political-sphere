@@ -87,20 +87,20 @@ political-sphere/
 │
 ├── apps/ # Application projects
 │ ├── **api/** # Backend API service
-│ │ ├── src/
-│ │ │ ├── modules/
-│ │ │ ├── middleware/
-│ │ │ ├── utils/
+│ │ ├── **src/**
+│ │ │ ├── **modules/**
+│ │ │ ├── **middleware/**
+│ │ │ ├── **utils/**
 │ │ │ └── server.ts
-│ │ ├── tests/
+│ │ ├── **tests/**
 │ │ │ ├── unit/
 │ │ │ ├── integration/
 │ │ │ └── fixtures/
-│ │ ├── openapi/ # OpenAPI specs ✨ NEW
+│ │ ├── **openapi/** # OpenAPI specs ✨ NEW
 │ │ │ ├── api.yaml
 │ │ │ ├── schemas/
 │ │ │ └── generated/
-│ │ ├── prisma/ # Database schemas ✨ NEW
+│ │ ├── **prisma/** # Database schemas ✨ NEW
 │ │ │ ├── schema.prisma
 │ │ │ ├── migrations/
 │ │ │ └── seeds/
