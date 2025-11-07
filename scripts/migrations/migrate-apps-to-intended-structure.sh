@@ -104,7 +104,7 @@ migrate_existing_apps() {
     # frontend → web
     if [ -d "apps/frontend" ]; then
         log_info "Renaming frontend → web..."
-        npx nx g @nx/workspace:move --projectName=frontend --destination=apps/web --skipFormat || {
+        npx nx g move --projectName=frontend --destination=web --skipFormat || {
             log_error "Failed to move frontend to web"
             return 1
         }
@@ -116,7 +116,7 @@ migrate_existing_apps() {
     # host → shell
     if [ -d "apps/host" ]; then
         log_info "Renaming host → shell..."
-        npx nx g @nx/workspace:move --projectName=host --destination=apps/shell --skipFormat || {
+        npx nx g move --projectName=host --destination=shell --skipFormat || {
             log_error "Failed to move host to shell"
             return 1
         }
@@ -128,7 +128,7 @@ migrate_existing_apps() {
     # remote → feature-auth-remote
     if [ -d "apps/remote" ]; then
         log_info "Renaming remote → feature-auth-remote..."
-        npx nx g @nx/workspace:move --projectName=remote --destination=apps/feature-auth-remote --skipFormat || {
+        npx nx g move --projectName=remote --destination=feature-auth-remote --skipFormat || {
             log_error "Failed to move remote to feature-auth-remote"
             return 1
         }
