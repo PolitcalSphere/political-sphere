@@ -34,7 +34,7 @@ jobs:
       release-version: ${{ steps.semantic-release.outputs.new-release-version }}
       release-published: ${{ steps.semantic-release.outputs.new-release-published }}
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -85,7 +85,7 @@ jobs:
       attestations: write
       contents: read
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Download artifacts
         uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
@@ -105,7 +105,7 @@ jobs:
     if: needs.release.outputs.release-published == 'true'
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           ref: ${{ needs.release.outputs.release-version }}
 
