@@ -6,7 +6,7 @@
 # Base Stage - Pin by digest for reproducibility
 # ============================================================================
 # Update digest: docker pull node:22-alpine && docker inspect node:22-alpine --format='{{index .RepoDigests 0}}'
-FROM node:22-alpine@sha256:6e80991f69cc7722c561e5d14d5e72ab47c0d6b6cfb3ae50fb9cf9a7b30fdf97 AS base
+FROM node:25-alpine@sha256:7e467cc5aa91c87e94f93c4608cf234ca24aac3ec941f7f3db207367ccccdd11 AS base
 
 # Build arguments for OCI labels
 ARG REVISION="unknown"
