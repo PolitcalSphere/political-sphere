@@ -1,153 +1,766 @@
-# Political Sphere - Complete File Structure
+# Political Sphere - File Structure
 
-> **Industry-standard monorepo structure with full hierarchy**
+> **Clean, readable hierarchy with industry-standard organization**
 
-## 📋 Table of Contents
+## 📋 Quick Navigation
 
-- [Root Level](#root-level)
+- [Project Overview](#project-overview)
+- [Root Configuration](#root-configuration)
 - [Development Environment](#development-environment)
-- [GitHub Configuration](#github-configuration)
+- [GitHub & CI/CD](#github--cicd)
 - [Applications](#applications)
 - [Libraries](#libraries)
 - [Documentation](#documentation)
 - [Infrastructure](#infrastructure)
-- [Scripts](#scripts)
+- [Scripts & Tools](#scripts--tools)
 - [AI Assets](#ai-assets)
-- [Configuration](#configuration)
 
 ---
 
-## 🌳 Complete Hierarchy Tree
+## � Project Overview
 
 ```mermaid
-graph TB
+graph LR
     Root[political-sphere/]
 
-    %% Root Files
-    Root --> RootFiles[📄 Root Files]
-    RootFiles --> readme[README.md]
-    RootFiles --> changelog[CHANGELOG.md]
-    RootFiles --> license[LICENSE]
-    RootFiles --> contributing[CONTRIBUTING.md]
-    RootFiles --> codeofconduct[CODE_OF_CONDUCT.md]
-    RootFiles --> package[package.json]
-    RootFiles --> packagelock[package-lock.json]
-    RootFiles --> nxjson[nx.json]
-    RootFiles --> tsconfig[tsconfig.json]
-    RootFiles --> vitest[vitest.config.js]
-    RootFiles --> makefile[Makefile]
-    RootFiles --> editorconfig[.editorconfig]
-    RootFiles --> gitignore[.gitignore]
-    RootFiles --> gitattributes[.gitattributes]
-    RootFiles --> npmrc[.npmrc]
-    RootFiles --> prettierrc[.prettierrc]
-    RootFiles --> prettierignore[.prettierignore]
-    RootFiles --> lefthook[.lefthook.yml]
+    Root --> Apps[📱 Apps<br/>12 applications]
+    Root --> Libs[📚 Libs<br/>17+ libraries]
+    Root --> Docs[📖 Docs<br/>12 sections]
+    Root --> Infra[🏗️ Infrastructure<br/>IaC & K8s]
+    Root --> Scripts[� Scripts<br/>Automation]
+    Root --> AI[🤖 AI Assets<br/>Context & Tools]
 
-    %% Development Environment
-    Root --> DevEnv[🔧 Development Environment]
-    DevEnv --> devcontainer[.devcontainer/]
-    devcontainer --> devjson[devcontainer.json]
-    devcontainer --> dockerfile[Dockerfile]
-    devcontainer --> dockercompose[docker-compose.dev.yml]
-
-    DevEnv --> vscode[.vscode/]
-    vscode --> extensions[extensions.json]
-    vscode --> settings[settings.json]
-    vscode --> tasks[tasks.json]
-    vscode --> launch[launch.json]
-
-    DevEnv --> nx[.nx/]
-    nx --> workspace[workspace-data/]
-    workspace --> graphs[graphs/]
-    workspace --> locks[locks/]
-    workspace --> maps[maps/]
-    workspace --> parsed[parsed/]
-    workspace --> db[db/]
-
-    DevEnv --> vitestcache[.vitest/]
-    vitestcache --> cache[cache/]
-    vitestcache --> cachetemp[cache-temp/]
-
-    style Root fill:#e1f5ff,stroke:#01579b,stroke-width:3px
-    style RootFiles fill:#fff9c4
-    style DevEnv fill:#f3e5f5
-    style devcontainer fill:#e1bee7
-    style vscode fill:#ce93d8
-    style nx fill:#ba68c8
-    style vitestcache fill:#ab47bc
+    style Root fill:#2196F3,stroke:#1565C0,stroke-width:3px,color:#fff
+    style Apps fill:#4CAF50,stroke:#2E7D32,stroke-width:2px,color:#fff
+    style Libs fill:#FF9800,stroke:#E65100,stroke-width:2px,color:#fff
+    style Docs fill:#9C27B0,stroke:#6A1B9A,stroke-width:2px,color:#fff
+    style Infra fill:#00BCD4,stroke:#00838F,stroke-width:2px,color:#fff
+    style Scripts fill:#795548,stroke:#4E342E,stroke-width:2px,color:#fff
+    style AI fill:#E91E63,stroke:#880E4F,stroke-width:2px,color:#fff
 ```
 
 ---
 
-## 🤖 GitHub Configuration
+## 📦 Root Configuration
+
+```mermaid
+graph TB
+    Root[Root Files]
+
+    Root --> Docs[Documentation]
+    Docs --> readme[README.md]
+    Docs --> changelog[CHANGELOG.md]
+    Docs --> contrib[CONTRIBUTING.md]
+    Docs --> license[LICENSE]
+    Docs --> conduct[CODE_OF_CONDUCT.md]
+
+    Root --> Config[Configuration]
+    Config --> package[package.json]
+    Config --> nx[nx.json]
+    Config --> ts[tsconfig.json]
+    Config --> vitest[vitest.config.js]
+
+    Root --> Tooling[Tooling]
+    Tooling --> prettier[.prettierrc]
+    Tooling --> eslint[.eslintrc]
+    Tooling --> editor[.editorconfig]
+    Tooling --> git[.gitignore]
+    Tooling --> lefthook[.lefthook.yml]
+
+    style Root fill:#2196F3,stroke:#1565C0,stroke-width:3px,color:#fff
+    style Docs fill:#66BB6A,stroke:#388E3C,stroke-width:2px
+    style Config fill:#42A5F5,stroke:#1976D2,stroke-width:2px
+    style Tooling fill:#AB47BC,stroke:#7B1FA2,stroke-width:2px
+```
+
+---
+
+## 🔧 Development Environment
+
+```mermaid
+graph LR
+    DevEnv[Development Environment]
+
+    DevEnv --> Container[.devcontainer/]
+    Container --> devjson[devcontainer.json]
+    Container --> dockerfile[Dockerfile]
+    Container --> compose[docker-compose.dev.yml]
+
+    DevEnv --> VSCode[.vscode/]
+    VSCode --> extensions[extensions.json]
+    VSCode --> settings[settings.json]
+    VSCode --> tasks[tasks.json]
+    VSCode --> launch[launch.json]
+
+    DevEnv --> Cache[Build Cache]
+    Cache --> nx[.nx/workspace-data/]
+    Cache --> vitest[.vitest/cache/]
+
+    style DevEnv fill:#FF6F00,stroke:#E65100,stroke-width:3px,color:#fff
+    style Container fill:#26A69A,stroke:#00796B,stroke-width:2px
+    style VSCode fill:#5C6BC0,stroke:#3949AB,stroke-width:2px
+    style Cache fill:#78909C,stroke:#546E7A,stroke-width:2px
+```
+
+---
+
+## 🤖 GitHub & CI/CD
+
+### Workflows
 
 ```mermaid
 graph TB
     GitHub[.github/]
 
-    %% Workflows
-    GitHub --> workflows[workflows/]
-    workflows --> ci[ci.yml]
-    workflows --> release[release.yml]
-    workflows --> security[security.yml]
-    workflows --> testrun[test-run-tests-action.yml]
-    workflows --> testsetup[test-setup-node-action.yml]
+    GitHub --> Workflows[workflows/]
+    Workflows --> ci[ci.yml<br/>Continuous Integration]
+    Workflows --> release[release.yml<br/>Release Automation]
+    Workflows --> security[security.yml<br/>Security Scans]
+    Workflows --> tests[test-*.yml<br/>Test Actions]
 
-    %% Actions
-    GitHub --> actions[actions/]
-
-    actions --> setupnode[setup-node/]
-    setupnode --> snaction[action.yml]
-    setupnode --> snsh[setup-node.sh]
-    setupnode --> snreadme[README.md]
-
-    actions --> runtests[run-tests/]
-    runtests --> rtaction[action.yml]
-    runtests --> rtsh[run-tests.sh]
-    runtests --> parse[parse-results.mjs]
-    runtests --> upload[upload-artifacts.sh]
-    runtests --> covconfig[coverage.config.json]
-    runtests --> rtreadme[README.md]
-
-    actions --> setupdeps[setup-node-deps/]
-    actions --> quality[quality-checks/]
-
-    actions --> deploy[deploy/]
-    deploy --> depaction[action.yml]
-    deploy --> rundeploy[run-deploy.sh]
-    deploy --> buildpush[build-and-push.sh]
-    deploy --> helm[helm-deploy.sh]
-    deploy --> kubectl[kubectl-apply.sh]
-    deploy --> argocd[argocd-sync.sh]
-    deploy --> rollback[rollback.sh]
-    deploy --> validate[validate-manifests.sh]
-    deploy --> depreadme[README.md]
-
-    %% Templates
-    GitHub --> issuetemp[ISSUE_TEMPLATE/]
-    issuetemp --> bugreport[bug_report.yml]
-    issuetemp --> featurereq[feature_request.yml]
-    issuetemp --> secreport[security_report.yml]
-
-    GitHub --> prtemp[PULL_REQUEST_TEMPLATE/]
-    prtemp --> prmd[PULL_REQUEST.md]
-
-    %% Other files
-    GitHub --> ghsecurity[SECURITY.md]
-    GitHub --> support[SUPPORT.md]
-    GitHub --> codeowners[CODEOWNERS]
-    GitHub --> funding[FUNDING.yml]
-    GitHub --> dependabot[dependabot.yml]
-    GitHub --> copilot[copilot-instructions.md]
-    GitHub --> ghreadme[README.md]
-
-    style GitHub fill:#e8f5e9,stroke:#1b5e20,stroke-width:3px
-    style workflows fill:#c8e6c9
-    style actions fill:#a5d6a7
-    style issuetemp fill:#81c784
-    style prtemp fill:#66bb6a
+    style GitHub fill:#FF6F00,stroke:#E65100,stroke-width:3px,color:#fff
+    style Workflows fill:#26A69A,stroke:#00796B,stroke-width:2px
+    style ci fill:#66BB6A,stroke:#388E3C,stroke-width:2px
+    style release fill:#42A5F5,stroke:#1976D2,stroke-width:2px
+    style security fill:#EF5350,stroke:#C62828,stroke-width:2px
+    style tests fill:#AB47BC,stroke:#7B1FA2,stroke-width:2px
 ```
+
+### Reusable Actions
+
+```mermaid
+graph LR
+    Actions[actions/]
+
+    Actions --> Setup[setup-node/<br/>Node.js Setup]
+    Actions --> Test[run-tests/<br/>Test Runner]
+    Actions --> Quality[quality-checks/<br/>Linting & Security]
+    Actions --> Deploy[deploy/<br/>Deployment]
+
+    style Actions fill:#FF6F00,stroke:#E65100,stroke-width:3px,color:#fff
+    style Setup fill:#26A69A,stroke:#00796B,stroke-width:2px,color:#fff
+    style Test fill:#5C6BC0,stroke:#3949AB,stroke-width:2px,color:#fff
+    style Quality fill:#FFA726,stroke:#F57C00,stroke-width:2px,color:#fff
+    style Deploy fill:#66BB6A,stroke:#388E3C,stroke-width:2px,color:#fff
+```
+
+### Templates & Policies
+
+```mermaid
+graph LR
+    Templates[Templates & Policies]
+
+    Templates --> Issues[ISSUE_TEMPLATE/<br/>Bug & Feature]
+    Templates --> PR[PULL_REQUEST_TEMPLATE/<br/>PR Template]
+    Templates --> Policies[Policies]
+
+    Policies --> security[SECURITY.md]
+    Policies --> codeowners[CODEOWNERS]
+    Policies --> dependabot[dependabot.yml]
+
+    style Templates fill:#FF6F00,stroke:#E65100,stroke-width:3px,color:#fff
+    style Issues fill:#FFA726,stroke:#F57C00,stroke-width:2px
+    style PR fill:#26A69A,stroke:#00796B,stroke-width:2px
+    style Policies fill:#5C6BC0,stroke:#3949AB,stroke-width:2px
+```
+
+---
+
+## 📱 Applications
+
+### Core Services
+
+```mermaid
+graph TB
+    Core[Core Services]
+
+    Core --> API[api/<br/>Backend REST API]
+    API --> apisrc[src/modules, middleware]
+    API --> apitest[tests/unit, integration]
+    API --> apispec[openapi/specs]
+    API --> prisma[prisma/schema, migrations]
+
+    Core --> Game[game-server/<br/>Real-time Engine]
+    Game --> gamesrc[src/engine, simulation]
+    Game --> gametest[tests/]
+
+    Core --> Worker[worker/<br/>Background Jobs]
+    Worker --> workersrc[src/jobs, queues]
+    Worker --> workertest[tests/]
+
+    Core --> Data[data/<br/>ETL & Processing]
+    Data --> datasrc[src/pipelines, transformers]
+    Data --> datatest[tests/]
+
+    style Core fill:#4CAF50,stroke:#2E7D32,stroke-width:3px,color:#fff
+    style API fill:#66BB6A,stroke:#388E3C,stroke-width:2px
+    style Game fill:#81C784,stroke:#43A047,stroke-width:2px
+    style Worker fill:#AED581,stroke:#7CB342,stroke-width:2px
+    style Data fill:#C5E1A5,stroke:#8BC34A,stroke-width:2px
+```
+
+### Frontend Applications
+
+```mermaid
+graph TB
+    Frontend[Frontend Apps]
+
+    Frontend --> Web[web/<br/>Main Application]
+    Web --> websrc[src/components, pages]
+    Web --> webtest[tests/unit, a11y]
+    Web --> vite[vite.config.js]
+
+    Frontend --> Shell[shell/<br/>Module Federation]
+    Shell --> shellsrc[src/bootstrap.tsx]
+    Shell --> webpack[webpack.config.js]
+
+    Frontend --> Auth[feature-auth-remote/<br/>Auth Micro-frontend]
+    Frontend --> Dash[feature-dashboard-remote/<br/>Dashboard Remote]
+
+    style Frontend fill:#2196F3,stroke:#1565C0,stroke-width:3px,color:#fff
+    style Web fill:#42A5F5,stroke:#1976D2,stroke-width:2px
+    style Shell fill:#64B5F6,stroke:#1E88E5,stroke-width:2px
+    style Auth fill:#90CAF9,stroke:#2196F3,stroke-width:2px
+    style Dash fill:#BBDEFB,stroke:#42A5F5,stroke-width:2px
+```
+
+### Support Applications
+
+```mermaid
+graph LR
+    Support[Support Tools]
+
+    Support --> E2E[e2e/<br/>End-to-End Tests]
+    Support --> Load[load-test/<br/>Performance]
+    Support --> Dev[dev/<br/>Experiments]
+    Support --> Docs[docs/<br/>Documentation Site]
+    Support --> Infra[infrastructure/<br/>IaC Tools]
+
+    style Support fill:#FF9800,stroke:#E65100,stroke-width:3px,color:#fff
+    style E2E fill:#FFA726,stroke:#F57C00,stroke-width:2px,color:#fff
+    style Load fill:#FFB74D,stroke:#FB8C00,stroke-width:2px,color:#fff
+    style Dev fill:#FFCC80,stroke:#FF9800,stroke-width:2px
+    style Docs fill:#FFE0B2,stroke:#FFA726,stroke-width:2px
+    style Infra fill:#FFECB3,stroke:#FFB74D,stroke-width:2px
+```
+
+---
+
+## 📚 Libraries
+
+### Shared Utilities
+
+```mermaid
+graph TB
+    Shared[Shared Libraries]
+
+    Shared --> UI[ui/<br/>Component Library]
+    UI --> components[components/]
+    UI --> hooks[hooks/]
+    UI --> storybook[storybook/]
+
+    Shared --> Common[shared/<br/>Common Utils]
+    Common --> utils[utils/]
+    Common --> types[types/]
+    Common --> validators[validators/]
+
+    Shared --> Testing[testing/<br/>Test Utilities]
+    Testing --> fixtures[fixtures/]
+    Testing --> mocks[mocks/]
+    Testing --> helpers[helpers/]
+
+    Shared --> I18n[i18n/<br/>Internationalization]
+    I18n --> messages[messages/en, es, fr]
+    I18n --> locales[locales/]
+
+    style Shared fill:#FF9800,stroke:#E65100,stroke-width:3px,color:#fff
+    style UI fill:#FFA726,stroke:#F57C00,stroke-width:2px,color:#fff
+    style Common fill:#FFB74D,stroke:#FB8C00,stroke-width:2px,color:#fff
+    style Testing fill:#FFCC80,stroke:#FF9800,stroke-width:2px
+    style I18n fill:#FFE0B2,stroke:#FFA726,stroke-width:2px
+```
+
+### Platform Services
+
+```mermaid
+graph LR
+    Platform[Platform Libraries]
+
+    Platform --> Auth[platform/<br/>Auth & Config]
+    Platform --> InfraLib[infrastructure/<br/>DB, Cache, Queue]
+    Platform --> Engine[game-engine/<br/>Core Logic]
+    Platform --> Obs[observability/<br/>Metrics & Tracing]
+    Platform --> Flags[feature-flags/<br/>Feature Toggles]
+
+    style Platform fill:#00BCD4,stroke:#00838F,stroke-width:3px,color:#fff
+    style Auth fill:#26C6DA,stroke:#0097A7,stroke-width:2px,color:#fff
+    style InfraLib fill:#4DD0E1,stroke:#00ACC1,stroke-width:2px,color:#fff
+    style Engine fill:#80DEEA,stroke:#00BCD4,stroke-width:2px
+    style Obs fill:#B2EBF2,stroke:#26C6DA,stroke-width:2px
+    style Flags fill:#E0F7FA,stroke:#4DD0E1,stroke-width:2px
+```
+
+### Domain Logic
+
+```mermaid
+graph TB
+    Domain[Domain Libraries]
+
+    Domain --> Gov[domain-governance/<br/>Proposals & Voting]
+    Gov --> govent[entities/]
+    Gov --> govuc[use-cases/]
+    Gov --> govrepo[repositories/]
+
+    Domain --> Election[domain-election/<br/>Elections & Ballots]
+    Election --> electent[entities/]
+    Election --> electuc[use-cases/]
+
+    Domain --> Leg[domain-legislation/<br/>Bills & Laws]
+    Leg --> legent[entities/]
+    Leg --> leguc[use-cases/]
+
+    style Domain fill:#9C27B0,stroke:#6A1B9A,stroke-width:3px,color:#fff
+    style Gov fill:#AB47BC,stroke:#7B1FA2,stroke-width:2px,color:#fff
+    style Election fill:#BA68C8,stroke:#8E24AA,stroke-width:2px,color:#fff
+    style Leg fill:#CE93D8,stroke:#9C27B0,stroke-width:2px
+```
+
+### Data Layer
+
+```mermaid
+graph LR
+    DataLayer[Data Libraries]
+
+    DataLayer --> User[data-user/<br/>User Repository]
+    User --> userrepo[repositories/]
+    User --> usermodel[models/]
+    User --> migrations[migrations/]
+
+    DataLayer --> GameState[data-game-state/<br/>Game State & Events]
+    GameState --> gamerepo[repositories/]
+    GameState --> eventsource[event-sourcing/]
+    GameState --> projections[projections/]
+
+    style DataLayer fill:#795548,stroke:#4E342E,stroke-width:3px,color:#fff
+    style User fill:#8D6E63,stroke:#5D4037,stroke-width:2px,color:#fff
+    style GameState fill:#A1887F,stroke:#6D4C41,stroke-width:2px,color:#fff
+```
+
+---
+
+## 📖 Documentation
+
+### Foundation & Strategy
+
+```mermaid
+graph TB
+    Docs[Documentation]
+
+    Docs --> Found[00-foundation/<br/>Vision & Standards]
+    Found --> business[business/]
+    Found --> product[product/]
+    Found --> standards[standards/]
+
+    Docs --> Strat[01-strategy/<br/>Roadmap & OKRs]
+    Strat --> roadmap[roadmap/]
+    Strat --> partnerships[partnerships/]
+    Strat --> market[market/]
+
+    Docs --> Gov[02-governance/<br/>Policies & RFCs]
+    Gov --> rfcs[rfcs/]
+    Gov --> policies[policies/]
+    Gov --> committees[committees/]
+
+    style Docs fill:#9C27B0,stroke:#6A1B9A,stroke-width:3px,color:#fff
+    style Found fill:#AB47BC,stroke:#7B1FA2,stroke-width:2px,color:#fff
+    style Strat fill:#BA68C8,stroke:#8E24AA,stroke-width:2px,color:#fff
+    style Gov fill:#CE93D8,stroke:#9C27B0,stroke-width:2px
+```
+
+### Legal & Compliance
+
+```mermaid
+graph LR
+    Legal[03-legal-and-compliance/]
+
+    Legal --> AI[ai-compliance/<br/>Ethics & Bias]
+    Legal --> Privacy[data-protection/<br/>GDPR & CCPA]
+    Legal --> IP[licensing-and-ip/<br/>Open Source]
+    Legal --> Docs[DPIAs, ROPAs, Contracts]
+
+    style Legal fill:#E91E63,stroke:#880E4F,stroke-width:3px,color:#fff
+    style AI fill:#EC407A,stroke:#AD1457,stroke-width:2px,color:#fff
+    style Privacy fill:#F06292,stroke:#C2185B,stroke-width:2px,color:#fff
+    style IP fill:#F48FB1,stroke:#D81B60,stroke-width:2px,color:#fff
+    style Docs fill:#F8BBD0,stroke:#E91E63,stroke-width:2px
+```
+
+### Technical Documentation
+
+```mermaid
+graph TB
+    Tech[Technical Docs]
+
+    Tech --> Arch[04-architecture/<br/>System Design & ADRs]
+    Arch --> api[api-architecture/]
+    Arch --> data[data-architecture/]
+    Arch --> decisions[decisions/ADRs]
+
+    Tech --> Eng[05-engineering-and-devops/<br/>Standards & CI/CD]
+    Eng --> dev[development/]
+    Eng --> languages[languages/]
+    Eng --> testing[testing/]
+
+    Tech --> Sec[06-security-and-risk/<br/>Security & Audits]
+    Sec --> audits[audits/]
+    Sec --> incident[incident-response/]
+    Sec --> threat[threat-modeling/]
+
+    style Tech fill:#3F51B5,stroke:#283593,stroke-width:3px,color:#fff
+    style Arch fill:#5C6BC0,stroke:#3949AB,stroke-width:2px,color:#fff
+    style Eng fill:#7986CB,stroke:#3F51B5,stroke-width:2px,color:#fff
+    style Sec fill:#9FA8DA,stroke:#5C6BC0,stroke-width:2px
+```
+
+### Product & Operations
+
+```mermaid
+graph LR
+    Product[Product & Ops Docs]
+
+    Product --> AIDocs[07-ai-and-simulation/<br/>AI Governance]
+    Product --> Game[08-game-design-and-mechanics/<br/>Game Systems]
+    Product --> Ops[09-observability-and-ops/<br/>Monitoring & SRE]
+    Product --> UX[10-user-experience/<br/>Research & Design]
+    Product --> Comms[11-communications-and-brand/<br/>Marketing]
+
+    style Product fill:#009688,stroke:#004D40,stroke-width:3px,color:#fff
+    style AIDocs fill:#26A69A,stroke:#00796B,stroke-width:2px,color:#fff
+    style Game fill:#4DB6AC,stroke:#00897B,stroke-width:2px,color:#fff
+    style Ops fill:#80CBC4,stroke:#00ACC1,stroke-width:2px
+    style UX fill:#B2DFDB,stroke:#26A69A,stroke-width:2px
+    style Comms fill:#E0F2F1,stroke:#4DB6AC,stroke-width:2px
+```
+
+---
+
+## 🏗️ Infrastructure
+
+### Cloud Resources
+
+```mermaid
+graph TB
+    Infra[infrastructure/]
+
+    Infra --> TF[terraform/]
+    TF --> envs[environments/]
+    envs --> dev[dev/main.tf]
+    envs --> staging[staging/main.tf]
+    envs --> prod[production/main.tf]
+
+    TF --> modules[modules/]
+    modules --> network[networking/]
+    modules --> compute[compute/]
+    modules --> db[database/]
+
+    style Infra fill:#00BCD4,stroke:#00838F,stroke-width:3px,color:#fff
+    style TF fill:#26C6DA,stroke:#0097A7,stroke-width:2px,color:#fff
+    style envs fill:#4DD0E1,stroke:#00ACC1,stroke-width:2px
+    style modules fill:#80DEEA,stroke:#00BCD4,stroke-width:2px
+```
+
+### Container Orchestration
+
+```mermaid
+graph LR
+    K8s[kubernetes/]
+
+    K8s --> Base[base/]
+    Base --> deploy[deployments/]
+    Base --> svc[services/]
+    Base --> config[configmaps/]
+    Base --> ingress[ingress/]
+
+    K8s --> Overlays[overlays/]
+    Overlays --> devov[dev/]
+    Overlays --> stagingov[staging/]
+    Overlays --> prodov[production/]
+
+    style K8s fill:#00BCD4,stroke:#00838F,stroke-width:3px,color:#fff
+    style Base fill:#26C6DA,stroke:#0097A7,stroke-width:2px,color:#fff
+    style Overlays fill:#4DD0E1,stroke:#00ACC1,stroke-width:2px
+```
+
+### Secrets & Config
+
+```mermaid
+graph TB
+    Secrets[Secrets & Configuration]
+
+    Secrets --> Vault[vault/]
+    Vault --> policies[policies/]
+    Vault --> vaultsecrets[secrets/]
+
+    Secrets --> Docker[docker/images/]
+    Docker --> api[api/Dockerfile]
+    Docker --> web[web/Dockerfile]
+    Docker --> game[game-server/Dockerfile]
+
+    Secrets --> Ansible[ansible/]
+    Ansible --> playbooks[playbooks/]
+    Ansible --> roles[roles/]
+
+    style Secrets fill:#00BCD4,stroke:#00838F,stroke-width:3px,color:#fff
+    style Vault fill:#26C6DA,stroke:#0097A7,stroke-width:2px,color:#fff
+    style Docker fill:#4DD0E1,stroke:#00ACC1,stroke-width:2px
+    style Ansible fill:#80DEEA,stroke:#00BCD4,stroke-width:2px
+```
+
+---
+
+## 🔨 Scripts & Tools
+
+### Automation Scripts
+
+```mermaid
+graph LR
+    Scripts[scripts/]
+
+    Scripts --> CI[ci/<br/>CI/CD Automation]
+    Scripts --> DB[db/<br/>Database Ops]
+    Scripts --> Dev[dev/<br/>Dev Tools]
+    Scripts --> Test[testing/<br/>Test Runners]
+    Scripts --> Deploy[deployment/<br/>Deploy & Rollback]
+    Scripts --> Chaos[chaos/<br/>Chaos Engineering]
+
+    style Scripts fill:#795548,stroke:#4E342E,stroke-width:3px,color:#fff
+    style CI fill:#8D6E63,stroke:#5D4037,stroke-width:2px,color:#fff
+    style DB fill:#A1887F,stroke:#6D4C41,stroke-width:2px,color:#fff
+    style Dev fill:#BCAAA4,stroke:#795548,stroke-width:2px
+    style Test fill:#D7CCC8,stroke:#8D6E63,stroke-width:2px
+    style Deploy fill:#8D6E63,stroke:#5D4037,stroke-width:2px,color:#fff
+    style Chaos fill:#A1887F,stroke:#6D4C41,stroke-width:2px,color:#fff
+```
+
+### Development Tools
+
+```mermaid
+graph TB
+    Tools[tools/]
+
+    Tools --> Gen[generators/<br/>Code Generation]
+    Gen --> appgen[app-generator/]
+    Gen --> libgen[lib-generator/]
+    Gen --> compgen[component-generator/]
+
+    Tools --> Exec[executors/<br/>Custom Executors]
+    Exec --> deployexec[deploy-executor/]
+    Exec --> e2eexec[e2e-executor/]
+
+    Tools --> Demo[demo/<br/>Sample Data]
+
+    style Tools fill:#607D8B,stroke:#37474F,stroke-width:3px,color:#fff
+    style Gen fill:#78909C,stroke:#455A64,stroke-width:2px,color:#fff
+    style Exec fill:#90A4AE,stroke:#546E7A,stroke-width:2px
+    style Demo fill:#B0BEC5,stroke:#607D8B,stroke-width:2px
+```
+
+---
+
+## 🤖 AI Assets
+
+### AI Context & Knowledge
+
+```mermaid
+graph TB
+    AI[ai/]
+
+    AI --> Cache[cache/<br/>Context & Response]
+    AI --> Index[index/<br/>Codebase Vectors]
+    AI --> Knowledge[knowledge/<br/>Architecture Guides]
+    AI --> Metrics[metrics/<br/>Performance Tracking]
+
+    style AI fill:#E91E63,stroke:#880E4F,stroke-width:3px,color:#fff
+    style Cache fill:#EC407A,stroke:#AD1457,stroke-width:2px,color:#fff
+    style Index fill:#F06292,stroke:#C2185B,stroke-width:2px,color:#fff
+    style Knowledge fill:#F48FB1,stroke:#D81B60,stroke-width:2px,color:#fff
+    style Metrics fill:#F8BBD0,stroke:#E91E63,stroke-width:2px
+```
+
+### AI Tools & Prompts
+
+```mermaid
+graph LR
+    AITools[AI Tools & Prompts]
+
+    AITools --> Bundles[context-bundles/<br/>Service Contexts]
+    AITools --> Prompts[prompts/<br/>Templates]
+    AITools --> Patterns[patterns/<br/>Code Patterns]
+    AITools --> Policies[policies/<br/>Safety Guidelines]
+    AITools --> Evals[evals/<br/>Regression Tests]
+
+    style AITools fill:#E91E63,stroke:#880E4F,stroke-width:3px,color:#fff
+    style Bundles fill:#EC407A,stroke:#AD1457,stroke-width:2px,color:#fff
+    style Prompts fill:#F06292,stroke:#C2185B,stroke-width:2px,color:#fff
+    style Patterns fill:#F48FB1,stroke:#D81B60,stroke-width:2px,color:#fff
+    style Policies fill:#F8BBD0,stroke:#E91E63,stroke-width:2px
+    style Evals fill:#EC407A,stroke:#AD1457,stroke-width:2px,color:#fff
+```
+
+---
+
+## 💾 Data & Configuration
+
+### Runtime Data
+
+```mermaid
+graph LR
+    Data[data/]
+
+    Data --> Seeds[seeds/<br/>Seed Data]
+    Data --> Fixtures[fixtures/<br/>Test Fixtures]
+    Data --> DB[*.db<br/>SQLite Databases]
+
+    style Data fill:#607D8B,stroke:#37474F,stroke-width:3px,color:#fff
+    style Seeds fill:#78909C,stroke:#455A64,stroke-width:2px,color:#fff
+    style Fixtures fill:#90A4AE,stroke:#546E7A,stroke-width:2px
+    style DB fill:#B0BEC5,stroke:#607D8B,stroke-width:2px
+```
+
+### Configuration Files
+
+```mermaid
+graph TB
+    Config[config/]
+
+    Config --> Env[env/<br/>.env files]
+    Config --> TS[typescript/<br/>tsconfig files]
+    Config --> ESLint[eslint/<br/>.eslintrc files]
+    Config --> Vitest[vitest/<br/>vitest configs]
+    Config --> Docker[docker/<br/>docker-compose files]
+
+    style Config fill:#3F51B5,stroke:#283593,stroke-width:3px,color:#fff
+    style Env fill:#5C6BC0,stroke:#3949AB,stroke-width:2px,color:#fff
+    style TS fill:#7986CB,stroke:#3F51B5,stroke-width:2px,color:#fff
+    style ESLint fill:#9FA8DA,stroke:#5C6BC0,stroke-width:2px
+    style Vitest fill:#C5CAE9,stroke:#7986CB,stroke-width:2px
+    style Docker fill:#5C6BC0,stroke:#3949AB,stroke-width:2px,color:#fff
+```
+
+### Reports & Output
+
+```mermaid
+graph LR
+    Reports[reports/]
+
+    Reports --> Coverage[coverage/<br/>Test Coverage]
+    Reports --> Results[test-results/<br/>Test Reports]
+    Reports --> Security[security/<br/>Security Scans]
+    Reports --> SBOM[sbom/<br/>Bill of Materials]
+    Reports --> AIPerf[ai/<br/>Agent Performance]
+
+    style Reports fill:#FF6F00,stroke:#E65100,stroke-width:3px,color:#fff
+    style Coverage fill:#FF8F00,stroke:#EF6C00,stroke-width:2px,color:#fff
+    style Results fill:#FFA000,stroke:#F57C00,stroke-width:2px,color:#fff
+    style Security fill:#FFB300,stroke:#FB8C00,stroke-width:2px
+    style SBOM fill:#FFC107,stroke:#FF9800,stroke-width:2px
+    style AIPerf fill:#FFCA28,stroke:#FFA000,stroke-width:2px
+```
+
+---
+
+## 📊 Quick Reference
+
+### Directory Counts
+
+- **Applications**: 12 (api, web, game-server, worker, data, shell, 2 remotes, e2e, load-test, dev, docs, infrastructure)
+- **Libraries**: 17+ (shared, ui, platform, infrastructure, game-engine, testing, observability, feature-flags, i18n, 3 domains, 2 data layers)
+- **Documentation**: 12 sections (foundation through brand/communications)
+- **Infrastructure**: 5 tools (Terraform, Kubernetes, Docker, Vault, Ansible)
+
+### Common Patterns
+
+**App Structure**:
+
+```
+app-name/
+├── src/          # Source code
+├── tests/        # Test files
+├── project.json  # Nx config
+├── tsconfig.json # TypeScript
+└── README.md     # Docs
+```
+
+**Library Structure**:
+
+```
+lib-name/
+├── src/          # Source code
+├── tests/        # Test files
+├── project.json  # Nx config
+└── README.md     # Docs
+```
+
+### Color Legend
+
+- 🔵 **Blue**: Core services, configuration
+- 🟢 **Green**: Applications, frontend
+- 🟠 **Orange**: Libraries, shared code
+- 🟣 **Purple**: Documentation, governance
+- 🔷 **Cyan**: Infrastructure, DevOps
+- 🟤 **Brown**: Scripts, automation, data
+- 🔴 **Pink/Red**: AI assets, security
+  setupnode --> snaction[action.yml]
+  setupnode --> snsh[setup-node.sh]
+  setupnode --> snreadme[README.md]
+
+  actions --> runtests[run-tests/]
+  runtests --> rtaction[action.yml]
+  runtests --> rtsh[run-tests.sh]
+  runtests --> parse[parse-results.mjs]
+  runtests --> upload[upload-artifacts.sh]
+  runtests --> covconfig[coverage.config.json]
+  runtests --> rtreadme[README.md]
+
+  actions --> setupdeps[setup-node-deps/]
+  actions --> quality[quality-checks/]
+
+  actions --> deploy[deploy/]
+  deploy --> depaction[action.yml]
+  deploy --> rundeploy[run-deploy.sh]
+  deploy --> buildpush[build-and-push.sh]
+  deploy --> helm[helm-deploy.sh]
+  deploy --> kubectl[kubectl-apply.sh]
+  deploy --> argocd[argocd-sync.sh]
+  deploy --> rollback[rollback.sh]
+  deploy --> validate[validate-manifests.sh]
+  deploy --> depreadme[README.md]
+
+  %% Templates
+  GitHub --> issuetemp[ISSUE_TEMPLATE/]
+  issuetemp --> bugreport[bug_report.yml]
+  issuetemp --> featurereq[feature_request.yml]
+  issuetemp --> secreport[security_report.yml]
+
+  GitHub --> prtemp[PULL_REQUEST_TEMPLATE/]
+  prtemp --> prmd[PULL_REQUEST.md]
+
+  %% Other files
+  GitHub --> ghsecurity[SECURITY.md]
+  GitHub --> support[SUPPORT.md]
+  GitHub --> codeowners[CODEOWNERS]
+  GitHub --> funding[FUNDING.yml]
+  GitHub --> dependabot[dependabot.yml]
+  GitHub --> copilot[copilot-instructions.md]
+  GitHub --> ghreadme[README.md]
+
+  style GitHub fill:#e8f5e9,stroke:#1b5e20,stroke-width:3px
+  style workflows fill:#c8e6c9
+  style actions fill:#a5d6a7
+  style issuetemp fill:#81c784
+  style prtemp fill:#66bb6a
+
+````
 
 ---
 
@@ -277,7 +890,7 @@ graph TB
     style gameserver fill:#81c784
     style worker fill:#66bb6a
     style data fill:#4caf50
-```
+````
 
 ---
 
