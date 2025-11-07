@@ -1,0 +1,15 @@
+{
+  "name": "e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/e2e",
+  "projectType": "application",
+  "tags": ["scope:testing", "type:test"],
+  "targets": {
+    "test:e2e": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "echo 'TODO: implement Playwright/Cypress E2E tests'"
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "feature-dashboard-remote",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/feature-dashboard-remote/src",
+  "projectType": "application",
+  "tags": ["scope:frontend", "type:ui", "module:federation"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "echo 'TODO: implement module federation build for dashboard remote'"
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "echo 'TODO: implement dev server for dashboard remote'"
+      }
+    }
+  }
+}
