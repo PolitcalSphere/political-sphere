@@ -53,9 +53,11 @@ runs:
       id: lint
       if: inputs.run-lint == 'true'
       shell: bash
+      env:
+        LINT_COMMAND: ${{ inputs.lint-command }}
       run: |
         echo "🔍 Running linting checks..."
-        if ${{ inputs.lint-command }}; then
+        if "$LINT_COMMAND"; then
           echo "✅ Linting passed"
           echo "lint-result=passed" >> "$GITHUB_OUTPUT"
         else
@@ -69,9 +71,11 @@ runs:
       id: typecheck
       if: inputs.run-typecheck == 'true'
       shell: bash
+      env:
+        TYPECHECK_COMMAND: ${{ inputs.typecheck-command }}
       run: |
         echo "🔍 Running TypeScript type checking..."
-        if ${{ inputs.typecheck-command }}; then
+        if "$TYPECHECK_COMMAND"; then
           echo "✅ Type checking passed"
           echo "typecheck-result=passed" >> "$GITHUB_OUTPUT"
         else
@@ -85,9 +89,11 @@ runs:
       id: format
       if: inputs.run-format-check == 'true'
       shell: bash
+      env:
+        FORMAT_CHECK_COMMAND: ${{ inputs.format-check-command }}
       run: |
         echo "🔍 Checking code formatting..."
-        if ${{ inputs.format-check-command }}; then
+        if "$FORMAT_CHECK_COMMAND"; then
           echo "✅ Format checking passed"
           echo "format-result=passed" >> "$GITHUB_OUTPUT"
         else

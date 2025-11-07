@@ -39,9 +39,11 @@ runs:
 
     - name: Install dependencies
       shell: bash
+      env:
+        INSTALL_COMMAND: ${{ inputs.install-command }}
       run: |
         echo "📦 Installing dependencies..."
-        ${{ inputs.install-command }}
+        "$INSTALL_COMMAND"
         echo "✅ Dependencies installed successfully"
 
     - name: Verify installation

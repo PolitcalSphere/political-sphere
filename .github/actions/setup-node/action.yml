@@ -57,7 +57,7 @@ runs:
         elif [[ "$PM_AUTO" == "true" || "$PM_AUTO" == "1" || "$PM_AUTO" == "yes" ]]; then
           if [[ -f package.json ]]; then
             # Use Node (already on PATH) to read package.json fields safely
-            DETECT=$(node -e "try{const p=require('./package.json');const v=p.packageManager||p.devEngines?.packageManager||'';if(typeof v==='string')console.log(v);}" || true)
+            DETECT=$(node -e "try{const p=require('./package.json');const v=p.packageManager||p.devEngines?.packageManager||'';if(typeof v==='string')console.log(v);}" 2>/dev/null || true)
             if [[ "$DETECT" == npm* ]]; then pm="npm"; fi
             if [[ "$DETECT" == yarn* ]]; then pm="yarn"; fi
             if [[ "$DETECT" == pnpm* ]]; then pm="pnpm"; fi
