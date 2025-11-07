@@ -1,0 +1,29 @@
+{
+  "scenarios": [
+    {
+      "id": "scenario-1",
+      "name": "General Election 2025",
+      "description": "A national general election with multiple parties competing for seats",
+      "type": "election",
+      "startDate": "2025-06-01",
+      "endDate": "2025-06-30",
+      "settings": {
+        "votingSystem": "first-past-the-post",
+        "numberOfSeats": 650,
+        "requiresRegistration": true
+      }
+    },
+    {
+      "id": "scenario-2",
+      "name": "Budget Referendum",
+      "description": "A referendum on the proposed national budget",
+      "type": "referendum",
+      "startDate": "2025-03-01",
+      "endDate": "2025-03-15",
+      "settings": {
+        "votingSystem": "simple-majority",
+        "requiresRegistration": true
+      }
+    }
+  ]
+}

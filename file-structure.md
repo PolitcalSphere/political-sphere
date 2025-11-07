@@ -86,7 +86,7 @@ political-sphere/
 │ └── **launch.json**
 │
 ├── apps/ # Application projects
-│ ├── api/ # Backend API service
+│ ├── **api/** # Backend API service
 │ │ ├── src/
 │ │ │ ├── modules/
 │ │ │ ├── middleware/
@@ -323,6 +323,19 @@ political-sphere/
 │ │ └── README.md
 │ │
 │ └── README.md
+│
+├── **data/** # Runtime data (databases, seeds, fixtures)
+│ ├── **seeds/**
+│ │ ├── **users.json**
+│ │ ├── **parties.json**
+│ │ └── **scenarios.json**
+│ ├── **fixtures/**
+│ │ ├── **test-users.json**
+│ │ └── **test-scenarios.json**
+│ ├── _ **.db** # SQLite databases (gitignored)
+│ ├── _ **.db-shm** # SQLite shared memory (gitignored)
+│ ├── **.db-wal** # SQLite write-ahead log (gitignored)
+│ └── **README.md**
 │
 ├── libs/ # Shared libraries
 │ ├── shared/ # Common utilities
@@ -1353,16 +1366,6 @@ political-sphere/
 │ ├── ai/
 │ │ └── agent-performance.json
 │ └── .gitkeep
-│
-├── data/
-│ ├── seeds/
-│ │ ├── users.json
-│ │ ├── parties.json
-│ │ └── scenarios.json
-│ ├── fixtures/
-│ │ ├── test-users.json
-│ │ └── test-scenarios.json
-│ └── README.md
 │
 ├── .editorconfig
 ├── .gitignore

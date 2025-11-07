@@ -1,0 +1,28 @@
+{
+  "testUsers": [
+    {
+      "id": "test-user-1",
+      "username": "testuser1",
+      "email": "testuser1@test.local",
+      "role": "user",
+      "verified": true,
+      "createdAt": "2025-01-01T00:00:00Z"
+    },
+    {
+      "id": "test-user-2",
+      "username": "testuser2",
+      "email": "testuser2@test.local",
+      "role": "user",
+      "verified": false,
+      "createdAt": "2025-01-02T00:00:00Z"
+    },
+    {
+      "id": "test-admin",
+      "username": "testadmin",
+      "email": "testadmin@test.local",
+      "role": "admin",
+      "verified": true,
+      "createdAt": "2025-01-01T00:00:00Z"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "testScenarios": [
+    {
+      "id": "test-scenario-1",
+      "name": "Test Election",
+      "description": "A simple test election scenario",
+      "type": "election",
+      "startDate": "2025-01-01",
+      "endDate": "2025-01-31",
+      "settings": {
+        "votingSystem": "first-past-the-post",
+        "numberOfSeats": 10,
+        "requiresRegistration": false
+      }
+    },
+    {
+      "id": "test-scenario-2",
+      "name": "Test Referendum",
+      "description": "A simple test referendum scenario",
+      "type": "referendum",
+      "startDate": "2025-02-01",
+      "endDate": "2025-02-07",
+      "settings": {
+        "votingSystem": "simple-majority",
+        "requiresRegistration": false
+      }
+    }
+  ]
+}

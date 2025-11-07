@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "id": "seed-user-1",
+      "username": "admin",
+      "email": "admin@political-sphere.local",
+      "role": "admin",
+      "createdAt": "2025-01-01T00:00:00Z"
+    },
+    {
+      "id": "seed-user-2",
+      "username": "moderator",
+      "email": "moderator@political-sphere.local",
+      "role": "moderator",
+      "createdAt": "2025-01-01T00:00:00Z"
+    }
+  ]
+}

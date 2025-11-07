@@ -1,0 +1,32 @@
+{
+  "parties": [
+    {
+      "id": "party-1",
+      "name": "Progressive Alliance",
+      "ideology": "centre-left",
+      "color": "#E74C3C",
+      "founded": "2020-01-01"
+    },
+    {
+      "id": "party-2",
+      "name": "Conservative Union",
+      "ideology": "centre-right",
+      "color": "#3498DB",
+      "founded": "2020-01-01"
+    },
+    {
+      "id": "party-3",
+      "name": "Green Coalition",
+      "ideology": "green",
+      "color": "#2ECC71",
+      "founded": "2020-01-01"
+    },
+    {
+      "id": "party-4",
+      "name": "Liberal Democrats",
+      "ideology": "centrist",
+      "color": "#F39C12",
+      "founded": "2020-01-01"
+    }
+  ]
+}
