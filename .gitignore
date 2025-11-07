@@ -19,6 +19,9 @@ out/
 .DS_Store
 Thumbs.db
 
+# Development tools
+.lefthook/
+
 # Environment files
 .env
 .env.local

@@ -1,0 +1,225 @@
+{
+  "title": "Coverage Configuration for Political Sphere",
+  "description": "Coverage thresholds and policies for different parts of the codebase",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-11",
+
+  "global": {
+    "description": "Default thresholds applied when no specific package rule matches",
+    "thresholds": {
+      "lines": 0,
+      "functions": 0,
+      "branches": 0,
+      "statements": 0
+    },
+    "targetThresholds": {
+      "description": "Long-term targets for code quality improvement",
+      "lines": 80,
+      "functions": 80,
+      "branches": 75,
+      "statements": 80
+    }
+  },
+
+  "packages": {
+    "description": "Package-specific coverage requirements",
+
+    "authentication": {
+      "description": "Security-critical authentication and authorization code requires 100% coverage",
+      "paths": ["libs/platform/auth/**", "apps/api/src/auth/**"],
+      "thresholds": {
+        "lines": 100,
+        "functions": 100,
+        "branches": 100,
+        "statements": 100
+      },
+      "enforced": true,
+      "rationale": "Authentication failures can compromise entire system security"
+    },
+
+    "business-logic": {
+      "description": "Core business logic requires high coverage",
+      "paths": [
+        "libs/platform/voting/**",
+        "libs/platform/governance/**",
+        "apps/game-server/src/core/**"
+      ],
+      "thresholds": {
+        "lines": 90,
+        "functions": 90,
+        "branches": 85,
+        "statements": 90
+      },
+      "enforced": true,
+      "rationale": "Business logic errors can corrupt application state"
+    },
+
+    "ui-components": {
+      "description": "User interface components require good coverage",
+      "paths": ["libs/ui/**", "apps/frontend/src/components/**"],
+      "thresholds": {
+        "lines": 80,
+        "functions": 80,
+        "branches": 75,
+        "statements": 80
+      },
+      "enforced": false,
+      "rationale": "UI components benefit from visual testing and manual QA"
+    },
+
+    "api-endpoints": {
+      "description": "API endpoints require comprehensive testing",
+      "paths": ["apps/api/src/routes/**", "apps/api/src/controllers/**"],
+      "thresholds": {
+        "lines": 85,
+        "functions": 85,
+        "branches": 80,
+        "statements": 85
+      },
+      "enforced": true,
+      "rationale": "API contracts must be thoroughly validated"
+    },
+
+    "shared-utilities": {
+      "description": "Shared utilities require high coverage due to wide usage",
+      "paths": ["libs/shared/utils/**", "libs/shared/validators/**"],
+      "thresholds": {
+        "lines": 90,
+        "functions": 90,
+        "branches": 85,
+        "statements": 90
+      },
+      "enforced": true,
+      "rationale": "Bugs in shared code affect multiple packages"
+    },
+
+    "infrastructure": {
+      "description": "Infrastructure code has moderate coverage requirements",
+      "paths": ["libs/infrastructure/**", "apps/infrastructure/**"],
+      "thresholds": {
+        "lines": 70,
+        "functions": 70,
+        "branches": 65,
+        "statements": 70
+      },
+      "enforced": false,
+      "rationale": "Infrastructure often relies on integration tests"
+    },
+
+    "experimental": {
+      "description": "Experimental code in dev apps has relaxed requirements",
+      "paths": ["apps/dev/**"],
+      "thresholds": {
+        "lines": 0,
+        "functions": 0,
+        "branches": 0,
+        "statements": 0
+      },
+      "enforced": false,
+      "rationale": "Experimental code is not production-critical"
+    }
+  },
+
+  "exclusions": {
+    "description": "Files and patterns excluded from coverage calculation",
+    "patterns": [
+      "**/*.test.ts",
+      "**/*.test.tsx",
+      "**/*.test.js",
+      "**/*.test.jsx",
+      "**/*.spec.ts",
+      "**/*.spec.tsx",
+      "**/*.spec.js",
+      "**/*.spec.jsx",
+      "**/test-setup.ts",
+      "**/vitest.config.ts",
+      "**/vitest.config.js",
+      "**/__mocks__/**",
+      "**/__tests__/**",
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/coverage/**",
+      "**/.nx/**",
+      "**/migrations/**",
+      "**/*.d.ts",
+      "**/types.ts",
+      "**/index.ts"
+    ],
+    "rationale": "Test files, type definitions, and build artifacts should not be tested"
+  },
+
+  "enforcement": {
+    "policy": "Coverage enforcement policies - currently in warning mode while improving coverage",
+    "blockPROnFailure": false,
+    "warnOnly": true,
+    "targetDate": "2025-06-01",
+    "targetDescription": "Enable blocking enforcement by June 2025",
+
+    "regressionPrevention": {
+      "enabled": true,
+      "allowedDecrease": 2,
+      "description": "Allow up to 2% coverage decrease to accommodate refactoring"
+    }
+  },
+
+  "reporting": {
+    "description": "Coverage reporting configuration",
+    "formats": ["json", "html", "lcov", "text"],
+    "outputDirectory": "./coverage",
+
+    "reporters": {
+      "console": {
+        "enabled": true,
+        "detailed": false
+      },
+      "html": {
+        "enabled": true,
+        "subdir": "html"
+      },
+      "lcov": {
+        "enabled": true,
+        "file": "lcov.info"
+      },
+      "json": {
+        "enabled": true,
+        "file": "coverage-final.json"
+      },
+      "json-summary": {
+        "enabled": true,
+        "file": "coverage-summary.json"
+      }
+    },
+
+    "codecov": {
+      "enabled": true,
+      "description": "Upload coverage to Codecov for PR comments and trend tracking"
+    }
+  },
+
+  "ci": {
+    "description": "CI-specific coverage settings",
+    "mergeShards": true,
+    "uploadArtifacts": true,
+    "retentionDays": 30,
+
+    "sharding": {
+      "enabled": true,
+      "description": "Sharding splits tests across parallel jobs for faster execution",
+      "combineReports": true
+    }
+  },
+
+  "documentation": {
+    "coverageReport": "docs/testing/coverage-report.md",
+    "improvementPlan": "docs/testing/coverage-improvement-plan.md",
+    "adr": "docs/04-architecture/decisions/ADR-0016-test-coverage-strategy.md"
+  },
+
+  "metadata": {
+    "compliance": ["TEST-01", "TEST-02", "QUAL-01", "QUAL-05"],
+    "owner": "Engineering Team",
+    "reviewCycle": "Quarterly",
+    "nextReview": "2025-04-01"
+  }
+}

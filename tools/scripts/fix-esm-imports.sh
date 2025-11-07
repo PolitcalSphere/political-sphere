@@ -1,7 +1,7 @@
 #!/bin/bash
 # Fix ESM imports in the shared library dist folder by adding .js extensions
 
-cd "$(dirname "$0")/../libs/shared/dist/src" || exit 1
+cd "$(dirname "$0")/../../libs/shared/dist/src" || exit 1
 
 echo "Fixing ESM imports in shared library..."
 

@@ -1,0 +1,315 @@
+name: "Run Tests"
+description: "Enterprise-grade test orchestration with coverage reporting, sharding, and result parsing"
+author: "Political Sphere"
+branding:
+  icon: "check-circle"
+  color: "green"
+
+# Version: 1.0.0
+# Purpose: Orchestrate test execution with comprehensive reporting and artifact management
+# Compliance: SEC-01, SEC-02, TEST-01, TEST-02, QUAL-01, QUAL-05, OPS-01, OPS-02
+
+inputs:
+  # Core test configuration
+  test-type:
+    description: "Type of tests to run: unit, integration, e2e, coverage, api, frontend, shared"
+    required: false
+    default: "unit"
+  
+  test-command:
+    description: "Custom test command to execute (overrides test-type)"
+    required: false
+    default: ""
+  
+  # Coverage configuration
+  coverage-enabled:
+    description: "Enable coverage collection and reporting"
+    required: false
+    default: "false"
+  
+  coverage-threshold:
+    description: "Minimum coverage percentage required (0-100)"
+    required: false
+    default: "0"
+  
+  coverage-config:
+    description: "Path to coverage configuration JSON file"
+    required: false
+    default: ".github/actions/run-tests/coverage.config.json"
+  
+  # Sharding configuration (for parallel execution)
+  shard-index:
+    description: "Current shard index (1-based)"
+    required: false
+    default: "1"
+  
+  shard-total:
+    description: "Total number of shards"
+    required: false
+    default: "1"
+  
+  # Test execution configuration
+  timeout-minutes:
+    description: "Test execution timeout in minutes"
+    required: false
+    default: "15"
+  
+  max-workers:
+    description: "Maximum parallel test workers"
+    required: false
+    default: "2"
+  
+  changed-only:
+    description: "Run only tests for changed files (faster CI)"
+    required: false
+    default: "false"
+  
+  # Environment configuration
+  environment:
+    description: "Test environment: development, staging, production, ci"
+    required: false
+    default: "ci"
+  
+  node-version:
+    description: "Node.js version to use for tests"
+    required: false
+    default: "20"
+  
+  # Artifact and reporting configuration
+  upload-results:
+    description: "Upload test results as artifacts"
+    required: false
+    default: "true"
+  
+  upload-coverage:
+    description: "Upload coverage reports as artifacts"
+    required: false
+    default: "true"
+  
+  artifact-retention-days:
+    description: "Days to retain test artifacts"
+    required: false
+    default: "30"
+  
+  # Result parsing and annotations
+  parse-results:
+    description: "Parse test results and create GitHub annotations"
+    required: false
+    default: "true"
+  
+  fail-fast:
+    description: "Fail immediately on first test failure"
+    required: false
+    default: "false"
+  
+  # Retry configuration (for flaky tests)
+  retry-failed-tests:
+    description: "Retry failed tests automatically"
+    required: false
+    default: "false"
+  
+  retry-count:
+    description: "Number of retry attempts for failed tests"
+    required: false
+    default: "2"
+  
+  # Integration with external services
+  codecov-token:
+    description: "Codecov token for coverage upload (optional)"
+    required: false
+    default: ""
+  
+  github-token:
+    description: "GitHub token for PR annotations and status checks"
+    required: false
+    default: "${{ github.token }}"
+  
+  # Observability and metrics
+  enable-metrics:
+    description: "Enable CloudWatch metrics emission"
+    required: false
+    default: "false"
+  
+  cloudwatch-namespace:
+    description: "CloudWatch namespace for test metrics"
+    required: false
+    default: "PoliticalSphere/CI/Tests"
+
+outputs:
+  tests-passed:
+    description: "Boolean indicating if all tests passed"
+    value: ${{ steps.run-tests.outputs.tests-passed }}
+  
+  tests-run:
+    description: "Total number of tests executed"
+    value: ${{ steps.run-tests.outputs.tests-run }}
+  
+  tests-failed:
+    description: "Number of tests that failed"
+    value: ${{ steps.run-tests.outputs.tests-failed }}
+  
+  coverage-percentage:
+    description: "Overall test coverage percentage"
+    value: ${{ steps.run-tests.outputs.coverage-percentage }}
+  
+  coverage-passed-threshold:
+    description: "Boolean indicating if coverage meets threshold"
+    value: ${{ steps.run-tests.outputs.coverage-passed-threshold }}
+  
+  result-path:
+    description: "Path to test result JSON file"
+    value: ${{ steps.run-tests.outputs.result-path }}
+  
+  coverage-path:
+    description: "Path to coverage report directory"
+    value: ${{ steps.run-tests.outputs.coverage-path }}
+  
+  duration-seconds:
+    description: "Total test execution duration in seconds"
+    value: ${{ steps.run-tests.outputs.duration-seconds }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Validate inputs
+      id: validate-inputs
+      shell: bash
+      run: |
+        # SEC-01: Input validation for all parameters
+        echo "::group::Validating action inputs"
+        
+        # Validate test-type
+        VALID_TEST_TYPES="unit integration e2e coverage api frontend shared"
+        if [[ -n "${{ inputs.test-type }}" ]] && ! echo "$VALID_TEST_TYPES" | grep -qw "${{ inputs.test-type }}"; then
+          echo "::error::Invalid test-type: ${{ inputs.test-type }}. Must be one of: $VALID_TEST_TYPES"
+          exit 1
+        fi
+        
+        # Validate coverage threshold (0-100)
+        if [[ "${{ inputs.coverage-threshold }}" -lt 0 ]] || [[ "${{ inputs.coverage-threshold }}" -gt 100 ]]; then
+          echo "::error::Invalid coverage-threshold: ${{ inputs.coverage-threshold }}. Must be between 0-100"
+          exit 1
+        fi
+        
+        # Validate shard configuration
+        if [[ "${{ inputs.shard-index }}" -lt 1 ]] || [[ "${{ inputs.shard-index }}" -gt "${{ inputs.shard-total }}" ]]; then
+          echo "::error::Invalid shard configuration: index ${{ inputs.shard-index }} of ${{ inputs.shard-total }}"
+          exit 1
+        fi
+        
+        # Validate timeout (1-120 minutes)
+        if [[ "${{ inputs.timeout-minutes }}" -lt 1 ]] || [[ "${{ inputs.timeout-minutes }}" -gt 120 ]]; then
+          echo "::error::Invalid timeout-minutes: ${{ inputs.timeout-minutes }}. Must be between 1-120"
+          exit 1
+        fi
+        
+        # Validate max-workers (1-16)
+        if [[ "${{ inputs.max-workers }}" -lt 1 ]] || [[ "${{ inputs.max-workers }}" -gt 16 ]]; then
+          echo "::error::Invalid max-workers: ${{ inputs.max-workers }}. Must be between 1-16"
+          exit 1
+        fi
+        
+        # Validate retry-count (0-5)
+        if [[ "${{ inputs.retry-count }}" -lt 0 ]] || [[ "${{ inputs.retry-count }}" -gt 5 ]]; then
+          echo "::error::Invalid retry-count: ${{ inputs.retry-count }}. Must be between 0-5"
+          exit 1
+        fi
+        
+        echo "✅ All inputs validated successfully"
+        echo "::endgroup::"
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      shell: bash
+      run: |
+        echo "::group::Installing dependencies"
+        npm ci --prefer-offline --no-audit
+        echo "::endgroup::"
+    
+    - name: Run tests
+      id: run-tests
+      shell: bash
+      env:
+        TEST_TYPE: ${{ inputs.test-type }}
+        TEST_COMMAND: ${{ inputs.test-command }}
+        COVERAGE_ENABLED: ${{ inputs.coverage-enabled }}
+        COVERAGE_THRESHOLD: ${{ inputs.coverage-threshold }}
+        COVERAGE_CONFIG: ${{ inputs.coverage-config }}
+        SHARD_INDEX: ${{ inputs.shard-index }}
+        SHARD_TOTAL: ${{ inputs.shard-total }}
+        TIMEOUT_MINUTES: ${{ inputs.timeout-minutes }}
+        MAX_WORKERS: ${{ inputs.max-workers }}
+        CHANGED_ONLY: ${{ inputs.changed-only }}
+        ENVIRONMENT: ${{ inputs.environment }}
+        FAIL_FAST: ${{ inputs.fail-fast }}
+        RETRY_FAILED_TESTS: ${{ inputs.retry-failed-tests }}
+        RETRY_COUNT: ${{ inputs.retry-count }}
+        ENABLE_METRICS: ${{ inputs.enable-metrics }}
+        CLOUDWATCH_NAMESPACE: ${{ inputs.cloudwatch-namespace }}
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+      run: |
+        # OPS-01: Structured logging and error handling
+        ${{ github.action_path }}/run-tests.sh
+    
+    - name: Parse test results
+      id: parse-results
+      if: always() && inputs.parse-results == 'true'
+      shell: bash
+      env:
+        RESULT_PATH: ${{ steps.run-tests.outputs.result-path }}
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+      run: |
+        # QUAL-05: Parse results and create GitHub annotations
+        node ${{ github.action_path }}/parse-results.mjs
+    
+    - name: Upload test results
+      if: always() && inputs.upload-results == 'true'
+      uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
+      with:
+        name: test-results-${{ inputs.test-type }}-shard-${{ inputs.shard-index }}
+        path: ${{ steps.run-tests.outputs.result-path }}
+        retention-days: ${{ inputs.artifact-retention-days }}
+    
+    - name: Upload coverage reports
+      if: always() && inputs.upload-coverage == 'true' && inputs.coverage-enabled == 'true'
+      shell: bash
+      env:
+        COVERAGE_PATH: ${{ steps.run-tests.outputs.coverage-path }}
+        SHARD_INDEX: ${{ inputs.shard-index }}
+        RETENTION_DAYS: ${{ inputs.artifact-retention-days }}
+      run: |
+        # Upload coverage artifacts with proper naming for aggregation
+        ${{ github.action_path }}/upload-artifacts.sh
+    
+    - name: Upload to Codecov
+      if: always() && inputs.coverage-enabled == 'true' && inputs.codecov-token != ''
+      uses: codecov/codecov-action@7afa10ed9b269c561c2336fd862446844e0cbf71 # v4.2.0
+      with:
+        token: ${{ inputs.codecov-token }}
+        files: ${{ steps.run-tests.outputs.coverage-path }}/lcov.info
+        flags: ${{ inputs.test-type }}-shard-${{ inputs.shard-index }}
+        name: codecov-${{ inputs.test-type }}-shard-${{ inputs.shard-index }}
+        fail_ci_if_error: false
+    
+    - name: Check test status
+      if: always()
+      shell: bash
+      run: |
+        # QUAL-01: Fail if tests did not pass
+        if [[ "${{ steps.run-tests.outputs.tests-passed }}" != "true" ]]; then
+          echo "::error::Tests failed! See logs above for details."
+          exit 1
+        fi
+        
+        # QUAL-05: Fail if coverage below threshold (when enabled)
+        if [[ "${{ inputs.coverage-enabled }}" == "true" ]] && [[ "${{ steps.run-tests.outputs.coverage-passed-threshold }}" != "true" ]]; then
+          echo "::error::Coverage ${{ steps.run-tests.outputs.coverage-percentage }}% below threshold ${{ inputs.coverage-threshold }}%"
+          exit 1
+        fi
+        
+        echo "✅ All tests passed successfully!"

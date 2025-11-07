@@ -1,6 +1,6 @@
 # Security Policy
 
-This repository enforces a fail-closed secrets scanning policy and documents how to report and respond to security issues.
+This repository enforces a fail-closed secrets scanning policy and documents how to report and respond to security issues. All security practices align with OWASP ASVS 4.0.3, NIST SP 800-53 r5, and the project's zero-trust principles.
 
 ## Reporting
 

@@ -1,9 +1,19 @@
 # Default code owners for the entire repository
-* @political-sphere/core-team
+
+- @political-sphere/core-team
 
 # Specific ownership for directories
+
 infrastructure/ @political-sphere/infrastructure-team
 platform/ @political-sphere/platform-team
 ci/ @political-sphere/ci-team
 dev/ @political-sphere/dev-team
 docs/ @political-sphere/docs-team
+
+# Ensure ownership and review for GitHub configs and release files
+
+.github/ @political-sphere/platform-team
+.github/workflows/ @political-sphere/platform-team
+.github/actions/ @political-sphere/platform-team
+.github/dependabot.yml @political-sphere/platform-team
+docs/CHANGELOG.md @political-sphere/release-team

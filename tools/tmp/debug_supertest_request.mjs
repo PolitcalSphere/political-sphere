@@ -1,7 +1,7 @@
 import express from 'express';
 import request from 'supertest';
-import usersRouter from '../apps/api/src/routes/users.js';
-import { getDatabase, closeDatabase } from '../apps/api/src/stores/index.js';
+import usersRouter from '../../apps/api/src/routes/users.js';
+import { getDatabase, closeDatabase } from '../../apps/api/src/stores/index.js';
 
 const app = express();
 app.use((req, res, next) => {

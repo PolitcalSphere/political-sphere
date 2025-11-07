@@ -1,0 +1,64 @@
+name: Feature request
+description: Suggest an idea for this project
+title: "[ENHANCEMENT] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: "Is your feature request related to a problem?"
+      description: "Describe the problem you're solving"
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: "Describe the solution you'd like"
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Describe alternatives you've considered"
+    validations:
+      required: false
+  - type: input
+    id: impact
+    attributes:
+      label: "Impact"
+      description: "Who/what will this change affect?"
+    validations:
+      required: false
+  - type: checkboxes
+    id: considerations
+    attributes:
+      label: "Key Considerations"
+      options:
+        - label: "Affects democratic processes (voting, speech, moderation, etc.)"
+        - label: "Requires accessibility enhancements (WCAG 2.2 AA)"
+        - label: "Security/privacy implications"
+        - label: "Performance requirements (e.g., API p95 <200ms)"
+  - type: textarea
+    id: testing
+    attributes:
+      label: "Testing Approach"
+      description: "How will this feature be tested? (Unit, integration, E2E, etc.)"
+    validations:
+      required: false
+  - type: dropdown
+    id: priority
+    attributes:
+      label: "Priority Estimate"
+      options:
+        - Low
+        - Medium
+        - High
+        - Critical
+    validations:
+      required: false
+  - type: textarea
+    id: additional
+    attributes:
+      label: "Additional context"
+    validations:
+      required: false

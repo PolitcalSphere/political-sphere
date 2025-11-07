@@ -8,5 +8,5 @@
       "@political-sphere/infrastructure": ["libs/infrastructure/src/index.ts"]
     }
   },
-  "extends": "../../../../../../apps/dev/mcp-servers/sqlite/tsconfig.json"
+  "extends": "../../../../../../../apps/dev/mcp-servers/sqlite/tsconfig.json"
 }

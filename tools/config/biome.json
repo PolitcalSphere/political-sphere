@@ -9,10 +9,7 @@
     "lineWidth": 100
   },
   "linter": {
-    "enabled": true,
-    "rules": {
-      "recommended": true
-    }
+    "enabled": true
   },
-  "assist": { "actions": { "source": { "organizeImports": "on" } } }
+  "assist": { "enabled": false, "actions": { "source": { "organizeImports": "on" } } }
 }

@@ -1,0 +1,984 @@
+# ============================================================================
+# GitHub Composite Action: Deploy to AWS EKS
+# ============================================================================
+# Copyright (c) 2025 Political Sphere. All Rights Reserved.
+#
+# Version: 1.4.0
+# Last Updated: 2025-11-07
+# Owner: DevOps Team
+#
+# Description:
+#   Enterprise-grade composite action for deploying applications to AWS EKS.
+#   Supports blue-green deployments, canary releases, and automatic rollback.
+#   Implements security best practices including OIDC authentication and
+#   secrets management via AWS Secrets Manager.
+#
+# Governance:
+#   - Follows WCAG 2.2 AA accessibility standards for logs/output
+#   - Implements zero-trust security model
+#   - Provides audit trail for all deployment actions
+#   - Supports GDPR/CCPA compliance requirements
+#
+# Security:
+#   - Uses AWS OIDC federation (no long-lived credentials)
+#   - Validates all inputs to prevent injection attacks
+#   - Implements least-privilege IAM roles
+#   - Encrypts secrets in transit and at rest
+#
+# References:
+#   - GitHub Actions Deployment: https://docs.github.com/en/actions/deployment
+#   - AWS OIDC: https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services
+#   - Composite Actions: https://docs.github.com/en/actions/creating-actions/creating-a-composite-action
+# ============================================================================
+
+name: "Deploy to AWS EKS"
+description: "Composite action for secure, auditable deployments to AWS EKS with support for multiple deployment strategies"
+author: "Political Sphere DevOps Team"
+
+# ============================================================================
+# INPUTS
+# ============================================================================
+# All inputs are validated before use to prevent injection attacks
+
+inputs:
+  environment:
+    description: "Target environment (dev, staging, production)"
+    required: true
+
+  aws-region:
+    description: "AWS region for deployment"
+    required: true
+    default: "us-east-1"
+
+  aws-role-to-assume:
+    description: "AWS IAM role ARN for OIDC authentication"
+    required: true
+
+  eks-cluster-name:
+    description: "EKS cluster name"
+    required: true
+
+  application:
+    description: "Application name to deploy (frontend, api, worker, game-server)"
+    required: true
+
+  image-tag:
+    description: "Docker image tag to deploy"
+    required: true
+
+  deployment-strategy:
+    description: "Deployment strategy (rolling, blue-green, canary)"
+    required: false
+    default: "rolling"
+
+  canary-percentage:
+    description: "Percentage of traffic for canary deployment (0-100)"
+    required: false
+    default: "10"
+
+  enable-health-check:
+    description: "Enable health checks before marking deployment successful"
+    required: false
+    default: "true"
+
+  health-check-url:
+    description: "Health check endpoint URL"
+    required: false
+    default: "/healthz"
+
+  timeout-minutes:
+    description: "Deployment timeout in minutes"
+    required: false
+    default: "10"
+
+  enable-rollback:
+    description: "Enable automatic rollback on failure"
+    required: false
+    default: "true"
+
+  # STRAT-03: Multi-region deployment support
+  target-regions:
+    description: "Comma-separated list of AWS regions for multi-region deployment (e.g., us-east-1,eu-west-2)"
+    required: false
+    default: ""
+
+  # OPS-05: Pre-deployment backup
+  enable-backup:
+    description: "Create pre-deployment snapshot of current state"
+    required: false
+    default: "true"
+
+  # COMP-01: Production approval workflow
+  require-approval:
+    description: "Require manual approval before deployment (production only)"
+    required: false
+    default: "false"
+
+  # COMP-02: GDPR compliance check
+  enable-gdpr-check:
+    description: "Verify GDPR controls are in place for deployments touching user data"
+    required: false
+    default: "true"
+
+# ============================================================================
+# OUTPUTS
+# ============================================================================
+
+outputs:
+  deployment-status:
+    description: "Deployment status (success, failed, rolled-back)"
+    value: ${{ steps.deploy.outputs.status }}
+
+  deployed-version:
+    description: "Version/tag that was deployed"
+    value: ${{ steps.deploy.outputs.version }}
+
+  deployment-url:
+    description: "URL of the deployed application"
+    value: ${{ steps.deploy.outputs.url }}
+
+  deployment-timestamp:
+    description: "Timestamp of deployment completion"
+    value: ${{ steps.deploy.outputs.timestamp }}
+
+# ============================================================================
+# EXECUTION
+# ============================================================================
+
+runs:
+  using: "composite"
+  steps:
+    # ------------------------------------------------------------------------
+    # Step 1: Validate Inputs
+    # ------------------------------------------------------------------------
+    # Security: Prevent injection attacks by validating all inputs
+    # Reference: https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
+
+    - name: Validate Inputs
+      id: validate
+      shell: bash
+      env:
+        INPUT_ENVIRONMENT: ${{ inputs.environment }}
+        INPUT_APPLICATION: ${{ inputs.application }}
+        INPUT_STRATEGY: ${{ inputs.deployment-strategy }}
+        INPUT_CANARY_PCT: ${{ inputs.canary-percentage }}
+        INPUT_IMAGE_TAG: ${{ inputs.image-tag }}
+        INPUT_EKS_CLUSTER: ${{ inputs.eks-cluster-name }}
+        INPUT_AWS_REGION: ${{ inputs.aws-region }}
+      run: |
+        set -euo pipefail
+
+        echo "::group::Input Validation"
+        echo "Validating deployment inputs for security and correctness..."
+
+        # Validate environment
+        if [[ ! "$INPUT_ENVIRONMENT" =~ ^(dev|staging|production)$ ]]; then
+          echo "::error::Invalid environment: $INPUT_ENVIRONMENT. Must be dev, staging, or production"
+          exit 1
+        fi
+
+        # Validate application
+        if [[ ! "$INPUT_APPLICATION" =~ ^(frontend|api|worker|game-server)$ ]]; then
+          echo "::error::Invalid application: $INPUT_APPLICATION"
+          exit 1
+        fi
+
+        # Validate deployment strategy
+        if [[ ! "$INPUT_STRATEGY" =~ ^(rolling|blue-green|canary)$ ]]; then
+          echo "::error::Invalid deployment strategy: $INPUT_STRATEGY"
+          exit 1
+        fi
+
+        # Validate canary percentage
+        if [[ "$INPUT_STRATEGY" == "canary" ]]; then
+          if ! [[ "$INPUT_CANARY_PCT" =~ ^[0-9]+$ ]] || [ "$INPUT_CANARY_PCT" -lt 0 ] || [ "$INPUT_CANARY_PCT" -gt 100 ]; then
+            echo "::error::Invalid canary percentage: $INPUT_CANARY_PCT. Must be 0-100"
+            exit 1
+          fi
+        fi
+
+        # SEC-01: Validate image tag format to prevent injection
+        if [[ ! "$INPUT_IMAGE_TAG" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+          echo "::error::Invalid image tag format: $INPUT_IMAGE_TAG. Only alphanumeric, dots, underscores, and hyphens allowed"
+          exit 1
+        fi
+
+        # Validate EKS cluster name format
+        if [[ ! "$INPUT_EKS_CLUSTER" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+          echo "::error::Invalid EKS cluster name format: $INPUT_EKS_CLUSTER"
+          exit 1
+        fi
+
+        # Validate AWS region format
+        if [[ ! "$INPUT_AWS_REGION" =~ ^[a-z]{2}-[a-z]+-[0-9]$ ]]; then
+          echo "::error::Invalid AWS region format: $INPUT_AWS_REGION"
+          exit 1
+        fi
+
+        echo "✅ All inputs validated successfully"
+        echo "::endgroup::"
+
+    # ------------------------------------------------------------------------
+    # Step 2: Configure AWS Credentials (OIDC)
+    # ------------------------------------------------------------------------
+    # Security: Use OIDC instead of long-lived credentials
+    # Reference: https://github.com/aws-actions/configure-aws-credentials
+    # SEC-02: Pinned to specific commit SHA for security
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@2475ef7675c7f555fe065dad4cbebafc7f953779 # v4.0.2
+      with:
+        role-to-assume: ${{ inputs.aws-role-to-assume }}
+        aws-region: ${{ inputs.aws-region }}
+        role-session-name: GitHubActions-Deploy-${{ inputs.application }}-${{ github.run_id }}
+        role-duration-seconds: 3600 # 1 hour session
+        mask-aws-account-id: true # Security: Mask account ID in logs
+
+    # ------------------------------------------------------------------------
+    # Step 2.5: Install kubectl with Pinned Version
+    # ------------------------------------------------------------------------
+    # QUAL-05: Pin kubectl version to prevent API compatibility issues
+
+    - name: Install kubectl
+      shell: bash
+      env:
+        KUBECTL_VERSION: "v1.29.0" # Pinned version matching EKS 1.29
+      run: |
+        set -euo pipefail
+        echo "::group::Installing kubectl ${KUBECTL_VERSION}"
+
+        # Check if kubectl is already installed with correct version
+        if command -v kubectl &>/dev/null; then
+          CURRENT_VERSION=$(kubectl version --client --short 2>/dev/null | grep -oP 'v\d+\.\d+\.\d+' || echo "unknown")
+          if [ "$CURRENT_VERSION" = "${KUBECTL_VERSION}" ]; then
+            echo "✅ kubectl ${KUBECTL_VERSION} already installed"
+            echo "::endgroup::"
+            exit 0
+          fi
+        fi
+
+        echo "Installing kubectl ${KUBECTL_VERSION}..."
+
+        # Download kubectl binary
+        curl -LO "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
+
+        # Download checksum
+        curl -LO "https://dl.k8s.io/${KUBECTL_VERSION}/bin/linux/amd64/kubectl.sha256"
+
+        # Verify checksum
+        echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+
+        # Install kubectl
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin/kubectl
+
+        # Verify installation
+        kubectl version --client
+
+        echo "✅ kubectl ${KUBECTL_VERSION} installed successfully"
+        echo "::endgroup::"
+
+    # ------------------------------------------------------------------------
+    # Step 2.6: Verify Helm Installation (if needed)
+    # ------------------------------------------------------------------------
+    # SEC-07: Secure Helm installation with SHA256 verification
+
+    - name: Install Helm with Verification
+      if: inputs.application == 'game-server' # Game server uses Helm charts
+      shell: bash
+      env:
+        HELM_VERSION: "v3.13.3" # Pinned Helm version
+      run: |
+        set -euo pipefail
+        echo "::group::Installing Helm ${HELM_VERSION}"
+
+        # Check if Helm is already installed
+        if command -v helm &>/dev/null; then
+          CURRENT_VERSION=$(helm version --short 2>/dev/null | grep -oP 'v\d+\.\d+\.\d+' || echo "unknown")
+          if [ "$CURRENT_VERSION" = "${HELM_VERSION}" ]; then
+            echo "✅ Helm ${HELM_VERSION} already installed"
+            echo "::endgroup::"
+            exit 0
+          fi
+        fi
+
+        echo "Installing Helm ${HELM_VERSION}..."
+
+        # Download Helm tarball
+        curl -LO "https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
+
+        # Download checksum
+        curl -LO "https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz.sha256sum"
+
+        # Verify checksum
+        sha256sum --check helm-${HELM_VERSION}-linux-amd64.tar.gz.sha256sum
+
+        # Extract and install
+        tar -zxvf helm-${HELM_VERSION}-linux-amd64.tar.gz
+        sudo mv linux-amd64/helm /usr/local/bin/helm
+
+        # Clean up
+        rm -rf linux-amd64 helm-${HELM_VERSION}-linux-amd64.tar.gz helm-${HELM_VERSION}-linux-amd64.tar.gz.sha256sum
+
+        # Verify installation
+        helm version
+
+        echo "✅ Helm ${HELM_VERSION} installed and verified"
+        echo "::endgroup::"
+
+    # ------------------------------------------------------------------------
+    # Step 3: Validate Kubernetes Manifests
+    # ------------------------------------------------------------------------
+    # Quality: Catch configuration errors before deployment
+
+    - name: Validate Kubernetes Manifests
+      id: validate-manifests
+      shell: bash
+      env:
+        APP_NAME: ${{ inputs.application }}
+        ENVIRONMENT: ${{ inputs.environment }}
+      run: |
+        set -euo pipefail
+        echo "::group::Manifest Validation"
+
+        # Execute validation script
+        chmod +x ${{ github.action_path }}/validate-manifests.sh
+        ${{ github.action_path }}/validate-manifests.sh
+
+        echo "::endgroup::"
+
+    # ------------------------------------------------------------------------
+    # Step 3.5: Container Security Scanning
+    # ------------------------------------------------------------------------
+    # SEC-03: Scan container image for vulnerabilities before deployment
+    # Blocks deployment if HIGH or CRITICAL vulnerabilities found
+
+    - name: Install Trivy Scanner
+      shell: bash
+      run: |
+        set -euo pipefail
+        echo "::group::Installing Trivy"
+
+        if ! command -v trivy &> /dev/null; then
+          echo "Installing Trivy vulnerability scanner..."
+          
+          # Install Trivy
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+          echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update && sudo apt-get install -y trivy
+          
+          echo "✅ Trivy installed successfully"
+        else
+          echo "✅ Trivy already installed"
+          trivy --version
+        fi
+
+        echo "::endgroup::"
+
+    - name: Scan Container Image
+      id: security-scan
+      shell: bash
+      env:
+        IMAGE_TAG: ${{ inputs.image-tag }}
+        APPLICATION: ${{ inputs.application }}
+        ENVIRONMENT: ${{ inputs.environment }}
+        AWS_REGION: ${{ inputs.aws-region }}
+      run: |
+        set -euo pipefail
+        echo "::group::Container Security Scan"
+
+        # Get AWS account ID
+        AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+
+        # Construct full image name
+        FULL_IMAGE="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/political-sphere/${ENVIRONMENT}/${APPLICATION}:${IMAGE_TAG}"
+
+        echo "Scanning image: ${FULL_IMAGE}"
+
+        # Update Trivy database
+        trivy image --download-db-only
+
+        # Scan image for vulnerabilities
+        # Exit code 1 if HIGH or CRITICAL vulnerabilities found
+        trivy image \
+          --severity HIGH,CRITICAL \
+          --exit-code 1 \
+          --format json \
+          --output trivy-report.json \
+          "${FULL_IMAGE}"
+
+        SCAN_RESULT=$?
+
+        # Generate human-readable report
+        trivy image \
+          --severity HIGH,CRITICAL \
+          --format table \
+          "${FULL_IMAGE}"
+
+        if [ $SCAN_RESULT -eq 0 ]; then
+          echo "✅ No HIGH or CRITICAL vulnerabilities found"
+        else
+          echo "::error::HIGH or CRITICAL vulnerabilities detected. Deployment blocked."
+          echo "::error::Review trivy-report.json for details"
+          exit 1
+        fi
+
+        # Generate SBOM
+        echo "Generating Software Bill of Materials (SBOM)..."
+        trivy image \
+          --format cyclonedx \
+          --output sbom.json \
+          "${FULL_IMAGE}" || echo "::warning::SBOM generation failed but continuing"
+
+        echo "::endgroup::"
+
+    # ------------------------------------------------------------------------
+    # Step 4: Performance Regression Testing
+    # ------------------------------------------------------------------------
+    # OPS-06: Benchmark deployment latency and compare to SLOs
+
+    - name: Performance Regression Test
+      if: inputs.environment != 'production' # Run in staging only
+      shell: bash
+      env:
+        STRATEGY: ${{ inputs.deployment-strategy }}
+        APPLICATION: ${{ inputs.application }}
+      run: |
+        set -euo pipefail
+        echo "::group::Performance Regression Testing"
+
+        # Define SLO targets (p95 latency in seconds)
+        case "$STRATEGY" in
+          rolling)
+            SLO_TARGET=600  # 10 minutes
+            ;;
+          blue-green)
+            SLO_TARGET=900  # 15 minutes
+            ;;
+          canary)
+            SLO_TARGET=1800 # 30 minutes
+            ;;
+          *)
+            echo "::warning::Unknown strategy, skipping performance test"
+            echo "::endgroup::"
+            exit 0
+            ;;
+        esac
+
+        echo "SLO Target for $STRATEGY: ${SLO_TARGET}s"
+
+        # Check if deployment timing is available
+        if [ -f /tmp/deploy_start_time ]; then
+          DEPLOY_START=$(cat /tmp/deploy_start_time)
+          DEPLOY_END=$(date +%s)
+          ACTUAL_DURATION=$((DEPLOY_END - DEPLOY_START))
+
+          echo "Actual Deployment Duration: ${ACTUAL_DURATION}s"
+
+          # Compare to SLO
+          if [ $ACTUAL_DURATION -gt $SLO_TARGET ]; then
+            OVERAGE=$((ACTUAL_DURATION - SLO_TARGET))
+            OVERAGE_PCT=$(( (OVERAGE * 100) / SLO_TARGET ))
+            
+            echo "::warning::⚠️  Performance regression detected!"
+            echo "::warning::Deployment took ${ACTUAL_DURATION}s, exceeding SLO of ${SLO_TARGET}s by ${OVERAGE}s (${OVERAGE_PCT}%)"
+            echo "::warning::Consider investigating deployment performance"
+            
+            # Record regression metric
+            aws cloudwatch put-metric-data \
+              --namespace "PoliticalSphere/Deployments" \
+              --metric-name PerformanceRegression \
+              --value 1 \
+              --dimensions Strategy="$STRATEGY",Application="$APPLICATION" \
+              --region "${AWS_REGION:-us-east-1}" || true
+          else
+            echo "✅ Performance within SLO"
+            echo "Deployment completed in ${ACTUAL_DURATION}s (target: ${SLO_TARGET}s)"
+          fi
+
+          # Store benchmark for historical tracking
+          echo "${ACTUAL_DURATION}" > /tmp/deployment_benchmark_${STRATEGY}.txt
+        else
+          echo "::warning::Deployment start time not found, skipping performance test"
+        fi
+
+        echo "::endgroup::"
+
+    # ------------------------------------------------------------------------
+    # Step 4.5: Pre-Deployment Backup
+    # ------------------------------------------------------------------------
+    # OPS-05: Snapshot current state before destructive operations
+
+    - name: Create Pre-Deployment Backup
+      if: inputs.enable-backup == 'true'
+      id: backup
+      shell: bash
+      env:
+        APPLICATION: ${{ inputs.application }}
+        ENVIRONMENT: ${{ inputs.environment }}
+      run: |
+        set -euo pipefail
+        echo "::group::Pre-Deployment Backup"
+
+        BACKUP_DIR="/tmp/deployment-backup-$(date +%s)"
+        mkdir -p "$BACKUP_DIR"
+
+        echo "Creating backup of current deployment state..."
+
+        # Backup current deployment
+        if kubectl get deployment "$APPLICATION" -n "$ENVIRONMENT" &>/dev/null; then
+          kubectl get deployment "$APPLICATION" -n "$ENVIRONMENT" -o yaml > "$BACKUP_DIR/deployment.yaml"
+          echo "✅ Deployment backed up"
+        else
+          echo "::warning::No existing deployment found to backup"
+        fi
+
+        # Backup current service
+        if kubectl get service "$APPLICATION" -n "$ENVIRONMENT" &>/dev/null; then
+          kubectl get service "$APPLICATION" -n "$ENVIRONMENT" -o yaml > "$BACKUP_DIR/service.yaml"
+          echo "✅ Service backed up"
+        fi
+
+        # Backup current configmap
+        if kubectl get configmap "$APPLICATION-config" -n "$ENVIRONMENT" &>/dev/null; then
+          kubectl get configmap "$APPLICATION-config" -n "$ENVIRONMENT" -o yaml > "$BACKUP_DIR/configmap.yaml"
+          echo "✅ ConfigMap backed up"
+        fi
+
+        # Store backup location for potential rollback
+        echo "backup_dir=$BACKUP_DIR" >> $GITHUB_OUTPUT
+        echo "Backup stored in: $BACKUP_DIR"
+        echo "::notice::Pre-deployment backup created successfully"
+
+        echo "::endgroup::"
+
+    # ------------------------------------------------------------------------
+    # Step 4.6: GDPR Compliance Check
+    # ------------------------------------------------------------------------
+    # COMP-02: Verify GDPR controls for deployments touching user data
+
+    - name: GDPR Compliance Verification
+      if: inputs.enable-gdpr-check == 'true' && (inputs.application == 'api' || inputs.application == 'worker')
+      shell: bash
+      env:
+        APPLICATION: ${{ inputs.application }}
+        ENVIRONMENT: ${{ inputs.environment }}
+      run: |
+        set -euo pipefail
+        echo "::group::GDPR Compliance Check"
+
+        echo "Verifying GDPR controls for $APPLICATION deployment..."
+
+        # Check for required GDPR-related environment variables
+        GDPR_CHECKS_PASSED=true
+
+        # Verify data retention policy is configured
+        if ! kubectl get configmap gdpr-retention-policy -n "$ENVIRONMENT" &>/dev/null; then
+          echo "::warning::GDPR retention policy not found"
+          GDPR_CHECKS_PASSED=false
+        else
+          echo "✅ GDPR retention policy configured"
+        fi
+
+        # Verify data protection impact assessment exists
+        if [ ! -f "docs/03-legal-and-compliance/dpia-${APPLICATION}.md" ]; then
+          echo "::warning::DPIA not found for $APPLICATION at docs/03-legal-and-compliance/dpia-${APPLICATION}.md"
+          echo "::warning::Consider creating a Data Protection Impact Assessment"
+        else
+          echo "✅ DPIA exists for $APPLICATION"
+        fi
+
+        # Check for audit logging configuration
+        if kubectl get deployment "$APPLICATION" -n "$ENVIRONMENT" -o yaml 2>/dev/null | grep -q "AUDIT_LOG_ENABLED"; then
+          echo "✅ Audit logging configured"
+        else
+          echo "::warning::Audit logging may not be configured"
+          echo "::warning::Ensure AUDIT_LOG_ENABLED environment variable is set"
+        fi
+
+        # Verify encryption settings
+        echo "Checking encryption configuration..."
+        if kubectl get secret "$APPLICATION-secrets" -n "$ENVIRONMENT" &>/dev/null; then
+          echo "✅ Application secrets exist"
+        else
+          echo "::notice::No application secrets found (may be expected)"
+        fi
+
+        if [ "$GDPR_CHECKS_PASSED" = "true" ]; then
+          echo "✅ GDPR compliance checks passed"
+        else
+          echo "::warning::Some GDPR controls may be missing - review warnings above"
+          if [ "$ENVIRONMENT" = "production" ]; then
+            echo "::error::GDPR compliance issues detected in production deployment"
+            echo "::error::Please ensure all GDPR controls are in place before deploying to production"
+            # Note: Not failing the deployment, but logging critical warnings
+          fi
+        fi
+
+        echo "::endgroup::"
+
+    # ------------------------------------------------------------------------
+    # Step 5: Update kubeconfig for EKS
+    # ------------------------------------------------------------------------
+
+    - name: Update kubeconfig
+      shell: bash
+      env:
+        CLUSTER_NAME: ${{ inputs.eks-cluster-name }}
+        AWS_REGION: ${{ inputs.aws-region }}
+      run: |
+        set -euo pipefail
+        echo "::group::EKS Configuration"
+
+        echo "Updating kubeconfig for cluster: $CLUSTER_NAME"
+        aws eks update-kubeconfig \
+          --name "$CLUSTER_NAME" \
+          --region "$AWS_REGION" \
+          --alias "$CLUSTER_NAME"
+
+        # Verify connection
+        kubectl cluster-info
+        kubectl get nodes
+
+        echo "✅ Successfully connected to EKS cluster"
+        echo "::endgroup::"
+
+    # ------------------------------------------------------------------------
+    # Step 5: Execute Deployment
+    # ------------------------------------------------------------------------
+    # Governance: Audit trail of deployment actions
+
+    - name: Deploy Application
+      id: deploy
+      shell: bash
+      env:
+        ENVIRONMENT: ${{ inputs.environment }}
+        APPLICATION: ${{ inputs.application }}
+        IMAGE_TAG: ${{ inputs.image-tag }}
+        STRATEGY: ${{ inputs.deployment-strategy }}
+        CANARY_PCT: ${{ inputs.canary-percentage }}
+        ENABLE_HEALTH_CHECK: ${{ inputs.enable-health-check }}
+        HEALTH_CHECK_URL: ${{ inputs.health-check-url }}
+        TIMEOUT_MINUTES: ${{ inputs.timeout-minutes }}
+        ENABLE_ROLLBACK: ${{ inputs.enable-rollback }}
+        TARGET_REGIONS: ${{ inputs.target-regions }}
+        ENABLE_BACKUP: ${{ inputs.enable-backup }}
+        REQUIRE_APPROVAL: ${{ inputs.require-approval }}
+        ENABLE_GDPR_CHECK: ${{ inputs.enable-gdpr-check }}
+        GITHUB_RUN_ID: ${{ github.run_id }}
+        GITHUB_SHA: ${{ github.sha }}
+        GITHUB_ACTOR: ${{ github.actor }}
+      run: |
+        set -euo pipefail
+
+        # Execute deployment script
+        chmod +x ${{ github.action_path }}/run-deploy.sh
+        ${{ github.action_path }}/run-deploy.sh
+
+    # ------------------------------------------------------------------------
+    # Step 6: Post-Deployment Health Check
+    # ------------------------------------------------------------------------
+    # SEC-04: Support HTTPS with SSL verification
+    # SEC-10: Implement proper rate limiting with max wait cap
+
+    - name: Verify Deployment Health
+      if: inputs.enable-health-check == 'true'
+      shell: bash
+      env:
+        APPLICATION: ${{ inputs.application }}
+        ENVIRONMENT: ${{ inputs.environment }}
+        HEALTH_CHECK_URL: ${{ inputs.health-check-url }}
+      run: |
+        set -euo pipefail
+        echo "::group::Health Check"
+
+        # Get service URL
+        SERVICE_URL=$(kubectl get service "$APPLICATION" \
+          -n "$ENVIRONMENT" \
+          -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' 2>/dev/null || echo "")
+
+        if [ -z "$SERVICE_URL" ]; then
+          echo "::warning::Service URL not found, skipping health check"
+          echo "::endgroup::"
+          exit 0
+        fi
+
+        # SEC-04: Determine protocol based on environment
+        PROTOCOL="https"
+        SSL_VERIFY="--cacert /etc/ssl/certs/ca-certificates.crt"
+        if [ "$ENVIRONMENT" = "dev" ]; then
+          PROTOCOL="http"
+          SSL_VERIFY=""
+        fi
+
+        FULL_URL="${PROTOCOL}://${SERVICE_URL}${HEALTH_CHECK_URL}"
+        echo "Checking health endpoint: $FULL_URL"
+
+        # SEC-10: Retry health check with exponential backoff and max wait cap
+        MAX_RETRIES=10
+        RETRY=0
+        WAIT_TIME=5
+        MAX_WAIT_TIME=60  # Maximum 60 seconds between retries
+
+        while [ $RETRY -lt $MAX_RETRIES ]; do
+          if curl -sf -m 10 $SSL_VERIFY "$FULL_URL" > /dev/null 2>&1; then
+            echo "✅ Health check passed"
+            echo "::endgroup::"
+            exit 0
+          fi
+          
+          RETRY=$((RETRY + 1))
+          if [ $RETRY -lt $MAX_RETRIES ]; then
+            echo "Health check failed, retrying in ${WAIT_TIME}s... (Attempt $RETRY/$MAX_RETRIES)"
+            sleep $WAIT_TIME
+            # Exponential backoff with ceiling
+            WAIT_TIME=$((WAIT_TIME * 2))
+            if [ $WAIT_TIME -gt $MAX_WAIT_TIME ]; then
+              WAIT_TIME=$MAX_WAIT_TIME
+            fi
+          fi
+        done
+
+        echo "::error::Health check failed after $MAX_RETRIES attempts"
+        echo "::endgroup::"
+        exit 1
+
+    # ------------------------------------------------------------------------
+    # Step 7: Accessibility Validation (Frontend Only)
+    # ------------------------------------------------------------------------
+    # UX-01: WCAG 2.2 AA compliance check for frontend deployments
+
+    - name: Accessibility Validation
+      if: inputs.application == 'frontend' && inputs.enable-health-check == 'true'
+      shell: bash
+      env:
+        APPLICATION: ${{ inputs.application }}
+        ENVIRONMENT: ${{ inputs.environment }}
+      run: |
+        set -euo pipefail
+        echo "::group::Accessibility Validation (WCAG 2.2 AA)"
+
+        # Get service URL
+        SERVICE_URL=$(kubectl get service "$APPLICATION" \
+          -n "$ENVIRONMENT" \
+          -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' 2>/dev/null || echo "")
+
+        if [ -z "$SERVICE_URL" ]; then
+          echo "::warning::Service URL not found, skipping accessibility check"
+          echo "::endgroup::"
+          exit 0
+        fi
+
+        # Determine protocol
+        PROTOCOL="https"
+        if [ "$ENVIRONMENT" = "dev" ]; then
+          PROTOCOL="http"
+        fi
+
+        TARGET_URL="${PROTOCOL}://${SERVICE_URL}"
+        echo "Running accessibility audit on: $TARGET_URL"
+
+        # Install pa11y if not present
+        if ! command -v pa11y &> /dev/null; then
+          echo "Installing pa11y accessibility checker..."
+          npm install -g pa11y
+        fi
+
+        # Run pa11y with WCAG 2.2 AA standard
+        echo "Checking WCAG 2.2 AA compliance..."
+        pa11y --standard WCAG2AA \
+          --reporter json \
+          --timeout 30000 \
+          "$TARGET_URL" > pa11y-results.json || true
+
+        # Check for violations
+        VIOLATION_COUNT=$(jq '. | length' pa11y-results.json 2>/dev/null || echo "0")
+
+        if [ "$VIOLATION_COUNT" -gt 0 ]; then
+          echo "::warning::Found $VIOLATION_COUNT accessibility violations"
+          echo "::warning::Review pa11y-results.json for details"
+          # Display first few violations
+          jq -r '.[] | "- \(.type): \(.message) (\(.selector))"' pa11y-results.json | head -10
+        else
+          echo "✅ No accessibility violations found"
+        fi
+
+        echo "::endgroup::"
+
+    # ------------------------------------------------------------------------
+    # Step 8: Record Deployment Metrics
+    # ------------------------------------------------------------------------
+    # OPS-04: Track deployment duration and outcomes in CloudWatch
+
+    - name: Record Deployment Metrics
+      if: always()
+      shell: bash
+      env:
+        DEPLOYMENT_STATUS: ${{ steps.deploy.outputs.status }}
+        APPLICATION: ${{ inputs.application }}
+        ENVIRONMENT: ${{ inputs.environment }}
+        AWS_REGION: ${{ inputs.aws-region }}
+        STRATEGY: ${{ inputs.deployment-strategy }}
+        IMAGE_TAG: ${{ inputs.image-tag }}
+      run: |
+        set -euo pipefail
+        echo "::group::Deployment Metrics"
+
+        # Calculate deployment duration
+        if [ -f /tmp/deploy_start_time ]; then
+          DEPLOY_START=$(cat /tmp/deploy_start_time)
+          DEPLOY_END=$(date +%s)
+          DURATION=$((DEPLOY_END - DEPLOY_START))
+        else
+          DURATION=0
+        fi
+
+        echo "Deployment Status: $DEPLOYMENT_STATUS"
+        echo "Application: $APPLICATION"
+        echo "Environment: $ENVIRONMENT"
+        echo "Strategy: $STRATEGY"
+        echo "Duration: ${DURATION} seconds"
+
+        # Record metrics to CloudWatch
+        echo "Recording metrics to CloudWatch..."
+
+        # Deployment status metric (1=success, 0=failed)
+        STATUS_VALUE=0
+        if [ "$DEPLOYMENT_STATUS" = "success" ]; then
+          STATUS_VALUE=1
+        fi
+
+        aws cloudwatch put-metric-data \
+          --namespace "PoliticalSphere/Deployments" \
+          --metric-name DeploymentStatus \
+          --value $STATUS_VALUE \
+          --dimensions Environment="$ENVIRONMENT",Application="$APPLICATION",Strategy="$STRATEGY" \
+          --region "$AWS_REGION" || echo "::warning::Failed to record status metric"
+
+        # Deployment duration metric
+        if [ $DURATION -gt 0 ]; then
+          aws cloudwatch put-metric-data \
+            --namespace "PoliticalSphere/Deployments" \
+            --metric-name DeploymentDuration \
+            --value $DURATION \
+            --unit Seconds \
+            --dimensions Environment="$ENVIRONMENT",Application="$APPLICATION",Strategy="$STRATEGY" \
+            --region "$AWS_REGION" || echo "::warning::Failed to record duration metric"
+        fi
+
+        # Deployment count metric
+        aws cloudwatch put-metric-data \
+          --namespace "PoliticalSphere/Deployments" \
+          --metric-name DeploymentCount \
+          --value 1 \
+          --unit Count \
+          --dimensions Environment="$ENVIRONMENT",Application="$APPLICATION",Strategy="$STRATEGY" \
+          --region "$AWS_REGION" || echo "::warning::Failed to record count metric"
+
+        echo "✅ Metrics recorded successfully"
+        echo "::endgroup::"
+
+    # ------------------------------------------------------------------------
+    # Step 9: Update CHANGELOG
+    # ------------------------------------------------------------------------
+    # QUAL-06: Automatically append deployment records to CHANGELOG
+
+    - name: Update CHANGELOG
+      if: success()
+      shell: bash
+      env:
+        APPLICATION: ${{ inputs.application }}
+        ENVIRONMENT: ${{ inputs.environment }}
+        IMAGE_TAG: ${{ inputs.image-tag }}
+        STRATEGY: ${{ inputs.deployment-strategy }}
+      run: |
+        set -euo pipefail
+        echo "::group::Updating CHANGELOG"
+
+        TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+        CHANGELOG_FILE="CHANGELOG.md"
+
+        # Check if CHANGELOG exists
+        if [ ! -f "$CHANGELOG_FILE" ]; then
+          echo "::warning::CHANGELOG.md not found, skipping update"
+          echo "::endgroup::"
+          exit 0
+        fi
+
+        # Create deployment entry
+        ENTRY="- **Deployed** \`${APPLICATION}\` to \`${ENVIRONMENT}\` using \`${STRATEGY}\` strategy (version: \`${IMAGE_TAG}\`) - ${TIMESTAMP}"
+
+        # Check if entry already exists to prevent duplicates
+        if grep -qF "$ENTRY" "$CHANGELOG_FILE"; then
+          echo "Entry already exists in CHANGELOG, skipping"
+        else
+          # Find [Unreleased] section and append
+          if grep -q "## \[Unreleased\]" "$CHANGELOG_FILE"; then
+            # Insert after [Unreleased] header - use temp file to avoid sed multiline issues
+            grep -n "## \[Unreleased\]" "$CHANGELOG_FILE" | head -1 | cut -d: -f1 | {
+              read line_num
+              next_line=$((line_num + 1))
+              head -n "$line_num" "$CHANGELOG_FILE" > "${CHANGELOG_FILE}.tmp"
+              echo "$ENTRY" >> "${CHANGELOG_FILE}.tmp"
+              tail -n +$next_line "$CHANGELOG_FILE" >> "${CHANGELOG_FILE}.tmp"
+              mv "${CHANGELOG_FILE}.tmp" "$CHANGELOG_FILE"
+            }
+            
+            echo "✅ CHANGELOG updated with deployment record"
+            
+            # Configure git if in CI
+            if [ -n "${GITHUB_ACTIONS:-}" ]; then
+              git config --global user.name "github-actions[bot]"
+              git config --global user.email "github-actions[bot]@users.noreply.github.com"
+              
+              git add "$CHANGELOG_FILE"
+              git commit -m "chore: update CHANGELOG for ${APPLICATION} ${ENVIRONMENT} deployment" || echo "Nothing to commit"
+              git push || echo "::warning::Failed to push CHANGELOG update"
+            fi
+          else
+            echo "::warning::No [Unreleased] section found in CHANGELOG"
+          fi
+        fi
+
+        echo "::endgroup::"
+
+    # ------------------------------------------------------------------------
+    # Step 10: Production Approval Gate
+    # ------------------------------------------------------------------------
+    # COMP-01: Require manual approval for production deployments
+
+    - name: Production Approval Check
+      if: inputs.environment == 'production' && inputs.require-approval == 'true'
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+        ENVIRONMENT: production
+      run: |
+        set -euo pipefail
+        echo "::group::Production Approval Gate"
+
+        echo "⚠️  Production deployment requires manual approval"
+        echo "This deployment will pause until approved by a reviewer"
+        echo ""
+        echo "To approve this deployment:"
+        echo "1. Go to the Actions tab in GitHub"
+        echo "2. Find this workflow run"
+        echo "3. Click 'Review deployments'"
+        echo "4. Select 'production' environment"
+        echo "5. Click 'Approve and deploy'"
+        echo ""
+        echo "::notice::Waiting for production approval..."
+
+        # Note: Actual approval gate is handled by GitHub environment protection rules
+        # This step documents the requirement in logs
+
+        echo "::endgroup::"
+
+# ============================================================================
+# BRANDING
+# ============================================================================
+# Visual identification in GitHub Actions marketplace
+
+branding:
+  icon: "upload-cloud"
+  color: "blue"

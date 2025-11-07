@@ -1,5 +1,5 @@
 import Database from 'better-sqlite3';
-import { up as migrateUp } from '../apps/api/src/migrations/001_initial_schema.js';
+import { up as migrateUp } from '../../apps/api/src/migrations/001_initial_schema.js';
 
 const db = new Database(':memory:');
 try {

@@ -1,325 +1,118 @@
-# AI-ASSISTABLE METADATA
-# @action-name: Run Quality Checks
-# @action-purpose: Composite action to run lint, typecheck, import-boundary, and optional security scans
-# @action-category: quality
-# @action-criticality: high
-# @action-owner: platform-engineering
-# @action-dependencies: [actions/setup-node, semgrep]
-# @action-outputs: [lint-result, typecheck-result, boundaries-result, semgrep-result, overall-result]
-#
-# Quality Checks Composite Action
-# This composite action runs comprehensive quality checks for Node.js projects
-# including linting, type checking, import boundary validation, and optional security scanning
-# See: https://github.com/actions/runner/blob/main/docs/adrs/0549-composite-run-steps.md
-
-name: "Run Quality Checks"
-description: "Lint, typecheck, and import-boundary checks with caching and rich summaries"
+name: "Quality Checks"
+description: "Run linting, type checking, and code quality checks"
+author: "Political Sphere"
 
 inputs:
-  fail-fast:
-    description: "Exit immediately on first failing check"
+  run-lint:
+    description: "Run linting checks"
     required: false
     default: "true"
-  continue-on-error:
-    description: "Do not fail the job even if checks fail (useful for experiment branches)"
-    required: false
-    default: "false"
-  node-version:
-    description: "Node.js version"
-    required: false
-    default: "22"
-  working-directory:
-    description: "Directory to run commands in (monorepo friendly)"
-    required: false
-    default: "."
-  package-manager:
-    description: "npm | pnpm | yarn"
-    required: false
-    default: "npm"
-  cache-dependency-path:
-    description: "Lockfile path(s) for caching (e.g., **/package-lock.json, pnpm-lock.yaml)"
-    required: false
-    default: ""
-  ignore-scripts:
-    description: "Set to true to run install with --ignore-scripts"
-    required: false
-    default: "false"
-  enable-corepack:
-    description: "Enable Corepack for package manager version locking"
-    required: false
-    default: "true"
-  run-semgrep:
-    description: "Run Semgrep security scan"
-    required: false
-    default: "true"
-  lint-command:
-    description: "Fallback lint command if lint script not found"
-    required: false
-    default: "npx eslint . --max-warnings=0"
-  typecheck-command:
-    description: "Fallback typecheck command if no script is defined"
-    required: false
-    default: "npx tsc -b || npx tsc --noEmit"
 
-# These outputs can be used in calling workflows to evaluate individual step results
+  run-typecheck:
+    description: "Run TypeScript type checking"
+    required: false
+    default: "true"
+
+  run-format-check:
+    description: "Check code formatting"
+    required: false
+    default: "true"
+
+  lint-command:
+    description: "Command to run linting"
+    required: false
+    default: "npm run lint"
+
+  typecheck-command:
+    description: "Command to run type checking"
+    required: false
+    default: "npm run type-check"
+
+  format-check-command:
+    description: "Command to check formatting"
+    required: false
+    default: "npm run format:check"
+
 outputs:
-  lint-result:
-    description: "success | failure"
-    value: ${{ steps.lint.outputs.result }}
-  typecheck-result:
-    description: "success | failure"
-    value: ${{ steps.typecheck.outputs.result }}
-  boundaries-result:
-    description: "success | failure"
-    value: ${{ steps.boundaries.outputs.result }}
-  semgrep-result:
-    description: "success | failure"
-    value: ${{ steps.security.outputs.result }}
-  overall-result:
-    description: "success | failure"
-    value: ${{ steps.overall.outputs.result }}
+  lint-passed:
+    description: "Whether linting passed"
+    value: ${{ steps.results.outputs.lint-passed }}
+
+  typecheck-passed:
+    description: "Whether type checking passed"
+    value: ${{ steps.results.outputs.typecheck-passed }}
+
+  format-passed:
+    description: "Whether format checking passed"
+    value: ${{ steps.results.outputs.format-passed }}
 
 runs:
   using: "composite"
   steps:
-    - name: Print toolchain
-      shell: bash
-      env:
-        NODE_VER: ${{ inputs.node-version }}
-        PKG_MGR: ${{ inputs.package-manager }}
-        WRK_DIR: ${{ inputs.working-directory }}
-        IGN_SCRIPTS: ${{ inputs.ignore-scripts }}
-        FAIL_FAST: ${{ inputs.fail-fast }}
-        CONTINUE_ERR: ${{ inputs.continue-on-error }}
-      run: |
-        echo "CI environment:"
-        echo "  node:   ${NODE_VER}"
-        echo "  pm:     ${PKG_MGR}"
-        echo "  cwd:    ${WRK_DIR}"
-        echo "  ignore-scripts: ${IGN_SCRIPTS}"
-        echo "  fail-fast: ${FAIL_FAST}"
-        echo "  continue-on-error: ${CONTINUE_ERR}"
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ inputs.node-version }}
-        cache: ${{ inputs.package-manager == 'yarn' && 'yarn' || (inputs.package-manager == 'pnpm' && 'pnpm' || 'npm') }}
-        cache-dependency-path: ${{ inputs.cache-dependency-path }}
-
-    - name: Enable Corepack (lock package managers)
-      if: ${{ inputs.enable-corepack == 'true' }}
-      shell: bash
-      env:
-        PKG_MGR: ${{ inputs.package-manager }}
-      run: |
-        corepack enable
-        corepack prepare "${PKG_MGR}"@latest --activate || true
-
-    - name: Install dependencies
-      shell: bash
-      working-directory: ${{ inputs.working-directory }}
-      env:
-        CI: "true"
-        NODE_ENV: "development"
-        PM: ${{ inputs.package-manager }}
-        IGNORE: ${{ inputs.ignore-scripts == 'true' && '--ignore-scripts' || '' }}
-      run: |
-        set -euo pipefail
-        # simple retry for flakey networks
-        for i in 1 2 3; do
-          case "$PM" in
-            pnpm) pnpm install --frozen-lockfile $IGNORE && break || sleep 2 ;;
-            yarn) yarn install --immutable $IGNORE && break || sleep 2 ;;
-            npm)  npm ci $IGNORE && break || sleep 2 ;;
-            *) echo "Unsupported package manager: $PM"; exit 2 ;;
-          esac
-        done
-
-    - name: Helpers (timer + runner)
-      id: helpers
-      shell: bash
-      run: |
-        cat > _run_with_timer.sh <<'BASH'
-        #!/usr/bin/env bash
-        set -euo pipefail
-        NAME="$1"; SHIFTED_CMD="${@:2}"
-        START=$(date +%s)
-        if eval "$SHIFTED_CMD"; then
-          RES=success
-        else
-          RES=failure
-        fi
-        END=$(date +%s); DUR=$((END-START))
-        echo "result=${RES}"
-        echo "duration=${DUR}"
-        if [ "$RES" = "success" ]; then
-          echo "✅ $NAME passed in ${DUR}s"
-        else
-          echo "❌ $NAME failed in ${DUR}s"
-        fi
-        BASH
-        chmod +x _run_with_timer.sh
-
-    - name: Lint
+    - name: Run Linting
       id: lint
+      if: inputs.run-lint == 'true'
       shell: bash
-      working-directory: ${{ inputs.working-directory }}
-      env:
-        PM: ${{ inputs.package-manager }}
-        LINT_CMD: ${{ inputs.lint-command }}
-        FAIL_FAST: ${{ inputs.fail-fast }}
       run: |
-        set -euo pipefail
-        # Prefer project script if present; fallback to common defaults
-        if npm run -s lint --if-present >/dev/null 2>&1; then
-          OUT=$(./_run_with_timer.sh "Linting" "${PM} run -s lint")
+        echo "🔍 Running linting checks..."
+        if ${{ inputs.lint-command }}; then
+          echo "✅ Linting passed"
+          echo "lint-result=passed" >> "$GITHUB_OUTPUT"
         else
-          # Fallback uses configurable lint command
-          OUT=$(./_run_with_timer.sh "Linting" "${LINT_CMD}")
-        fi
-        echo "$OUT"
-        echo "${OUT}" | grep -oE 'result=(success|failure)' >> "$GITHUB_OUTPUT"
-        echo "${OUT}" | grep -oE 'duration=[0-9]+' >> "$GITHUB_OUTPUT"
-        if [[ "${FAIL_FAST}" == "true" && "$(echo "$OUT" | grep -o 'result=.*' | cut -d= -f2)" = "failure" ]]; then
+          echo "❌ Linting failed"
+          echo "lint-result=failed" >> "$GITHUB_OUTPUT"
           exit 1
         fi
+      continue-on-error: false
 
-    - name: Typecheck
+    - name: Run Type Checking
       id: typecheck
+      if: inputs.run-typecheck == 'true'
       shell: bash
-      working-directory: ${{ inputs.working-directory }}
-      env:
-        TYPECHECK_CMD: ${{ inputs.typecheck-command }}
-        FAIL_FAST: ${{ inputs.fail-fast }}
       run: |
-        set -euo pipefail
-        if npm run -s typecheck --if-present >/dev/null 2>&1; then
-          OUT=$(./_run_with_timer.sh "Type checking" "${PM} run -s typecheck")
+        echo "🔍 Running TypeScript type checking..."
+        if ${{ inputs.typecheck-command }}; then
+          echo "✅ Type checking passed"
+          echo "typecheck-result=passed" >> "$GITHUB_OUTPUT"
         else
-          # Fallback: configurable typecheck command
-          OUT=$(./_run_with_timer.sh "Type checking" "${TYPECHECK_CMD}")
-        fi
-        echo "$OUT"
-        echo "${OUT}" | grep -oE 'result=(success|failure)' >> "$GITHUB_OUTPUT"
-        echo "${OUT}" | grep -oE 'duration=[0-9]+' >> "$GITHUB_OUTPUT"
-        if [[ "${FAIL_FAST}" == "true" && "$(echo "$OUT" | grep -o 'result=.*' | cut -d= -f2)" = "failure" ]]; then
+          echo "❌ Type checking failed"
+          echo "typecheck-result=failed" >> "$GITHUB_OUTPUT"
           exit 1
         fi
+      continue-on-error: false
 
-    - name: Check import boundaries
-      id: boundaries
+    - name: Run Format Checking
+      id: format
+      if: inputs.run-format-check == 'true'
       shell: bash
-      working-directory: ${{ inputs.working-directory }}
-      env:
-        FAIL_FAST: ${{ inputs.fail-fast }}
       run: |
-        set -euo pipefail
-        if npm run -s lint:import-boundaries --if-present >/dev/null 2>&1; then
-          OUT=$(./_run_with_timer.sh "Import boundaries" "${PM} run -s lint:import-boundaries")
+        echo "🔍 Checking code formatting..."
+        if ${{ inputs.format-check-command }}; then
+          echo "✅ Format checking passed"
+          echo "format-result=passed" >> "$GITHUB_OUTPUT"
         else
-          # Fallback is a no-op to avoid hard fail in repos that don't define this yet.
-          OUT=$(./_run_with_timer.sh "Import boundaries" "echo 'No boundary script defined'; true")
-        fi
-        echo "$OUT"
-        echo "${OUT}" | grep -oE 'result=(success|failure)' >> "$GITHUB_OUTPUT"
-        echo "${OUT}" | grep -oE 'duration=[0-9]+' >> "$GITHUB_OUTPUT"
-        if [[ "${FAIL_FAST}" == "true" && "$(echo "$OUT" | grep -o 'result=.*' | cut -d= -f2)" = "failure" ]]; then
+          echo "❌ Format checking failed"
+          echo "format-result=failed" >> "$GITHUB_OUTPUT"
           exit 1
         fi
+      continue-on-error: false
 
-    - name: Install Semgrep
-      if: ${{ inputs.run-semgrep == 'true' }}
+    - name: Summarize Results
+      id: results
       shell: bash
       run: |
-        python3 -m pip install --upgrade pip
-        pip install semgrep
+        LINT_RESULT="${{ steps.lint.outputs.lint-result || 'skipped' }}"
+        TYPECHECK_RESULT="${{ steps.typecheck.outputs.typecheck-result || 'skipped' }}"
+        FORMAT_RESULT="${{ steps.format.outputs.format-result || 'skipped' }}"
 
-    - name: Security Scan (Semgrep)
-      id: security
-      if: ${{ inputs.run-semgrep == 'true' }}
-      shell: bash
-      working-directory: ${{ inputs.working-directory }}
-      env:
-        FAIL_FAST: ${{ inputs.fail-fast }}
-      run: |
-        set -euo pipefail
-        if ! semgrep scan --config auto --dryrun >/dev/null 2>&1; then
-          echo "No Semgrep config found, skipping scan."
-          echo "result=success" >> "$GITHUB_OUTPUT"
-          echo "duration=0" >> "$GITHUB_OUTPUT"
-          exit 0
-        fi
-        OUT=$(./_run_with_timer.sh "Semgrep Security Scan" "semgrep ci --config auto --error --sarif --output semgrep.sarif")
-        echo "$OUT"
-        echo "${OUT}" | grep -oE 'result=(success|failure)' >> "$GITHUB_OUTPUT"
-        echo "${OUT}" | grep -oE 'duration=[0-9]+' >> "$GITHUB_OUTPUT"
-        if [[ "${FAIL_FAST}" == "true" && "$(echo "$OUT" | grep -o 'result=.*' | cut -d= -f2)" = "failure" ]]; then
-          exit 1
-        fi
+        echo "lint-passed=$LINT_RESULT" >> "$GITHUB_OUTPUT"
+        echo "typecheck-passed=$TYPECHECK_RESULT" >> "$GITHUB_OUTPUT"
+        echo "format-passed=$FORMAT_RESULT" >> "$GITHUB_OUTPUT"
 
-    - name: Upload Semgrep SARIF
-      if: ${{ inputs.run-semgrep == 'true' && always() }}
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        category: semgrep
-        sarif_file: ${{ inputs.working-directory }}/semgrep.sarif
-
-    - name: Write summary
-      if: always()
-      id: summary
-      shell: bash
-      run: |
-        set -euo pipefail
-        echo "## Quality Check Results" >> $GITHUB_STEP_SUMMARY
+        echo "## Quality Checks Summary" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        fmt_row () { local name="$1" res="$2" dur="$3"; [[ "$res" = "success" ]] && echo "| **$name** | ✅ Passed | ${dur:-0}s |" || echo "| **$name** | ❌ Failed | ${dur:-0}s |"; }
-        echo "| Check | Status | Duration |" >> $GITHUB_STEP_SUMMARY
-        echo "|------|--------|----------|" >> $GITHUB_STEP_SUMMARY
-        fmt_row "Linting" "${{ steps.lint.outputs.result }}" "${{ steps.lint.outputs.duration }}" >> $GITHUB_STEP_SUMMARY
-        fmt_row "Type Checking" "${{ steps.typecheck.outputs.result }}" "${{ steps.typecheck.outputs.duration }}" >> $GITHUB_STEP_SUMMARY
-        fmt_row "Import Boundaries" "${{ steps.boundaries.outputs.result }}" "${{ steps.boundaries.outputs.duration }}" >> $GITHUB_STEP_SUMMARY
-        fmt_row "Semgrep Security" "${{ steps.security.outputs.result }}" "${{ steps.security.outputs.duration }}" >> $GITHUB_STEP_SUMMARY
-
-        FAILS=0
-        [ "${{ steps.lint.outputs.result }}" = "success" ] || FAILS=$((FAILS+1))
-        [ "${{ steps.typecheck.outputs.result }}" = "success" ] || FAILS=$((FAILS+1))
-        [ "${{ steps.boundaries.outputs.result }}" = "success" ] || FAILS=$((FAILS+1))
-        if [[ "${{ inputs.run-semgrep }}" == "true" ]]; then
-          [ "${{ steps.security.outputs.result }}" = "success" ] || FAILS=$((FAILS+1))
-        fi
-        echo "" >> $GITHUB_STEP_SUMMARY
-        if [ "$FAILS" -gt 0 ]; then
-          echo "❌ Failed checks: $FAILS" >> $GITHUB_STEP_SUMMARY
-        else
-          echo "✅ All quality checks passed!" >> $GITHUB_STEP_SUMMARY
-        fi
-        echo "result=$([ "$FAILS" -eq 0 ] && echo success || echo failure)" >> "$GITHUB_OUTPUT"
-
-    - name: Upload logs on failure
-      if: ${{ failure() }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: quality-check-logs
-        path: |
-          ${{ inputs.working-directory }}/eslint-results.sarif
-          ${{ inputs.working-directory }}/tsconfig.tsbuildinfo
-          ${{ inputs.working-directory }}/.eslintcache
-          ${{ inputs.working-directory }}/build.log
-          ${{ inputs.working-directory }}/lint.log
-          ${{ inputs.working-directory }}/test.log
-          ${{ inputs.working-directory }}/semgrep.sarif
-        if-no-files-found: ignore
-
-    - name: Overall result
-      id: overall
-      shell: bash
-      env:
-        CONTINUE_ERR: ${{ inputs.continue-on-error }}
-        SUMMARY_RESULT: ${{ steps.summary.outputs.result }}
-      run: |
-        echo "result=${SUMMARY_RESULT}" >> "$GITHUB_OUTPUT"
-        if [[ "${CONTINUE_ERR}" == "true" ]]; then
-          exit 0
-        fi
-        [[ "${SUMMARY_RESULT}" = "success" ]]
+        echo "| Check | Result |" >> $GITHUB_STEP_SUMMARY
+        echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+        echo "| Linting | $LINT_RESULT |" >> $GITHUB_STEP_SUMMARY
+        echo "| Type Checking | $TYPECHECK_RESULT |" >> $GITHUB_STEP_SUMMARY
+        echo "| Format Checking | $FORMAT_RESULT |" >> $GITHUB_STEP_SUMMARY

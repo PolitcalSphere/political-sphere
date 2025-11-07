@@ -1,0 +1,73 @@
+name: Bug report
+description: Create a report to help us improve
+title: "[BUG] "
+labels: [bug]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: "Describe the bug"
+      description: "A clear and concise description of what the bug is."
+      placeholder: "Steps and observed behavior"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Expected behavior"
+      description: "What should happen?"
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: "Actual behavior"
+      description: "What actually happens?"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Steps to reproduce"
+      description: "Step-by-step instructions that reliably reproduce the issue"
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: "Severity"
+      options:
+        - Low
+        - Medium
+        - High
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: "Environment"
+      description: "OS, browser, version"
+    validations:
+      required: false
+  - type: checkboxes
+    id: impact
+    attributes:
+      label: "Impact Assessment"
+      options:
+        - label: "Affects accessibility (WCAG 2.2 AA)"
+        - label: "Security implications (could expose vulnerabilities)"
+        - label: "Performance impact"
+        - label: "Data integrity or privacy concerns"
+  - type: input
+    id: related
+    attributes:
+      label: "Related Issues/PRs"
+      description: "Link to related issues or PRs (e.g., #123)"
+    validations:
+      required: false
+  - type: textarea
+    id: additional
+    attributes:
+      label: "Additional context"
+    validations:
+      required: false

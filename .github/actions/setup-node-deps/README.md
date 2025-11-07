@@ -1,31 +1,62 @@
-# Setup Node Dependencies Composite Action
+# Setup Node.js with Dependencies
 
-This composite action sets up Node.js and installs dependencies with caching support for npm, pnpm, and yarn.
+**Version:** 1.0.0  
+**Status:** Production Ready  
+**Last Updated:** 2025-11-07
+
+Composite action that sets up Node.js **and** installs dependencies with caching.
+
+## Purpose
+
+This action combines Node.js setup with dependency installation, providing a single step for common CI workflows. It wraps the `setup-node` action and adds dependency installation.
 
 ## Inputs
 
-| Input                   | Description                                         | Required | Default |
-| ----------------------- | --------------------------------------------------- | -------- | ------- |
-| `node-version`          | Node.js version to use                              | No       | `20`    |
-| `package-manager`       | npm, pnpm, or yarn                                  | No       | `npm`   |
-| `cache-dependency-path` | Lockfile path(s) for caching                        | No       | ``      |
-| `ignore-scripts`        | Set to true to run install with --ignore-scripts    | No       | `false` |
-| `enable-corepack`       | Enable Corepack for package manager version locking | No       | `true`  |
+| Input             | Description                                       | Required | Default  |
+| ----------------- | ------------------------------------------------- | -------- | -------- |
+| `node-version`    | Node.js version to use                            | No       | `22`     |
+| `cache`           | Enable dependency caching (npm\|yarn\|pnpm\|none) | No       | `npm`    |
+| `install-command` | Command to install dependencies                   | No       | `npm ci` |
 
-## Example Usage
+## Outputs
+
+| Output         | Description                      |
+| -------------- | -------------------------------- |
+| `node-version` | Resolved Node.js version         |
+| `cache-hit`    | Whether dependency cache was hit |
+
+## Usage
+
+### Basic Usage
 
 ```yaml
-- name: Setup Node and Dependencies
-  uses: ./.github/actions/composite/setup-node-deps
-  with:
-    node-version: "20"
-    package-manager: pnpm
-    cache-dependency-path: "**/pnpm-lock.yaml"
+steps:
+  - uses: actions/checkout@v4
+
+  - uses: ./.github/actions/setup-node-deps
+    with:
+      node-version: "20"
 ```
 
-## Notes
+### Custom Install Command
 
-- Supports npm, pnpm, and yarn with appropriate caching
-- Includes retry logic for flaky network conditions
-- Validates package manager input to prevent typos
-- Enables Corepack by default for consistent package manager versions
+```yaml
+steps:
+  - uses: ./.github/actions/setup-node-deps
+    with:
+      node-version: "22"
+      install-command: "npm ci --prefer-offline"
+```
+
+### Skip Dependency Installation
+
+If you only need Node.js without dependencies, use `./.github/actions/setup-node` instead.
+
+## Changelog
+
+### 1.0.0 (2025-11-07)
+
+- Initial release
+- Wraps actions/setup-node with dependency installation
+- Supports npm, yarn, pnpm caching
+- Configurable install command

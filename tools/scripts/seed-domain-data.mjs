@@ -1,4 +1,4 @@
-import { getDatabase } from '../apps/api/src/stores';
+import { getDatabase } from '../../apps/api/src/stores';
 
 async function seedDemoData() {
   const db = getDatabase();

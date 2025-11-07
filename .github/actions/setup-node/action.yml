@@ -1,0 +1,166 @@
+name: "Setup Node (local)"
+description: "Locally-resolved Node.js version using runner toolcache. Optional dependency caching for npm/yarn/pnpm."
+
+inputs:
+  node-version:
+    description: "Requested Node.js version (e.g., 18.x, 20.x)"
+    required: true
+  cache:
+    description: "Enable package manager cache (npm|yarn|pnpm|none). If 'none', caching is disabled."
+    required: false
+    default: "none"
+  cache-dependency-path:
+    description: "Path or glob to lockfile(s) used to compute cache key (e.g., package-lock.json, yarn.lock, pnpm-lock.yaml)."
+    required: false
+    default: ""
+  package-manager-cache:
+    description: "Auto-detect package manager from package.json when cache input is 'none'. Set to 'false' to disable autodetection."
+    required: false
+    default: "true"
+
+outputs:
+  resolved-version:
+    description: "Resolved concrete Node.js version from runner toolcache"
+    value: ${{ steps.resolve.outputs.resolved-version }}
+  cache-hit:
+    description: "Whether a dependency cache was restored (exact key match)."
+    value: ${{ steps.cache.outputs.cache-hit }}
+
+runs:
+  using: "composite"
+  steps:
+    - id: resolve
+      name: Resolve and activate Node from toolcache
+      shell: bash
+      env:
+        REQUESTED_VERSION: ${{ inputs.node-version }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+        "$ACTION_PATH/setup-node.sh"
+
+    - id: detect-pm
+      name: Detect package manager (optional)
+      shell: bash
+      run: |
+        set -euo pipefail
+        PM_INPUT="${{ inputs.cache }}"
+        PM_AUTO="${{ inputs.package-manager-cache }}"
+
+        pm="none"
+        if [[ "$PM_INPUT" != "none" && -n "$PM_INPUT" ]]; then
+          case "$PM_INPUT" in
+            npm|yarn|pnpm) pm="$PM_INPUT" ;;
+            none) pm="none" ;;
+            *) echo "::error title=Invalid cache input::cache must be one of npm|yarn|pnpm|none"; exit 2 ;;
+          esac
+        elif [[ "$PM_AUTO" == "true" || "$PM_AUTO" == "1" || "$PM_AUTO" == "yes" ]]; then
+          if [[ -f package.json ]]; then
+            # Use Node (already on PATH) to read package.json fields safely
+            DETECT=$(node -e "try{const p=require('./package.json');const v=p.packageManager||p.devEngines?.packageManager||'';if(typeof v==='string')console.log(v);}" || true)
+            if [[ "$DETECT" == npm* ]]; then pm="npm"; fi
+            if [[ "$DETECT" == yarn* ]]; then pm="yarn"; fi
+            if [[ "$DETECT" == pnpm* ]]; then pm="pnpm"; fi
+          fi
+        fi
+
+        echo "pm=$pm" >> "$GITHUB_OUTPUT"
+
+    - id: cache-vars
+      name: Prepare cache variables
+      if: ${{ steps.detect-pm.outputs.pm != 'none' }}
+      shell: bash
+      run: |
+        set -euo pipefail
+        pm="${{ steps.detect-pm.outputs.pm }}"
+        depPath="${{ inputs.cache-dependency-path }}"
+        if [[ -z "$depPath" ]]; then
+          case "$pm" in
+            npm) depPath="**/package-lock.json **/npm-shrinkwrap.json" ;;
+            yarn) depPath="**/yarn.lock" ;;
+            pnpm) depPath="**/pnpm-lock.yaml" ;;
+          esac
+        fi
+
+        # Cache paths per OS
+        case "$RUNNER_OS" in
+          Linux|macOS)
+            case "$pm" in
+              npm) cachePath="$HOME/.npm" ;;
+              yarn) cachePath="$HOME/.cache/yarn" ;;
+              pnpm) cachePath="$HOME/.pnpm-store" ;;
+            esac
+            ;;
+          Windows)
+            case "$pm" in
+              npm) cachePath="$LOCALAPPDATA/npm-cache" ;;
+              yarn) cachePath="$LOCALAPPDATA/Yarn/Cache" ;;
+              pnpm) cachePath="$USERPROFILE/pnpm-store" ;;
+            esac
+            ;;
+          *)
+            echo "::notice title=Unsupported OS for caching::RUNNER_OS=$RUNNER_OS not recognized; skipping cache."
+            cachePath=""
+            ;;
+        esac
+
+        echo "pm=$pm" >> "$GITHUB_OUTPUT"
+        echo "dep-path=$depPath" >> "$GITHUB_OUTPUT"
+        echo "cache-path=$cachePath" >> "$GITHUB_OUTPUT"
+
+    - id: dep-hash
+      name: Compute dependency hash
+      if: ${{ steps.cache-vars.outputs.cache-path != '' }}
+      shell: bash
+      run: |
+        set -euo pipefail
+        depPath="${{ steps.cache-vars.outputs.dep-path }}"
+        if [[ -z "$depPath" ]]; then
+          echo "hash=none" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+        shopt -s globstar nullglob
+        files=()
+        # depPath may contain space-separated patterns
+        for pat in $depPath; do
+          for f in $pat; do
+            if [[ -f "$f" ]]; then files+=("$f"); fi
+          done
+        done
+        if [[ ${#files[@]} -eq 0 ]]; then
+          echo "::notice title=No lockfiles found::Patterns: $depPath" >&2
+          echo "hash=none" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+        # Hash concatenation of per-file hashes and paths for stability across orderings
+        tmp=$(mktemp)
+        for f in "${files[@]}"; do
+          if command -v shasum >/dev/null 2>&1; then
+            sum=$(shasum -a 256 "$f" | awk '{print $1}')
+          elif command -v sha256sum >/dev/null 2>&1; then
+            sum=$(sha256sum "$f" | awk '{print $1}')
+          else
+            sum=$(openssl dgst -sha256 -r "$f" | awk '{print $1}')
+          fi
+          printf "%s  %s\n" "$sum" "$f" >> "$tmp"
+        done
+        sort "$tmp" -o "$tmp"
+        if command -v shasum >/dev/null 2>&1; then
+          all=$(shasum -a 256 "$tmp" | awk '{print $1}')
+        elif command -v sha256sum >/dev/null 2>&1; then
+          all=$(sha256sum "$tmp" | awk '{print $1}')
+        else
+          all=$(openssl dgst -sha256 -r "$tmp" | awk '{print $1}')
+        fi
+        echo "hash=$all" >> "$GITHUB_OUTPUT"
+        rm -f "$tmp"
+
+    - id: cache
+      name: Restore dependency cache
+      if: ${{ steps.cache-vars.outputs.cache-path != '' }}
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0 (pinned)
+      with:
+        path: ${{ steps.cache-vars.outputs.cache-path }}
+        key: ${{ runner.os }}-${{ steps.cache-vars.outputs.pm }}-${{ steps.dep-hash.outputs.hash }}
+        restore-keys: |
+          ${{ runner.os }}-${{ steps.cache-vars.outputs.pm }}-

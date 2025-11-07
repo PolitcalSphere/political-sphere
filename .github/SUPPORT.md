@@ -1,59 +1,36 @@
 # Support
 
-Thank you for using Political Sphere! This document provides information on how to get help and support.
-
-## Getting Help
-
-### Documentation
-
-- **Project README**: [README.md](../README.md)
-- **Architecture Documentation**: [docs/architecture.md](../docs/architecture.md)
-- **API Documentation**: [docs/api.md](../docs/api.md)
-- **Contributing Guide**: [CONTRIBUTING.md](CONTRIBUTING.md)
-
-### Ask Questions
-
-If you have questions about using Political Sphere:
-
-1. **Check existing documentation** in the `/docs` folder
-2. **Search existing issues** on GitHub to see if your question has been answered
-3. **Open a new discussion** in the [Discussions](../../discussions) section
-4. **File an issue** using our [issue templates](../../issues/new/choose) if you've found a bug
-
-### Report Security Vulnerabilities
-
-**Do not open public issues for security vulnerabilities.**
-
-Please see our [Security Policy](SECURITY.md) for instructions on how to responsibly disclose security issues.
-
 ## Community Support
 
-- **GitHub Discussions**: For general questions and community support
-- **GitHub Issues**: For bug reports and feature requests
-- **Pull Requests**: For contributing code improvements
+For general questions, discussions, and community help:
 
-## Project Team
+- **GitHub Discussions**: https://github.com/political-sphere/political-sphere/discussions
+- **Discord**: Join our community server at https://discord.gg/political-sphere
+- **Forum**: https://forum.political-sphere.com
 
-For questions about the project direction, governance, or other administrative matters, you can reach out to:
+## Documentation
 
-- **Core Team**: @political-sphere/core-team
-- **Technical Governance Committee**: See [docs/governance](../docs/02-governance/)
+- **User Guide**: https://docs.political-sphere.com/user-guide
+- **Developer Docs**: https://docs.political-sphere.com/developer
+- **API Reference**: https://api.political-sphere.com/docs
 
-## Response Times
+## Reporting Issues
 
-This is an open-source project maintained by volunteers. While we strive to respond to issues and questions promptly, please be patient and understanding that response times may vary.
+- **Bugs**: Use the [Bug Report](https://github.com/political-sphere/political-sphere/issues/new?template=bug_report.yml) template
+- **Features**: Use the [Feature Request](https://github.com/political-sphere/political-sphere/issues/new?template=feature_request.yml) template
+- **Security**: See [Security Policy](SECURITY.md) for vulnerability reporting
 
-- **Critical security issues**: Within 24-48 hours
-- **Bug reports**: Within 3-5 business days
-- **Feature requests**: Within 1-2 weeks
-- **Questions**: Best effort basis
+## Commercial Support
 
-## Additional Resources
+For enterprise support, custom development, or training:
 
-- **Changelog**: [CHANGELOG.md](../CHANGELOG.md)
-- **Governance Documentation**: [docs/02-governance](../docs/02-governance/)
-- **Development Guide**: [docs/onboarding.md](../docs/onboarding.md)
+- Email: support@political-sphere.com
+- Website: https://political-sphere.com/support
 
----
+## Contributing
 
-Thank you for being part of the Political Sphere community!
+See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines on contributing to the project.
+
+## Code of Conduct
+
+Please review our [Code of Conduct](../CODE_OF_CONDUCT.md) before participating in the community.

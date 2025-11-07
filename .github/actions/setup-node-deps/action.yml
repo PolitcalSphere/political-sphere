@@ -1,77 +1,53 @@
-# AI-ASSISTABLE METADATA
-# @action-name: Setup Node and Dependencies
-# @action-purpose: Install Node.js and project dependencies with caching for npm/pnpm/yarn
-# @action-category: setup
-# @action-criticality: medium
-# @action-owner: platform-engineering
-# @action-dependencies: [actions/setup-node, corepack]
-#
-# Setup Node Dependencies Composite Action
-# This composite action sets up Node.js and installs dependencies with caching support
-# for npm, pnpm, and yarn
-# See: https://github.com/actions/runner/blob/main/docs/adrs/0549-composite-run-steps.md
-
-name: "Setup Node and Dependencies"
-description: "Sets up Node.js and installs npm dependencies with caching"
+name: "Setup Node.js with Dependencies"
+description: "Setup Node.js and install dependencies with caching"
+author: "Political Sphere"
 
 inputs:
   node-version:
     description: "Node.js version to use"
     required: false
     default: "22"
-  package-manager:
-    description: "npm | pnpm | yarn"
+
+  cache:
+    description: "Enable dependency caching (npm|yarn|pnpm|none)"
     required: false
     default: "npm"
-  cache-dependency-path:
-    description: "Lockfile path(s) for caching (e.g., **/package-lock.json, pnpm-lock.yaml)"
+
+  install-command:
+    description: "Command to install dependencies"
     required: false
-    default: ""
-  ignore-scripts:
-    description: "Set to true to run install with --ignore-scripts"
-    required: false
-    default: "false"
-  enable-corepack:
-    description: "Enable Corepack for package manager version locking"
-    required: false
-    default: "true"
+    default: "npm ci"
+
+outputs:
+  node-version:
+    description: "Resolved Node.js version"
+    value: ${{ steps.setup-node.outputs.node-version }}
+
+  cache-hit:
+    description: "Whether cache was hit"
+    value: ${{ steps.setup-node.outputs.cache-hit }}
 
 runs:
   using: "composite"
   steps:
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      id: setup-node
+      uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
       with:
         node-version: ${{ inputs.node-version }}
-        cache: ${{ inputs.package-manager == 'yarn' && 'yarn' || (inputs.package-manager == 'pnpm' && 'pnpm' || 'npm') }}
-        cache-dependency-path: ${{ inputs.cache-dependency-path }}
-
-    - name: Enable Corepack (lock package managers)
-      if: ${{ inputs.enable-corepack == 'true' }}
-      shell: bash
-      env:
-        PKG_MGR: ${{ inputs.package-manager }}
-      run: |
-        corepack enable
-        corepack prepare "${PKG_MGR}"@latest --activate || true
+        cache: ${{ inputs.cache }}
 
     - name: Install dependencies
       shell: bash
-      env:
-        CI: "true"
-        PM: ${{ inputs.package-manager }}
-        IGNORE: ${{ inputs.ignore-scripts == 'true' && '--ignore-scripts' || '' }}
       run: |
-        set -euo pipefail
-        if [[ ! "$PM" =~ ^(npm|pnpm|yarn)$ ]]; then
-          echo "❌ Unsupported package manager: $PM"
-          exit 1
-        fi
-        # simple retry for flakey networks
-        for i in 1 2 3; do
-          case "$PM" in
-            pnpm) pnpm install --frozen-lockfile $IGNORE && break || sleep 2 ;;
-            yarn) yarn install --immutable $IGNORE && break || sleep 2 ;;
-            npm)  npm ci $IGNORE && break || sleep 2 ;;
-          esac
-        done
+        echo "📦 Installing dependencies..."
+        ${{ inputs.install-command }}
+        echo "✅ Dependencies installed successfully"
+
+    - name: Verify installation
+      shell: bash
+      run: |
+        echo "🔍 Verifying Node.js and npm versions..."
+        node --version
+        npm --version
+        echo "✅ Environment ready"

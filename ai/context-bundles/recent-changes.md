@@ -32,8 +32,8 @@ d831cb2 Merge pull request #29 from PolitcalSphere/copilot/sub-pr-21-9935c8c6-d9
 ./tools/run-vitest-coverage.js
 ./tools/test-setup.ts
 ./tools/scripts/dev-up.sh
-./tools/scripts/ci/check-file-placement.mjs
-./tools/scripts/ci/check-tools.mjs
+./scripts/ci/check-file-placement.mjs
+./scripts/ci/check-tools.mjs
 ./tools/scripts/todo-consolidation.mjs
 ./tools/scripts/debug-create-user.mjs
 ./tools/scripts/inspect-shared.test.mjs

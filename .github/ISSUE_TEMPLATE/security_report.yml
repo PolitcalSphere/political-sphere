@@ -1,0 +1,72 @@
+name: Security vulnerability
+description: Report a security vulnerability
+title: "[SECURITY] "
+labels: [security]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: "Summary"
+      description: "A clear and concise description of the security vulnerability"
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: "Impact"
+      description: "What is the potential impact of this vulnerability?"
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: "Severity (CVSS-like)"
+      options:
+        - Critical
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+  - type: checkboxes
+    id: affects
+    attributes:
+      label: "What is Affected?"
+      options:
+        - label: "User data (triggers GDPR/CCPA review)"
+        - label: "Authentication/authorization"
+        - label: "Data integrity"
+        - label: "Availability/performance"
+  - type: textarea
+    id: poc
+    attributes:
+      label: "Proof of Concept (optional)"
+      description: "Provide exploit details or PoC code (do not include secrets)"
+    validations:
+      required: false
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Steps to reproduce"
+    validations:
+      required: false
+  - type: input
+    id: disclosure
+    attributes:
+      label: "Preferred disclosure contact"
+      description: "Email or process to contact for coordinated disclosure (do not include secrets)"
+    validations:
+      required: true
+  - type: input
+    id: references
+    attributes:
+      label: "References"
+      description: "OWASP ASVS 4.0.3 or NIST SP 800-53 r5 references (optional)"
+    validations:
+      required: false
+  - type: textarea
+    id: additional
+    attributes:
+      label: "Additional context"
+    validations:
+      required: false

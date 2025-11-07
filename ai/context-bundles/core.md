@@ -1204,7 +1204,7 @@ These next steps are required per the governance Meta-Rule (add TODO entries wit
 
    - Owner: @devops-team
    - Due: 2025-11-10
-   - Description: Add `vitest` or `jest` to devDependencies in `package.json` and ensure CI images run `npm ci`. This enables `tools/scripts/ci/check-tools.mjs` to detect the runner locally and avoids requiring networked `npx` checks in CI.
+   - Description: Add `vitest` or `jest` to devDependencies in `package.json` and ensure CI images run `npm ci`. This enables `scripts/ci/check-tools.mjs` to detect the runner locally and avoids requiring networked `npx` checks in CI.
 
 ### Tool-usage rule rollout (2025-11-03)
 
@@ -1241,7 +1241,7 @@ Notes: These are initial, curated references sourced from Microsoft Learn. Revie
 - [x] Implement CI script to validate directory placements
   - Owner: @ci-team
   - Due: 2025-11-10
-  - Description: Created `tools/scripts/ci/check-file-placement.mjs` to enforce governance directory rules. Added to guard-check.yml and affected-tests.yml workflows. Updated governance rules with enforcement mechanisms.
+  - Description: Created `scripts/ci/check-file-placement.mjs` to enforce governance directory rules. Added to guard-check.yml and affected-tests.yml workflows. Updated governance rules with enforcement mechanisms.
 
 ```
 

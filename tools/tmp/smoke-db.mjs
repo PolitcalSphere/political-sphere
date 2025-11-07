@@ -1,8 +1,8 @@
-import { initializeDatabase, runMigrations } from '../apps/api/src/migrations/index.js';
-import { UserStore } from '../apps/api/src/user-store.js';
-import { PartyStore } from '../apps/api/src/party-store.js';
-import { BillStore } from '../apps/api/src/bill-store.js';
-import { VoteStore } from '../apps/api/src/vote-store.js';
+import { initializeDatabase, runMigrations } from '../../apps/api/src/migrations/index.js';
+import { UserStore } from '../../apps/api/src/user-store.js';
+import { PartyStore } from '../../apps/api/src/party-store.js';
+import { BillStore } from '../../apps/api/src/bill-store.js';
+import { VoteStore } from '../../apps/api/src/vote-store.js';
 
 const db = initializeDatabase(':memory:');
 await runMigrations(db);

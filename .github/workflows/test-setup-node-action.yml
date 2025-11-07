@@ -1,0 +1,271 @@
+name: setup-node-integration
+on:
+  push:
+    paths:
+      - ".github/actions/setup-node/**"
+      - ".github/workflows/test-setup-node-action.yml"
+  pull_request:
+    paths:
+      - ".github/actions/setup-node/**"
+      - ".github/workflows/test-setup-node-action.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  matrix-test:
+    name: Node ${{ matrix.node }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [18.x, 20.x]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2 (pinned)
+
+      - name: Run setup-node composite action
+        id: setup
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Assert resolved version output
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Resolved: ${{ steps.setup.outputs.resolved-version }}"
+          MAJOR_EXPECTED="${{ matrix.node }}"
+          MAJOR_EXPECTED="${MAJOR_EXPECTED%%.*}"
+          MAJOR_ACTUAL="${{ steps.setup.outputs.resolved-version }}"
+          MAJOR_ACTUAL="${MAJOR_ACTUAL%%.*}"
+          if [[ "$MAJOR_EXPECTED" != "$MAJOR_ACTUAL" ]]; then
+            echo "::error title=Version mismatch::Expected major $MAJOR_EXPECTED got $MAJOR_ACTUAL"
+            exit 1
+          fi
+          node -v
+
+      - name: Create fixture & install dependency
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p fixture
+          printf '%s\n' '{' '  "name": "setup-node-fixture",' '  "version": "0.0.0",' '  "private": true' '}' > fixture/package.json
+          cd fixture
+          npm install chalk@5.3.0 --no-audit --no-fund --progress=false
+          node -e "console.log(require('chalk').green('chalk ok'))"
+
+      - name: Capture environment diagnostics
+        shell: bash
+        run: |
+          set -euo pipefail
+          which node
+          node -v
+          echo "PATH=$PATH" | sed -E 's/:/\n/g' | head -20
+
+  cache-sanity:
+    name: Cache seed (npm)
+    needs: matrix-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2 (pinned)
+      - name: Create npm fixture with lockfile
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p fixture
+          cd fixture
+          printf '%s\n' '{' '  "name": "setup-node-fixture",' '  "version": "0.0.0",' '  "private": true,' '  "dependencies": {"chalk": "5.3.0"}' '}' > package.json
+          npm install --package-lock-only --no-audit --no-fund --progress=false
+      - name: Setup node with npm cache
+        id: setup
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: 18.x
+          cache: npm
+          cache-dependency-path: fixture/package-lock.json
+      - name: Confirm path availability
+        shell: bash
+        run: |
+          set -euo pipefail
+          which node || true
+          node -v || true
+          echo "Resolved again: ${{ steps.setup.outputs.resolved-version }}"
+      - name: Populate npm cache (first run)
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd fixture
+          npm ci --no-audit --no-fund --progress=false
+
+  cache-verify:
+    name: Cache verify (hit expected)
+    needs: cache-sanity
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2 (pinned)
+      - name: Recreate npm fixture (same lockfile)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p fixture
+          cd fixture
+          printf '%s\n' '{' '  "name": "setup-node-fixture",' '  "version": "0.0.0",' '  "private": true,' '  "dependencies": {"chalk": "5.3.0"}' '}' > package.json
+          npm install --package-lock-only --no-audit --no-fund --progress=false
+      - name: Restore cache and assert hit
+        id: setup
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: 18.x
+          cache: npm
+          cache-dependency-path: fixture/package-lock.json
+      - name: Assert cache-hit output
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "cache-hit=${{ steps.setup.outputs.cache-hit }}"
+          if [[ "${{ steps.setup.outputs.cache-hit }}" != "true" ]]; then
+            echo "::error title=Cache miss::Expected cache-hit=true on second job"
+            exit 1
+          fi
+
+  cache-sanity-yarn:
+    name: Cache seed (yarn@1)
+    needs: matrix-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2 (pinned)
+      - name: Create yarn fixture with lockfile
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p fixture
+          cd fixture
+          printf '%s\n' '{' '  "name": "setup-node-fixture",' '  "version": "0.0.0",' '  "private": true,' '  "dependencies": {"chalk": "5.3.0"}' '}' > package.json
+          # Use Yarn 1 (classic) to leverage global cache at ~/.cache/yarn
+          corepack enable
+          corepack prepare yarn@1.22.22 --activate
+          yarn install --silent
+      - name: Setup node with yarn cache
+        id: setup
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: 18.x
+          cache: yarn
+          cache-dependency-path: fixture/yarn.lock
+      - name: Populate yarn cache (first run)
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd fixture
+          yarn install --silent
+
+  cache-verify-yarn:
+    name: Cache verify (yarn hit expected)
+    needs: cache-sanity-yarn
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2 (pinned)
+      - name: Recreate yarn fixture (same lockfile)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p fixture
+          cd fixture
+          printf '%s\n' '{' '  "name": "setup-node-fixture",' '  "version": "0.0.0",' '  "private": true,' '  "dependencies": {"chalk": "5.3.0"}' '}' > package.json
+          corepack enable
+          corepack prepare yarn@1.22.22 --activate
+          yarn install --silent
+      - name: Restore cache and assert hit
+        id: setup
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: 18.x
+          cache: yarn
+          cache-dependency-path: fixture/yarn.lock
+      - name: Assert cache-hit output
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "cache-hit=${{ steps.setup.outputs.cache-hit }}"
+          if [[ "${{ steps.setup.outputs.cache-hit }}" != "true" ]]; then
+            echo "::error title=Cache miss::Expected cache-hit=true on second job (yarn)"
+            exit 1
+          fi
+
+  cache-sanity-pnpm:
+    name: Cache seed (pnpm)
+    needs: matrix-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2 (pinned)
+      - name: Create pnpm fixture with lockfile
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p fixture
+          cd fixture
+          printf '%s\n' '{' '  "name": "setup-node-fixture",' '  "version": "0.0.0",' '  "private": true,' '  "dependencies": {"chalk": "5.3.0"}' '}' > package.json
+          corepack enable
+          corepack prepare pnpm@8.15.8 --activate
+          pnpm install --lockfile-only
+      - name: Setup node with pnpm cache
+        id: setup
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: 18.x
+          cache: pnpm
+          cache-dependency-path: fixture/pnpm-lock.yaml
+      - name: Populate pnpm store (first run)
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd fixture
+          pnpm install --reporter=silent
+
+  cache-verify-pnpm:
+    name: Cache verify (pnpm hit expected)
+    needs: cache-sanity-pnpm
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2 (pinned)
+      - name: Recreate pnpm fixture (same lockfile)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p fixture
+          cd fixture
+          printf '%s\n' '{' '  "name": "setup-node-fixture",' '  "version": "0.0.0",' '  "private": true,' '  "dependencies": {"chalk": "5.3.0"}' '}' > package.json
+          corepack enable
+          corepack prepare pnpm@8.15.8 --activate
+          pnpm install --lockfile-only
+      - name: Restore cache and assert hit
+        id: setup
+        uses: ./.github/actions/setup-node
+        with:
+          node-version: 18.x
+          cache: pnpm
+          cache-dependency-path: fixture/pnpm-lock.yaml
+      - name: Assert cache-hit output
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "cache-hit=${{ steps.setup.outputs.cache-hit }}"
+          if [[ "${{ steps.setup.outputs.cache-hit }}" != "true" ]]; then
+            echo "::error title=Cache miss::Expected cache-hit=true on second job (pnpm)"
+            exit 1
+          fi

@@ -1,0 +1,210 @@
+name: Test Run-Tests Action
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - ".github/actions/run-tests/**"
+      - ".github/workflows/test-run-tests-action.yml"
+
+jobs:
+  test-action-unit:
+    name: Unit Test Action
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Run Action Test Suite
+        run: |
+          cd .github/actions/run-tests/tests
+          chmod +x test-runner.sh
+          ./test-runner.sh
+
+  test-action-basic:
+    name: Test Basic Execution
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Unit Tests (Basic)
+        id: basic-test
+        uses: ./.github/actions/run-tests
+        with:
+          test-type: "unit"
+          coverage-enabled: "false"
+          timeout-minutes: 10
+
+      - name: Verify Outputs
+        run: |
+          echo "Tests passed: ${{ steps.basic-test.outputs.tests-passed }}"
+          echo "Tests run: ${{ steps.basic-test.outputs.tests-run }}"
+          echo "Tests failed: ${{ steps.basic-test.outputs.tests-failed }}"
+          echo "Duration: ${{ steps.basic-test.outputs.duration-seconds }}s"
+
+          if [[ "${{ steps.basic-test.outputs.tests-passed }}" != "true" ]] && [[ "${{ steps.basic-test.outputs.tests-passed }}" != "false" ]]; then
+            echo "ERROR: tests-passed output is invalid"
+            exit 1
+          fi
+
+  test-action-coverage:
+    name: Test Coverage Reporting
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Tests with Coverage
+        id: coverage-test
+        uses: ./.github/actions/run-tests
+        with:
+          test-type: "coverage"
+          coverage-enabled: "true"
+          coverage-threshold: 0
+          upload-coverage: "true"
+        continue-on-error: true
+
+      - name: Verify Coverage Outputs
+        run: |
+          echo "Coverage percentage: ${{ steps.coverage-test.outputs.coverage-percentage }}%"
+          echo "Coverage threshold met: ${{ steps.coverage-test.outputs.coverage-passed-threshold }}"
+          echo "Coverage path: ${{ steps.coverage-test.outputs.coverage-path }}"
+
+          if [[ -n "${{ steps.coverage-test.outputs.coverage-path }}" ]]; then
+            echo "✅ Coverage path output is set"
+          fi
+
+  test-action-sharding:
+    name: Test Sharding (Shard ${{ matrix.shard }}/3)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    strategy:
+      matrix:
+        shard: [1, 2, 3]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Sharded Tests
+        uses: ./.github/actions/run-tests
+        with:
+          test-type: "unit"
+          shard-index: ${{ matrix.shard }}
+          shard-total: 3
+          upload-results: "true"
+        continue-on-error: true
+
+      - name: Verify Shard Artifacts
+        run: |
+          if [[ -d "test-output/results" ]]; then
+            echo "✅ Test results directory created"
+            ls -la test-output/results/
+          else
+            echo "⚠️ Test results directory not found (may be expected if no tests in shard)"
+          fi
+
+  test-action-changed-only:
+    name: Test Changed Files Only
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Changed Tests Only
+        uses: ./.github/actions/run-tests
+        with:
+          test-type: "unit"
+          changed-only: "true"
+          timeout-minutes: 5
+        continue-on-error: true
+
+  test-action-validation:
+    name: Validate Action Files
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Validate YAML
+        run: |
+          npm install -g yaml-lint
+          yaml-lint .github/actions/run-tests/action.yml
+
+      - name: Validate Bash Syntax
+        run: |
+          bash -n .github/actions/run-tests/run-tests.sh
+          bash -n .github/actions/run-tests/upload-artifacts.sh
+          echo "✅ Bash syntax validation passed"
+
+      - name: Validate JSON
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('.github/actions/run-tests/coverage.config.json', 'utf8')); console.log('✅ JSON validation passed')"
+
+      - name: Validate JavaScript
+        run: |
+          node --check .github/actions/run-tests/parse-results.mjs
+          echo "✅ JavaScript syntax validation passed"
+
+      - name: Check SHA Pinning
+        run: |
+          cd .github/actions/run-tests
+          unpinned=$(grep "uses: " action.yml | grep -v "@[a-f0-9]\{40\}" | grep -v "^\s*#" || true)
+          if [[ -z "$unpinned" ]]; then
+            echo "✅ All actions are SHA-pinned"
+          else
+            echo "❌ Found unpinned actions:"
+            echo "$unpinned"
+            exit 1
+          fi
