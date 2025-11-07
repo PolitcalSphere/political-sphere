@@ -54,16 +54,25 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
           PR_HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
           CURRENT_REPO: ${{ github.repository }}
+          ACTOR: ${{ github.actor }}
         run: |
           # Ensure required secrets are present to avoid runtime failures
-            # Only require secrets for pushes to main or PRs from same repo (not forks)
-            if [ "${EVENT_NAME}" == "push" ] || [ "${PR_HEAD_REPO}" == "${CURRENT_REPO}" ]; then
-              if [ -z "$NX_CLOUD_ACCESS_TOKEN" ]; then
-                echo "::error::Missing required secret: NX_CLOUD_ACCESS_TOKEN"
-                exit 1
-              fi
-            else
-              echo "::notice::Skipping secret validation for fork PR"
+          # Dependabot PRs don't have access to secrets for security reasons
+          if [ "${ACTOR}" == "dependabot[bot]" ]; then
+            echo "::notice::Skipping secret validation for Dependabot PR (secrets not available)"
+            echo "NX_CLOUD_DISABLED=true" >> $GITHUB_ENV
+            exit 0
+          fi
+          
+          # Only require secrets for pushes to main or PRs from same repo (not forks)
+          if [ "${EVENT_NAME}" == "push" ] || [ "${PR_HEAD_REPO}" == "${CURRENT_REPO}" ]; then
+            if [ -z "$NX_CLOUD_ACCESS_TOKEN" ]; then
+              echo "::error::Missing required secret: NX_CLOUD_ACCESS_TOKEN"
+              exit 1
+            fi
+          else
+            echo "::notice::Skipping secret validation for fork PR"
+            echo "NX_CLOUD_DISABLED=true" >> $GITHUB_ENV
           fi
 
       - name: Validate workflow files
