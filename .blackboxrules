@@ -92,6 +92,7 @@ Political Sphere is an educational multiplayer platform for democratic simulatio
 6. Auto-generating seed data with real-world bias
 7. Silent failures in critical paths
 8. Disabling security features temporarily
+9. Using direct variable interpolation `${{ inputs.xxx }}` in GitHub Actions run: scripts - use environment variables instead to prevent code injection
 
 ### When Unsure: Fail Gracefully
 
