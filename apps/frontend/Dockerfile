@@ -105,7 +105,7 @@ CMD ["npm", "run", "dev", "-w", "apps/frontend"]
 # ============================================================================
 # Production Stage - Static SPA served by nginx
 # ============================================================================
-FROM nginx:1.27-alpine AS production
+FROM nginx:1.29-alpine AS production
 
 # OCI labels with build-time metadata
 LABEL org.opencontainers.image.title="Political Sphere Frontend" \
