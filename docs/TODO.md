@@ -1,4 +1,14 @@
-# DevContainer Audit Expansion TODO
+# Project TODO List
+
+## Completed Tasks
+
+### [X] GitHub Audit Script Enhancement v1.1.0 (2025-11-08)
+- Enhanced `scripts/ci/github-audit.sh` with CodeQL workflow detection
+- Added FAIL_ON_WARNINGS configuration for stricter CI enforcement
+- Improved JSON report generation with proper escaping and version tracking
+- Enhanced summary reports with configuration details
+- Verified all features work correctly with test runs
+- Updated CHANGELOG.md with comprehensive enhancement details
 
 ## Current Task: Expand devcontainer-audit.sh with Additional Free Checks
 

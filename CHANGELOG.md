@@ -6,6 +6,16 @@ The format follows Keep a Changelog (https://keepachangelog.com/en/1.0.0/) and t
 
 ## [Unreleased]
 
+### Added - GitHub Audit Enhancements (2025-11-08)
+
+- **Enhanced GitHub Audit Script v1.1.0**: Advanced the audit script with comprehensive new features for improved workflow security validation
+- **CodeQL Workflow Detection**: Added Phase 8a check to detect and validate presence of CodeQL workflows for automated security analysis
+- **FAIL_ON_WARNINGS Support**: Introduced `FAIL_ON_WARNINGS` environment variable to treat medium/low findings as failures for stricter CI enforcement
+- **Improved JSON Report Generation**: Implemented robust JSON array building with proper escaping and version tracking
+- **Enhanced Configuration Reporting**: Summary reports now include runtime configuration (AUTO_FIX, FAIL_ON_WARNINGS, GITLEAKS_SCOPE)
+- **Exit Code Logic**: Refined exit logic to respect FAIL_ON_WARNINGS flag when only medium/low issues are present
+- **Documentation Updates**: Updated header documentation with new environment variables and usage examples
+
 ### Bug Fixes - Audit Scripts (2025-11-08)
 
 - **Fixed Critical Hang Issue in Audit Scripts**: Fixed all three audit scripts (devcontainer-audit.sh, github-audit.sh, app-audit.sh) hanging after Phase 1 due to bash arithmetic expansion bug

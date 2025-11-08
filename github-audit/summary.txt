@@ -1,10 +1,11 @@
 GitHub Workflows & Actions Audit Summary
-Generated: 2025-11-08T18:16:09Z
+Generated: 2025-11-08T19:36:30Z
+Version: 1.1.0
 ================================================================================
 
 Findings Summary:
   Critical: 0
-  High:     0
+  High:     1
   Medium:   2
   Low:      0
   Info:     4
@@ -15,3 +16,8 @@ Auto-fixes Applied: 0
 Workflows Analyzed:        7
 
 Output Directory: /Users/morganlowman/GitHub/political-sphere/github-audit
+
+Configuration:
+  AUTO_FIX: false
+  FAIL_ON_WARNINGS: true
+  GITLEAKS_SCOPE: /Users/morganlowman/GitHub/political-sphere/.github

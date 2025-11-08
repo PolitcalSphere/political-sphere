@@ -1,15 +1,14 @@
 {
-  "timestamp": "2025-11-08T18:16:09Z",
+  "timestamp": "2025-11-08T19:36:30Z",
+  "version": "1.1.0",
   "summary": {
     "critical": 0,
-    "high": 0,
+    "high": 1,
     "medium": 2,
     "low": 0,
     "info": 4,
     "pass": 6,
     "autoFixed": 0
   },
-  "findings": [
-    {"severity":"medium","code":"TOOL-001","message":"actionlint not installed - workflow validation will be limited","file":"N/A","line":0},{"severity":"medium","code":"YAML-003","message":"No workflow files found","file":"/Users/morganlowman/GitHub/political-sphere/.github/workflows","line":0}
-  ]
+  "findings": [{"severity":"medium","code":"TOOL-001","message":"actionlint not installed - workflow validation will be limited","file":"N/A","line":0},{"severity":"medium","code":"YAML-003","message":"No workflow files found","file":"/Users/morganlowman/GitHub/political-sphere/.github/workflows","line":0},{"severity":"high","code":"CODEQL-002","message":"Add CodeQL workflow for automated security analysis","file":"/Users/morganlowman/GitHub/political-sphere/.github/workflows","line":0}]
 }

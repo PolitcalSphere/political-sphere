@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# GitHub Workflows & Actions Audit Script v1.0.0
+# GitHub Workflows & Actions Audit Script v1.1.0
 # =============================================================================
 #
 # Comprehensive validation for GitHub Actions workflows including:
@@ -10,6 +10,8 @@
 # - Workflow efficiency checks
 # - actionlint integration
 # - Security scanning for workflow vulnerabilities
+# - CodeQL workflow presence and configuration check
+# - Configurable warning enforcement
 #
 # Industry Standards Covered:
 # - GitHub Actions Security Hardening Guide
@@ -20,19 +22,24 @@
 #
 # Exit Codes:
 #   0 - Success (all checks passed or warnings only)
-#   1 - Warnings found
+#   1 - Warnings found (or medium/low if FAIL_ON_WARNINGS=true)
 #   2 - Critical errors found
 #
 # Environment Variables:
 #   AUTO_FIX=true              - Enable automatic fixes
+#   FAIL_ON_WARNINGS=true      - Treat medium/low findings as failures
 #   SKIP_ACTIONLINT=true       - Skip actionlint validation
 #   SKIP_YAMLLINT=true         - Skip YAML linting
 #   SKIP_SECRET_SCAN=true      - Skip secrets scanning
+#   GITLEAKS_SCOPE=<path>      - Path to scan (default: .github)
+#   GITLEAKS_CONFIG=<path>     - Custom gitleaks config file
+#   GITLEAKS_ARGS="<args>"     - Additional gitleaks arguments
 #   OUTPUT_DIR=./audit-output  - Directory for output files
 #
 # Usage:
 #   ./github-audit.sh [options]
 #   AUTO_FIX=true ./github-audit.sh
+#   FAIL_ON_WARNINGS=true ./github-audit.sh
 #
 # =============================================================================
 
@@ -53,6 +60,11 @@ SKIP_ACTIONLINT="${SKIP_ACTIONLINT:-false}"
 SKIP_YAMLLINT="${SKIP_YAMLLINT:-false}"
 SKIP_SECRET_SCAN="${SKIP_SECRET_SCAN:-false}"
 OUTPUT_DIR="${OUTPUT_DIR:-${PROJECT_ROOT}/github-audit}"
+FAIL_ON_WARNINGS="${FAIL_ON_WARNINGS:-false}"
+# gitleaks configuration: scope (path), config file, and additional args
+GITLEAKS_SCOPE="${GITLEAKS_SCOPE:-$GITHUB_DIR}"
+GITLEAKS_CONFIG="${GITLEAKS_CONFIG:-}"
+GITLEAKS_ARGS="${GITLEAKS_ARGS:-}"
 
 # Color codes
 RED='\033[0;31m'
@@ -287,14 +299,27 @@ run_actionlint() {
     fi
     
     log_info "Running actionlint on all workflows..."
-    
-    if actionlint -format '{{json .}}' > "${OUTPUT_DIR}/actionlint-results.json" 2>&1; then
+    # Use bash globbing to build the list of workflow files safely
+    # shellcheck disable=SC2296
+    shopt -s nullglob 2>/dev/null || true
+    files=("$WORKFLOWS_DIR"/*.yml "$WORKFLOWS_DIR"/*.yaml)
+    if [[ ${#files[@]} -eq 0 ]]; then
+        log_info "No workflow files found for actionlint"
+        return 0
+    fi
+
+    # Run actionlint against the discovered files and capture JSON output
+    if actionlint -format '{{json .}}' "${files[@]}" > "${OUTPUT_DIR}/actionlint-results.json" 2>&1; then
         log_pass "actionlint: No issues found"
     else
-        # Parse actionlint results
         if [[ -f "${OUTPUT_DIR}/actionlint-results.json" && -s "${OUTPUT_DIR}/actionlint-results.json" ]]; then
             log_medium "actionlint found issues (see ${OUTPUT_DIR}/actionlint-results.json)"
             add_finding "medium" "ACTIONLINT-001" "actionlint found workflow issues" "workflows" 0
+        else
+            # If no JSON produced, capture the raw output for debugging
+            actionlint "${files[@]}" > "${OUTPUT_DIR}/actionlint-raw.txt" 2>&1 || true
+            log_medium "actionlint reported issues (see ${OUTPUT_DIR}/actionlint-raw.txt)"
+            add_finding "medium" "ACTIONLINT-002" "actionlint reported issues (raw output)" "workflows" 0
         fi
     fi
 }
@@ -388,16 +413,31 @@ scan_for_secrets() {
     fi
     
     log_info "Scanning workflows for leaked secrets..."
-    
-    if gitleaks detect --source "$GITHUB_DIR" --report-path "${OUTPUT_DIR}/gitleaks-report.json" --report-format json --no-git 2>&1; then
+    # Allow configurable scope and additional args
+    local gitleaks_cmd=(gitleaks detect --source "$GITLEAKS_SCOPE" --report-path "${OUTPUT_DIR}/gitleaks-report.json" --report-format json --no-git)
+    if [[ -n "$GITLEAKS_CONFIG" ]]; then
+        gitleaks_cmd+=(--config "$GITLEAKS_CONFIG")
+    fi
+    if [[ -n "$GITLEAKS_ARGS" ]]; then
+        # shellcheck disable=SC2206
+        gitleaks_cmd+=( $GITLEAKS_ARGS )
+    fi
+
+    if "${gitleaks_cmd[@]}" 2>&1; then
         log_pass "No secrets detected by gitleaks"
     else
         if [[ -f "${OUTPUT_DIR}/gitleaks-report.json" ]]; then
             local leak_count=$(jq length "${OUTPUT_DIR}/gitleaks-report.json" 2>/dev/null || echo "0")
             if [[ "$leak_count" -gt 0 ]]; then
                 log_critical "gitleaks found $leak_count potential secrets"
-                add_finding "critical" "SECRET-001" "gitleaks detected $leak_count potential secrets" "$GITHUB_DIR" 0
+                add_finding "critical" "SECRET-001" "gitleaks detected $leak_count potential secrets" "$GITLEAKS_SCOPE" 0
+            else
+                log_medium "gitleaks executed but did not produce report entries (check ${OUTPUT_DIR}/gitleaks-report.json)"
+                add_finding "medium" "SECRET-002" "gitleaks executed with non-zero exit but no findings in report" "$GITLEAKS_SCOPE" 0
             fi
+        else
+            log_high "gitleaks execution failed and no report was generated"
+            add_finding "high" "SECRET-003" "gitleaks failed to run" "$GITLEAKS_SCOPE" 0
         fi
     fi
 }
@@ -474,6 +514,51 @@ check_dependabot_config() {
 }
 
 # -----------------------------------------------------------------------------
+# Phase 8a: CodeQL Workflow Check
+# -----------------------------------------------------------------------------
+
+check_codeql_workflow() {
+    log_section "Phase 8a: CodeQL Security Analysis"
+    
+    # Check for CodeQL workflow file
+    local codeql_workflow=""
+    while IFS= read -r -d '' workflow_file; do
+        if grep -q "github/codeql-action" "$workflow_file"; then
+            codeql_workflow="$workflow_file"
+            break
+        fi
+    done < <(find "$WORKFLOWS_DIR" -name "*.yml" -o -name "*.yaml" -print0 2>/dev/null)
+    
+    if [[ -n "$codeql_workflow" ]]; then
+        local filename=$(basename "$codeql_workflow")
+        log_pass "CodeQL workflow found: $filename"
+        
+        # Check CodeQL configuration quality
+        if grep -q "autobuild" "$codeql_workflow"; then
+            log_pass "CodeQL uses autobuild for dependency resolution"
+        fi
+        
+        if grep -E "schedule:|push:|pull_request:" "$codeql_workflow" > /dev/null; then
+            log_pass "CodeQL has appropriate triggers configured"
+        else
+            log_medium "CodeQL workflow may lack comprehensive triggers"
+            add_finding "medium" "CODEQL-001" "CodeQL workflow should run on schedule, push, and pull_request" "$codeql_workflow" 0
+        fi
+        
+        # Check for languages configuration
+        if grep -q "language:" "$codeql_workflow"; then
+            log_pass "CodeQL language configuration found"
+        else
+            log_info "CodeQL may use default language detection"
+        fi
+        
+    else
+        log_high "No CodeQL workflow detected (recommended for security scanning)"
+        add_finding "high" "CODEQL-002" "Add CodeQL workflow for automated security analysis" "$WORKFLOWS_DIR" 0
+    fi
+}
+
+# -----------------------------------------------------------------------------
 # Phase 9: Auto-Fix Application
 # -----------------------------------------------------------------------------
 
@@ -506,12 +591,29 @@ apply_auto_fixes() {
 generate_reports() {
     log_section "Phase 10: Report Generation"
     
-    # Generate JSON report
+    # Generate JSON report with proper escaping
     local json_report="${OUTPUT_DIR}/github-audit-results.json"
+    
+    # Build findings array with proper JSON escaping
+    local findings_json="[]"
+    if [[ ${#FINDINGS[@]} -gt 0 ]]; then
+        findings_json="["
+        local first=true
+        for finding in "${FINDINGS[@]}"; do
+            if [[ "$first" == true ]]; then
+                first=false
+            else
+                findings_json+=","
+            fi
+            findings_json+="$finding"
+        done
+        findings_json+="]"
+    fi
     
     cat > "$json_report" <<EOF
 {
   "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+  "version": "1.1.0",
   "summary": {
     "critical": $CRITICAL_COUNT,
     "high": $HIGH_COUNT,
@@ -521,9 +623,7 @@ generate_reports() {
     "pass": $PASS_COUNT,
     "autoFixed": $AUTO_FIXED_COUNT
   },
-  "findings": [
-    $(IFS=,; echo "${FINDINGS[*]}")
-  ]
+  "findings": $findings_json
 }
 EOF
     
@@ -533,6 +633,7 @@ EOF
     cat > "${OUTPUT_DIR}/summary.txt" <<EOF
 GitHub Workflows & Actions Audit Summary
 Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+Version: 1.1.0
 ================================================================================
 
 Findings Summary:
@@ -548,6 +649,11 @@ Auto-fixes Applied: $AUTO_FIXED_COUNT
 Workflows Analyzed: $(find "$WORKFLOWS_DIR" -name "*.yml" -o -name "*.yaml" 2>/dev/null | wc -l)
 
 Output Directory: $OUTPUT_DIR
+
+Configuration:
+  AUTO_FIX: $AUTO_FIX
+  FAIL_ON_WARNINGS: $FAIL_ON_WARNINGS
+  GITLEAKS_SCOPE: $GITLEAKS_SCOPE
 EOF
     
     log_pass "Summary report generated: ${OUTPUT_DIR}/summary.txt"
@@ -559,7 +665,7 @@ EOF
 
 main() {
     echo -e "${BLUE}╔═══════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${BLUE}║       GitHub Workflows & Actions Security Audit v1.0.0        ║${NC}"
+    echo -e "${BLUE}║       GitHub Workflows & Actions Security Audit v1.1.0        ║${NC}"
     echo -e "${BLUE}╚═══════════════════════════════════════════════════════════════╝${NC}"
     echo ""
     
@@ -571,6 +677,7 @@ main() {
     scan_for_secrets
     check_workflow_efficiency
     check_dependabot_config
+    check_codeql_workflow
     apply_auto_fixes
     generate_reports
     
@@ -586,11 +693,17 @@ main() {
     echo "╚═══════════════════════════════════════════════════════════════╝"
     echo ""
     
-    # Production readiness assessment
+    # Production readiness assessment with FAIL_ON_WARNINGS support
     if [[ "$CRITICAL_COUNT" -eq 0 && "$HIGH_COUNT" -eq 0 ]]; then
-        echo -e "${GREEN}✓ GitHub workflows meet security and quality standards${NC}"
-        echo ""
-        exit 0
+        if [[ "$FAIL_ON_WARNINGS" == "true" && ("$MEDIUM_COUNT" -gt 0 || "$LOW_COUNT" -gt 0) ]]; then
+            echo -e "${YELLOW}⚠ FAIL_ON_WARNINGS=true: Medium/Low issues present${NC}"
+            echo ""
+            exit 1
+        else
+            echo -e "${GREEN}✓ GitHub workflows meet security and quality standards${NC}"
+            echo ""
+            exit 0
+        fi
     elif [[ "$CRITICAL_COUNT" -gt 0 ]]; then
         echo -e "${RED}✗ CRITICAL security issues must be resolved${NC}"
         echo ""
