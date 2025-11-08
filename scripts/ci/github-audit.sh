@@ -251,7 +251,7 @@ validate_yaml_syntax() {
     local invalid_count=0
     
     while IFS= read -r -d '' workflow_file; do
-        ((workflow_count++))
+        ((workflow_count++)) || true
         local filename=$(basename "$workflow_file")
         
         # Basic YAML syntax check
@@ -261,7 +261,7 @@ validate_yaml_syntax() {
             else
                 log_critical "$filename: Invalid YAML syntax"
                 add_finding "critical" "YAML-001" "Invalid YAML syntax" "$workflow_file" 0
-                ((invalid_count++))
+                ((invalid_count++)) || true
             fi
         fi
         
@@ -274,7 +274,7 @@ validate_yaml_syntax() {
                 add_finding "low" "YAML-002" "yamllint warnings" "$workflow_file" 0
             fi
         fi
-    done < <(find "$WORKFLOWS_DIR" -name "*.yml" -o -name "*.yaml" -print0 2>/dev/null)
+    done < <(find "$WORKFLOWS_DIR" \( -name "*.yml" -o -name "*.yaml" \) -print0 2>/dev/null)
     
     if [[ "$workflow_count" -eq 0 ]]; then
         log_medium "No workflow files found in $WORKFLOWS_DIR"
@@ -392,7 +392,7 @@ check_security_best_practices() {
             add_finding "medium" "SEC-007" "Disable persist-credentials in checkout action unless required" "$workflow_file" 0
         fi
         
-    done < <(find "$WORKFLOWS_DIR" -name "*.yml" -o -name "*.yaml" -print0 2>/dev/null)
+    done < <(find "$WORKFLOWS_DIR" \( -name "*.yml" -o -name "*.yaml" \) -print0 2>/dev/null)
 }
 
 # -----------------------------------------------------------------------------
@@ -475,7 +475,7 @@ check_workflow_efficiency() {
             add_finding "info" "PERF-002" "Consider adding concurrency control" "$workflow_file" 0
         fi
         
-    done < <(find "$WORKFLOWS_DIR" -name "*.yml" -o -name "*.yaml" -print0 2>/dev/null)
+    done < <(find "$WORKFLOWS_DIR" \( -name "*.yml" -o -name "*.yaml" \) -print0 2>/dev/null)
 }
 
 # -----------------------------------------------------------------------------
@@ -527,7 +527,7 @@ check_codeql_workflow() {
             codeql_workflow="$workflow_file"
             break
         fi
-    done < <(find "$WORKFLOWS_DIR" -name "*.yml" -o -name "*.yaml" -print0 2>/dev/null)
+    done < <(find "$WORKFLOWS_DIR" \( -name "*.yml" -o -name "*.yaml" \) -print0 2>/dev/null)
     
     if [[ -n "$codeql_workflow" ]]; then
         local filename=$(basename "$codeql_workflow")
@@ -646,7 +646,7 @@ Findings Summary:
   
 Auto-fixes Applied: $AUTO_FIXED_COUNT
 
-Workflows Analyzed: $(find "$WORKFLOWS_DIR" -name "*.yml" -o -name "*.yaml" 2>/dev/null | wc -l)
+Workflows Analyzed: $(find "$WORKFLOWS_DIR" \( -name "*.yml" -o -name "*.yaml" \) 2>/dev/null | wc -l)
 
 Output Directory: $OUTPUT_DIR
 
