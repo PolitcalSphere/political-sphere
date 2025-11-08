@@ -1,0 +1,50 @@
+name: Update .github Directory Diagram
+
+on:
+  push:
+    paths:
+      - '.github/**'
+      - '!.github/README.md'
+      - '!.github/workflows/update-github-diagram.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-diagram:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Generate diagram
+        run: |
+          node .github/scripts/generate-diagram.mjs
+      
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet .github/README.md; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit and push if changed
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .github/README.md
+          git commit -m "docs: auto-update .github directory structure diagram [skip ci]"
+          git push
