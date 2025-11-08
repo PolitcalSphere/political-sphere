@@ -153,7 +153,8 @@ class SemanticIndexer {
 
 			return true;
 		} catch (error) {
-			console.error(`Error indexing ${filePath}:`, error.message);
+			// Security: Separate format string from variable to prevent log injection
+			console.error("Error indexing file:", filePath, error.message);
 			return false;
 		}
 	}

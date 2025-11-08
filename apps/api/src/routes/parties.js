@@ -1,73 +1,73 @@
-import express from "express";
-import logger from "../logger.js";
-import { validate } from "../middleware/validation.js";
-import { getDatabase } from "../modules/stores/index.js";
-// Use local CJS shim for shared schemas in test/runtime
-import { CreatePartySchema } from "../shared-shim.js";
+const express = require("express");
+const { PartyStore } = require("../stores/party-store");
+const { getDatabase } = require("../modules/stores/index");
 
 const router = express.Router();
+const db = getDatabase();
+const partyStore = new PartyStore(db);
 
-router.post("/parties", validate(CreatePartySchema), async (req, res) => {
+// GET /parties - Get all parties
+router.get("/", async (req, res) => {
 	try {
-		const db = getDatabase();
-		const party = await db.parties.create(req.body);
-		logger.info("Party created", { partyId: party.id, name: party.name });
-		res.status(201).json({
-			success: true,
-			data: party,
-			message: "Party created successfully",
-		});
+		const parties = await partyStore.getAll();
+		res.json({ parties });
 	} catch (error) {
-		if (error?.message?.includes("UNIQUE constraint failed")) {
-			logger.warn("Party creation failed - duplicate name", {
-				name: req.body.name,
-			});
-			return res.status(409).json({
-				success: false,
-				error: "Party already exists",
-				message: "A party with this name already exists",
-			});
-		}
-		logger.error("Failed to create party", {
-			error: error.message,
-			name: req.body.name,
-		});
-		res.status(500).json({
-			success: false,
-			error: "Internal server error",
-			message: "Unable to create party at this time",
-		});
+		console.error("Error fetching parties:", error);
+		res.status(500).json({ error: "Internal server error" });
 	}
 });
 
-router.get("/parties/:id", async (req, res) => {
+// GET /parties/:id - Get party by ID
+router.get("/:id", async (req, res) => {
 	try {
-		const db = getDatabase();
-		const party = await db.parties.getById(req.params.id);
+		const party = await partyStore.getById(req.params.id);
 		if (!party) {
 			return res.status(404).json({ error: "Party not found" });
 		}
-		res.set("Cache-Control", "public, max-age=600");
-		res.json(party);
+		res.json({ party });
 	} catch (error) {
-		logger.error("Failed to fetch party", {
-			error: error.message,
-			partyId: req.params.id,
-		});
+		console.error("Error fetching party:", error);
 		res.status(500).json({ error: "Internal server error" });
 	}
 });
 
-router.get("/parties", async (_req, res) => {
+// POST /parties - Create new party
+router.post("/", async (req, res) => {
 	try {
-		const db = getDatabase();
-		const parties = await db.parties.getAll();
-		res.set("Cache-Control", "public, max-age=300");
-		res.json(parties);
+		const party = await partyStore.create(req.body);
+		res.status(201).json({ party });
 	} catch (error) {
-		logger.error("Failed to list parties", { error: error.message });
+		console.error("Error creating party:", error);
 		res.status(500).json({ error: "Internal server error" });
 	}
 });
 
-export default router;
+// PUT /parties/:id - Update party
+router.put("/:id", async (req, res) => {
+	try {
+		const party = await partyStore.update(req.params.id, req.body);
+		if (!party) {
+			return res.status(404).json({ error: "Party not found" });
+		}
+		res.json({ party });
+	} catch (error) {
+		console.error("Error updating party:", error);
+		res.status(500).json({ error: "Internal server error" });
+	}
+});
+
+// DELETE /parties/:id - Delete party
+router.delete("/:id", async (req, res) => {
+	try {
+		const deleted = await partyStore.delete(req.params.id);
+		if (!deleted) {
+			return res.status(404).json({ error: "Party not found" });
+		}
+		res.json({ success: true });
+	} catch (error) {
+		console.error("Error deleting party:", error);
+		res.status(500).json({ error: "Internal server error" });
+	}
+});
+
+module.exports = router;

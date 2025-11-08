@@ -5,7 +5,7 @@
 
 import type { AxiosInstance } from "axios";
 import axios from "axios";
-import { CircuitBreaker } from "../api/src/error-handler";
+import { CircuitBreaker } from "../api/src/utils/error-handler";
 
 interface ComplianceEvent {
   category: string;

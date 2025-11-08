@@ -102,7 +102,8 @@ function applyHeaders(
 
 const logger = getLogger({
   service: "api",
-  level: process.env.LOG_LEVEL || "info",
+  level:
+    (process.env.LOG_LEVEL as "debug" | "info" | "warn" | "error") || "info",
   file: process.env.LOG_FILE,
 });
 
@@ -134,7 +135,7 @@ export function createNewsServer(
     try {
       await handleRequest(req, res, newsService, apiBasePath);
     } catch (error: unknown) {
-      logger.logError(error, {
+      logger.logError(error as Error, {
         url: req.url,
         method: req.method,
         ip: req.socket.remoteAddress,
@@ -161,7 +162,7 @@ async function handleRequest(
   const pathname = url.pathname;
   const forwardedForHeader =
     typeof req.headers["x-forwarded-for"] === "string"
-      ? req.headers["x-forwarded-for"].split(",")[0].trim()
+      ? req.headers["x-forwarded-for"]?.split(",")?.[0]?.trim()
       : null;
   const clientIp =
     forwardedForHeader ||
@@ -178,7 +179,7 @@ async function handleRequest(
   // Check IP allowlist/blocklist
   if (!isIpAllowed(clientIp)) {
     logger.logSecurityEvent("ip_blocked", { ip: clientIp }, req);
-    applyHeaders(res, getCorsHeaders(origin, corsOptions));
+    applyHeaders(res, getCorsHeaders(origin || undefined));
     sendError(res, 403, "Access denied");
     return;
   }
@@ -189,7 +190,7 @@ async function handleRequest(
       logger.logSecurityEvent("rate_limit_exceeded", { ip: clientIp }, req);
       const rateLimitInfo = getRateLimitInfo(clientIp, RATE_LIMIT_OPTIONS);
       const retryAfter = Math.max(1, rateLimitInfo.reset);
-      applyHeaders(res, getCorsHeaders(origin, corsOptions));
+      applyHeaders(res, getCorsHeaders(origin || undefined));
       sendJson(
         res,
         429,
@@ -218,7 +219,7 @@ async function handleRequest(
   }
 
   // CORS handling
-  const corsHeaders = getCorsHeaders(origin, corsOptions);
+  const corsHeaders = getCorsHeaders(origin || undefined);
 
   if (method === "OPTIONS") {
     applyHeaders(res, corsHeaders);
@@ -248,15 +249,15 @@ async function handleRequest(
     if (method === "GET") {
       try {
         const list = await newsService.list({
-          category: url.searchParams.get("category") ?? undefined,
-          tag: url.searchParams.get("tag") ?? undefined,
-          search: url.searchParams.get("search") ?? undefined,
-          limit: url.searchParams.get("limit") ?? undefined,
+          category: url.searchParams.get("category") || undefined,
+          tag: url.searchParams.get("tag") || undefined,
+          search: url.searchParams.get("search") || undefined,
+          limit: url.searchParams.get("limit") || undefined,
         });
         sendJson(res, 200, { data: list });
       } catch (error) {
-        if (error.code === "VALIDATION_ERROR") {
-          sendError(res, 400, error.message, error.details);
+        if ((error as any).code === "VALIDATION_ERROR") {
+          sendError(res, 400, (error as Error).message, (error as any).details);
           return;
         }
         throw error;
@@ -296,8 +297,8 @@ async function handleRequest(
         const record = await newsService.create(payload);
         sendJson(res, 201, { data: record });
       } catch (error) {
-        if (error.code === "VALIDATION_ERROR") {
-          sendError(res, 400, error.message, error.details);
+        if ((error as any).code === "VALIDATION_ERROR") {
+          sendError(res, 400, (error as Error).message, (error as any).details);
           return;
         }
         throw error;
@@ -359,8 +360,8 @@ async function handleRequest(
         }
         sendJson(res, 200, { data: updated });
       } catch (error) {
-        if (error.code === "VALIDATION_ERROR") {
-          sendError(res, 400, error.message, error.details);
+        if ((error as any).code === "VALIDATION_ERROR") {
+          sendError(res, 400, (error as Error).message, (error as any).details);
           return;
         }
         throw error;
@@ -407,7 +408,11 @@ async function handleRequest(
         const refreshToken = generateRefreshToken(user);
 
         sendJson(res, 201, {
-          user: { id: user.id, email: user.email, role: user.role },
+          user: {
+            id: (user as any).id,
+            email: (user as any).email,
+            role: (user as any).role,
+          },
           accessToken,
           refreshToken,
         });
@@ -457,7 +462,11 @@ async function handleRequest(
       const refreshToken = generateRefreshToken(user);
 
       sendJson(res, 200, {
-        user: { id: user.id, email: user.email, role: user.role },
+        user: {
+          id: (user as any).id,
+          email: (user as any).email,
+          role: (user as any).role,
+        },
         accessToken,
         refreshToken,
       });
@@ -606,7 +615,7 @@ async function handleRequest(
         await resetPassword(token, newPassword);
         sendJson(res, 200, { message: "Password reset successfully" });
       } catch (error) {
-        sendError(res, 400, error.message);
+        sendError(res, 400, (error as Error).message);
         return;
       }
       return;

@@ -26,10 +26,15 @@ resource "aws_subnet" "public" {
     az   = var.azs[idx % local.az_count]
   } }
 
-  vpc_id                  = aws_vpc.this.id
-  cidr_block              = each.value.cidr
-  availability_zone       = each.value.az
-  map_public_ip_on_launch = true
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = each.value.cidr
+  availability_zone = each.value.az
+  
+  # Security: Do not auto-assign public IPs to all resources
+  # Public IPs should be explicitly assigned only to resources that need them
+  # (e.g., load balancers, bastion hosts) using Elastic IPs or instance-level configuration
+  # Reference: CIS AWS Foundations Benchmark 5.1, OWASP Cloud Security
+  map_public_ip_on_launch = false
 
   tags = merge(var.tags, {
     Name = "${var.name}-public-${each.key}"

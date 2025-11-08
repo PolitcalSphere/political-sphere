@@ -10,25 +10,30 @@ import fs from "fs";
 import path from "path";
 
 // Simple console logger for database initialization
+// Security: Use structured logging to prevent format string injection
 const logger = {
 	info: (message, meta = {}) =>
 		console.log(
-			`[INFO] ${message}`,
+			"[INFO]",
+			message,
 			Object.keys(meta).length ? JSON.stringify(meta) : "",
 		),
 	warn: (message, meta = {}) =>
 		console.warn(
-			`[WARN] ${message}`,
+			"[WARN]",
+			message,
 			Object.keys(meta).length ? JSON.stringify(meta) : "",
 		),
 	error: (message, meta = {}) =>
 		console.error(
-			`[ERROR] ${message}`,
+			"[ERROR]",
+			message,
 			Object.keys(meta).length ? JSON.stringify(meta) : "",
 		),
 	fatal: (message, meta = {}) =>
 		console.error(
-			`[FATAL] ${message}`,
+			"[FATAL]",
+			message,
 			Object.keys(meta).length ? JSON.stringify(meta) : "",
 		),
 };

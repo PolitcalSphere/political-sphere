@@ -1,0 +1,41 @@
+{
+  "name": "@political-sphere/data-user",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/data-user/src",
+  "projectType": "library",
+  "tags": ["scope:data", "type:data", "type:library", "user"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "libs/data-user/dist",
+        "main": "libs/data-user/src/index.ts",
+        "tsConfig": "libs/data-user/tsconfig.lib.json",
+        "assets": []
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/data-user/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/data-user"],
+      "options": {
+        "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
+      },
+      "configurations": {
+        "watch": {
+          "command": "vitest --config ../../vitest.config.js --watch"
+        },
+        "coverage": {
+          "command": "vitest run --config ../../vitest.config.js --coverage"
+        }
+      }
+    }
+  }
+}

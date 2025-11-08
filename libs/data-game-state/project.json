@@ -1,0 +1,41 @@
+{
+  "name": "@political-sphere/data-game-state",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/data-game-state/src",
+  "projectType": "library",
+  "tags": ["scope:data", "type:data", "type:library", "game-state"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "libs/data-game-state/dist",
+        "main": "libs/data-game-state/src/index.ts",
+        "tsConfig": "libs/data-game-state/tsconfig.lib.json",
+        "assets": []
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/data-game-state/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/data-game-state"],
+      "options": {
+        "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
+      },
+      "configurations": {
+        "watch": {
+          "command": "vitest --config ../../vitest.config.js --watch"
+        },
+        "coverage": {
+          "command": "vitest run --config ../../vitest.config.js --coverage"
+        }
+      }
+    }
+  }
+}

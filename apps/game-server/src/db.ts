@@ -117,7 +117,7 @@ function initWithBetterSqlite(): DatabaseAdapter {
 async function initWithSqlite3(): Promise<DatabaseAdapter> {
   // Basic async wrapper using sqlite3
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const sqlite3 = require("sqlite3").verbose() as typeof import("sqlite3");
+  const sqlite3 = require("better-sqlite3");
   ensureDir(DB_PATH);
   const db = new sqlite3.Database(DB_PATH);
 
@@ -292,16 +292,21 @@ if (Database) {
     adapter = initWithBetterSqlite();
   } catch (err) {
     const error = err as Error;
-    logger.warn("better-sqlite3 initialisation failed, falling back to sqlite3/json", {
-      error: error?.message ?? String(error),
-    });
+    logger.warn(
+      "better-sqlite3 initialisation failed, falling back to sqlite3/json",
+      {
+        error: error?.message ?? String(error),
+      }
+    );
     Database = null; // allow fallback to continue
     // Retry with sqlite3 or JSON fallback
     try {
       require.resolve("sqlite3");
       adapter = initWithSqlite3();
     } catch {
-      logger.warn("No sqlite native modules found, using JSON file fallback for persistence");
+      logger.warn(
+        "No sqlite native modules found, using JSON file fallback for persistence"
+      );
       adapter = initJsonFallback();
     }
   }
@@ -312,7 +317,9 @@ if (Database) {
     // initialize async sqlite3 adapter
     adapter = initWithSqlite3();
   } catch {
-    logger.warn("No sqlite native modules found, using JSON file fallback for persistence");
+    logger.warn(
+      "No sqlite native modules found, using JSON file fallback for persistence"
+    );
     adapter = initJsonFallback();
   }
 }

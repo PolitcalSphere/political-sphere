@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-11-08T21:49:40Z",
+  "summary": {
+    "critical": 0,
+    "high": 0,
+    "medium": 2,
+    "low": 0,
+    "info": 17,
+    "pass": 29,
+    "autoFixed": 0
+  },
+  "findings": [
+    {"severity":"medium","code":"RUNTIME-BUILD","message":"Failed to build temp image for runtime/enhanced checks","file":"/Users/morganlowman/GitHub/political-sphere/.devcontainer/Dockerfile","line":0},{"severity":"info","code":"EDGE-002","message":"Consider --platform for multi-arch support","file":"/Users/morganlowman/GitHub/political-sphere/.devcontainer/Dockerfile","line":0},{"severity":"medium","code":"EDGE-003","message":"Implement secrets management for sensitive data","file":"/Users/morganlowman/GitHub/political-sphere/.devcontainer/Dockerfile","line":0}
+  ]
+}

@@ -1,5 +1,5 @@
 DevContainer Audit Summary
-Generated: 2025-11-08T21:33:43Z
+Generated: 2025-11-08T22:14:38Z
 ================================================================================
 
 Findings Summary:

@@ -3,7 +3,7 @@ import {
   CreateUserSchema,
   type User,
 } from "@political-sphere/shared";
-import { getDatabase } from "../stores";
+import { getDatabase } from "../modules/stores/index.js";
 
 export class UserService {
   // Use a lazy getter so the service always obtains the current database connection.

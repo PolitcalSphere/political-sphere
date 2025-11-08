@@ -124,7 +124,7 @@ jobs:
           SKIP_NPM_AUDIT: "false"
           SKIP_TSC: "false"
           SKIP_ESLINT: "false"
-        run: bash scripts/ci/app-audit-${{ matrix.app }}.sh
+        run: bash scripts/ci/app-audit-$APP_NAME.sh
         continue-on-error: true
 
       - name: Commit auto-fixes

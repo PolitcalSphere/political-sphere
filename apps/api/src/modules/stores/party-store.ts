@@ -1,8 +1,8 @@
 import type { CreatePartyInput, Party } from "@political-sphere/shared";
 import type Database from "better-sqlite3";
 import { v4 as uuidv4 } from "uuid";
-import { CACHE_TTL, type CacheService, cacheKeys } from "../cache.js";
-import { DatabaseError, retryWithBackoff } from "../error-handler.js";
+import { CACHE_TTL, type CacheService, cacheKeys } from "../../utils/cache.js";
+import { DatabaseError, retryWithBackoff } from "../../utils/error-handler.js";
 
 interface PartyRow {
   id: string;
@@ -83,7 +83,9 @@ export class PartyStore {
         return party;
       });
     } catch (error) {
-      throw new DatabaseError(`Failed to get party ${id}: ${error.message}`);
+      throw new DatabaseError(
+        `Failed to get party ${id}: ${(error as Error).message}`
+      );
     }
   }
   async getByName(name: string): Promise<Party | null> {
@@ -123,7 +125,7 @@ export class PartyStore {
       });
     } catch (error) {
       throw new DatabaseError(
-        `Failed to get party by name ${name}: ${error.message}`
+        `Failed to get party by name ${name}: ${(error as Error).message}`
       );
     }
   }
@@ -148,7 +150,7 @@ export class PartyStore {
         const countStmt = this.db.prepare<[], { count: number }>(
           `SELECT COUNT(*) as count FROM parties`
         );
-        const total = countStmt.get().count;
+        const total = countStmt.get()?.count ?? 0;
 
         // Get paginated results
         const stmt = this.db.prepare<[number, number], PartyRow>(
@@ -173,7 +175,9 @@ export class PartyStore {
         return result;
       });
     } catch (error) {
-      throw new DatabaseError(`Failed to get all parties: ${error.message}`);
+      throw new DatabaseError(
+        `Failed to get all parties: ${(error as Error).message}`
+      );
     }
   }
 }

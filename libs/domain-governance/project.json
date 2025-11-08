@@ -1,0 +1,41 @@
+{
+  "name": "@political-sphere/domain-governance",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domain-governance/src",
+  "projectType": "library",
+  "tags": ["scope:domain", "type:domain", "type:library", "governance"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "libs/domain-governance/dist",
+        "main": "libs/domain-governance/src/index.ts",
+        "tsConfig": "libs/domain-governance/tsconfig.lib.json",
+        "assets": []
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/domain-governance/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/domain-governance"],
+      "options": {
+        "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
+      },
+      "configurations": {
+        "watch": {
+          "command": "vitest --config ../../vitest.config.js --watch"
+        },
+        "coverage": {
+          "command": "vitest run --config ../../vitest.config.js --coverage"
+        }
+      }
+    }
+  }
+}

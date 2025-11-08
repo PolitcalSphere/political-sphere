@@ -1,8 +1,8 @@
 import type { CreateVoteInput, Vote, VoteType } from "@political-sphere/shared";
 import type Database from "better-sqlite3";
 import { v4 as uuidv4 } from "uuid";
-import { CACHE_TTL, type CacheService, cacheKeys } from "../cache.js";
-import { DatabaseError, retryWithBackoff } from "../error-handler.js";
+import { CACHE_TTL, type CacheService, cacheKeys } from "../../utils/cache.js";
+import { DatabaseError, retryWithBackoff } from "../../utils/error-handler.js";
 
 interface VoteRow {
   id: string;
@@ -83,7 +83,9 @@ export class VoteStore {
         return vote;
       });
     } catch (error) {
-      throw new DatabaseError(`Failed to get vote ${id}: ${error.message}`);
+      throw new DatabaseError(
+        `Failed to get vote ${id}: ${(error as Error).message}`
+      );
     }
   }
 
@@ -123,7 +125,7 @@ export class VoteStore {
       });
     } catch (error) {
       throw new DatabaseError(
-        `Failed to get votes for bill ${billId}: ${error.message}`
+        `Failed to get votes for bill ${billId}: ${(error as Error).message}`
       );
     }
   }
@@ -164,7 +166,7 @@ export class VoteStore {
       });
     } catch (error) {
       throw new DatabaseError(
-        `Failed to get votes for user ${userId}: ${error.message}`
+        `Failed to get votes for user ${userId}: ${(error as Error).message}`
       );
     }
   }
@@ -183,7 +185,9 @@ export class VoteStore {
       });
     } catch (error) {
       throw new DatabaseError(
-        `Failed to check vote for user ${userId} on bill ${billId}: ${error.message}`
+        `Failed to check vote for user ${userId} on bill ${billId}: ${
+          (error as Error).message
+        }`
       );
     }
   }
@@ -232,7 +236,9 @@ export class VoteStore {
       });
     } catch (error) {
       throw new DatabaseError(
-        `Failed to get vote counts for bill ${billId}: ${error.message}`
+        `Failed to get vote counts for bill ${billId}: ${
+          (error as Error).message
+        }`
       );
     }
   }

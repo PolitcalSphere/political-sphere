@@ -1,1 +1,1 @@
-[]
+[{"message":"shellcheck reported issue in this script: SC2086:info:1:27: Double quote to prevent globbing and word splitting","filepath":".github/workflows/audit.yml","line":127,"column":9,"kind":"shellcheck","snippet":"        run: bash scripts/ci/app-audit-$APP_NAME.sh\n        ^~~~","end_column":12}]

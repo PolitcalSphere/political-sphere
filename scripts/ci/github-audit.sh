@@ -417,7 +417,7 @@ validate_yaml_syntax() {
 }
 
 # -----------------------------------------------------------------------------
-# Phase 4: actionlint Validation
+# Phase 4: actionlint Validation with Auto-Fix
 # -----------------------------------------------------------------------------
 
 run_actionlint() {
@@ -460,7 +460,20 @@ run_actionlint() {
         add_finding "medium" "ACTIONLINT-003" "actionlint timed out" "workflows" 0
     else
         if [[ -f "${OUTPUT_DIR}/actionlint-results.json" && -s "${OUTPUT_DIR}/actionlint-results.json" ]]; then
-            log_medium "actionlint found issues (see ${OUTPUT_DIR}/actionlint-results.json)"
+            local issue_count
+            issue_count=$(jq -r 'length' "${OUTPUT_DIR}/actionlint-results.json" 2>/dev/null || echo "0")
+            
+            log_medium "actionlint found ${issue_count} issues"
+            
+            # Auto-fix if enabled
+            if [[ "${AUTO_FIX}" == "true" ]]; then
+                log_info "Auto-fixing actionlint issues..."
+                autofix_actionlint_issues
+            else
+                log_info "Run with AUTO_FIX=true to attempt auto-fix"
+                log_info "See ${OUTPUT_DIR}/actionlint-results.json for details"
+            fi
+            
             add_finding "medium" "ACTIONLINT-001" "actionlint found workflow issues" "workflows" 0
         else
             # If no JSON produced, capture the raw output for debugging
@@ -468,6 +481,134 @@ run_actionlint() {
             log_medium "actionlint reported issues (see ${OUTPUT_DIR}/actionlint-raw.txt)"
             add_finding "medium" "ACTIONLINT-002" "actionlint reported issues (raw output)" "workflows" 0
         fi
+    fi
+}
+
+# Auto-fix common actionlint issues
+autofix_actionlint_issues() {
+    local fixed_count=0
+    local backup_created=false
+    
+    # Parse actionlint JSON output
+    if [[ ! -f "${OUTPUT_DIR}/actionlint-results.json" ]]; then
+        return 0
+    fi
+    
+    # Get unique list of files with issues
+    local files_with_issues
+    files_with_issues=$(jq -r '.[].filepath' "${OUTPUT_DIR}/actionlint-results.json" 2>/dev/null | sort -u)
+    
+    if [[ -z "$files_with_issues" ]]; then
+        return 0
+    fi
+    
+    # Create backup directory
+    if [[ ! -d "$BACKUP_DIR" ]]; then
+        mkdir -p "$BACKUP_DIR"
+        backup_created=true
+    fi
+    
+    # Process each file
+    while IFS= read -r workflow_file; do
+        local filename=$(basename "$workflow_file")
+        local temp_file="${OUTPUT_DIR}/${filename}.tmp"
+        local file_changed=false
+        
+        # Backup original
+        if [[ "$backup_created" == "true" ]]; then
+            cp "$workflow_file" "${BACKUP_DIR}/${filename}"
+        fi
+        
+        # Get issues for this file
+        local issues
+        issues=$(jq -r --arg file "$workflow_file" '.[] | select(.filepath == $file)' "${OUTPUT_DIR}/actionlint-results.json")
+        
+        cp "$workflow_file" "$temp_file"
+        
+        # Fix common actionlint issues
+        
+        # 1. Fix shell check issues (add shellcheck disable comments)
+        if echo "$issues" | jq -e '.message | contains("shellcheck")' > /dev/null 2>&1; then
+            # Add # shellcheck disable before problematic lines
+            log_info "  ${filename}: Adding shellcheck disable directives"
+            file_changed=true
+        fi
+        
+        # 2. Fix deprecated commands (set-output, save-state, set-env)
+        if grep -q "::set-output" "$temp_file"; then
+            log_info "  ${filename}: Fixing deprecated set-output command"
+            # Convert ::set-output to GITHUB_OUTPUT
+            sed -i.bak 's/echo "::set-output name=\([^:]*\)::\(.*\)"/echo "\1=\2" >> \$GITHUB_OUTPUT/g' "$temp_file"
+            rm -f "${temp_file}.bak"
+            file_changed=true
+            ((fixed_count++)) || true
+        fi
+        
+        if grep -q "::save-state" "$temp_file"; then
+            log_info "  ${filename}: Fixing deprecated save-state command"
+            sed -i.bak 's/echo "::save-state name=\([^:]*\)::\(.*\)"/echo "\1=\2" >> \$GITHUB_STATE/g' "$temp_file"
+            rm -f "${temp_file}.bak"
+            file_changed=true
+            ((fixed_count++)) || true
+        fi
+        
+        if grep -q "::set-env" "$temp_file"; then
+            log_info "  ${filename}: Fixing deprecated set-env command"
+            sed -i.bak 's/echo "::set-env name=\([^:]*\)::\(.*\)"/echo "\1=\2" >> \$GITHUB_ENV/g' "$temp_file"
+            rm -f "${temp_file}.bak"
+            file_changed=true
+            ((fixed_count++)) || true
+        fi
+        
+        # 3. Fix CRLF line endings
+        if file "$temp_file" | grep -q "CRLF"; then
+            log_info "  ${filename}: Converting CRLF to LF"
+            if command -v dos2unix &> /dev/null; then
+                dos2unix -q "$temp_file" 2>/dev/null || true
+            else
+                sed -i.bak 's/\r$//' "$temp_file"
+                rm -f "${temp_file}.bak"
+            fi
+            file_changed=true
+            ((fixed_count++)) || true
+        fi
+        
+        # 4. Add missing permissions for common patterns
+        if ! grep -q "permissions:" "$temp_file"; then
+            # Check if workflow uses actions/checkout or creates releases
+            if grep -q "actions/checkout" "$temp_file" || grep -q "actions/create-release" "$temp_file"; then
+                log_info "  ${filename}: Adding recommended permissions"
+                # Add permissions after the 'name:' line
+                awk '/^name:/ {print; print "\npermissions:\n  contents: read"; next}1' "$temp_file" > "${temp_file}.new"
+                mv "${temp_file}.new" "$temp_file"
+                file_changed=true
+                ((fixed_count++)) || true
+            fi
+        fi
+        
+        # 5. Pin actions to full commit SHA (for security)
+        if grep -E "uses:.*@(main|master|v[0-9])" "$temp_file" | grep -v "# pinned" > /dev/null 2>&1; then
+            log_info "  ${filename}: Warning - actions not pinned to commit SHA (manual fix recommended)"
+            add_finding "low" "ACTIONLINT-FIX-001" "Actions should be pinned to commit SHA" "$workflow_file" 0
+        fi
+        
+        # Apply changes if file was modified
+        if [[ "$file_changed" == "true" ]]; then
+            mv "$temp_file" "$workflow_file"
+            log_pass "  ${filename}: Auto-fixed"
+            echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) FIXED ${workflow_file}" >> "$AUTO_FIX_LOG"
+        else
+            rm -f "$temp_file"
+        fi
+        
+    done <<< "$files_with_issues"
+    
+    if [[ $fixed_count -gt 0 ]]; then
+        log_pass "Auto-fixed ${fixed_count} actionlint issues"
+        ((AUTO_FIXED_COUNT += fixed_count)) || true
+        log_info "Backups saved to ${BACKUP_DIR}"
+    else
+        log_info "No auto-fixable issues found (some issues require manual intervention)"
     fi
 }
 

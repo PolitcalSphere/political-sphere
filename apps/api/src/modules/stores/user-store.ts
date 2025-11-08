@@ -1,7 +1,7 @@
 import type { CreateUserInput, User } from "@political-sphere/shared";
 import type Database from "better-sqlite3";
 import { v4 as uuidv4 } from "uuid";
-import { CACHE_TTL, type CacheService, cacheKeys } from "../cache.js";
+import { CACHE_TTL, type CacheService, cacheKeys } from "../../utils/cache.js";
 
 interface UserRow {
   id: string;

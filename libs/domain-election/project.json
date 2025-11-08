@@ -1,0 +1,41 @@
+{
+  "name": "@political-sphere/domain-election",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domain-election/src",
+  "projectType": "library",
+  "tags": ["scope:domain", "type:domain", "type:library", "election"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "libs/domain-election/dist",
+        "main": "libs/domain-election/src/index.ts",
+        "tsConfig": "libs/domain-election/tsconfig.lib.json",
+        "assets": []
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/domain-election/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/domain-election"],
+      "options": {
+        "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
+      },
+      "configurations": {
+        "watch": {
+          "command": "vitest --config ../../vitest.config.js --watch"
+        },
+        "coverage": {
+          "command": "vitest run --config ../../vitest.config.js --coverage"
+        }
+      }
+    }
+  }
+}

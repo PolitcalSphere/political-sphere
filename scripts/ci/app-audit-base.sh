@@ -225,52 +225,234 @@ phase2_code_quality() {
 }
 
 ################################################################################
-# Phase 3: Security Checks
+# Phase 3: Security Checks (OWASP Top 10 2021 + CIS + NIST SP 800-53)
 ################################################################################
 
 phase3_security() {
     log_section "Phase 3: Security Checks"
     
+    log_info "Running comprehensive security scans (OWASP Top 10 2021 + CIS + NIST)..."
+    
+    # =========================================================================
+    # OWASP A01:2021 - Broken Access Control (NIST AC-* controls)
+    # =========================================================================
+    log_info "A01:2021 - Checking access control patterns..."
+    
+    # Check for missing authorization checks
+    if grep -r "router\.\(get\|post\|put\|delete\|patch\)" "${APP_DIR}/src" 2>/dev/null | \
+       grep -v "authenticate\|authorize\|checkPermission\|requireAuth" > "${APP_AUDIT_DIR}/missing-auth.log" 2>&1; then
+        UNPROTECTED_ROUTES=$(wc -l < "${APP_AUDIT_DIR}/missing-auth.log" | tr -d ' ')
+        if [[ ${UNPROTECTED_ROUTES} -gt 0 ]]; then
+            log_high "Found ${UNPROTECTED_ROUTES} potentially unprotected routes (OWASP A01:2021, NIST AC-3)"
+            log_info "See ${APP_AUDIT_DIR}/missing-auth.log"
+        fi
+    else
+        log_pass "Route authorization patterns look good"
+    fi
+    
+    # Check for insecure direct object references (IDOR)
+    if grep -r "req\.params\." "${APP_DIR}/src" 2>/dev/null | \
+       grep -v "validate\|sanitize\|checkOwnership" > "${APP_AUDIT_DIR}/idor-risk.log" 2>&1; then
+        IDOR_RISK=$(wc -l < "${APP_AUDIT_DIR}/idor-risk.log" | tr -d ' ')
+        if [[ ${IDOR_RISK} -gt 10 ]]; then
+            log_medium "Found ${IDOR_RISK} direct parameter uses - verify ownership checks (OWASP A01:2021)"
+        fi
+    fi
+    
+    # =========================================================================
+    # OWASP A02:2021 - Cryptographic Failures (NIST SC-12, SC-13)
+    # =========================================================================
+    log_info "A02:2021 - Checking cryptographic implementations..."
+    
+    # Check for weak crypto algorithms
+    if grep -r -E "(MD5|SHA1|DES|RC4)" "${APP_DIR}/src" 2>/dev/null > "${APP_AUDIT_DIR}/weak-crypto.log" 2>&1; then
+        log_critical "Weak cryptographic algorithms detected (OWASP A02:2021, NIST SC-13)"
+        log_info "Use SHA-256+, AES-256-GCM, bcrypt. See ${APP_AUDIT_DIR}/weak-crypto.log"
+    else
+        log_pass "No weak cryptographic algorithms detected"
+    fi
+    
     # Check for hardcoded secrets
-    log_info "Scanning for hardcoded secrets..."
+    log_info "Scanning for hardcoded secrets (OWASP A02:2021, CIS 5.1)..."
     SECRETS_FOUND=0
     
-    # Common secret patterns
     if grep -r -i "password.*=.*['\"]" "${APP_DIR}/src" 2>/dev/null | grep -v "password.*: *''" > "${APP_AUDIT_DIR}/secrets.log" 2>&1; then
         SECRETS_FOUND=$((SECRETS_FOUND + 1))
-        log_high "Potential hardcoded passwords found"
     fi
     
     if grep -r -i "api[_-]key.*=.*['\"]" "${APP_DIR}/src" 2>/dev/null | grep -v "api.*key.*: *''" >> "${APP_AUDIT_DIR}/secrets.log" 2>&1; then
         SECRETS_FOUND=$((SECRETS_FOUND + 1))
-        log_high "Potential hardcoded API keys found"
     fi
     
     if grep -r -i "secret.*=.*['\"]" "${APP_DIR}/src" 2>/dev/null | grep -v "secret.*: *''" >> "${APP_AUDIT_DIR}/secrets.log" 2>&1; then
         SECRETS_FOUND=$((SECRETS_FOUND + 1))
-        log_high "Potential hardcoded secrets found"
+    fi
+    
+    if grep -r -E "(JWT_SECRET|DATABASE_URL|PRIVATE_KEY).*=.*['\"][^'\"]+['\"]" "${APP_DIR}/src" 2>/dev/null >> "${APP_AUDIT_DIR}/secrets.log" 2>&1; then
+        SECRETS_FOUND=$((SECRETS_FOUND + 1))
     fi
     
     if [[ ${SECRETS_FOUND} -eq 0 ]]; then
-        log_pass "No obvious hardcoded secrets found"
+        log_pass "No hardcoded secrets found"
     else
-        log_info "See ${APP_AUDIT_DIR}/secrets.log for details"
+        log_critical "Found ${SECRETS_FOUND} types of hardcoded secrets (OWASP A02:2021, NIST IA-5)"
+        log_info "Use environment variables or secret managers. See ${APP_AUDIT_DIR}/secrets.log"
     fi
     
-    # Check for console.log in production code (common security risk)
+    # =========================================================================
+    # OWASP A03:2021 - Injection (NIST SI-10)
+    # =========================================================================
+    log_info "A03:2021 - Checking for injection vulnerabilities..."
+    
+    # SQL Injection risks
+    if grep -r -E "(\\\$\{.*\}.*query|query.*\\\$\{|execute\(.*\+)" "${APP_DIR}/src" 2>/dev/null > "${APP_AUDIT_DIR}/sql-injection.log" 2>&1; then
+        log_critical "Potential SQL injection detected - use parameterized queries (OWASP A03:2021, NIST SI-10)"
+        log_info "See ${APP_AUDIT_DIR}/sql-injection.log"
+    else
+        log_pass "No obvious SQL injection patterns found"
+    fi
+    
+    # Command Injection
+    if grep -r -E "(exec\(|spawn\(|child_process)" "${APP_DIR}/src" 2>/dev/null > "${APP_AUDIT_DIR}/command-injection.log" 2>&1; then
+        EXEC_COUNT=$(wc -l < "${APP_AUDIT_DIR}/command-injection.log" | tr -d ' ')
+        log_high "Found ${EXEC_COUNT} command execution calls - verify input sanitization (OWASP A03:2021)"
+    fi
+    
+    # eval() usage (code injection)
+    if grep -r "eval\(" "${APP_DIR}/src" 2>/dev/null > "${APP_AUDIT_DIR}/eval-usage.log" 2>&1; then
+        log_critical "Found eval() usage - major code injection risk (OWASP A03:2021, CIS 4.5)"
+        log_info "See ${APP_AUDIT_DIR}/eval-usage.log"
+    else
+        log_pass "No eval() usage found"
+    fi
+    
+    # =========================================================================
+    # OWASP A04:2021 - Insecure Design (NIST SA-*)
+    # =========================================================================
+    log_info "A04:2021 - Checking design security patterns..."
+    
+    # Check for rate limiting
+    if ! grep -r "rateLimit\|express-rate-limit\|rate-limiter" "${APP_DIR}/src" 2>/dev/null > /dev/null; then
+        log_medium "No rate limiting detected - consider adding (OWASP A04:2021, NIST SC-5)"
+    else
+        log_pass "Rate limiting implementation found"
+    fi
+    
+    # =========================================================================
+    # OWASP A05:2021 - Security Misconfiguration (NIST CM-*)
+    # =========================================================================
+    log_info "A05:2021 - Checking security configuration..."
+    
+    # Check for debug/development code in production
+    if grep -r -E "(DEBUG.*=.*true|NODE_ENV.*development)" "${APP_DIR}/src" 2>/dev/null > "${APP_AUDIT_DIR}/debug-code.log" 2>&1; then
+        log_medium "Debug/development code found - may leak sensitive info (OWASP A05:2021, NIST CM-7)"
+    fi
+    
+    # console.log in production (information disclosure)
     if grep -r "console\.log" "${APP_DIR}/src" 2>/dev/null | grep -v "// console.log" > "${APP_AUDIT_DIR}/console.log" 2>&1; then
         CONSOLE_COUNT=$(wc -l < "${APP_AUDIT_DIR}/console.log" | tr -d ' ')
-        log_medium "Found ${CONSOLE_COUNT} console.log statements (should be removed for production)"
+        log_medium "Found ${CONSOLE_COUNT} console.log statements (OWASP A05:2021, CIS 8.2)"
+        log_info "Remove for production or use structured logging"
     else
         log_pass "No console.log statements found"
     fi
     
-    # Check for eval() usage (security risk)
-    if grep -r "eval\(" "${APP_DIR}/src" 2>/dev/null; then
-        log_critical "Found eval() usage (major security risk - OWASP A03:2021)"
-    else
-        log_pass "No eval() usage found"
+    # =========================================================================
+    # OWASP A06:2021 - Vulnerable Components (NIST RA-5, SI-2)
+    # =========================================================================
+    # (Handled in phase5_dependencies with npm audit + OWASP Dependency-Check)
+    
+    # =========================================================================
+    # OWASP A07:2021 - Authentication Failures (NIST IA-*)
+    # =========================================================================
+    log_info "A07:2021 - Checking authentication security..."
+    
+    # Weak password requirements
+    if grep -r -E "password.*length.*<.*[1-7][^0-9]" "${APP_DIR}/src" 2>/dev/null > "${APP_AUDIT_DIR}/weak-password.log" 2>&1; then
+        log_high "Weak password requirements detected (OWASP A07:2021, NIST IA-5)"
+        log_info "Require minimum 8 characters. See ${APP_AUDIT_DIR}/weak-password.log"
     fi
+    
+    # Missing session timeout
+    if grep -r "session\|jwt" "${APP_DIR}/src" 2>/dev/null | \
+       grep -v -E "(timeout|maxAge|expiresIn)" > "${APP_AUDIT_DIR}/no-timeout.log" 2>&1; then
+        SESSION_NO_TIMEOUT=$(wc -l < "${APP_AUDIT_DIR}/no-timeout.log" | tr -d ' ')
+        if [[ ${SESSION_NO_TIMEOUT} -gt 5 ]]; then
+            log_medium "Session/JWT timeout may not be configured (OWASP A07:2021, NIST AC-12)"
+        fi
+    fi
+    
+    # =========================================================================
+    # OWASP A08:2021 - Software and Data Integrity Failures (NIST SI-7)
+    # =========================================================================
+    log_info "A08:2021 - Checking integrity controls..."
+    
+    # Unsigned/unverified updates
+    if grep -r "auto-update\|checkForUpdates" "${APP_DIR}/src" 2>/dev/null | \
+       grep -v "verify\|signature\|checksum" > "${APP_AUDIT_DIR}/unsigned-updates.log" 2>&1; then
+        log_high "Auto-update without verification detected (OWASP A08:2021, NIST SI-7)"
+    fi
+    
+    # =========================================================================
+    # OWASP A09:2021 - Security Logging Failures (NIST AU-*)
+    # =========================================================================
+    log_info "A09:2021 - Checking logging and monitoring..."
+    
+    # Missing audit logging for sensitive operations
+    if grep -r -E "(delete|update|create).*User\|Admin\|Permission" "${APP_DIR}/src" 2>/dev/null | \
+       grep -v "log\|audit\|record" > "${APP_AUDIT_DIR}/missing-audit.log" 2>&1; then
+        MISSING_AUDIT=$(wc -l < "${APP_AUDIT_DIR}/missing-audit.log" | tr -d ' ')
+        if [[ ${MISSING_AUDIT} -gt 0 ]]; then
+            log_medium "Found ${MISSING_AUDIT} sensitive operations without audit logging (OWASP A09:2021, NIST AU-2)"
+        fi
+    fi
+    
+    # =========================================================================
+    # OWASP A10:2021 - Server-Side Request Forgery (NIST SC-7)
+    # =========================================================================
+    log_info "A10:2021 - Checking for SSRF vulnerabilities..."
+    
+    # Unvalidated URL fetching
+    if grep -r -E "(fetch\(.*req\.|axios\(.*req\.|request\(.*req\.)" "${APP_DIR}/src" 2>/dev/null > "${APP_AUDIT_DIR}/ssrf-risk.log" 2>&1; then
+        log_high "Potential SSRF detected - validate/whitelist URLs (OWASP A10:2021, NIST SC-7)"
+        log_info "See ${APP_AUDIT_DIR}/ssrf-risk.log"
+    fi
+    
+    # =========================================================================
+    # CIS Controls (Additional)
+    # =========================================================================
+    log_info "Running CIS benchmark checks..."
+    
+    # CIS 4.1 - Secure Configuration
+    if [[ -f "${APP_DIR}/.env" ]]; then
+        log_critical ".env file found in app directory (CIS 4.1) - should be gitignored"
+    fi
+    
+    # CIS 6.2 - Logging
+    if ! grep -r "winston\|pino\|bunyan\|logger" "${APP_DIR}/src" 2>/dev/null > /dev/null; then
+        log_medium "No structured logging library detected (CIS 6.2, NIST AU-3)"
+    fi
+    
+    # =========================================================================
+    # NIST SP 800-53 Controls (Additional)
+    # =========================================================================
+    
+    # NIST SC-8 - Transmission Confidentiality
+    if grep -r "http://" "${APP_DIR}/src" 2>/dev/null | \
+       grep -v "localhost\|127.0.0.1\|example.com" > "${APP_AUDIT_DIR}/insecure-http.log" 2>&1; then
+        log_high "Insecure HTTP URLs detected - use HTTPS (NIST SC-8, CIS 9.2)"
+    fi
+    
+    # NIST AC-2 - Account Management
+    if grep -r "createUser\|registerUser" "${APP_DIR}/src" 2>/dev/null | \
+       grep -v "validate\|sanitize\|verify" > "${APP_AUDIT_DIR}/user-creation.log" 2>&1; then
+        USER_CREATION=$(wc -l < "${APP_AUDIT_DIR}/user-creation.log" | tr -d ' ')
+        if [[ ${USER_CREATION} -gt 0 ]]; then
+            log_medium "User creation without validation detected (NIST AC-2)"
+        fi
+    fi
+    
+    log_pass "Security scan complete"
 }
 
 ################################################################################

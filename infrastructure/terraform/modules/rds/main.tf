@@ -51,6 +51,11 @@ resource "aws_db_instance" "this" {
   final_snapshot_identifier = "${var.identifier}-final-${random_string.snapshot_suffix.result}"
   auto_minor_version_upgrade = true
   performance_insights_enabled = true
+  
+  # Security: Enable CloudWatch Logs for audit, monitoring, and incident response
+  # PostgreSQL log types: postgresql (general logs), upgrade (upgrade logs)
+  # Reference: CIS AWS Foundations Benchmark 2.3.1, AWS Security Best Practices
+  enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
 
   tags = local.tags
 

@@ -3,7 +3,7 @@ import {
   CreatePartySchema,
   type Party,
 } from "@political-sphere/shared";
-import { getDatabase } from "../stores";
+import { getDatabase } from "../modules/stores/index.js";
 
 export class PartyService {
   // Lazy getter to avoid holding a stale DB connection across test lifecycle boundaries

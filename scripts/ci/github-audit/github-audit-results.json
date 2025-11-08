@@ -1,0 +1,281 @@
+{
+  "timestamp": "2025-11-08T21:49:36Z",
+  "version": "1.3.0",
+  "summary": {
+    "critical": 1,
+    "high": 9,
+    "medium": 9,
+    "low": 1,
+    "info": 51,
+    "pass": 84,
+    "autoFixed": 0
+  },
+  "findings": [
+    {
+      "severity": "low",
+      "code": "YAML-002",
+      "message": "yamllint warnings",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/deploy-argocd.yaml",
+      "line": 0
+    },
+    {
+      "severity": "high",
+      "code": "SEC-005",
+      "message": "Workflow missing explicit permissions block - defaults to write-all access",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/deploy-argocd.yaml",
+      "line": 0
+    },
+    {
+      "severity": "high",
+      "code": "SEC-005",
+      "message": "Workflow missing explicit permissions block - defaults to write-all access",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/iac-plan.yaml",
+      "line": 0
+    },
+    {
+      "severity": "high",
+      "code": "SEC-005",
+      "message": "Workflow missing explicit permissions block - defaults to write-all access",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/security-scan.yaml",
+      "line": 0
+    },
+    {
+      "severity": "high",
+      "code": "SEC-005",
+      "message": "Workflow missing explicit permissions block - defaults to write-all access",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/build-and-test.yaml",
+      "line": 0
+    },
+    {
+      "severity": "high",
+      "code": "SEC-005",
+      "message": "Workflow missing explicit permissions block - defaults to write-all access",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/vault-client.yml",
+      "line": 0
+    },
+    {
+      "severity": "high",
+      "code": "SEC-005",
+      "message": "Workflow missing explicit permissions block - defaults to write-all access",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/migrate.yml",
+      "line": 0
+    },
+    {
+      "severity": "high",
+      "code": "SEC-005",
+      "message": "Workflow missing explicit permissions block - defaults to write-all access",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/application-release.yaml",
+      "line": 0
+    },
+    {
+      "severity": "high",
+      "code": "SEC-006",
+      "message": "Third-party actions must be pinned to specific SHA, not branch",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/application-release.yaml",
+      "line": 47
+    },
+    {
+      "severity": "high",
+      "code": "SEC-006",
+      "message": "Third-party actions must be pinned to specific SHA, not branch",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/application-release.yaml",
+      "line": 74
+    },
+    {
+      "severity": "critical",
+      "code": "SEC-002",
+      "message": "Potential script injection from unsanitized GitHub context variables in run: block",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/audit.yml",
+      "line": 122
+    },
+    {
+      "severity": "info",
+      "code": "PERF-002",
+      "message": "Consider adding concurrency control",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/release.yml",
+      "line": 0
+    },
+    {
+      "severity": "info",
+      "code": "PERF-001",
+      "message": "Workflow could benefit from dependency caching",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/test-run-tests-action.yml",
+      "line": 0
+    },
+    {
+      "severity": "info",
+      "code": "PERF-002",
+      "message": "Consider adding concurrency control",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/test-run-tests-action.yml",
+      "line": 0
+    },
+    {
+      "severity": "info",
+      "code": "PERF-001",
+      "message": "Workflow could benefit from dependency caching",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/test-setup-node-action.yml",
+      "line": 0
+    },
+    {
+      "severity": "info",
+      "code": "PERF-002",
+      "message": "Consider adding concurrency control",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/test-setup-node-action.yml",
+      "line": 0
+    },
+    {
+      "severity": "info",
+      "code": "PERF-002",
+      "message": "Consider adding concurrency control",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/deploy-argocd.yaml",
+      "line": 0
+    },
+    {
+      "severity": "medium",
+      "code": "PERF-003",
+      "message": "Job missing timeout-minutes configuration",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/deploy-argocd.yaml",
+      "line": 0
+    },
+    {
+      "severity": "info",
+      "code": "PERF-002",
+      "message": "Consider adding concurrency control",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/iac-plan.yaml",
+      "line": 0
+    },
+    {
+      "severity": "medium",
+      "code": "PERF-003",
+      "message": "Job missing timeout-minutes configuration",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/iac-plan.yaml",
+      "line": 0
+    },
+    {
+      "severity": "info",
+      "code": "PERF-001",
+      "message": "Workflow could benefit from dependency caching",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/security-scan.yaml",
+      "line": 0
+    },
+    {
+      "severity": "info",
+      "code": "PERF-002",
+      "message": "Consider adding concurrency control",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/security-scan.yaml",
+      "line": 0
+    },
+    {
+      "severity": "medium",
+      "code": "PERF-003",
+      "message": "Job missing timeout-minutes configuration",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/security-scan.yaml",
+      "line": 0
+    },
+    {
+      "severity": "medium",
+      "code": "PERF-001",
+      "message": "Cache action missing key or restore-keys configuration",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/build-and-test.yaml",
+      "line": 0
+    },
+    {
+      "severity": "info",
+      "code": "PERF-002",
+      "message": "Consider adding concurrency control",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/build-and-test.yaml",
+      "line": 0
+    },
+    {
+      "severity": "medium",
+      "code": "PERF-003",
+      "message": "Job missing timeout-minutes configuration",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/build-and-test.yaml",
+      "line": 0
+    },
+    {
+      "severity": "info",
+      "code": "PERF-002",
+      "message": "Consider adding concurrency control",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/vault-client.yml",
+      "line": 0
+    },
+    {
+      "severity": "medium",
+      "code": "PERF-003",
+      "message": "Job missing timeout-minutes configuration",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/vault-client.yml",
+      "line": 0
+    },
+    {
+      "severity": "info",
+      "code": "PERF-002",
+      "message": "Consider adding concurrency control",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/migrate.yml",
+      "line": 0
+    },
+    {
+      "severity": "medium",
+      "code": "PERF-003",
+      "message": "Job missing timeout-minutes configuration",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/migrate.yml",
+      "line": 0
+    },
+    {
+      "severity": "info",
+      "code": "PERF-002",
+      "message": "Consider adding concurrency control",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/application-release.yaml",
+      "line": 0
+    },
+    {
+      "severity": "medium",
+      "code": "PERF-003",
+      "message": "Job missing timeout-minutes configuration",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/workflows/application-release.yaml",
+      "line": 0
+    },
+    {
+      "severity": "info",
+      "code": "PERF-002",
+      "message": "Consider adding concurrency control",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/update-github-diagram.yml",
+      "line": 0
+    },
+    {
+      "severity": "info",
+      "code": "PERF-001",
+      "message": "Workflow could benefit from dependency caching",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/audit.yml",
+      "line": 0
+    },
+    {
+      "severity": "info",
+      "code": "PERF-002",
+      "message": "Consider adding concurrency control",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/audit.yml",
+      "line": 0
+    },
+    {
+      "severity": "medium",
+      "code": "PERF-003",
+      "message": "Job missing timeout-minutes configuration",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/audit.yml",
+      "line": 0
+    },
+    {
+      "severity": "info",
+      "code": "PERF-002",
+      "message": "Consider adding concurrency control",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/docker.yml",
+      "line": 0
+    },
+    {
+      "severity": "info",
+      "code": "PERF-001",
+      "message": "Workflow could benefit from dependency caching",
+      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/ci.yml",
+      "line": 0
+    }
+  ]
+}

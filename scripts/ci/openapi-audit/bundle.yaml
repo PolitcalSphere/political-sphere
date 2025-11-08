@@ -1,0 +1,3471 @@
+openapi: 3.1.0
+jsonSchemaDialect: 'https://spec.openapis.org/oas/3.1/dialect/base'
+info:
+  title: Political Sphere API
+  version: 1.0.0
+  description: |
+    REST API for the Political Sphere platform - a UK-focused multiplayer political simulation.
+
+    This API provides endpoints for:
+    - User authentication and management
+    - Political party operations
+    - Voting and governance actions
+    - News and content moderation
+    - Game simulation state
+    - Real-time multiplayer interactions
+
+    ## Key Features
+
+    - **Democratic Integrity**: All voting operations are cryptographically verifiable
+    - **Real-time Updates**: WebSocket integration for live game state
+    - **Content Moderation**: AI-assisted moderation with human oversight
+    - **Multi-party Support**: Complex coalition and opposition dynamics
+    - **Audit Trails**: Complete traceability of all governance actions
+
+    ## Authentication
+
+    The API uses JWT tokens for authentication. Obtain tokens via `/auth/login` or `/auth/register`.
+
+    ## Rate Limiting
+
+    - **Public endpoints**: 100 requests per minute
+    - **Authenticated endpoints**: 1000 requests per minute
+    - **Voting endpoints**: 10 votes per minute per user
+    - **Administrative endpoints**: 100 requests per minute
+
+    ## Versioning
+
+    API versioning follows semantic versioning. Breaking changes increment the major version.
+    Current version: v1
+
+    ## Security Considerations
+
+    ### Token Storage
+    - Store JWT tokens in httpOnly cookies or secure storage
+    - Never store tokens in localStorage
+    - Implement CSRF protection for cookie-based auth
+
+    ### HTTPS Requirements
+    - All endpoints REQUIRE HTTPS in production
+    - TLS 1.3 minimum
+    - Certificate pinning recommended for mobile clients
+
+    ### Rate Limiting
+    Rate limits are enforced per IP address and per authenticated user.
+    Exceeded limits return HTTP 429 with Retry-After header.
+
+    ### CORS Policy
+    CORS is restricted to approved origins only.
+    See https://docs.political-sphere.com/cors for approved domains.
+
+    ### Content Security
+    - All user-generated content is sanitized
+    - Markdown rendering uses CommonMark with XSS protection
+    - File uploads are scanned for malware
+
+    ### Audit Logging
+    All security-relevant actions are logged immutably.
+    Audit logs retained for 7 years per GDPR requirements.
+  contact:
+    name: Political Sphere Development Team
+    email: api@political-sphere.com
+    url: 'https://political-sphere.com'
+  license:
+    name: MIT
+    identifier: MIT
+  termsOfService: 'https://political-sphere.com/terms'
+  x-api-version-lifecycle:
+    currentVersion: 1.0.0
+    supportedVersions:
+      - 1.0.0
+    deprecatedVersions: []
+    sunsetVersions: []
+    sunsetPolicy:
+      minNotificationDays: 180
+      minSupportDays: 365
+    changelog:
+      url: 'https://github.com/PoliticalSphere/api/blob/main/apps/api/openapi/CHANGELOG.md'
+    migrationGuides:
+      url: 'https://docs.political-sphere.com/migration'
+externalDocs:
+  description: Complete API Documentation
+  url: 'https://docs.political-sphere.com'
+servers:
+  - url: 'https://{environment}.political-sphere.com/api/{version}'
+    description: |
+      Configurable environment server.
+      Environment options: api (production), api-staging, api-dev
+      Version options: v1, v2
+    variables:
+      environment:
+        default: api
+        enum:
+          - api
+          - api-staging
+          - api-dev
+      version:
+        default: v1
+        enum:
+          - v1
+          - v2
+  - url: 'http://localhost:{port}/api/v1'
+    description: |
+      Local development server (DEVELOPMENT ONLY - NOT FOR PRODUCTION).
+      ⚠️ HTTP is insecure. Use HTTPS in production environments.
+      Default port: 3000
+    variables:
+      port:
+        default: '3000'
+tags:
+  - name: auth
+    description: Authentication and authorization operations
+    externalDocs:
+      description: Authentication Guide
+      url: 'https://docs.political-sphere.com/auth'
+  - name: users
+    description: User management and profiles
+  - name: parties
+    description: Political party operations and management
+  - name: votes
+    description: Voting and governance actions
+  - name: news
+    description: News articles and content moderation
+  - name: simulation
+    description: Game simulation state and controls
+  - name: websocket
+    description: Real-time WebSocket connections
+  - name: admin
+    description: Administrative operations
+  - name: health
+    description: System health and monitoring
+    x-displayName: "\U0001F3E5 Health & Status"
+    x-tag-expanded: false
+webhooks:
+  voteCompleted:
+    post:
+      summary: Vote completion notification
+      description: Incoming webhook when a vote is completed
+      operationId: webhookVoteCompleted
+      tags:
+        - votes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - voteId
+                - status
+                - results
+                - timestamp
+              properties:
+                voteId:
+                  type: string
+                  format: uuid
+                  description: Unique identifier of the completed vote
+                status:
+                  type: string
+                  enum:
+                    - completed
+                    - cancelled
+                  description: Final status of the vote
+                results:
+                  type: object
+                  description: Vote results summary
+                  properties:
+                    totalVotes:
+                      type: integer
+                      minimum: 0
+                    yesVotes:
+                      type: integer
+                      minimum: 0
+                    noVotes:
+                      type: integer
+                      minimum: 0
+                    abstainVotes:
+                      type: integer
+                      minimum: 0
+                timestamp:
+                  type: string
+                  format: date-time
+                  description: Timestamp when vote was completed
+      responses:
+        '200':
+          description: Webhook acknowledged successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  acknowledged:
+                    type: boolean
+                    example: true
+        '410':
+          description: Webhook subscription no longer valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  partyEvent:
+    post:
+      summary: Party event notification
+      description: Incoming webhook for party-related events
+      operationId: webhookPartyEvent
+      tags:
+        - parties
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - eventType
+                - partyId
+                - data
+                - timestamp
+              properties:
+                eventType:
+                  type: string
+                  enum:
+                    - member_joined
+                    - member_left
+                    - leadership_changed
+                    - party_updated
+                    - party_created
+                    - party_dissolved
+                  description: Type of party event
+                partyId:
+                  type: string
+                  format: uuid
+                  description: Unique identifier of the party
+                data:
+                  type: object
+                  description: Event-specific data
+                timestamp:
+                  type: string
+                  format: date-time
+                  description: Event timestamp
+      responses:
+        '200':
+          description: Webhook acknowledged successfully
+        '410':
+          description: Webhook subscription no longer valid
+  newsModeration:
+    post:
+      summary: News moderation result
+      description: Incoming webhook when news article moderation is complete
+      operationId: webhookNewsModeration
+      tags:
+        - news
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - articleId
+                - status
+                - moderationResult
+                - timestamp
+              properties:
+                articleId:
+                  type: string
+                  format: uuid
+                  description: Unique identifier of the moderated article
+                status:
+                  type: string
+                  enum:
+                    - approved
+                    - rejected
+                    - flagged
+                    - pending_review
+                  description: Moderation decision
+                moderationResult:
+                  type: object
+                  required:
+                    - score
+                  properties:
+                    score:
+                      type: number
+                      minimum: 0
+                      maximum: 1
+                      description: AI moderation confidence score
+                    reasons:
+                      type: array
+                      items:
+                        type: string
+                      description: Reasons for moderation decision
+                    reviewedBy:
+                      type: string
+                      format: uuid
+                      description: Moderator user ID (if human-reviewed)
+                timestamp:
+                  type: string
+                  format: date-time
+                  description: Moderation completion timestamp
+      responses:
+        '200':
+          description: Webhook acknowledged successfully
+        '410':
+          description: Webhook subscription no longer valid
+paths:
+  /health:
+    get:
+      tags:
+        - health
+      summary: Health check endpoint
+      description: Returns the health status of the API and all dependent services
+      operationId: getHealth
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: ok
+                timestamp: '2025-11-08T10:30:00Z'
+                uptime: 3600
+                version: 1.0.0
+                services:
+                  database: ok
+                  redis: ok
+                  websocket: ok
+        '503':
+          description: Service is unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /health/detailed:
+    get:
+      tags:
+        - health
+      summary: Detailed health check
+      description: Comprehensive health check including all services and metrics
+      operationId: getDetailedHealth
+      security:
+        - bearerAuth: []
+        - oauth2Auth:
+            - admin
+      responses:
+        '200':
+          description: Detailed health information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedHealthResponse'
+  /auth/register:
+    post:
+      tags:
+        - auth
+      summary: Register new user
+      description: Create a new user account with email verification
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+            example:
+              email: user@example.com
+              password: SecurePass123!
+              username: political_user
+              firstName: John
+              lastName: Citizen
+              dateOfBirth: '1990-01-01'
+              country: GB
+              acceptedTerms: true
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Invalid registration data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '409':
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: User login
+      description: |
+        Authenticate user and return JWT tokens.
+
+        **Rate Limit**: 10 requests per minute per IP address.
+        Exceeded limits return HTTP 429 with Retry-After header.
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            example:
+              email: user@example.com
+              password: SecurePass123!
+              rememberMe: true
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/refresh:
+    post:
+      tags:
+        - auth
+      summary: Refresh access token
+      description: Exchange refresh token for new access token
+      operationId: refreshToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+      responses:
+        '200':
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Invalid refresh token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/logout:
+    post:
+      tags:
+        - auth
+      summary: Logout user
+      description: Invalidate current session tokens
+      operationId: logoutUser
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Logged out successfully
+        '401':
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/verify-email:
+    post:
+      tags:
+        - auth
+      summary: Verify email address
+      description: Verify user email with confirmation token
+      operationId: verifyEmail
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailVerification'
+      responses:
+        '200':
+          description: Email verified successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Email verified successfully
+        '400':
+          description: Invalid verification token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/forgot-password:
+    post:
+      tags:
+        - auth
+      summary: Request password reset
+      description: Send password reset email to user
+      operationId: forgotPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+      responses:
+        '200':
+          description: Password reset email sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Password reset email sent
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/reset-password:
+    post:
+      tags:
+        - auth
+      summary: Reset password
+      description: Reset user password with reset token
+      operationId: resetPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+      responses:
+        '200':
+          description: Password reset successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Password reset successfully
+        '400':
+          description: Invalid reset token or password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+  /users/me:
+    get:
+      tags:
+        - users
+      summary: Get current user profile
+      description: Retrieve the authenticated user's profile information
+      operationId: getCurrentUser
+      security:
+        - bearerAuth: []
+        - oauth2Auth:
+            - 'read:user'
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      tags:
+        - users
+      summary: Update current user profile
+      description: Update the authenticated user's profile information
+      operationId: updateCurrentUser
+      security:
+        - bearerAuth: []
+        - oauth2Auth:
+            - 'write:user'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: User profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '400':
+          description: Invalid update data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+  '/users/{userId}':
+    get:
+      tags:
+        - users
+      summary: Get user profile by ID
+      description: Retrieve a user's public profile information
+      operationId: getUserById
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Unique identifier of the user
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicUserProfile'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/users/{userId}/activity':
+    get:
+      tags:
+        - users
+      summary: Get user activity history
+      description: Retrieve a user's recent activity and contributions
+      operationId: getUserActivity
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: User activity retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserActivityResponse'
+  /parties:
+    get:
+      tags:
+        - parties
+      summary: List political parties
+      description: Retrieve a paginated list of all political parties
+      operationId: listParties
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+            enum:
+              - name
+              - memberCount
+              - founded
+              - popularity
+            default: popularity
+        - name: sortOrder
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: desc
+      responses:
+        '200':
+          description: Parties retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartyListResponse'
+    post:
+      tags:
+        - parties
+      summary: Create new political party
+      description: Create a new political party (requires authentication)
+      operationId: createParty
+      security:
+        - bearerAuth: []
+        - oauth2Auth:
+            - 'write:parties'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PartyCreation'
+      responses:
+        '201':
+          description: Party created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Party'
+        '400':
+          description: Invalid party data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/parties/{partyId}':
+    get:
+      tags:
+        - parties
+      summary: Get party details
+      description: Retrieve detailed information about a specific political party
+      operationId: getParty
+      parameters:
+        - name: partyId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Party details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Party'
+        '404':
+          description: Party not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      tags:
+        - parties
+      summary: Update party
+      description: Update party information (party leaders and officers only)
+      operationId: updateParty
+      security:
+        - bearerAuth: []
+        - oauth2Auth:
+            - 'write:parties'
+      parameters:
+        - name: partyId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PartyUpdate'
+      responses:
+        '200':
+          description: Party updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Party'
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/parties/{partyId}/members':
+    get:
+      tags:
+        - parties
+      summary: Get party members
+      description: Retrieve list of party members with their roles
+      operationId: getPartyMembers
+      parameters:
+        - name: partyId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: role
+          in: query
+          schema:
+            type: string
+            enum:
+              - leader
+              - officer
+              - member
+      responses:
+        '200':
+          description: Party members retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartyMembersResponse'
+    post:
+      tags:
+        - parties
+      summary: Join party
+      description: Request to join a political party
+      operationId: joinParty
+      security:
+        - bearerAuth: []
+        - oauth2Auth:
+            - 'write:parties'
+      parameters:
+        - name: partyId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Join request submitted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Join request submitted
+                  requestId:
+                    type: string
+                    format: uuid
+        '409':
+          description: Already a member or pending request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/parties/{partyId}/members/{userId}':
+    delete:
+      tags:
+        - parties
+      summary: Remove party member
+      description: Remove a member from the party (party leaders only)
+      operationId: removePartyMember
+      security:
+        - bearerAuth: []
+        - oauth2Auth:
+            - 'write:parties'
+      parameters:
+        - name: partyId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Member removed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Member removed successfully
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /votes:
+    get:
+      tags:
+        - votes
+      summary: List active votes
+      description: Retrieve a list of currently active votes and proposals
+      operationId: listActiveVotes
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+            enum:
+              - legislation
+              - policy
+              - election
+              - referendum
+              - impeachment
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum:
+              - active
+              - upcoming
+              - completed
+            default: active
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 20
+      responses:
+        '200':
+          description: Active votes retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoteListResponse'
+    post:
+      tags:
+        - votes
+      summary: Create new vote/proposal
+      description: Create a new vote or legislative proposal
+      operationId: createVote
+      security:
+        - bearerAuth: []
+        - oauth2Auth:
+            - 'write:votes'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VoteCreation'
+      responses:
+        '201':
+          description: Vote created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vote'
+        '400':
+          description: Invalid vote data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '403':
+          description: Insufficient permissions to create votes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/votes/{voteId}':
+    get:
+      tags:
+        - votes
+      summary: Get vote details
+      description: Retrieve detailed information about a specific vote
+      operationId: getVote
+      parameters:
+        - name: voteId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Vote details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoteDetail'
+        '404':
+          description: Vote not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/votes/{voteId}/cast':
+    post:
+      tags:
+        - votes
+      summary: Cast vote
+      description: |
+        Cast a vote on an active proposal (cryptographically signed).
+
+        **Rate Limit**: 10 votes per minute per authenticated user.
+        Prevents vote manipulation and ensures fair democratic process.
+      operationId: castVote
+      security:
+        - bearerAuth: []
+        - oauth2Auth:
+            - 'write:votes'
+      parameters:
+        - name: voteId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VoteCast'
+      responses:
+        '200':
+          description: Vote cast successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoteReceipt'
+        '400':
+          description: Invalid vote or already voted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Not eligible to vote
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/votes/{voteId}/results':
+    get:
+      tags:
+        - votes
+      summary: Get vote results
+      description: Retrieve current or final results of a vote
+      operationId: getVoteResults
+      parameters:
+        - name: voteId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: includeBreakdown
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: Include detailed breakdown by demographic
+      responses:
+        '200':
+          description: Vote results retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoteResults'
+        '404':
+          description: Vote not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /news:
+    get:
+      tags:
+        - news
+      summary: List news articles
+      description: Retrieve paginated list of news articles
+      operationId: listNews
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+            enum:
+              - politics
+              - economy
+              - international
+              - local
+              - opinion
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum:
+              - published
+              - draft
+              - archived
+            default: published
+        - name: author
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 20
+      responses:
+        '200':
+          description: News articles retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsListResponse'
+    post:
+      tags:
+        - news
+      summary: Create news article
+      description: Create a new news article (journalists and moderators only)
+      operationId: createNewsArticle
+      security:
+        - bearerAuth: []
+        - oauth2Auth:
+            - 'write:news'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsArticleCreation'
+      responses:
+        '201':
+          description: Article created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsArticle'
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/news/{articleId}':
+    get:
+      tags:
+        - news
+      summary: Get news article
+      description: Retrieve a specific news article
+      operationId: getNewsArticle
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Article retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsArticle'
+        '404':
+          description: Article not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      tags:
+        - news
+      summary: Update news article
+      description: Update an existing news article
+      operationId: updateNewsArticle
+      security:
+        - bearerAuth: []
+        - oauth2Auth:
+            - 'write:news'
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsArticleUpdate'
+      responses:
+        '200':
+          description: Article updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsArticle'
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - news
+      summary: Delete news article
+      description: Delete a news article (moderators only)
+      operationId: deleteNewsArticle
+      security:
+        - bearerAuth: []
+        - oauth2Auth:
+            - 'write:news'
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Article deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Article deleted successfully
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /simulation/state:
+    get:
+      tags:
+        - simulation
+      summary: Get simulation state
+      description: Retrieve current game simulation state
+      operationId: getSimulationState
+      responses:
+        '200':
+          description: Simulation state retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimulationState'
+        '503':
+          description: Simulation service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /simulation/control:
+    post:
+      tags:
+        - simulation
+      summary: Control simulation
+      description: 'Start, pause, or reset the game simulation (admin only)'
+      operationId: controlSimulation
+      security:
+        - bearerAuth: []
+        - oauth2Auth:
+            - admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimulationControl'
+      responses:
+        '200':
+          description: Simulation control command executed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimulationStatus'
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /websocket/auth:
+    post:
+      tags:
+        - websocket
+      summary: Get WebSocket authentication token
+      description: Obtain a temporary token for WebSocket authentication
+      operationId: getWebSocketToken
+      security:
+        - bearerAuth: []
+        - oauth2Auth:
+            - 'read:user'
+      responses:
+        '200':
+          description: WebSocket token generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - token
+                  - expiresAt
+                properties:
+                  token:
+                    type: string
+                    description: JWT token for WebSocket authentication
+                  expiresAt:
+                    type: string
+                    format: date-time
+                    description: Token expiration time
+        '401':
+          description: Invalid authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /admin/users:
+    get:
+      tags:
+        - admin
+      summary: List all users (admin)
+      description: Administrative endpoint to list all users
+      operationId: adminListUsers
+      security:
+        - bearerAuth: []
+        - oauth2Auth:
+            - admin
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 50
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum:
+              - active
+              - suspended
+              - banned
+              - pending
+      responses:
+        '200':
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminUserListResponse'
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/admin/users/{userId}/status':
+    patch:
+      tags:
+        - admin
+      summary: Update user status (admin)
+      description: 'Change user account status (suspend, ban, etc.)'
+      operationId: adminUpdateUserStatus
+      security:
+        - bearerAuth: []
+          mutualTLS: []
+        - oauth2Auth:
+            - admin
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUserStatusUpdate'
+      responses:
+        '200':
+          description: User status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /admin/audit:
+    get:
+      tags:
+        - admin
+      summary: Get audit logs (admin)
+      description: Retrieve system audit logs for compliance and monitoring
+      operationId: getAuditLogs
+      security:
+        - bearerAuth: []
+          mutualTLS: []
+        - oauth2Auth:
+            - admin
+      parameters:
+        - name: startDate
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: action
+          in: query
+          schema:
+            type: string
+            enum:
+              - login
+              - logout
+              - vote
+              - create_party
+              - create_news
+              - admin_action
+        - name: userId
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 50
+      responses:
+        '200':
+          description: Audit logs retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditLogResponse'
+        '403':
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - timestamp
+      properties:
+        status:
+          type: string
+          enum:
+            - ok
+            - degraded
+            - error
+          description: Overall health status
+        timestamp:
+          type: string
+          format: date-time
+          description: Health check timestamp
+        uptime:
+          type: number
+          description: Server uptime in seconds
+        version:
+          type: string
+          description: API version
+        services:
+          type: object
+          description: Individual service health statuses
+          properties:
+            database:
+              type: string
+              enum:
+                - ok
+                - degraded
+                - error
+            redis:
+              type: string
+              enum:
+                - ok
+                - degraded
+                - error
+            websocket:
+              type: string
+              enum:
+                - ok
+                - degraded
+                - error
+            simulation:
+              type: string
+              enum:
+                - ok
+                - degraded
+                - error
+    DetailedHealthResponse:
+      allOf:
+        - $ref: '#/components/schemas/HealthResponse'
+        - type: object
+          properties:
+            metrics:
+              type: object
+              properties:
+                activeConnections:
+                  type: integer
+                  description: Number of active WebSocket connections
+                pendingVotes:
+                  type: integer
+                  description: Number of votes awaiting processing
+                queueDepth:
+                  type: integer
+                  description: Background job queue depth
+                memoryUsage:
+                  type: number
+                  description: Memory usage percentage
+                cpuUsage:
+                  type: number
+                  description: CPU usage percentage
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+              example: VALIDATION_ERROR
+            message:
+              type: string
+              description: Human-readable error message
+              example: The provided data is invalid
+            details:
+              type: object
+              description: Additional error context
+              example:
+                field: email
+                reason: must be a valid email address
+            traceId:
+              type: string
+              description: Request trace ID for debugging
+              example: abc-123-def-456
+            timestamp:
+              type: string
+              format: date-time
+              description: Error timestamp
+    ValidationError:
+      type: object
+      required:
+        - error
+        - validationErrors
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: VALIDATION_ERROR
+            message:
+              type: string
+              example: Validation failed
+        validationErrors:
+          type: array
+          items:
+            type: object
+            required:
+              - field
+              - message
+            properties:
+              field:
+                type: string
+                example: email
+              message:
+                type: string
+                example: must be a valid email address
+              code:
+                type: string
+                example: INVALID_FORMAT
+    ProblemDetails:
+      type: object
+      required:
+        - type
+        - title
+        - status
+      properties:
+        type:
+          type: string
+          format: uri
+          description: URI reference identifying the problem type
+          default: 'about:blank'
+          example: 'https://api.political-sphere.com/problems/validation-error'
+        title:
+          type: string
+          description: 'Short, human-readable summary of the problem type'
+          example: Validation Error
+        status:
+          type: integer
+          description: HTTP status code
+          minimum: 100
+          maximum: 599
+          example: 400
+        detail:
+          type: string
+          description: Human-readable explanation specific to this occurrence
+          example: The email field must be a valid email address
+        instance:
+          type: string
+          format: uri
+          description: URI reference identifying this specific occurrence
+          example: /auth/register
+        traceId:
+          type: string
+          format: uuid
+          description: Request trace ID for debugging and correlation
+          example: 550e8400-e29b-41d4-a716-446655440000
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp when the error occurred
+          example: '2025-11-08T14:32:15Z'
+        errors:
+          type: array
+          description: Array of detailed field-specific validation errors
+          items:
+            type: object
+            required:
+              - field
+              - message
+            properties:
+              field:
+                type: string
+                description: Name of the field that failed validation
+                example: email
+              message:
+                type: string
+                description: Validation error message for this field
+                example: must be a valid email address
+              code:
+                type: string
+                description: Machine-readable error code for this field
+                example: INVALID_FORMAT
+              location:
+                type: string
+                enum:
+                  - body
+                  - query
+                  - path
+                  - header
+                description: Location of the invalid field
+                example: body
+      description: |
+        RFC 7807 Problem Details for HTTP APIs.
+
+        This schema follows the IETF RFC 7807 standard for machine-readable 
+        error details in HTTP APIs. It provides a consistent error response 
+        format across all endpoints.
+
+        References:
+        - RFC 7807: https://tools.ietf.org/html/rfc7807
+        - IANA Media Type: application/problem+json
+      externalDocs:
+        description: RFC 7807 Problem Details for HTTP APIs
+        url: 'https://tools.ietf.org/html/rfc7807'
+    PaginationMeta:
+      type: object
+      required:
+        - page
+        - limit
+        - total
+        - totalPages
+      properties:
+        page:
+          type: integer
+          minimum: 1
+          example: 1
+        limit:
+          type: integer
+          minimum: 1
+          example: 20
+        total:
+          type: integer
+          minimum: 0
+          example: 150
+        totalPages:
+          type: integer
+          minimum: 1
+          example: 8
+    UserRegistration:
+      type: object
+      required:
+        - email
+        - password
+        - username
+        - firstName
+        - lastName
+        - dateOfBirth
+        - country
+        - acceptedTerms
+      properties:
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: john.citizen@example.com
+        password:
+          type: string
+          format: password
+          minLength: 12
+          description: 'Strong password (min 12 chars, mixed case, numbers, symbols)'
+          example: SecurePass123!
+        username:
+          type: string
+          pattern: '^[a-zA-Z0-9_-]{3,30}$'
+          description: 'Unique username (3-30 chars, alphanumeric, underscore, hyphen)'
+          example: john_citizen
+        firstName:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: John
+        lastName:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: Citizen
+        dateOfBirth:
+          type: string
+          format: date
+          description: Date of birth (must be 18+ years ago)
+          example: '1990-01-15'
+        country:
+          type: string
+          pattern: '^[A-Z]{2}$'
+          description: ISO 3166-1 alpha-2 country code
+          example: GB
+        acceptedTerms:
+          type: boolean
+          description: Must be true to register
+          example: true
+        preferredLanguage:
+          type: string
+          pattern: '^[a-z]{2}(-[A-Z]{2})?$'
+          description: ISO 639-1 language code
+          example: en-GB
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: john.citizen@example.com
+        password:
+          type: string
+          format: password
+          example: SecurePass123!
+        rememberMe:
+          type: boolean
+          default: false
+          description: Request longer-lived refresh token
+    AuthResponse:
+      type: object
+      required:
+        - user
+        - tokens
+      properties:
+        user:
+          $ref: '#/components/schemas/UserProfile'
+        tokens:
+          type: object
+          required:
+            - accessToken
+            - refreshToken
+            - expiresIn
+          properties:
+            accessToken:
+              type: string
+              description: JWT access token
+              example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+            refreshToken:
+              type: string
+              description: JWT refresh token (store securely)
+              example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+            expiresIn:
+              type: integer
+              description: Access token expiration time in seconds
+              example: 3600
+            tokenType:
+              type: string
+              example: Bearer
+    RefreshTokenRequest:
+      type: object
+      required:
+        - refreshToken
+      properties:
+        refreshToken:
+          type: string
+          description: Valid refresh token
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+    EmailVerification:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          description: Email verification token from email link
+          example: abc123def456
+    PasswordReset:
+      type: object
+      required:
+        - token
+        - newPassword
+      properties:
+        token:
+          type: string
+          description: Password reset token from email
+          example: reset_abc123def456
+        newPassword:
+          type: string
+          format: password
+          minLength: 12
+          description: New strong password
+          example: NewSecurePass456!
+    UserProfile:
+      type: object
+      required:
+        - id
+        - email
+        - username
+        - firstName
+        - lastName
+        - status
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        email:
+          type: string
+          format: email
+          example: john.citizen@example.com
+        username:
+          type: string
+          example: john_citizen
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: Citizen
+        avatar:
+          type: string
+          format: uri
+          description: Avatar image URL
+          example: 'https://api.political-sphere.com/avatars/123.jpg'
+        bio:
+          type: string
+          maxLength: 500
+          description: User biography
+          example: Passionate about democratic reform and civic engagement.
+        country:
+          type: string
+          pattern: '^[A-Z]{2}$'
+          example: GB
+        preferredLanguage:
+          type: string
+          example: en-GB
+        status:
+          type: string
+          enum:
+            - active
+            - suspended
+            - banned
+            - pending_verification
+          example: active
+        emailVerified:
+          type: boolean
+          example: true
+        lastLoginAt:
+          type: string
+          format: date-time
+          example: '2025-11-08T10:30:00Z'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2025-01-15T09:00:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2025-11-08T10:30:00Z'
+        roles:
+          type: array
+          items:
+            type: string
+            enum:
+              - user
+              - journalist
+              - moderator
+              - party_leader
+              - admin
+          example:
+            - user
+            - journalist
+        stats:
+          type: object
+          properties:
+            votesCast:
+              type: integer
+              example: 42
+            proposalsCreated:
+              type: integer
+              example: 3
+            articlesWritten:
+              type: integer
+              example: 15
+    PublicUserProfile:
+      type: object
+      description: Publicly visible user information (no sensitive data)
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        avatar:
+          type: string
+          format: uri
+        bio:
+          type: string
+        country:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        stats:
+          type: object
+          properties:
+            votesCast:
+              type: integer
+            proposalsCreated:
+              type: integer
+            articlesWritten:
+              type: integer
+    UserUpdate:
+      type: object
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+          maxLength: 50
+        lastName:
+          type: string
+          minLength: 1
+          maxLength: 50
+        avatar:
+          type: string
+          format: uri
+        bio:
+          type: string
+          maxLength: 500
+        preferredLanguage:
+          type: string
+          pattern: '^[a-z]{2}(-[A-Z]{2})?$'
+    UserActivityResponse:
+      type: object
+      required:
+        - userId
+        - activities
+        - meta
+      properties:
+        userId:
+          type: string
+          format: uuid
+        activities:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - type
+              - description
+              - timestamp
+            properties:
+              id:
+                type: string
+                format: uuid
+              type:
+                type: string
+                enum:
+                  - vote
+                  - proposal
+                  - article
+                  - party_join
+                  - comment
+              description:
+                type: string
+                example: Voted on 'Healthcare Reform Bill'
+              timestamp:
+                type: string
+                format: date-time
+              metadata:
+                type: object
+                description: Additional activity-specific data
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    Party:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - founded
+        - status
+        - memberCount
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174001
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: Progressive Alliance
+        shortName:
+          type: string
+          maxLength: 10
+          example: PA
+        description:
+          type: string
+          minLength: 10
+          maxLength: 2000
+          example: A progressive party focused on social justice and environmental protection.
+        manifesto:
+          type: string
+          description: Full party manifesto text
+          example: We believe in...
+        logo:
+          type: string
+          format: uri
+          description: Party logo URL
+        color:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+          description: Party brand color (hex)
+          example: '#FF6B6B'
+        founded:
+          type: string
+          format: date
+          example: '2025-01-01'
+        status:
+          type: string
+          enum:
+            - active
+            - suspended
+            - dissolved
+          example: active
+        memberCount:
+          type: integer
+          minimum: 0
+          example: 1250
+        leader:
+          $ref: '#/components/schemas/PublicUserProfile'
+        officers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicUserProfile'
+        policies:
+          type: array
+          items:
+            type: object
+            required:
+              - category
+              - title
+              - summary
+            properties:
+              category:
+                type: string
+                enum:
+                  - economy
+                  - healthcare
+                  - education
+                  - environment
+                  - defense
+                  - foreign_policy
+                  - justice
+                  - technology
+              title:
+                type: string
+              summary:
+                type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    PartyCreation:
+      type: object
+      required:
+        - name
+        - description
+        - manifesto
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+        shortName:
+          type: string
+          maxLength: 10
+        description:
+          type: string
+          minLength: 10
+          maxLength: 2000
+        manifesto:
+          type: string
+          minLength: 100
+        logo:
+          type: string
+          format: uri
+        color:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+    PartyUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+        shortName:
+          type: string
+          maxLength: 10
+        description:
+          type: string
+          minLength: 10
+          maxLength: 2000
+        manifesto:
+          type: string
+          minLength: 100
+        logo:
+          type: string
+          format: uri
+        color:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+    PartyListResponse:
+      type: object
+      required:
+        - parties
+        - meta
+      properties:
+        parties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Party'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    PartyMembersResponse:
+      type: object
+      required:
+        - partyId
+        - members
+        - meta
+      properties:
+        partyId:
+          type: string
+          format: uuid
+        members:
+          type: array
+          items:
+            type: object
+            required:
+              - user
+              - role
+              - joinedAt
+            properties:
+              user:
+                $ref: '#/components/schemas/PublicUserProfile'
+              role:
+                type: string
+                enum:
+                  - leader
+                  - officer
+                  - member
+              joinedAt:
+                type: string
+                format: date-time
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    Vote:
+      type: object
+      required:
+        - id
+        - title
+        - description
+        - type
+        - status
+        - createdBy
+        - startDate
+        - endDate
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+          minLength: 5
+          maxLength: 200
+        description:
+          type: string
+          minLength: 20
+          maxLength: 5000
+        type:
+          type: string
+          enum:
+            - legislation
+            - policy
+            - election
+            - referendum
+            - impeachment
+            - budget
+        category:
+          type: string
+          enum:
+            - economy
+            - healthcare
+            - education
+            - environment
+            - defense
+            - foreign_policy
+            - justice
+            - technology
+            - constitutional
+        status:
+          type: string
+          enum:
+            - draft
+            - pending_approval
+            - active
+            - completed
+            - cancelled
+            - rejected
+        createdBy:
+          $ref: '#/components/schemas/PublicUserProfile'
+        proposer:
+          $ref: '#/components/schemas/PublicUserProfile'
+        sponsor:
+          $ref: '#/components/schemas/PublicUserProfile'
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        quorum:
+          type: integer
+          description: Minimum votes required for validity
+        majorityType:
+          type: string
+          enum:
+            - simple
+            - qualified
+            - supermajority
+          description: Type of majority required
+        options:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - text
+            properties:
+              id:
+                type: string
+                format: uuid
+              text:
+                type: string
+              description:
+                type: string
+        attachments:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              url:
+                type: string
+                format: uri
+              type:
+                type: string
+                enum:
+                  - document
+                  - image
+                  - video
+                  - audio
+        tags:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    VoteDetail:
+      allOf:
+        - $ref: '#/components/schemas/Vote'
+        - type: object
+          properties:
+            currentResults:
+              $ref: '#/components/schemas/VoteResults'
+            userVote:
+              type: object
+              description: Current user's vote (if authenticated)
+              properties:
+                optionId:
+                  type: string
+                  format: uuid
+                timestamp:
+                  type: string
+                  format: date-time
+                signature:
+                  type: string
+                  description: Cryptographic signature for vote verification
+    VoteCreation:
+      type: object
+      required:
+        - title
+        - description
+        - type
+        - endDate
+      properties:
+        title:
+          type: string
+          minLength: 5
+          maxLength: 200
+        description:
+          type: string
+          minLength: 20
+          maxLength: 5000
+        type:
+          type: string
+          enum:
+            - legislation
+            - policy
+            - election
+            - referendum
+            - impeachment
+            - budget
+        category:
+          type: string
+          enum:
+            - economy
+            - healthcare
+            - education
+            - environment
+            - defense
+            - foreign_policy
+            - justice
+            - technology
+            - constitutional
+        endDate:
+          type: string
+          format: date-time
+          description: Must be in the future
+        quorum:
+          type: integer
+          minimum: 1
+        majorityType:
+          type: string
+          enum:
+            - simple
+            - qualified
+            - supermajority
+          default: simple
+        options:
+          type: array
+          minItems: 2
+          maxItems: 10
+          items:
+            type: object
+            required:
+              - text
+            properties:
+              text:
+                type: string
+                minLength: 1
+                maxLength: 200
+              description:
+                type: string
+                maxLength: 1000
+        attachments:
+          type: array
+          maxItems: 5
+          items:
+            type: object
+            required:
+              - name
+              - url
+              - type
+            properties:
+              name:
+                type: string
+                minLength: 1
+                maxLength: 100
+              url:
+                type: string
+                format: uri
+              type:
+                type: string
+                enum:
+                  - document
+                  - image
+                  - video
+                  - audio
+        tags:
+          type: array
+          maxItems: 10
+          items:
+            type: string
+            maxLength: 50
+    VoteCast:
+      type: object
+      required:
+        - optionId
+      properties:
+        optionId:
+          type: string
+          format: uuid
+          description: ID of the chosen voting option
+        signature:
+          type: string
+          description: Cryptographic signature for vote verification
+        anonymous:
+          type: boolean
+          default: false
+          description: Whether to hide vote from public results
+    VoteReceipt:
+      type: object
+      required:
+        - voteId
+        - optionId
+        - timestamp
+        - receiptId
+        - signature
+      properties:
+        voteId:
+          type: string
+          format: uuid
+        optionId:
+          type: string
+          format: uuid
+        timestamp:
+          type: string
+          format: date-time
+        receiptId:
+          type: string
+          format: uuid
+          description: Unique receipt identifier for verification
+        signature:
+          type: string
+          description: Cryptographic signature of the vote
+        blockHash:
+          type: string
+          description: Blockchain block hash for immutability
+        verificationUrl:
+          type: string
+          format: uri
+          description: URL to verify vote on blockchain
+    VoteResults:
+      type: object
+      required:
+        - voteId
+        - totalVotes
+        - results
+        - status
+      properties:
+        voteId:
+          type: string
+          format: uuid
+        totalVotes:
+          type: integer
+          minimum: 0
+        results:
+          type: array
+          items:
+            type: object
+            required:
+              - optionId
+              - optionText
+              - votes
+              - percentage
+            properties:
+              optionId:
+                type: string
+                format: uuid
+              optionText:
+                type: string
+              votes:
+                type: integer
+                minimum: 0
+              percentage:
+                type: number
+                minimum: 0
+                maximum: 100
+        status:
+          type: string
+          enum:
+            - active
+            - completed
+            - cancelled
+        winner:
+          type: object
+          description: Winning option (for completed votes)
+          properties:
+            optionId:
+              type: string
+              format: uuid
+            optionText:
+              type: string
+            votes:
+              type: integer
+            percentage:
+              type: number
+        breakdown:
+          type: object
+          description: Demographic breakdown (if requested)
+          properties:
+            byParty:
+              type: object
+              description: Results broken down by political party
+            byRegion:
+              type: object
+              description: Results broken down by geographic region
+            byAge:
+              type: object
+              description: Results broken down by age groups
+    VoteListResponse:
+      type: object
+      required:
+        - votes
+        - meta
+      properties:
+        votes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Vote'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    NewsArticle:
+      type: object
+      required:
+        - id
+        - title
+        - content
+        - author
+        - status
+        - publishedAt
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+          minLength: 5
+          maxLength: 200
+        slug:
+          type: string
+          description: URL-friendly title
+        summary:
+          type: string
+          maxLength: 500
+          description: Brief article summary
+        content:
+          type: string
+          description: Full article content (HTML/markdown)
+        category:
+          type: string
+          enum:
+            - politics
+            - economy
+            - international
+            - local
+            - opinion
+            - analysis
+        tags:
+          type: array
+          items:
+            type: string
+            maxLength: 50
+        author:
+          $ref: '#/components/schemas/PublicUserProfile'
+        status:
+          type: string
+          enum:
+            - draft
+            - pending_review
+            - published
+            - archived
+            - rejected
+        publishedAt:
+          type: string
+          format: date-time
+        featuredImage:
+          type: string
+          format: uri
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+                format: uri
+              caption:
+                type: string
+              alt:
+                type: string
+        sources:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              url:
+                type: string
+                format: uri
+        moderationStatus:
+          type: object
+          properties:
+            approved:
+              type: boolean
+            moderator:
+              $ref: '#/components/schemas/PublicUserProfile'
+            reason:
+              type: string
+            moderatedAt:
+              type: string
+              format: date-time
+        stats:
+          type: object
+          properties:
+            views:
+              type: integer
+            likes:
+              type: integer
+            comments:
+              type: integer
+            shares:
+              type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    NewsArticleCreation:
+      type: object
+      required:
+        - title
+        - content
+        - category
+      properties:
+        title:
+          type: string
+          minLength: 5
+          maxLength: 200
+        summary:
+          type: string
+          maxLength: 500
+        content:
+          type: string
+          minLength: 100
+        category:
+          type: string
+          enum:
+            - politics
+            - economy
+            - international
+            - local
+            - opinion
+            - analysis
+        tags:
+          type: array
+          maxItems: 10
+          items:
+            type: string
+            maxLength: 50
+        featuredImage:
+          type: string
+          format: uri
+        images:
+          type: array
+          maxItems: 10
+          items:
+            type: object
+            required:
+              - url
+            properties:
+              url:
+                type: string
+                format: uri
+              caption:
+                type: string
+                maxLength: 200
+              alt:
+                type: string
+                maxLength: 200
+        sources:
+          type: array
+          maxItems: 20
+          items:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+                minLength: 1
+                maxLength: 200
+              url:
+                type: string
+                format: uri
+    NewsArticleUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 5
+          maxLength: 200
+        summary:
+          type: string
+          maxLength: 500
+        content:
+          type: string
+          minLength: 100
+        category:
+          type: string
+          enum:
+            - politics
+            - economy
+            - international
+            - local
+            - opinion
+            - analysis
+        tags:
+          type: array
+          maxItems: 10
+          items:
+            type: string
+            maxLength: 50
+        featuredImage:
+          type: string
+          format: uri
+        images:
+          type: array
+          maxItems: 10
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+                format: uri
+              caption:
+                type: string
+                maxLength: 200
+              alt:
+                type: string
+                maxLength: 200
+        sources:
+          type: array
+          maxItems: 20
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                minLength: 1
+                maxLength: 200
+              url:
+                type: string
+                format: uri
+    NewsListResponse:
+      type: object
+      required:
+        - articles
+        - meta
+      properties:
+        articles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewsArticle'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    SimulationState:
+      type: object
+      required:
+        - status
+        - currentTime
+        - speed
+        - activePlayers
+      properties:
+        status:
+          type: string
+          enum:
+            - running
+            - paused
+            - stopped
+            - error
+        currentTime:
+          type: string
+          format: date-time
+          description: Current simulation time
+        speed:
+          type: number
+          minimum: 0
+          maximum: 10
+          description: Simulation speed multiplier
+        activePlayers:
+          type: integer
+          minimum: 0
+        parties:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+              popularity:
+                type: number
+                minimum: 0
+                maximum: 100
+              seats:
+                type: integer
+                minimum: 0
+        economy:
+          type: object
+          properties:
+            gdp:
+              type: number
+            inflation:
+              type: number
+            unemployment:
+              type: number
+        events:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              type:
+                type: string
+              title:
+                type: string
+              description:
+                type: string
+              timestamp:
+                type: string
+                format: date-time
+              impact:
+                type: object
+    SimulationControl:
+      type: object
+      required:
+        - action
+      properties:
+        action:
+          type: string
+          enum:
+            - start
+            - pause
+            - stop
+            - reset
+            - speed_up
+            - slow_down
+        speed:
+          type: number
+          minimum: 0
+          maximum: 10
+          description: New speed multiplier (for speed control actions)
+    SimulationStatus:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+            - error
+        message:
+          type: string
+        newState:
+          $ref: '#/components/schemas/SimulationState'
+    AdminUserListResponse:
+      type: object
+      required:
+        - users
+        - meta
+      properties:
+        users:
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/UserProfile'
+              - type: object
+                properties:
+                  lastLoginIp:
+                    type: string
+                  accountStatus:
+                    type: string
+                    enum:
+                      - active
+                      - suspended
+                      - banned
+                      - pending
+                  suspensionReason:
+                    type: string
+                  banReason:
+                    type: string
+                  createdBy:
+                    type: string
+                    format: uuid
+          example:
+            - id: 123e4567-e89b-12d3-a456-426614174000
+              email: user@example.com
+              username: testuser
+              firstName: Test
+              lastName: User
+              status: active
+              emailVerified: true
+              lastLoginAt: '2025-11-08T10:30:00Z'
+              createdAt: '2025-01-15T09:00:00Z'
+              roles:
+                - user
+              lastLoginIp: 192.168.1.100
+              accountStatus: active
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    AdminUserStatusUpdate:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - active
+            - suspended
+            - banned
+        reason:
+          type: string
+          minLength: 10
+          maxLength: 500
+          description: Reason for status change (required for suspensions/bans)
+        duration:
+          type: integer
+          description: Suspension duration in days (optional)
+          minimum: 1
+          maximum: 365
+    AuditLogResponse:
+      type: object
+      required:
+        - logs
+        - meta
+      properties:
+        logs:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - timestamp
+              - action
+              - userId
+              - details
+            properties:
+              id:
+                type: string
+                format: uuid
+              timestamp:
+                type: string
+                format: date-time
+              action:
+                type: string
+                enum:
+                  - login
+                  - logout
+                  - vote
+                  - create_party
+                  - create_news
+                  - admin_action
+                  - password_change
+                  - email_change
+              userId:
+                type: string
+                format: uuid
+              ipAddress:
+                type: string
+              userAgent:
+                type: string
+              details:
+                type: object
+                description: Action-specific details
+              errorMessage:
+                type: string
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from /auth/login or /auth/refresh
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for server-to-server admin operations
+    mutualTLS:
+      type: mutualTLS
+      description: |
+        Mutual TLS authentication for high-security admin operations.
+
+        Requires client certificate authentication where both the client 
+        and server authenticate each other using X.509 certificates. This 
+        provides the highest level of security for administrative endpoints.
+
+        **Usage:**
+        - Certificate must be issued by a trusted CA
+        - Subject DN must match authorized admin principals
+        - Certificate must not be expired or revoked
+        - Client must present certificate during TLS handshake
+
+        **Applied to:**
+        - /admin/audit (audit log access)
+        - /admin/users/{userId}/status (user status modifications)
+
+        **Certificate Requirements:**
+        - Key size: RSA 2048-bit minimum (Ed25519 preferred)
+        - Validity period: Maximum 365 days
+        - Extended Key Usage: Client Authentication
+        - Subject Alternative Name: admin.political-sphere.com
+    oauth2Auth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://auth.political-sphere.com/oauth/authorize'
+          tokenUrl: 'https://auth.political-sphere.com/oauth/token'
+          scopes:
+            'read:user': Read user profile information
+            'write:user': Update user profile information
+            'read:votes': Read voting information
+            'write:votes': Cast votes and create proposals
+            'read:parties': Read political party information
+            'write:parties': Create and manage political parties
+            'read:news': Read news articles
+            'write:news': Create and manage news articles
+            admin: Full administrative access
+  examples:
+    UserRegistrationExample:
+      summary: Example user registration
+      value:
+        email: john.citizen@example.com
+        password: SecurePass123!
+        username: john_citizen
+        firstName: John
+        lastName: Citizen
+        dateOfBirth: '1990-01-01'
+        country: GB
+        acceptedTerms: true
+    VoteCastExample:
+      summary: Example vote casting
+      value:
+        choice: 'yes'
+        signature: '0x1b2c3d4e5f6789abcdef0123456789abcdef0123456789abcdef0123456789abcdef'
+        publicKey: '0x04a1b2c3d4e5f6789abcdef0123456789abcdef0123456789abcdef0123456789abcdef'
+        timestamp: '2025-11-08T14:30:00Z'
+    PartyCreationExample:
+      summary: Example party creation
+      value:
+        name: Progressive Alliance
+        description: A party focused on social justice and environmental protection
+        platform: 'Our platform focuses on climate action, social equality, and democratic reform'
+        foundingPrinciples:
+          - Environmental sustainability
+          - Social justice
+          - Democratic participation
+        leadership: Democratic election
+        membershipPolicy: Open to all citizens who share our values
+  parameters:
+    UserIdPathParam:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Unique identifier of the user
+      example: 550e8400-e29b-41d4-a716-446655440000
+    PartyIdPathParam:
+      name: partyId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Unique identifier of the political party
+      example: 550e8400-e29b-41d4-a716-446655440001
+    VoteIdPathParam:
+      name: voteId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Unique identifier of the vote or proposal
+      example: 550e8400-e29b-41d4-a716-446655440002
+    ArticleIdPathParam:
+      name: articleId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Unique identifier of the news article
+      example: 550e8400-e29b-41d4-a716-446655440003
+    PaginationPageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number for pagination
+      example: 1
+    PaginationLimitParam:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+      description: Number of items per page
+      example: 20
+    SortByParam:
+      name: sortBy
+      in: query
+      schema:
+        type: string
+        enum:
+          - createdAt
+          - updatedAt
+          - name
+          - popularity
+          - memberCount
+        default: createdAt
+      description: Field to sort by
+      example: createdAt
+    SortOrderParam:
+      name: sortOrder
+      in: query
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+        default: desc
+      description: Sort order
+      example: desc
+  headers:
+    RateLimitHeader:
+      description: Rate limiting information
+      schema:
+        type: string
+        example: '100:3600:50:1800'
+      style: simple
+      explode: false
+    RateLimitRemainingHeader:
+      description: Remaining requests in current window
+      schema:
+        type: integer
+        example: 47
+      style: simple
+    RateLimitResetHeader:
+      description: Time until rate limit resets (Unix timestamp)
+      schema:
+        type: integer
+        example: 1636387200
+      style: simple
+    RetryAfterHeader:
+      description: Seconds to wait before retrying (when rate limited)
+      schema:
+        type: integer
+        example: 60
+      style: simple
+    RequestIdHeader:
+      description: Unique request identifier for tracing
+      schema:
+        type: string
+        format: uuid
+        example: 550e8400-e29b-41d4-a716-446655440004
+      style: simple
+    ContentLanguageHeader:
+      description: Content language (ISO 639-1)
+      schema:
+        type: string
+        example: en
+      style: simple
+  callbacks:
+    VoteResultCallback:
+      '{$request.body#/callbackUrl}':
+        post:
+          summary: Vote result notification
+          description: Callback webhook when vote results are available
+          operationId: voteResultWebhook
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  required:
+                    - voteId
+                    - status
+                    - results
+                  properties:
+                    voteId:
+                      type: string
+                      format: uuid
+                    status:
+                      type: string
+                      enum:
+                        - completed
+                        - cancelled
+                    results:
+                      $ref: '#/components/schemas/VoteResults'
+                    timestamp:
+                      type: string
+                      format: date-time
+          responses:
+            '200':
+              description: Webhook received successfully
+            '410':
+              description: Webhook URL no longer valid
+    PartyEventCallback:
+      '{$request.body#/callbackUrl}':
+        post:
+          summary: Party event notification
+          description: Callback webhook for party-related events
+          operationId: partyEventWebhook
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  required:
+                    - eventType
+                    - partyId
+                    - data
+                  properties:
+                    eventType:
+                      type: string
+                      enum:
+                        - member_joined
+                        - member_left
+                        - leadership_changed
+                        - party_updated
+                    partyId:
+                      type: string
+                      format: uuid
+                    data:
+                      type: object
+                      description: Event-specific data
+                    timestamp:
+                      type: string
+                      format: date-time
+          responses:
+            '200':
+              description: Webhook received successfully
+    NewsModerationCallback:
+      '{$request.body#/callbackUrl}':
+        post:
+          summary: News moderation result
+          description: Callback webhook when news article moderation is complete
+          operationId: newsModerationWebhook
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  required:
+                    - articleId
+                    - status
+                    - moderationResult
+                  properties:
+                    articleId:
+                      type: string
+                      format: uuid
+                    status:
+                      type: string
+                      enum:
+                        - approved
+                        - rejected
+                        - flagged
+                    moderationResult:
+                      type: object
+                      properties:
+                        score:
+                          type: number
+                          minimum: 0
+                          maximum: 1
+                          description: AI moderation confidence score
+                        reasons:
+                          type: array
+                          items:
+                            type: string
+                          description: Reasons for moderation decision
+                        reviewedBy:
+                          type: string
+                          format: uuid
+                          description: Moderator user ID
+                    timestamp:
+                      type: string
+                      format: date-time
+          responses:
+            '200':
+              description: Webhook received successfully

@@ -34,14 +34,38 @@ class PatternMatcher {
 						// skip suspiciously large or non-string patterns
 						return;
 					}
-					// Validate pattern to prevent ReDoS - check for dangerous patterns
+
+					// Security: Validate pattern to prevent ReDoS attacks
+					// Reference: CWE-1333 Inefficient Regular Expression Complexity
 					if (this._isReDoSVulnerable(pattern)) {
 						console.warn(
 							`Skipping potentially ReDoS-vulnerable pattern for category=${category}: ${pattern}`,
 						);
 						return;
 					}
-					const regex = new RegExp(pattern, flags || "u");
+
+					// Security: Sanitize flags to prevent injection
+					// Only allow safe, standard regex flags
+					const sanitizedFlags = this._sanitizeFlags(flags);
+
+					// Security: Use try-catch with timeout simulation
+					// RegExp construction itself doesn't timeout, but this prevents
+					// malformed patterns from crashing the application
+					const regex = new RegExp(pattern, sanitizedFlags);
+
+					// Additional safety: Test regex compilation time
+					// If it takes too long, it might be vulnerable to ReDoS
+					const testStart = Date.now();
+					regex.test("test"); // Quick test to ensure it works
+					const testDuration = Date.now() - testStart;
+
+					if (testDuration > 100) {
+						console.warn(
+							`Skipping slow regex (${testDuration}ms) for category=${category}: ${pattern}`,
+						);
+						return;
+					}
+
 					out[category].push({ regex, severity, message });
 				} catch (_) {
 					// If a pattern fails to compile, skip it but log for debugging.
@@ -54,17 +78,66 @@ class PatternMatcher {
 		return out;
 	}
 
+	_sanitizeFlags(flags) {
+		// Security: Whitelist of safe regex flags
+		// Reference: MDN RegExp flags documentation
+		const allowedFlags = new Set(["g", "i", "m", "s", "u", "y"]);
+
+		if (!flags || typeof flags !== "string") {
+			return "u"; // Default to unicode-aware
+		}
+
+		// Filter to only allowed flags, remove duplicates
+		const sanitized = [...new Set(flags.split(""))]
+			.filter((flag) => allowedFlags.has(flag))
+			.join("");
+
+		return sanitized || "u"; // Fallback to unicode flag
+	}
+
 	_isReDoSVulnerable(pattern) {
-		// Check for common ReDoS patterns: nested quantifiers, overlapping groups
-		// This is a basic check - for production use, consider a library like 'recheck'
-		const dangerousPatterns = [
-			/(\w+\w*)*\w*/, // nested quantifiers
-			/(a+)+/, // nested quantifiers
-			/(a*)*b/, // nested quantifiers
-			/(a|a)*b/, // overlapping alternatives
+		// Security: Enhanced ReDoS detection
+		// Reference: OWASP ReDoS Prevention Cheat Sheet
+		// For production, consider using 'recheck' npm package: https://www.npmjs.com/package/recheck
+
+		// 1. Check pattern length (extremely long patterns can be suspicious)
+		if (pattern.length > 1000) {
+			return true;
+		}
+
+		// 2. Check for nested quantifiers (major ReDoS cause)
+		const nestedQuantifiers = [
+			/(\*|\+|\?|\{\d+,?\d*\})\s*(\*|\+|\?|\{\d+,?\d*\})/, // consecutive quantifiers
+			/\([^)]*(\*|\+)\)\s*(\*|\+)/, // grouped quantifiers
+			/\([^)]*\{\d+,\}\)\s*(\*|\+)/, // unbounded range then quantifier
 		];
 
-		return dangerousPatterns.some((dangerous) => dangerous.test(pattern));
+		if (nestedQuantifiers.some((re) => re.test(pattern))) {
+			return true;
+		}
+
+		// 3. Check for overlapping/ambiguous alternatives
+		// Patterns like (a|a)*, (a|ab)*, etc.
+		if (/\([^)]*\|[^)]*\)\s*(\*|\+)/.test(pattern)) {
+			// This is a simplified check; full overlap detection is complex
+			// Consider using 'recheck' library for production
+			const alternatives = pattern.match(/\(([^)]+)\)/);
+			if (alternatives && alternatives[1].includes("|")) {
+				return true; // Potentially dangerous
+			}
+		}
+
+		// 4. Check for excessive backtracking patterns
+		const backtrackingPatterns = [
+			/\.\*.*\.\*/, // multiple .* can cause exponential backtracking
+			/\.\+.*\.\+/, // multiple .+ similar issue
+		];
+
+		if (backtrackingPatterns.some((re) => re.test(pattern))) {
+			return true;
+		}
+
+		return false;
 	}
 
 	loadPatterns() {

@@ -1,12 +1,12 @@
 {
-  "timestamp": "2025-11-08T21:33:56Z",
+  "timestamp": "2025-11-08T22:15:04Z",
   "app": "feature-dashboard-remote",
   "summary": {
     "critical": 0,
     "high": 4,
-    "medium": 3,
+    "medium": 5,
     "low": 2,
-    "pass": 10
+    "pass": 15
   },
   "app_dir": "/Users/morganlowman/GitHub/political-sphere/apps/feature-dashboard-remote",
   "audit_dir": "/Users/morganlowman/GitHub/political-sphere/app-audit/feature-dashboard-remote"

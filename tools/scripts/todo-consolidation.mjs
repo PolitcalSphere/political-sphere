@@ -49,7 +49,9 @@ function findTodoFiles() {
 			if (
 				IGNORE_PATTERNS.some((pattern) => {
 					if (pattern.includes("*")) {
-						return item.includes(pattern.replace("*", ""));
+						// Security: Use regex with global flag to replace ALL asterisks
+						// Reference: CWE-182 Incomplete Sanitization
+						return item.includes(pattern.replace(/\*/g, ""));
 					}
 					return item === pattern;
 				})

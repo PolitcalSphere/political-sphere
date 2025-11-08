@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# Central Audit System v2.0.0
+# Central Audit System v2.1.0
 # =============================================================================
 #
 # Orchestrates all individual audit scripts with centralized reporting.
@@ -41,6 +41,7 @@ AUDIT_DATE=$(date -u +"%Y-%m-%d")
 AUDIT_LOG="${AUDIT_TRAIL_DIR}/audit-log-${AUDIT_DATE}.jsonl"
 AUDIT_SUMMARY="${AUDIT_TRAIL_DIR}/audit-summary-${AUDIT_DATE}.txt"
 AUDIT_JSON="${AUDIT_TRAIL_DIR}/audit-summary-${AUDIT_DATE}.json"
+AUDIT_MD="${AUDIT_TRAIL_DIR}/audit-summary-${AUDIT_DATE}.md"
 
 # Individual audit output directories (still in project root for easy access)
 GITHUB_AUDIT_DIR="${PROJECT_ROOT}/github-audit"
@@ -52,14 +53,24 @@ APP_AUDIT_DIR="${PROJECT_ROOT}/app-audit"
 AUTO_FIX="${AUTO_FIX:-false}"
 FAIL_ON_WARNINGS="${FAIL_ON_WARNINGS:-false}"
 PARALLEL="${PARALLEL:-false}"
+# OUTPUT_FORMAT: full|compact|markdown|json (full default)
+OUTPUT_FORMAT="${OUTPUT_FORMAT:-full}"
+# PLAIN_OUTPUT=true forces removal of color (also honored if NO_COLOR env set per community convention)
+PLAIN_OUTPUT="${PLAIN_OUTPUT:-false}"
+# Width for box drawing; adjust for narrow terminals
+AUDIT_WIDTH="${AUDIT_WIDTH:-69}"
 
-# Color codes
-RED='\033[0;31m'
-YELLOW='\033[1;33m'
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+# Color codes (will be blanked if NO_COLOR or PLAIN_OUTPUT)
+if [[ "${NO_COLOR:-}" != "" || "${PLAIN_OUTPUT}" == "true" ]]; then
+    RED=""; YELLOW=""; GREEN=""; BLUE=""; CYAN=""; NC="";
+else
+    RED='\033[0;31m'
+    YELLOW='\033[1;33m'
+    GREEN='\033[0;32m'
+    BLUE='\033[0;34m'
+    CYAN='\033[0;36m'
+    NC='\033[0m'
+fi
 
 # Counters
 TOTAL_AUDITS=0
@@ -101,18 +112,27 @@ log_error() {
     echo -e "${RED}[FAIL]${NC} $1"
 }
 
+_box_line() { local char="$1"; printf '%*s' "${AUDIT_WIDTH}" '' | tr ' ' "${char}"; }
+_center() { # center text within width
+    local text="$1"; local pad=$(( (AUDIT_WIDTH - ${#text}) / 2 ));
+    printf "%*s%s%*s" "$pad" '' "$text" "$((AUDIT_WIDTH - pad - ${#text}))" '';
+}
 print_header() {
-    echo ""
-    echo "╔═══════════════════════════════════════════════════════════════╗"
-    echo "║                  Central Audit System v2.0.0                 ║"
-    echo "╠═══════════════════════════════════════════════════════════════╣"
-    echo "║  GitHub Workflows  │  DevContainer  │  OpenAPI  │  Apps      ║"
-    echo "╚═══════════════════════════════════════════════════════════════╝"
-    echo ""
-    echo "Audit Timestamp: ${AUDIT_TIMESTAMP}"
-    echo "Audit Trail: ${AUDIT_TRAIL_DIR}"
-    echo "Auto-Fix: ${AUTO_FIX}"
-    echo ""
+        local top="$( _box_line '═' )"
+        echo ""
+        printf "╔%s╗\n" "$top"
+        printf "║%s║\n" "$( _center "Central Audit System v2.1.0" )"
+        printf "╠%s╣\n" "$top"
+        printf "║%s║\n" "$( _center "GitHub • DevContainer • OpenAPI • Apps" )"
+        printf "╚%s╝\n" "$top"
+        echo ""
+        echo "Timestamp      : ${AUDIT_TIMESTAMP}"
+        echo "Trail Directory: ${AUDIT_TRAIL_DIR}"
+        echo "Auto-Fix       : ${AUTO_FIX}"
+        echo "Output Format  : ${OUTPUT_FORMAT} (plain=${PLAIN_OUTPUT})"
+        echo "Width          : ${AUDIT_WIDTH}"
+        echo ""
+        echo "(No reliance on color – textual severity labels provided; WCAG 2.2 AA alignment)"
 }
 
 setup_directories() {
@@ -145,203 +165,292 @@ EOF
 }
 
 run_audit() {
-    local audit_name="$1"
-    local audit_script="$2"
-    local json_path="${3:-}"  # Optional JSON results path
-    
-    log_section "Running ${audit_name} Audit"
-    
-    if [[ ! -f "${audit_script}" ]]; then
-        log_error "Audit script not found: ${audit_script}"
-        log_audit_event "${audit_name}" "MISSING" 0 0 0 0
-        FAILED_AUDITS=$((FAILED_AUDITS + 1)) || true
-        return 1
+    local name="$1"
+    local script_path="$2"
+    local explicit_json_rel_path="${3:-}"
+
+    local output_dir json_path status_label
+    case "$name" in
+        GitHub)
+            output_dir="${GITHUB_AUDIT_DIR}"
+            json_path="${GITHUB_AUDIT_DIR}/github-audit-results.json"
+            ;;
+        DevContainer)
+            output_dir="${DEVCONTAINER_AUDIT_DIR}"
+            json_path="${DEVCONTAINER_AUDIT_DIR}/devcontainer-audit-results.json"
+            ;;
+        OpenAPI)
+            output_dir="${OPENAPI_AUDIT_DIR}"
+            json_path="${OPENAPI_AUDIT_DIR}/openapi-audit-results.json"
+            ;;
+        App:*)
+            output_dir="${PROJECT_ROOT}/app-audit"
+            # For apps we expect path like app-audit/<app>/audit-results.json
+            if [[ -n "$explicit_json_rel_path" ]]; then
+                json_path="${PROJECT_ROOT}/${explicit_json_rel_path}"
+            else
+                json_path="" # best-effort
+            fi
+            ;;
+        *)
+            output_dir="${PROJECT_ROOT}"
+            json_path=""
+            ;;
+    esac
+
+    log_info "Running audit: ${name}"
+    # Execute audit script with propagated env and OUTPUT_DIR
+    OUTPUT_DIR="$output_dir" AUTO_FIX="$AUTO_FIX" FAIL_ON_WARNINGS="$FAIL_ON_WARNINGS" bash "$script_path"
+    local rc=$?
+
+    # Default counts
+    local crit=0 high=0 med=0 low=0
+    if [[ -n "$json_path" && -f "$json_path" ]]; then
+        if command -v jq >/dev/null 2>&1; then
+            crit=$(jq -r '.summary.critical // 0' "$json_path" 2>/dev/null || echo 0)
+            high=$(jq -r '.summary.high // 0' "$json_path" 2>/dev/null || echo 0)
+            med=$(jq -r '.summary.medium // 0' "$json_path" 2>/dev/null || echo 0)
+            low=$(jq -r '.summary.low // 0' "$json_path" 2>/dev/null || echo 0)
+        else
+            # Fallback to grep/awk parsing (best effort)
+            crit=$(grep -E '"critical"\s*:\s*[0-9]+' "$json_path" | head -1 | awk -F: '{gsub(/[^0-9]/,"",$2); print $2+0}' || echo 0)
+            high=$(grep -E '"high"\s*:\s*[0-9]+' "$json_path" | head -1 | awk -F: '{gsub(/[^0-9]/,"",$2); print $2+0}' || echo 0)
+            med=$(grep -E '"medium"\s*:\s*[0-9]+' "$json_path" | head -1 | awk -F: '{gsub(/[^0-9]/,"",$2); print $2+0}' || echo 0)
+            low=$(grep -E '"low"\s*:\s*[0-9]+' "$json_path" | head -1 | awk -F: '{gsub(/[^0-9]/,"",$2); print $2+0}' || echo 0)
+        fi
     fi
-    
-    # Run audit and capture exit code
-    if AUTO_FIX="${AUTO_FIX}" bash "${audit_script}"; then
-        log_success "${audit_name} audit completed successfully"
-        log_audit_event "${audit_name}" "PASS" 0 0 0 0
-        PASSED_AUDITS=$((PASSED_AUDITS + 1)) || true
-        return 0
-    else
-        local exit_code=$?
-        log_warning "${audit_name} audit completed with issues (exit code: ${exit_code})"
-        
-        # Try to extract severity counts from audit results
-        extract_and_log_results "${audit_name}" "${json_path}"
-        
-        FAILED_AUDITS=$((FAILED_AUDITS + 1)) || true
-        return 1
-    fi
+
+    # Aggregate totals
+    TOTAL_CRITICAL=$((TOTAL_CRITICAL + crit)) || true
+    TOTAL_HIGH=$((TOTAL_HIGH + high)) || true
+    TOTAL_MEDIUM=$((TOTAL_MEDIUM + med)) || true
+    TOTAL_LOW=$((TOTAL_LOW + low)) || true
+
+    # Track pass/fail counts and audit trail status
+    case $rc in
+        0) PASSED_AUDITS=$((PASSED_AUDITS + 1)) || true; status_label="pass" ;;
+        1) FAILED_AUDITS=$((FAILED_AUDITS + 1)) || true; status_label="warn" ;;
+        2) FAILED_AUDITS=$((FAILED_AUDITS + 1)) || true; status_label="fail" ;;
+        *) FAILED_AUDITS=$((FAILED_AUDITS + 1)) || true; status_label="error" ;;
+    esac
+    log_audit_event "$name" "$status_label" "$crit" "$high" "$med" "$low"
+
+    return $rc
 }
 
-extract_and_log_results() {
-    local audit_name="$1"
-    local json_path="${2:-}"
-    local critical=0
-    local high=0
-    local medium=0
-    local low=0
-    
-    # If JSON path provided explicitly, use it
-    if [[ -n "${json_path}" ]]; then
-        json_file="${json_path}"
+_aggregate_app_json() {
+    # Build a compact list of per-app severities if jq present
+    command -v jq >/dev/null 2>&1 || return 0
+    local results=()
+    shopt -s nullglob
+    for f in "${PROJECT_ROOT}/app-audit"/*/audit-results.json; do
+        local app_name
+        app_name="$(basename "$(dirname "$f")")"
+        local crit high med low
+        crit=$(jq -r '.summary.critical // 0' "$f" 2>/dev/null || echo 0)
+        high=$(jq -r '.summary.high // 0' "$f" 2>/dev/null || echo 0)
+        med=$(jq -r '.summary.medium // 0' "$f" 2>/dev/null || echo 0)
+        low=$(jq -r '.summary.low // 0' "$f" 2>/dev/null || echo 0)
+        results+=("{\"app\":\"$app_name\",\"critical\":$crit,\"high\":$high,\"medium\":$med,\"low\":$low}")
+    done
+    local joined
+    joined=$(IFS=,; echo "${results[*]}")
+    echo "[$joined]"
+}
+
+_production_status_text() {
+    if [[ ${TOTAL_CRITICAL} -gt 0 || ${TOTAL_HIGH} -gt 0 ]]; then
+        echo "NOT_PRODUCTION_READY: Critical/High issues present"
+    elif [[ ${FAILED_AUDITS} -gt 0 || ${TOTAL_MEDIUM} -gt 5 ]]; then
+        echo "REVIEW_REQUIRED: Medium issues or failed audits"
     else
-        # Try to find JSON results file for this audit
-        local json_file=""
-        case "${audit_name}" in
-            "GitHub")
-                json_file="${GITHUB_AUDIT_DIR}/github-audit-results.json"
-                ;;
-            "DevContainer")
-                json_file="${DEVCONTAINER_AUDIT_DIR}/devcontainer-audit-results.json"
-                ;;
-            "OpenAPI")
-                json_file="${OPENAPI_AUDIT_DIR}/openapi-audit-results.json"
-                ;;
-        esac
+        echo "PRODUCTION_READY: All audits passed"
     fi
-    
-    if [[ -f "${json_file}" ]] && command -v jq &> /dev/null; then
-        critical=$(jq -r '.summary.critical // 0' "${json_file}" 2>/dev/null || echo 0)
-        high=$(jq -r '.summary.high // 0' "${json_file}" 2>/dev/null || echo 0)
-        medium=$(jq -r '.summary.medium // 0' "${json_file}" 2>/dev/null || echo 0)
-        low=$(jq -r '.summary.low // 0' "${json_file}" 2>/dev/null || echo 0)
-    fi
-    
-    TOTAL_CRITICAL=$((TOTAL_CRITICAL + critical)) || true
-    TOTAL_HIGH=$((TOTAL_HIGH + high)) || true
-    TOTAL_MEDIUM=$((TOTAL_MEDIUM + medium)) || true
-    TOTAL_LOW=$((TOTAL_LOW + low)) || true
-    
-    log_audit_event "${audit_name}" "COMPLETED_WITH_ISSUES" "${critical}" "${high}" "${medium}" "${low}"
 }
 
 generate_summary() {
-    log_info "Generating audit summary..."
-    
-    # Text summary
-    cat > "${AUDIT_SUMMARY}" <<EOF
-═══════════════════════════════════════════════════════════════
-  Central Audit System - Summary Report
-═══════════════════════════════════════════════════════════════
+        log_info "Generating audit summary..."
+        local status_text reason production_ready
+        status_text=$(_production_status_text)
 
-Audit Date: ${AUDIT_TIMESTAMP}
-Auto-Fix Enabled: ${AUTO_FIX}
+        if [[ ${TOTAL_CRITICAL} -gt 0 || ${TOTAL_HIGH} -gt 0 ]]; then
+                reason="Critical or High severity issues found"
+                production_ready=false
+        elif [[ ${TOTAL_MEDIUM} -gt 5 ]]; then
+                reason="Multiple Medium severity issues (${TOTAL_MEDIUM} found)"
+                production_ready=false
+        elif [[ ${FAILED_AUDITS} -gt 0 ]]; then
+                reason="Some audits completed with issues"
+                production_ready=false
+        else
+                reason="All audits passed successfully"
+                production_ready=true
+        fi
 
-───────────────────────────────────────────────────────────────
-  Overall Results
-───────────────────────────────────────────────────────────────
+        # Always build per-app JSON for table + machine output (jq may be missing)
+        local apps_json
+        apps_json=$(_aggregate_app_json)
 
-Total Audits Run:     ${TOTAL_AUDITS}
-Passed:               ${PASSED_AUDITS}
-Failed/Issues:        ${FAILED_AUDITS}
+        # Plain/compact text summary unless OUTPUT_FORMAT=json or markdown only
+        if [[ "${OUTPUT_FORMAT}" == "full" || "${OUTPUT_FORMAT}" == "compact" || "${OUTPUT_FORMAT}" == "json" ]]; then
+                # For json-only we still emit a minimal text file for humans unless explicitly compact
+                cat > "${AUDIT_SUMMARY}" <<EOF
+Central Audit System v2.1.0 Summary
+Timestamp: ${AUDIT_TIMESTAMP}
+Auto-Fix: ${AUTO_FIX}
+Selected Format: ${OUTPUT_FORMAT}
 
-───────────────────────────────────────────────────────────────
-  Aggregated Severity Counts
-───────────────────────────────────────────────────────────────
+Overall:
+    Total Audits  : ${TOTAL_AUDITS}
+    Passed        : ${PASSED_AUDITS}
+    Failed/Issues : ${FAILED_AUDITS}
+Severity Totals:
+    Critical      : ${TOTAL_CRITICAL}
+    High          : ${TOTAL_HIGH}
+    Medium        : ${TOTAL_MEDIUM}
+    Low           : ${TOTAL_LOW}
+Status: ${status_text}
+Reason: ${reason}
+Production Ready: ${production_ready}
 
-Critical:             ${TOTAL_CRITICAL}
-High:                 ${TOTAL_HIGH}
-Medium:               ${TOTAL_MEDIUM}
-Low:                  ${TOTAL_LOW}
-
-───────────────────────────────────────────────────────────────
-  Production Readiness Assessment
-───────────────────────────────────────────────────────────────
-
+Directories:
+    github       -> ${GITHUB_AUDIT_DIR}
+    devcontainer -> ${DEVCONTAINER_AUDIT_DIR}
+    openapi      -> ${OPENAPI_AUDIT_DIR}
+    apps         -> ${APP_AUDIT_DIR}
+Audit Log (JSONL): ${AUDIT_LOG}
 EOF
+                if [[ "${OUTPUT_FORMAT}" == "compact" ]]; then
+                        echo "(compact mode – detailed markdown omitted)" >> "${AUDIT_SUMMARY}"
+                fi
+        fi
 
-    # Assess production readiness
-    if [[ ${TOTAL_CRITICAL} -gt 0 ]] || [[ ${TOTAL_HIGH} -gt 0 ]]; then
-        echo "Status: ❌ NOT PRODUCTION READY" >> "${AUDIT_SUMMARY}"
-        echo "Reason: Critical or High severity issues found" >> "${AUDIT_SUMMARY}"
-    elif [[ ${TOTAL_MEDIUM} -gt 5 ]]; then
-        echo "Status: ⚠️  REVIEW REQUIRED" >> "${AUDIT_SUMMARY}"
-        echo "Reason: Multiple Medium severity issues (${TOTAL_MEDIUM} found)" >> "${AUDIT_SUMMARY}"
-    elif [[ ${FAILED_AUDITS} -gt 0 ]]; then
-        echo "Status: ⚠️  REVIEW REQUIRED" >> "${AUDIT_SUMMARY}"
-        echo "Reason: Some audits completed with issues" >> "${AUDIT_SUMMARY}"
-    else
-        echo "Status: ✅ PRODUCTION READY" >> "${AUDIT_SUMMARY}"
-        echo "Reason: All audits passed successfully" >> "${AUDIT_SUMMARY}"
-    fi
-    
-    cat >> "${AUDIT_SUMMARY}" <<EOF
+        # Markdown summary (full & markdown modes only)
+        if [[ "${OUTPUT_FORMAT}" == "full" || "${OUTPUT_FORMAT}" == "markdown" ]]; then
+                local apps_table=""
+                if command -v jq >/dev/null 2>&1 && [[ -n "${apps_json}" ]]; then
+                        apps_table+=$'| App | Critical | High | Medium | Low |\n'
+                        apps_table+=$'|-----|----------|------|--------|-----|\n'
+                        apps_table+=$(echo "${apps_json}" | jq -r '.[] | "| \(.app) | \(.critical) | \(.high) | \(.medium) | \(.low) |"')
+                else
+                        apps_table="(Per-app severity breakdown unavailable - jq not installed or no app audit data)"
+                fi
+                cat > "${AUDIT_MD}" <<EOF
+# Central Audit System Report (v2.1.0)
 
-───────────────────────────────────────────────────────────────
-  Detailed Results
-───────────────────────────────────────────────────────────────
+**Timestamp:** ${AUDIT_TIMESTAMP}  
+**Auto-Fix:** ${AUTO_FIX}  
+**Format:** ${OUTPUT_FORMAT}  
+**Production Ready:** ${production_ready}
 
-Individual audit results available in:
-- GitHub Workflows:  ${GITHUB_AUDIT_DIR}/
-- DevContainer:      ${DEVCONTAINER_AUDIT_DIR}/
-- OpenAPI:           ${OPENAPI_AUDIT_DIR}/
-- Applications:      ${APP_AUDIT_DIR}/
+## Summary
 
-Audit log (JSONL):   ${AUDIT_LOG}
+| Metric | Value |
+|--------|-------|
+| Total Audits | ${TOTAL_AUDITS} |
+| Passed | ${PASSED_AUDITS} |
+| Failed/Issues | ${FAILED_AUDITS} |
+| Critical | ${TOTAL_CRITICAL} |
+| High | ${TOTAL_HIGH} |
+| Medium | ${TOTAL_MEDIUM} |
+| Low | ${TOTAL_LOW} |
 
-═══════════════════════════════════════════════════════════════
+## Production Readiness
+
+**Status:** ${status_text}  
+**Reason:** ${reason}
+
+## Per-App Severity
+
+${apps_table}
+
+## Directories
+
+| Category | Path |
+|----------|------|
+| GitHub Workflows | ${GITHUB_AUDIT_DIR} |
+| DevContainer | ${DEVCONTAINER_AUDIT_DIR} |
+| OpenAPI | ${OPENAPI_AUDIT_DIR} |
+| Applications | ${APP_AUDIT_DIR} |
+
+Audit trail directory: 
+${AUDIT_TRAIL_DIR}
+
+> Accessibility: This report uses textual severity indicators (no color dependency) complying with WCAG 2.2 AA.
 EOF
+        fi
 
-    # JSON summary
-    cat > "${AUDIT_JSON}" <<EOF
+        # JSON summary (always generated for machine consumption)
+        cat > "${AUDIT_JSON}" <<EOF
 {
-  "timestamp": "${AUDIT_TIMESTAMP}",
-  "autofix": ${AUTO_FIX},
-  "summary": {
-    "total": ${TOTAL_AUDITS},
-    "passed": ${PASSED_AUDITS},
-    "failed": ${FAILED_AUDITS},
-    "critical": ${TOTAL_CRITICAL},
-    "high": ${TOTAL_HIGH},
-    "medium": ${TOTAL_MEDIUM},
-    "low": ${TOTAL_LOW}
-  },
-  "production_ready": $(if [[ ${TOTAL_CRITICAL} -eq 0 ]] && [[ ${TOTAL_HIGH} -eq 0 ]] && [[ ${TOTAL_MEDIUM} -le 5 ]]; then echo "true"; else echo "false"; fi),
-  "audit_directories": {
-    "github": "${GITHUB_AUDIT_DIR}",
-    "devcontainer": "${DEVCONTAINER_AUDIT_DIR}",
-    "openapi": "${OPENAPI_AUDIT_DIR}",
-    "apps": "${APP_AUDIT_DIR}"
-  },
-  "audit_trail": "${AUDIT_TRAIL_DIR}"
+    "version": "2.1.0",
+    "timestamp": "${AUDIT_TIMESTAMP}",
+    "autofix": ${AUTO_FIX},
+    "outputFormat": "${OUTPUT_FORMAT}",
+    "summary": {
+        "total": ${TOTAL_AUDITS},
+        "passed": ${PASSED_AUDITS},
+        "failed": ${FAILED_AUDITS},
+        "critical": ${TOTAL_CRITICAL},
+        "high": ${TOTAL_HIGH},
+        "medium": ${TOTAL_MEDIUM},
+        "low": ${TOTAL_LOW},
+        "status": "${status_text}",
+        "reason": "${reason}",
+        "production_ready": ${production_ready}
+    },
+    "apps": ${apps_json:-[]},
+    "audit_directories": {
+        "github": "${GITHUB_AUDIT_DIR}",
+        "devcontainer": "${DEVCONTAINER_AUDIT_DIR}",
+        "openapi": "${OPENAPI_AUDIT_DIR}",
+        "apps": "${APP_AUDIT_DIR}"
+    },
+    "trail": "${AUDIT_TRAIL_DIR}"
 }
 EOF
 
-    log_success "Summary reports generated"
+        # Clean up unused formats (prevent stale files) when user selected single format
+        case "${OUTPUT_FORMAT}" in
+            markdown)
+                [[ -f "${AUDIT_SUMMARY}" ]] && rm -f "${AUDIT_SUMMARY}" || true
+                ;;
+            json)
+                [[ -f "${AUDIT_SUMMARY}" ]] && rm -f "${AUDIT_SUMMARY}" || true
+                [[ -f "${AUDIT_MD}" ]] && rm -f "${AUDIT_MD}" || true
+                ;;
+            compact)
+                [[ -f "${AUDIT_MD}" ]] && rm -f "${AUDIT_MD}" || true
+                ;;
+        esac
+
+        log_success "Summary reports generated (format=${OUTPUT_FORMAT})"
 }
 
 print_final_results() {
+    local top="$( _box_line '═' )"
     echo ""
-    echo "╔═══════════════════════════════════════════════════════════════╗"
-    echo "║                      FINAL RESULTS                            ║"
-    echo "╠═══════════════════════════════════════════════════════════════╣"
-    printf "║  Audits: %d/%d passed" ${PASSED_AUDITS} ${TOTAL_AUDITS}
-    printf "%*s║\n" $((55 - ${#PASSED_AUDITS} - ${#TOTAL_AUDITS})) ""
-    printf "║  Critical: %-3d  High: %-3d  Medium: %-3d  Low: %-3d     ║\n" \
-        ${TOTAL_CRITICAL} ${TOTAL_HIGH} ${TOTAL_MEDIUM} ${TOTAL_LOW}
-    echo "╚═══════════════════════════════════════════════════════════════╝"
+    printf "╔%s╗\n" "$top"
+    printf "║%s║\n" "$( _center "FINAL RESULTS" )"
+    printf "╠%s╣\n" "$top"
+    printf "║ %-20s %5d / %-5d %-24s║\n" "Audits Passed" ${PASSED_AUDITS} ${TOTAL_AUDITS} "(total)"
+    printf "║ %-20s %5d  %-36s║\n" "Critical" ${TOTAL_CRITICAL} ""
+    printf "║ %-20s %5d  %-36s║\n" "High" ${TOTAL_HIGH} ""
+    printf "║ %-20s %5d  %-36s║\n" "Medium" ${TOTAL_MEDIUM} ""
+    printf "║ %-20s %5d  %-36s║\n" "Low" ${TOTAL_LOW} ""
+    printf "╚%s╝\n" "$top"
     echo ""
-    
-    if [[ ${TOTAL_CRITICAL} -gt 0 ]] || [[ ${TOTAL_HIGH} -gt 0 ]]; then
-        echo -e "${RED}❌ NOT PRODUCTION READY${NC} - Critical or High severity issues found"
-        echo ""
-        echo "Review detailed results:"
-        cat "${AUDIT_SUMMARY}"
-        return 2
-    elif [[ ${FAILED_AUDITS} -gt 0 ]]; then
-        echo -e "${YELLOW}⚠️  REVIEW REQUIRED${NC} - Some audits completed with issues"
-        echo ""
-        echo "Summary: ${AUDIT_SUMMARY}"
-        return 1
-    else
-        echo -e "${GREEN}✅ PRODUCTION READY${NC} - All audits passed"
-        echo ""
-        echo "Summary: ${AUDIT_SUMMARY}"
-        return 0
-    fi
+        local status_text ret=0
+    status_text=$(_production_status_text)
+    case "$status_text" in
+      NOT_PRODUCTION_READY*) echo -e "${RED}❌ ${status_text}${NC}" ; ret=2 ;;
+      REVIEW_REQUIRED*) echo -e "${YELLOW}⚠️ ${status_text}${NC}" ; ret=1 ;;
+      PRODUCTION_READY*) echo -e "${GREEN}✅ ${status_text}${NC}" ; ret=0 ;;
+    esac
+    echo "Text Summary : ${AUDIT_SUMMARY}"
+    echo "Markdown     : ${AUDIT_MD}"
+    echo "JSON         : ${AUDIT_JSON}"
+    return ${ret}
 }
 
 # -----------------------------------------------------------------------------
@@ -371,24 +480,35 @@ main() {
     for audit in "${SELECTED_AUDITS[@]}"; do
         case "${audit}" in
             github)
+                TOTAL_AUDITS=$((TOTAL_AUDITS + 1)) || true
                 run_audit "GitHub" "${SCRIPT_DIR}/github-audit.sh" || true
                 ;;
             devcontainer)
+                TOTAL_AUDITS=$((TOTAL_AUDITS + 1)) || true
                 run_audit "DevContainer" "${SCRIPT_DIR}/devcontainer-audit.sh" || true
                 ;;
             openapi)
+                TOTAL_AUDITS=$((TOTAL_AUDITS + 1)) || true
                 run_audit "OpenAPI" "${SCRIPT_DIR}/openapi-audit-fast.sh" || true
                 ;;
             apps)
                 log_info "Running App-Specific Audits"
-                run_audit "App: API" "${SCRIPT_DIR}/app-audit-api.sh" "app-audit/api/audit-results.json" || true
-                run_audit "App: Web" "${SCRIPT_DIR}/app-audit-web.sh" "app-audit/web/audit-results.json" || true
-                run_audit "App: Worker" "${SCRIPT_DIR}/app-audit-worker.sh" "app-audit/worker/audit-results.json" || true
-                run_audit "App: GameServer" "${SCRIPT_DIR}/app-audit-game-server.sh" "app-audit/game-server/audit-results.json" || true
-                run_audit "App: Shell" "${SCRIPT_DIR}/app-audit-shell.sh" "app-audit/shell/audit-results.json" || true
-                run_audit "App: AuthRemote" "${SCRIPT_DIR}/app-audit-feature-auth-remote.sh" "app-audit/feature-auth-remote/audit-results.json" || true
-                run_audit "App: DashboardRemote" "${SCRIPT_DIR}/app-audit-feature-dashboard-remote.sh" "app-audit/feature-dashboard-remote/audit-results.json" || true
-                # TODO: e2e, load-test, infrastructure (non-critical)
+                # Increment total audits for each app before running
+                for app_entry in \
+                    "API:app-audit-api.sh:api" \
+                    "Web:app-audit-web.sh:web" \
+                    "Worker:app-audit-worker.sh:worker" \
+                    "GameServer:app-audit-game-server.sh:game-server" \
+                    "Shell:app-audit-shell.sh:shell" \
+                    "AuthRemote:app-audit-feature-auth-remote.sh:feature-auth-remote" \
+                    "DashboardRemote:app-audit-feature-dashboard-remote.sh:feature-dashboard-remote" \
+                    "E2E:app-audit-e2e.sh:e2e" \
+                    "LoadTest:app-audit-load-test.sh:load-test" \
+                    "Infrastructure:app-audit-infrastructure.sh:infrastructure"; do
+                    IFS=':' read -r label script file_label <<< "${app_entry}"
+                    TOTAL_AUDITS=$((TOTAL_AUDITS + 1)) || true
+                    run_audit "App: ${label}" "${SCRIPT_DIR}/${script}" "app-audit/${file_label}/audit-results.json" || true
+                done
                 ;;
             *)
                 log_error "Unknown audit: ${audit}"

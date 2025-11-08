@@ -47,9 +47,17 @@ resource "aws_ecr_replication_configuration" "this" {
 resource "aws_ecr_repository" "this" {
   for_each = var.repositories
 
-  name                 = each.key
-  image_tag_mutability = lookup(each.value, "image_tag_mutability", "MUTABLE")
+  name = each.key
+  
+  # Security: Set to IMMUTABLE to prevent image tag overwriting
+  # Mutable tags allow attackers to replace trusted images with compromised ones
+  # Reference: CIS AWS Foundations Benchmark, OWASP Container Security
+  # To deploy new versions, use unique tags (e.g., git SHA, semantic version)
+  image_tag_mutability = lookup(each.value, "image_tag_mutability", "IMMUTABLE")
 
+  # Security: Enable image scanning on push to detect vulnerabilities
+  # Reference: CIS AWS Foundations Benchmark 4.8, AWS ECR Security Best Practices
+  # Scans are performed automatically when images are pushed to the repository
   image_scanning_configuration {
     scan_on_push = lookup(each.value, "scan_on_push", true)
   }

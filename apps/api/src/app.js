@@ -1,10 +1,13 @@
 const compression = require("compression");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const express = require("express");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const { getDatabase } = require("./index");
 const { authenticate, requireRole } = require("./middleware/auth");
+const { csrfProtection, csrfTokenMiddleware } = require("./middleware/csrf");
+const { sanitizeRequestForLog } = require("./utils/log-sanitizer");
 const requestId = require("./middleware/request-id");
 const ageVerificationRoutes = require("./routes/ageVerification");
 const authRoutes = require("./routes/auth");
@@ -60,14 +63,26 @@ app.use(
 		},
 		credentials: true,
 		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-		allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+		allowedHeaders: [
+			"Content-Type",
+			"Authorization",
+			"X-Requested-With",
+			"X-CSRF-Token",
+		],
 	}),
 );
 
 app.use(requestId);
 app.use(compression());
+app.use(cookieParser()); // Required for CSRF double-submit cookie pattern
+
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+
+// CSRF protection: apply after body parsers, before authenticated routes
+// Uses modern csrf-csrf package with double-submit cookie pattern
+app.use(csrfTokenMiddleware);
+app.use(csrfProtection);
 
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000,
@@ -86,20 +101,22 @@ app.use(limiter);
 
 app.use((req, res, next) => {
 	const start = Date.now();
+	// Security: Sanitize request data before logging to prevent log injection
+	const sanitizedReq = sanitizeRequestForLog(req);
 	logger.log("Request received", {
-		requestId: req.requestId,
-		method: req.method,
-		url: req.url,
-		ip: req.ip,
-		userAgent: req.get("User-Agent"),
+		requestId: sanitizedReq.requestId,
+		method: sanitizedReq.method,
+		url: sanitizedReq.url,
+		ip: sanitizedReq.ip,
+		userAgent: sanitizedReq.userAgent,
 	});
 
 	res.on("finish", () => {
 		const duration = Date.now() - start;
 		logger.log("Request completed", {
-			requestId: req.requestId,
-			method: req.method,
-			url: req.url,
+			requestId: sanitizedReq.requestId,
+			method: sanitizedReq.method,
+			url: sanitizedReq.url,
 			status: res.statusCode,
 			duration,
 		});
@@ -121,7 +138,7 @@ app.get("/ready", (req, res) => {
 	// Check database connectivity
 	try {
 		const db = getDatabase();
-		if (db && db.open) {
+		if (db?.open) {
 			res.json({
 				status: "ready",
 				timestamp: new Date().toISOString(),

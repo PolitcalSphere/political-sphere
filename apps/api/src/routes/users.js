@@ -1,161 +1,74 @@
-import crypto from "crypto";
-import express from "express";
-import logger from "../logger.js";
-import { validate } from "../middleware/validation.js";
-import { getDatabase } from "../modules/stores/index.js";
-// Use local CJS shim for shared schemas in test/runtime
-import { CreateUserSchema } from "../shared-shim.js";
+const express = require("express");
+const logger = require("../logger");
+const { UserStore } = require("../stores/user-store");
+const { getDatabase } = require("../modules/stores/index");
 
 const router = express.Router();
+const db = getDatabase();
+const userStore = new UserStore(db);
 
-router.post("/users", validate(CreateUserSchema), async (req, res) => {
+// GET /users - Get all users
+router.get("/", async (req, res) => {
 	try {
-		const db = getDatabase();
-		const user = await db.users.create(req.body);
-		logger.info("User created", { userId: user.id, email: user.email });
-		res.status(201).json({ success: true, data: user });
+		const users = await userStore.getAll();
+		res.json({ users });
 	} catch (error) {
-		logger.error("Failed to create user", {
-			error: error.message,
-			email: req.body.email,
-		});
-		if (/UNIQUE constraint failed/i.test(error.message || "")) {
-			return res.status(400).json({
-				success: false,
-				error: "User already exists",
-			});
-		}
-		res.status(500).json({
-			success: false,
-			error: "Internal server error",
-		});
-	}
-});
-
-router.get("/users/:id", async (req, res) => {
-	try {
-		const db = getDatabase();
-		const user = await db.users.getById(req.params.id);
-		if (!user) {
-			return res.status(404).json({ error: "User not found" });
-		}
-		res.set("Cache-Control", "public, max-age=600");
-		res.json(user);
-	} catch (error) {
-		logger.error("Failed to fetch user", {
-			error: error.message,
-			userId: req.params.id,
-		});
+		logger.error("Error fetching users:", error);
 		res.status(500).json({ error: "Internal server error" });
 	}
 });
 
-// GDPR Data Export Endpoint
-router.get("/users/:id/export", async (req, res) => {
+// GET /users/:id - Get user by ID
+router.get("/:id", async (req, res) => {
 	try {
-		const db = getDatabase();
-		const user = await db.users.getById(req.params.id);
+		const user = await userStore.getById(req.params.id);
 		if (!user) {
-			return res.status(404).json({
-				success: false,
-				error: "User not found",
-				message: "No user data available for export",
-			});
+			return res.status(404).json({ error: "User not found" });
 		}
-
-		// Export user data in GDPR-compliant format
-		const exportData = {
-			user: {
-				id: user.id,
-				email: user.email,
-				createdAt: user.createdAt,
-				updatedAt: user.updatedAt,
-				// Include other user data as needed
-			},
-			exportedAt: new Date().toISOString(),
-			purpose: "GDPR Article 15 - Right of Access",
-			format: "JSON",
-		};
-
-		logger.audit("User data exported for GDPR compliance", {
-			userId: req.params.id,
-			exportedBy: req.user?.id || "anonymous",
-		});
-
-		res.set("Content-Type", "application/json");
-		res.set(
-			"Content-Disposition",
-			`attachment; filename="user-${req.params.id}-export.json"`,
-		);
-		res.json(exportData);
+		res.json({ user });
 	} catch (error) {
-		logger.error("Failed to export user data", {
-			error: error.message,
-			userId: req.params.id,
-		});
-		res.status(500).json({
-			success: false,
-			error: "Export failed",
-			message: "Unable to export user data at this time",
-		});
+		logger.error("Error fetching user:", error);
+		res.status(500).json({ error: "Internal server error" });
 	}
 });
 
-// GDPR Data Deletion Endpoint
-router.delete("/users/:id/gdpr", async (req, res) => {
+// POST /users - Create new user
+router.post("/", async (req, res) => {
 	try {
-		const db = getDatabase();
-		const user = await db.users.getById(req.params.id);
-		if (!user) {
-			return res.status(404).json({
-				success: false,
-				error: "User not found",
-				message: "No user data available for deletion",
-			});
-		}
-
-		// Mark user for deletion (soft delete for audit trail)
-		await db.users.update(req.params.id, {
-			deletedAt: new Date().toISOString(),
-			deletionReason: "GDPR Article 17 - Right to Erasure",
-			deletedBy: req.user?.id || "system",
-		});
-
-		// Log compliance event
-		const complianceService = await import("../complianceService.js");
-		complianceService.default.logComplianceEvent({
-			category: "data_deletion",
-			action: "gdpr_erasure",
-			userId: req.params.id,
-			resource: "user",
-			details: {
-				lawfulBasis: "GDPR Article 17",
-				deletedBy: req.user?.id || "system",
-			},
-		});
-
-		logger.audit("User data deleted for GDPR compliance", {
-			userId: req.params.id,
-			deletedBy: req.user?.id || "system",
-		});
-
-		res.json({
-			success: true,
-			message:
-				"User data deletion initiated. Data will be permanently removed within 30 days.",
-			deletionId: crypto.randomUUID(),
-		});
+		const user = await userStore.create(req.body);
+		res.status(201).json({ user });
 	} catch (error) {
-		logger.error("Failed to delete user data", {
-			error: error.message,
-			userId: req.params.id,
-		});
-		res.status(500).json({
-			success: false,
-			error: "Deletion failed",
-			message: "Unable to delete user data at this time",
-		});
+		logger.error("Error creating user:", error);
+		res.status(500).json({ error: "Internal server error" });
 	}
 });
 
-export default router;
+// PUT /users/:id - Update user
+router.put("/:id", async (req, res) => {
+	try {
+		const user = await userStore.update(req.params.id, req.body);
+		if (!user) {
+			return res.status(404).json({ error: "User not found" });
+		}
+		res.json({ user });
+	} catch (error) {
+		logger.error("Error updating user:", error);
+		res.status(500).json({ error: "Internal server error" });
+	}
+});
+
+// DELETE /users/:id - Delete user
+router.delete("/:id", async (req, res) => {
+	try {
+		const deleted = await userStore.delete(req.params.id);
+		if (!deleted) {
+			return res.status(404).json({ error: "User not found" });
+		}
+		res.json({ success: true });
+	} catch (error) {
+		logger.error("Error deleting user:", error);
+		res.status(500).json({ error: "Internal server error" });
+	}
+});
+
+module.exports = router;

@@ -4,7 +4,7 @@ import {
   type CreateBillInput,
   CreateBillSchema,
 } from "@political-sphere/shared";
-import { getDatabase } from "../stores";
+import { getDatabase } from "../modules/stores/index.js";
 
 export class BillService {
   // Lazy getter to avoid stale DB connections in tests

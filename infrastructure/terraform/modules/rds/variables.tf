@@ -102,3 +102,9 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "enabled_cloudwatch_logs_exports" {
+  description = "List of log types to enable for CloudWatch export. For PostgreSQL: postgresql, upgrade"
+  type        = list(string)
+  default     = ["postgresql", "upgrade"]
+}

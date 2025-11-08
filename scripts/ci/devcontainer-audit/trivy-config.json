@@ -1,0 +1,17 @@
+{
+  "SchemaVersion": 2,
+  "CreatedAt": "2025-11-08T21:49:40.030032Z",
+  "ArtifactName": "/Users/morganlowman/GitHub/political-sphere/.devcontainer",
+  "ArtifactType": "filesystem",
+  "Results": [
+    {
+      "Target": "Dockerfile",
+      "Class": "config",
+      "Type": "dockerfile",
+      "MisconfSummary": {
+        "Successes": 27,
+        "Failures": 0
+      }
+    }
+  ]
+}

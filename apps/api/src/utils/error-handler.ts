@@ -1,34 +1,39 @@
-import { Request, Response, NextFunction } from 'express';
+import type { NextFunction, Request, Response } from "express";
+import { sanitizeErrorForLog } from "./log-sanitizer";
 
 export class ErrorHandler {
-  static handleError(err: Error, req: Request, res: Response, next: NextFunction): void {
-    console.error('Error:', {
-      message: err.message,
-      stack: err.stack,
-      url: req.url,
-      method: req.method,
-      timestamp: new Date().toISOString(),
-    });
+  static handleError(
+    err: Error,
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): void {
+    // Security: Sanitize error data before logging to prevent log injection
+    const sanitizedError = sanitizeErrorForLog(
+      err,
+      req as unknown as Record<string, unknown>
+    );
+    console.error("Error:", sanitizedError);
 
     // Don't leak internal errors
-    const isDevelopment = process.env.NODE_ENV === 'development';
-    const message = isDevelopment ? err.message : 'Internal server error';
+    const isDevelopment = process.env.NODE_ENV === "development";
+    const message = isDevelopment ? err.message : "Internal server error";
 
     // Determine status code
     let statusCode = 500;
-    if (err.name === 'ValidationError') {
+    if (err.name === "ValidationError") {
       statusCode = 400;
-    } else if (err.name === 'UnauthorizedError') {
+    } else if (err.name === "UnauthorizedError") {
       statusCode = 401;
-    } else if (err.name === 'NotFoundError') {
+    } else if (err.name === "NotFoundError") {
       statusCode = 404;
-    } else if (err.name === 'ConflictError') {
+    } else if (err.name === "ConflictError") {
       statusCode = 409;
-    } else if (err.name === 'RateLimitError') {
+    } else if (err.name === "RateLimitError") {
       statusCode = 429;
-    } else if (err.name === 'DatabaseError') {
+    } else if (err.name === "DatabaseError") {
       statusCode = 500;
-    } else if (err.name === 'ExternalServiceError') {
+    } else if (err.name === "ExternalServiceError") {
       statusCode = 502;
     }
 
@@ -52,49 +57,49 @@ export class ErrorHandler {
 export class ValidationError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'ValidationError';
+    this.name = "ValidationError";
   }
 }
 
 export class NotFoundError extends Error {
   constructor(resource: string) {
     super(`${resource} not found`);
-    this.name = 'NotFoundError';
+    this.name = "NotFoundError";
   }
 }
 
 export class UnauthorizedError extends Error {
-  constructor(message: string = 'Unauthorized') {
+  constructor(message: string = "Unauthorized") {
     super(message);
-    this.name = 'UnauthorizedError';
+    this.name = "UnauthorizedError";
   }
 }
 
 export class ConflictError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'ConflictError';
+    this.name = "ConflictError";
   }
 }
 
 export class RateLimitError extends Error {
-  constructor(message: string = 'Too many requests') {
+  constructor(message: string = "Too many requests") {
     super(message);
-    this.name = 'RateLimitError';
+    this.name = "RateLimitError";
   }
 }
 
 export class DatabaseError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'DatabaseError';
+    this.name = "DatabaseError";
   }
 }
 
 export class ExternalServiceError extends Error {
   constructor(service: string, message: string) {
     super(`${service}: ${message}`);
-    this.name = 'ExternalServiceError';
+    this.name = "ExternalServiceError";
   }
 }
 
@@ -102,7 +107,7 @@ export class ExternalServiceError extends Error {
 export class CircuitBreaker {
   private failures = 0;
   private lastFailureTime = 0;
-  private state: 'CLOSED' | 'OPEN' | 'HALF_OPEN' = 'CLOSED';
+  private state: "CLOSED" | "OPEN" | "HALF_OPEN" = "CLOSED";
 
   constructor(
     private failureThreshold: number = 5,
@@ -111,11 +116,14 @@ export class CircuitBreaker {
   ) {}
 
   async execute<T>(fn: () => Promise<T>): Promise<T> {
-    if (this.state === 'OPEN') {
+    if (this.state === "OPEN") {
       if (Date.now() - this.lastFailureTime > this.recoveryTimeout) {
-        this.state = 'HALF_OPEN';
+        this.state = "HALF_OPEN";
       } else {
-        throw new ExternalServiceError('CircuitBreaker', 'Service is currently unavailable');
+        throw new ExternalServiceError(
+          "CircuitBreaker",
+          "Service is currently unavailable"
+        );
       }
     }
 
@@ -131,7 +139,7 @@ export class CircuitBreaker {
 
   private onSuccess() {
     this.failures = 0;
-    this.state = 'CLOSED';
+    this.state = "CLOSED";
   }
 
   private onFailure() {
@@ -139,7 +147,7 @@ export class CircuitBreaker {
     this.lastFailureTime = Date.now();
 
     if (this.failures >= this.failureThreshold) {
-      this.state = 'OPEN';
+      this.state = "OPEN";
     }
   }
 
@@ -166,8 +174,8 @@ export const retryWithBackoff = async <T>(
         throw lastError;
       }
 
-      const delay = baseDelay * Math.pow(2, attempt);
-      await new Promise(resolve => setTimeout(resolve, delay));
+      const delay = baseDelay * 2 ** attempt;
+      await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }
 

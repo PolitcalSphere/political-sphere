@@ -3,7 +3,7 @@ import {
   CreateVoteSchema,
   type Vote,
 } from "@political-sphere/shared";
-import { getDatabase } from "../stores";
+import { getDatabase } from "../modules/stores/index.js";
 
 export class VoteService {
   // Lazy getter to avoid stale DB connections in tests

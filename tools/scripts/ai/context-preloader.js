@@ -6,11 +6,11 @@
 
 import {
 	existsSync,
+	mkdirSync,
 	readdirSync,
 	readFileSync,
 	statSync,
 	writeFileSync,
-	mkdirSync,
 } from "fs";
 import { extname, join } from "path";
 
@@ -120,7 +120,7 @@ async function preloadContext(contextName) {
 							const content = readFileSync(fullPath, "utf8");
 							// Validate content integrity
 							if (content.length === 0) {
-								console.warn(`Warning: Empty file ${fullPath}`);
+								console.warn("Warning: Empty file", fullPath);
 								continue;
 							}
 							context.files[fullPath] = {
@@ -128,7 +128,8 @@ async function preloadContext(contextName) {
 								size: content.length,
 							};
 						} catch (err) {
-							console.error(`Error reading file ${fullPath}:`, err?.message);
+							// Security: Separate format string from variable to prevent log injection
+							console.error("Error reading file:", fullPath, err?.message);
 							// Skip unreadable files but log the error
 						}
 					}
@@ -137,15 +138,16 @@ async function preloadContext(contextName) {
 				try {
 					const content = readFileSync(path, "utf8");
 					if (content.length === 0) {
-						console.warn(`Warning: Empty file ${path}`);
+						console.warn("Warning: Empty file", path);
 						return;
 					}
 					context.files[path] = {
 						content: content.slice(0, 1000),
 						size: content.length,
 					};
-				} catch (e) {
-					console.error(`Error reading file ${path}:`, e.message);
+				} catch (err) {
+					// Security: Separate format string from variable to prevent log injection
+					console.error("Error reading file:", path, err?.message);
 					// Skip unreadable files but log the error
 				}
 			}

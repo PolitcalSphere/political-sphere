@@ -1,0 +1,13 @@
+{
+  "timestamp": "2025-11-08T21:33:56Z",
+  "app": "shell",
+  "summary": {
+    "critical": 0,
+    "high": 4,
+    "medium": 2,
+    "low": 2,
+    "pass": 11
+  },
+  "app_dir": "/Users/morganlowman/GitHub/political-sphere/apps/shell",
+  "audit_dir": "/Users/morganlowman/GitHub/political-sphere/app-audit/shell"
+}
