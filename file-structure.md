@@ -1,370 +1,1388 @@
-# Political Sphere - Intended File Structure
-
-> **Complete architecture and organization guide for the Political Sphere monorepo**
-
-## 📋 Quick Navigation
-
-**Color Legend:**
-- 🔵 Blue - Root/Primary containers
-- 🟢 Green - Applications & Services
-- 🟠 Orange - Libraries & Utilities
-- 🟣 Purple - Documentation & Governance
-- 🔷 Cyan - Infrastructure & DevOps
-- 🟤 Brown - Scripts & Tools
-- 🔴 Pink - AI Assets & Models
-
----
-
-## 📊 Project Overview
-
-```mermaid
-graph TB
-    Root[political-sphere/]
-    
-    Root --> Apps[📱 apps/<br/>Applications]
-    Root --> Libs[📚 libs/<br/>Libraries]
-    Root --> Docs[📖 docs/<br/>Documentation]
-    Root --> Infra[🏗️ Infrastructure]
-    Root --> Scripts[🔧 scripts/<br/>Automation]
-    Root --> AI[🤖 ai/<br/>AI Assets]
-    Root --> Tools[🛠️ tools/<br/>Development Tools]
-    Root --> Data[💾 data/<br/>Fixtures & Seeds]
-    
-    style Root fill:#2196F3,stroke:#1565C0,stroke-width:3px,color:#fff
-    style Apps fill:#4CAF50,stroke:#2E7D32,stroke-width:2px,color:#fff
-    style Libs fill:#FF9800,stroke:#E65100,stroke-width:2px,color:#fff
-    style Docs fill:#9C27B0,stroke:#6A1B9A,stroke-width:2px,color:#fff
-    style Infra fill:#00BCD4,stroke:#00838F,stroke-width:2px,color:#fff
-    style Scripts fill:#795548,stroke:#4E342E,stroke-width:2px,color:#fff
-    style AI fill:#E91E63,stroke:#880E4F,stroke-width:2px,color:#fff
-    style Tools fill:#607D8B,stroke:#37474F,stroke-width:2px,color:#fff
-    style Data fill:#009688,stroke:#00695C,stroke-width:2px,color:#fff
-```
-
----
-
-## 📱 Applications (/apps)
-
-**12+ Specialized Applications**
-
-```mermaid
-graph TB
-    Apps[apps/]
-    
-    %% Core Services
-    Apps --> API[api/<br/>REST API Backend]
-    Apps --> GameServer[game-server/<br/>Real-time Engine]
-    Apps --> Worker[worker/<br/>Background Jobs]
-    
-    %% Frontend
-    Apps --> Web[web/<br/>Main React App]
-    Apps --> Shell[shell/<br/>Module Federation Host]
-    Apps --> AuthRemote[feature-auth-remote/<br/>Auth Microfrontend]
-    Apps --> DashRemote[feature-dashboard-remote/<br/>Dashboard Microfrontend]
-    
-    %% Infrastructure & Support
-    Apps --> Infra[infrastructure/<br/>IaC & Deployments]
-    Apps --> E2E[e2e/<br/>End-to-End Tests]
-    Apps --> LoadTest[load-test/<br/>Performance Testing]
-    Apps --> DocsApp[docs/<br/>Documentation Site]
-    Apps --> Dev[dev/<br/>Experimental Features]
-    
-    style Apps fill:#4CAF50,stroke:#2E7D32,stroke-width:3px,color:#fff
-    style API fill:#66BB6A,stroke:#43A047,stroke-width:2px
-    style GameServer fill:#66BB6A,stroke:#43A047,stroke-width:2px
-    style Worker fill:#66BB6A,stroke:#43A047,stroke-width:2px
-    style Web fill:#81C784,stroke:#66BB6A,stroke-width:2px
-    style Shell fill:#81C784,stroke:#66BB6A,stroke-width:2px
-    style AuthRemote fill:#81C784,stroke:#66BB6A,stroke-width:2px
-    style DashRemote fill:#81C784,stroke:#66BB6A,stroke-width:2px
-    style Infra fill:#A5D6A7,stroke:#81C784,stroke-width:2px
-    style E2E fill:#A5D6A7,stroke:#81C784,stroke-width:2px
-    style LoadTest fill:#A5D6A7,stroke:#81C784,stroke-width:2px
-    style DocsApp fill:#A5D6A7,stroke:#81C784,stroke-width:2px
-    style Dev fill:#C8E6C9,stroke:#A5D6A7,stroke-width:2px
-```
-
----
-
-## 📚 Libraries (/libs)
-
-**17+ Reusable Modules**
-
-```mermaid
-graph TB
-    Libs[libs/]
-    
-    %% Shared Utilities
-    Libs --> SharedUtils[shared/utils/<br/>Common Utilities]
-    Libs --> SharedTypes[shared/types/<br/>TypeScript Types]
-    Libs --> SharedConstants[shared/constants/<br/>Constants]
-    Libs --> SharedConfig[shared/config/<br/>Configuration]
-    
-    %% Platform Services
-    Libs --> PlatformAuth[platform/auth/<br/>Authentication]
-    Libs --> PlatformAPI[platform/api-client/<br/>API Client]
-    Libs --> PlatformState[platform/state/<br/>State Management]
-    Libs --> PlatformRouting[platform/routing/<br/>Routing]
-    
-    %% Game Engine
-    Libs --> GameCore[game-engine/core/<br/>Core Logic]
-    Libs --> GameSim[game-engine/simulation/<br/>Simulation]
-    Libs --> GameEvents[game-engine/events/<br/>Event System]
-    
-    %% Infrastructure
-    Libs --> InfraDB[infrastructure/database/<br/>Database Utils]
-    Libs --> InfraMon[infrastructure/monitoring/<br/>Observability]
-    Libs --> InfraDeploy[infrastructure/deployment/<br/>Deployment]
-    
-    %% UI Components
-    Libs --> UIComp[ui/components/<br/>React Components]
-    Libs --> UIDesign[ui/design-system/<br/>Design Tokens]
-    Libs --> UIA11y[ui/accessibility/<br/>A11y Utilities]
-    
-    style Libs fill:#FF9800,stroke:#E65100,stroke-width:3px,color:#fff
-    style SharedUtils fill:#FFB74D,stroke:#FB8C00,stroke-width:2px
-    style SharedTypes fill:#FFB74D,stroke:#FB8C00,stroke-width:2px
-    style SharedConstants fill:#FFB74D,stroke:#FB8C00,stroke-width:2px
-    style SharedConfig fill:#FFB74D,stroke:#FB8C00,stroke-width:2px
-    style PlatformAuth fill:#FFCC80,stroke:#FFB74D,stroke-width:2px
-    style PlatformAPI fill:#FFCC80,stroke:#FFB74D,stroke-width:2px
-    style PlatformState fill:#FFCC80,stroke:#FFB74D,stroke-width:2px
-    style PlatformRouting fill:#FFCC80,stroke:#FFB74D,stroke-width:2px
-    style GameCore fill:#FFE0B2,stroke:#FFCC80,stroke-width:2px
-    style GameSim fill:#FFE0B2,stroke:#FFCC80,stroke-width:2px
-    style GameEvents fill:#FFE0B2,stroke:#FFCC80,stroke-width:2px
-    style InfraDB fill:#FFECB3,stroke:#FFE0B2,stroke-width:2px
-    style InfraMon fill:#FFECB3,stroke:#FFE0B2,stroke-width:2px
-    style InfraDeploy fill:#FFECB3,stroke:#FFE0B2,stroke-width:2px
-    style UIComp fill:#FFF3E0,stroke:#FFECB3,stroke-width:2px
-    style UIDesign fill:#FFF3E0,stroke:#FFECB3,stroke-width:2px
-    style UIA11y fill:#FFF3E0,stroke:#FFECB3,stroke-width:2px
-```
-
----
-
-## �� Documentation (/docs)
-
-**12 Organized Sections**
-
-```mermaid
-graph TB
-    Docs[docs/]
-    
-    Docs --> Foundation[00-foundation/<br/>Core Principles]
-    Docs --> Strategy[01-strategy/<br/>Product Vision]
-    Docs --> Governance[02-governance/<br/>Policies]
-    Docs --> Legal[03-legal-and-compliance/<br/>Legal Requirements]
-    Docs --> Arch[04-architecture/<br/>System Architecture]
-    Docs --> Engineering[05-engineering-and-devops/<br/>Development]
-    Docs --> Security[06-security-and-risk/<br/>Security Policies]
-    Docs --> AISim[07-ai-and-simulation/<br/>AI Governance]
-    Docs --> GameDesign[08-game-design-and-mechanics/<br/>Game Design]
-    Docs --> Ops[09-observability-and-ops/<br/>Operations]
-    Docs --> Audit[audit-trail/<br/>Audit Logs]
-    Docs --> DocControl[document-control/<br/>Version Control]
-    
-    style Docs fill:#9C27B0,stroke:#6A1B9A,stroke-width:3px,color:#fff
-    style Foundation fill:#BA68C8,stroke:#8E24AA,stroke-width:2px
-    style Strategy fill:#BA68C8,stroke:#8E24AA,stroke-width:2px
-    style Governance fill:#CE93D8,stroke:#BA68C8,stroke-width:2px
-    style Legal fill:#CE93D8,stroke:#BA68C8,stroke-width:2px
-    style Arch fill:#E1BEE7,stroke:#CE93D8,stroke-width:2px
-    style Engineering fill:#E1BEE7,stroke:#CE93D8,stroke-width:2px
-    style Security fill:#F3E5F5,stroke:#E1BEE7,stroke-width:2px
-    style AISim fill:#F3E5F5,stroke:#E1BEE7,stroke-width:2px
-    style GameDesign fill:#F3E5F5,stroke:#E1BEE7,stroke-width:2px
-    style Ops fill:#F3E5F5,stroke:#E1BEE7,stroke-width:2px
-    style Audit fill:#BA68C8,stroke:#8E24AA,stroke-width:2px
-    style DocControl fill:#BA68C8,stroke:#8E24AA,stroke-width:2px
-```
-
----
-
-## 🤖 AI Assets (/ai)
-
-**AI Development Tools & Context**
-
-```mermaid
-graph TB
-    AI[ai/]
-    
-    AI --> Cache[ai-cache/<br/>AI Cache Data]
-    AI --> Index[ai-index/<br/>Codebase Index]
-    AI --> Knowledge[ai-knowledge/<br/>Knowledge Base]
-    AI --> Context[context-bundles/<br/>Context Packages]
-    AI --> Prompts[prompts/<br/>Prompt Templates]
-    AI --> Patterns[patterns/<br/>Code Patterns]
-    AI --> Metrics[metrics/<br/>Performance Metrics]
-    AI --> AIGov[governance/<br/>AI Governance Rules]
-    AI --> History[history/<br/>Development History]
-    AI --> Learning[learning/<br/>Training Patterns]
-    
-    style AI fill:#E91E63,stroke:#880E4F,stroke-width:3px,color:#fff
-    style Cache fill:#F48FB1,stroke:#EC407A,stroke-width:2px
-    style Index fill:#F48FB1,stroke:#EC407A,stroke-width:2px
-    style Knowledge fill:#F8BBD0,stroke:#F48FB1,stroke-width:2px
-    style Context fill:#F8BBD0,stroke:#F48FB1,stroke-width:2px
-    style Prompts fill:#FCE4EC,stroke:#F8BBD0,stroke-width:2px
-    style Patterns fill:#FCE4EC,stroke:#F8BBD0,stroke-width:2px
-    style Metrics fill:#FCE4EC,stroke:#F8BBD0,stroke-width:2px
-    style AIGov fill:#F48FB1,stroke:#EC407A,stroke-width:2px
-    style History fill:#F8BBD0,stroke:#F48FB1,stroke-width:2px
-    style Learning fill:#FCE4EC,stroke:#F8BBD0,stroke-width:2px
-```
-
----
-
-## 🛠️ Development Tools (/tools)
-
-**Build Tools & Utilities**
-
-```mermaid
-graph TB
-    Tools[tools/]
-    
-    Tools --> Scripts[scripts/<br/>Automation Scripts]
-    Tools --> Config[config/<br/>Tool Configurations]
-    Tools --> Docker[docker/<br/>Docker Utilities]
-    Tools --> AITools[ai-index/<br/>AI Indexing Tools]
-    Tools --> Demo[demo/<br/>Demo Applications]
-    Tools --> Tests[tests/<br/>Tool Tests]
-    Tools --> Artifacts[artifacts/<br/>Build Artifacts]
-    
-    style Tools fill:#607D8B,stroke:#37474F,stroke-width:3px,color:#fff
-    style Scripts fill:#78909C,stroke:#546E7A,stroke-width:2px
-    style Config fill:#90A4AE,stroke:#78909C,stroke-width:2px
-    style Docker fill:#B0BEC5,stroke:#90A4AE,stroke-width:2px
-    style AITools fill:#CFD8DC,stroke:#B0BEC5,stroke-width:2px
-    style Demo fill:#90A4AE,stroke:#78909C,stroke-width:2px
-    style Tests fill:#B0BEC5,stroke:#90A4AE,stroke-width:2px
-    style Artifacts fill:#CFD8DC,stroke:#B0BEC5,stroke-width:2px
-```
-
----
-
-## 🏗️ Infrastructure
-
-**IaC, Kubernetes, and Cloud Resources**
-
-```mermaid
-graph TB
-    Infra[apps/infrastructure/]
-    
-    Infra --> Terraform[terraform/<br/>Infrastructure as Code]
-    Infra --> K8s[kubernetes/<br/>K8s Manifests]
-    Infra --> DockerFiles[docker/<br/>Dockerfiles]
-    Infra --> Envs[environments/<br/>Environment Configs]
-    Infra --> Secrets[secrets/<br/>Secret Management]
-    
-    style Infra fill:#00BCD4,stroke:#00838F,stroke-width:3px,color:#fff
-    style Terraform fill:#26C6DA,stroke:#00ACC1,stroke-width:2px
-    style K8s fill:#4DD0E1,stroke:#26C6DA,stroke-width:2px
-    style DockerFiles fill:#80DEEA,stroke:#4DD0E1,stroke-width:2px
-    style Envs fill:#B2EBF2,stroke:#80DEEA,stroke-width:2px
-    style Secrets fill:#E0F7FA,stroke:#B2EBF2,stroke-width:2px
-```
-
----
-
-## 🔧 Scripts (/scripts)
-
-**Automation & CI/CD Scripts**
-
-```mermaid
-graph TB
-    Scripts[scripts/]
-    
-    Scripts --> CI[ci/<br/>CI/CD Scripts]
-    Scripts --> Migrations[migrations/<br/>Database Migrations]
-    Scripts --> Setup[setup-dev-environment.sh]
-    Scripts --> Validate[validate-workflows.sh]
-    Scripts --> Cleanup[cleanup-processes.sh]
-    Scripts --> Perf[perf-monitor.sh]
-    
-    style Scripts fill:#795548,stroke:#4E342E,stroke-width:3px,color:#fff
-    style CI fill:#8D6E63,stroke:#6D4C41,stroke-width:2px
-    style Migrations fill:#A1887F,stroke:#8D6E63,stroke-width:2px
-    style Setup fill:#BCAAA4,stroke:#A1887F,stroke-width:2px
-    style Validate fill:#D7CCC8,stroke:#BCAAA4,stroke-width:2px
-    style Cleanup fill:#BCAAA4,stroke:#A1887F,stroke-width:2px
-    style Perf fill:#D7CCC8,stroke:#BCAAA4,stroke-width:2px
-```
-
----
-
-## 💾 Data (/data)
-
-**Test Data & Seeds**
-
-```mermaid
-graph TB
-    Data[data/]
-    
-    Data --> Fixtures[fixtures/<br/>Test Fixtures]
-    Data --> Seeds[seeds/<br/>Database Seeds]
-    
-    style Data fill:#009688,stroke:#00695C,stroke-width:3px,color:#fff
-    style Fixtures fill:#26A69A,stroke:#00897B,stroke-width:2px
-    style Seeds fill:#4DB6AC,stroke:#26A69A,stroke-width:2px
-```
-
----
-
-## 📦 Root Configuration Files
-
-**Standard Project Files**
-
-- `package.json` - Root package configuration
-- `pnpm-workspace.yaml` - PNPM workspace configuration
-- `nx.json` - Nx monorepo configuration
-- `tsconfig.json` - TypeScript base configuration
-- `vitest.config.js` - Test runner configuration
-- `.prettierrc` - Code formatting rules
-- `.eslintrc` - Linting rules
-- `.gitignore` - Git ignore patterns
-- `.lefthook.yml` - Git hooks configuration
-- `README.md` - Project documentation
-- `LICENSE` - License information
-- `CHANGELOG.md` - Version history
-- `CONTRIBUTING.md` - Contribution guidelines
-
----
-
-## 🎯 Key Principles
-
-### Directory Organization
-
-1. **No files in root** - Only standard configuration files
-2. **Modular structure** - Clear separation of concerns
-3. **Scalable hierarchy** - Maximum 4-5 levels deep
-4. **Consistent naming** - kebab-case for files/folders
-
-### Naming Conventions
-
-- **Files/Directories**: `kebab-case`
-- **Components/Classes**: `PascalCase`
-- **Functions/Variables**: `camelCase`
-- **Constants**: `SCREAMING_SNAKE_CASE`
-
-### File Placement Rules
-
-✅ **Allowed in root:**
-- Standard project files (package.json, README.md, etc.)
-- Build/tool configs (nx.json, tsconfig.json, etc.)
-- IDE configs (.vscode/, .editorconfig)
-
-❌ **Never in root:**
-- Application code → `/apps/`
-- Library code → `/libs/`
-- Documentation → `/docs/`
-- Scripts → `/scripts/`
-- Infrastructure → `/apps/infrastructure/`
-- AI assets → `/ai/`
-
----
-
-**For complete documentation, see:**
-- `docs/00-foundation/organization.md` - Organization standards
-- `docs/quick-ref.md` - Quick reference guide
-- `.github/copilot-instructions.md` - Development guidelines
+political-sphere/
+├── **.devcontainer/** # Development containers (at repo root)
+│ ├── devcontainer.json
+│ ├── Dockerfile
+│ └── docker-compose.dev.yml
+│
+├── **.github/** # GitHub configuration
+│ ├── **workflows/** # CI/CD pipelines
+│ │ ├── **ci.yml**
+│ │ ├── **release.yml**
+│ │ ├── **security.yml**
+│ │ ├── **test-run-tests-action.yml**
+│ │ └── **test-setup-node-action.yml**
+│ ├── **actions/** # Reusable actions
+│ │ ├── **setup-node/**
+│ │ │ ├── **action.yml**
+│ │ │ ├── **setup-node.sh** # Basic node setup and validation
+│ │ │ └── **README.md**
+│ │ ├── **run-tests/**
+│ │ │ ├── **action.yml** # Definition and logic
+│ │ │ ├── **run-tests.sh** # Core runner script
+│ │ │ ├── **parse-results.mjs** # parse & summarise test output
+│ │ │ ├── **upload-artifacts.sh** # uploads coverage/test reports
+│ │ │ ├── **coverage.config.json** # Shared coverage thresholds
+│ │ │ └── **README.md**
+│ │ ├── **setup-node-deps/** # Install dependencies (separate composite)
+│ │ ├── **quality-checks/** # Linting/type/security meta action
+│ │ └── **deploy/**
+│ │ ├── **action.yml**
+│ │ ├── **run-deploy.sh** # main, idempotent deploy orchestration script
+│ │ ├── **build-and-push.sh** # build container images & push to registry
+│ │ ├── **helm-deploy.sh** # deploy/upgrade Helm charts
+│ │ ├── **kubectl-apply.sh** # apply k8s manifests / kustomize
+│ │ ├── **argocd-sync.sh** # call ArgoCD API / CLI to sync apps
+│ │ ├── **rollback.sh** # simple rollback helper
+│ │ ├── **validate-manifests.sh** # linting + kubeval + yamllint
+│ │ └── **README.md**
+│ ├── **ISSUE_TEMPLATE/**
+│ │ ├── **bug_report.yml**
+│ │ ├── **feature_request.yml**
+│ │ └── **security_report.yml**
+│ ├── **PULL_REQUEST_TEMPLATE/**
+│ │ └── **PULL_REQUEST.md**
+│ ├── **SECURITY.md** # Security policy ✨ NEW
+│ ├── **SUPPORT.md** # Support guidelines ✨ NEW
+│ ├── **CODEOWNERS** # Code ownership ✨ NEW
+│ ├── **FUNDING.yml** # Sponsorship info ✨ NEW
+│ ├── **dependabot.yml** # Dependency updates ✨ NEW
+│ ├── **copilot-instructions.md**
+│ └── **README.md** # ✨ NEW
+|
+├── **.nx/** # Nx cache and workspace data
+│ └── **workspace-data/** # Project graphs and dependency analysis
+│ ├── **graphs/** # Project graph files
+│ │ ├── **project-graph.json**
+│ │ └── **project-graph.lock**
+│ ├── **locks/** # Lockfile hash files
+│ │ ├── **lockfile-dependencies.hash**
+│ │ └── **lockfile-nodes.hash**
+│ ├── **maps/** # Mapping files
+│ │ ├── **file-map.json**
+│ │ └── **source-maps.json**
+│ ├── **parsed/** # Parsed lock files
+│ │ ├── **parsed-lock-file.dependencies.json**
+│ │ └── **parsed-lock-file.nodes.json**
+│ ├── **db/** # Database files
+│ │ └── **[UUID].db**
+│ └── **other/** # Miscellaneous files
+│ ├── **nx_files.nxt**
+│ └── **d/**
+│
+├── **.vitest/** # Vitest cache (generated)
+│ ├── **cache/**
+│ │ └── **vitest/**
+│ │ └── **[hash]/**
+│ │ └── **results.json**
+│ └── **cache-temp/**
+│ └── **vitest/**
+│ └── **[hash]/**
+│ └── **results.json**
+|
+├── **.vscode/** # VS Code workspace settings
+│ ├── **extensions.json**
+│ ├── **settings.json**
+│ ├── **tasks.json**
+│ └── **launch.json**
+│
+├── apps/ # Application projects
+│ ├── **api/** # Backend API service
+│ │ ├── **src/**
+│ │ │ ├── **modules/**
+│ │ │ ├── **middleware/**
+│ │ │ ├── **utils/**
+│ │ │ └── **server.ts**
+│ │ ├── **tests/**
+│ │ │ ├── unit/
+│ │ │ ├── integration/
+│ │ │ └── fixtures/
+│ │ ├── **openapi/** # OpenAPI specs ✨ NEW
+│ │ │ ├── api.yaml
+│ │ │ ├── schemas/
+│ │ │ └── generated/
+│ │ ├── **prisma/** # Database schemas ✨ NEW
+│ │ │ ├── schema.prisma
+│ │ │ ├── migrations/
+│ │ │ └── seeds/
+│ │ ├── project.json # With tags ⚡ ENHANCED
+│ │ ├── tsconfig.json
+│ │ ├── .env.example
+│ │ └── README.md
+│ │
+│ ├── **web/** # Main web application ⚡ RENAMED (was frontend)
+│ │ ├── src/
+│ │ │ ├── components/
+│ │ │ ├── pages/
+│ │ │ ├── hooks/
+│ │ │ ├── utils/
+│ │ │ ├── styles/
+│ │ │ ├── assets/
+│ │ │ └── main.tsx
+│ │ ├── tests/
+│ │ │ ├── unit/
+│ │ │ ├── integration/
+│ │ │ └── accessibility/
+│ │ ├── public/
+│ │ ├── project.json # With tags ⚡ ENHANCED
+│ │ ├── vite.config.js
+│ │ ├── .env.example
+│ │ └── README.md
+│ │
+│ ├── **game-server/** # Real-time game simulation
+│ │ ├── src/
+│ │ │ ├── engine/
+│ │ │ ├── simulation/
+│ │ │ ├── websocket/
+│ │ │ └── server.ts
+│ │ ├── tests/
+│ │ ├── project.json # With tags ⚡ ENHANCED
+│ │ ├── tsconfig.json
+│ │ └── README.md
+│ │
+│ ├── **worker/** # Background job processor
+│ │ ├── src/
+│ │ │ ├── jobs/
+│ │ │ ├── queues/
+│ │ │ └── worker.ts
+│ │ ├── tests/
+│ │ ├── project.json # With tags ⚡ ENHANCED
+│ │ ├── tsconfig.json
+│ │ └── README.md
+│ │
+│ ├── **shell/** # Module federation shell ⚡ RENAMED (was host)
+│ │ ├── src/
+│ │ │ ├── bootstrap.tsx
+│ │ │ └── remotes/
+│ │ ├── project.json
+│ │ ├── webpack.config.js
+│ │ └── README.md
+│ │
+│ ├── **feature-auth-remote/** # Auth micro-frontend ⚡ RENAMED (was remote)
+│ │ ├── src/
+│ │ │ ├── components/
+│ │ │ └── index.tsx
+│ │ ├── project.json
+│ │ ├── webpack.config.js
+│ │ └── README.md
+│ │
+│ ├── **feature-dashboard-remote/** # Dashboard micro-frontend ✨ NEW
+│ │ ├── src/
+│ │ ├── project.json
+│ │ └── README.md
+│ │
+│ ├── **e2e/** # End-to-end tests ✨ NEW
+│ │ ├── web/
+│ │ │ ├── home.spec.ts
+│ │ │ ├── login.spec.ts
+│ │ │ ├── gameplay.spec.ts
+│ │ │ └── admin.spec.ts
+│ │ ├── api/
+│ │ │ ├── health.spec.ts
+│ │ │ ├── auth.spec.ts
+│ │ │ └── game-actions.spec.ts
+│ │ ├── fixtures/
+│ │ ├── playwright.config.ts
+│ │ ├── project.json
+│ │ └── README.md
+│ │
+│ ├── **load-test/** # Performance testing ✨ NEW
+│ │ ├── scenarios/
+│ │ │ ├── api-load.js
+│ │ │ ├── game-simulation.js
+│ │ │ ├── websocket-stress.js
+│ │ │ └── concurrent-users.js
+│ │ ├── k6.config.js
+│ │ ├── artillery.yml
+│ │ ├── project.json
+│ │ └── README.md
+│ │
+│ ├── **data/** # Data processing and ETL service
+│ │ ├── src/
+│ │ │ ├── pipelines/
+│ │ │ │ ├── user-data-pipeline.ts
+│ │ │ │ ├── analytics-pipeline.ts
+│ │ │ │ └── game-state-sync.ts
+│ │ │ ├── transformers/
+│ │ │ │ ├── normalize-user-data.ts
+│ │ │ │ ├── aggregate-metrics.ts
+│ │ │ │ └── sanitize-inputs.ts
+│ │ │ ├── connectors/
+│ │ │ │ ├── database-connector.ts
+│ │ │ │ ├── api-connector.ts
+│ │ │ │ └── external-sources.ts
+│ │ │ ├── jobs/
+│ │ │ │ ├── scheduled-imports.ts
+│ │ │ │ ├── data-cleanup.ts
+│ │ │ │ └── export-reports.ts
+│ │ │ └── server.ts
+│ │ ├── tests/
+│ │ │ ├── unit/
+│ │ │ ├── integration/
+│ │ │ └── fixtures/
+│ │ ├── config/
+│ │ │ ├── pipeline.config.json
+│ │ │ └── sources.config.json
+│ │ ├── project.json
+│ │ ├── tsconfig.json
+│ │ ├── .env.example
+│ │ └── README.md
+│ │
+│ ├── **dev/** # Development tools and experimental features
+│ │ ├── src/
+│ │ │ ├── experiments/
+│ │ │ │ ├── feature-prototypes/
+│ │ │ │ ├── ai-playground/
+│ │ │ │ └── performance-tests/
+│ │ │ ├── tools/
+│ │ │ │ ├── data-generators/
+│ │ │ │ ├── mock-servers/
+│ │ │ │ └── test-harnesses/
+│ │ │ ├── sandbox/
+│ │ │ │ ├── component-demos/
+│ │ │ │ ├── api-exploration/
+│ │ │ │ └── integration-tests/
+│ │ │ └── main.ts
+│ │ ├── scripts/
+│ │ │ ├── seed-dev-data.ts
+│ │ │ ├── reset-environment.ts
+│ │ │ └── benchmark-features.ts
+│ │ ├── project.json
+│ │ ├── tsconfig.json
+│ │ └── README.md
+│ │
+│ ├── **docs/** # Documentation site (Docusaurus/VitePress)
+│ │ ├── docs/
+│ │ │ ├── getting-started/
+│ │ │ │ ├── introduction.md
+│ │ │ │ ├── installation.md
+│ │ │ │ └── quick-start.md
+│ │ │ ├── guides/
+│ │ │ │ ├── architecture.md
+│ │ │ │ ├── development.md
+│ │ │ │ ├── deployment.md
+│ │ │ │ └── testing.md
+│ │ │ ├── api/
+│ │ │ │ ├── rest-api.md
+│ │ │ │ ├── websocket-api.md
+│ │ │ │ └── graphql-schema.md
+│ │ │ ├── game/
+│ │ │ │ ├── mechanics.md
+│ │ │ │ ├── gameplay.md
+│ │ │ │ └── rules.md
+│ │ │ └── contributing/
+│ │ │ ├── code-style.md
+│ │ │ ├── pull-requests.md
+│ │ │ └── security.md
+│ │ ├── src/
+│ │ │ ├── components/
+│ │ │ ├── pages/
+│ │ │ └── css/
+│ │ ├── static/
+│ │ │ ├── img/
+│ │ │ └── files/
+│ │ ├── docusaurus.config.js
+│ │ ├── sidebars.js
+│ │ ├── project.json
+│ │ ├── package.json
+│ │ └── README.md
+│ │
+│ ├── **infrastructure/** # Infrastructure provisioning and management
+│ │ ├── src/
+│ │ │ ├── provisioning/
+│ │ │ │ ├── aws-setup.ts
+│ │ │ │ ├── kubernetes-bootstrap.ts
+│ │ │ │ ├── database-init.ts
+│ │ │ │ └── network-config.ts
+│ │ │ ├── deployment/
+│ │ │ │ ├── deploy-staging.ts
+│ │ │ │ ├── deploy-production.ts
+│ │ │ │ ├── rollback.ts
+│ │ │ │ └── blue-green-switch.ts
+│ │ │ ├── monitoring/
+│ │ │ │ ├── setup-metrics.ts
+│ │ │ │ ├── configure-alerts.ts
+│ │ │ │ └── dashboard-builder.ts
+│ │ │ ├── cli/
+│ │ │ │ ├── commands/
+│ │ │ │ ├── prompts/
+│ │ │ │ └── index.ts
+│ │ │ └── utils/
+│ │ │ ├── aws-client.ts
+│ │ │ ├── kubectl-wrapper.ts
+│ │ │ └── terraform-runner.ts
+│ │ ├── tests/
+│ │ │ ├── unit/
+│ │ │ └── integration/
+│ │ ├── scripts/
+│ │ │ ├── validate-config.sh
+│ │ │ ├── smoke-tests.sh
+│ │ │ └── disaster-recovery.sh
+│ │ ├── project.json
+│ │ ├── tsconfig.json
+│ │ ├── .env.example
+│ │ └── README.md
+│ │
+│ └── README.md
+│
+├── **data/** # Runtime data (databases, seeds, fixtures)
+│ ├── **seeds/**
+│ │ ├── **users.json**
+│ │ ├── **parties.json**
+│ │ └── **scenarios.json**
+│ ├── **fixtures/**
+│ │ ├── **test-users.json**
+│ │ └── **test-scenarios.json**
+│ ├── _ **.db** # SQLite databases (gitignored)
+│ ├── _ **.db-shm** # SQLite shared memory (gitignored)
+│ ├── **.db-wal** # SQLite write-ahead log (gitignored)
+│ └── **README.md**
+│
+├── libs/ # Shared libraries
+│ ├── shared/ # Common utilities
+│ │ ├── src/
+│ │ │ ├── utils/
+│ │ │ ├── constants/
+│ │ │ ├── types/
+│ │ │ └── validators/
+│ │ ├── tests/
+│ │ ├── project.json # With tags ⚡ ENHANCED
+│ │ ├── tsconfig.json
+│ │ └── README.md
+│ │
+│ ├── ui/ # UI component library
+│ │ ├── src/
+│ │ │ ├── components/
+│ │ │ ├── hooks/
+│ │ │ ├── styles/
+│ │ │ └── index.ts
+│ │ ├── tests/
+│ │ ├── storybook/
+│ │ ├── project.json # With tags ⚡ ENHANCED
+│ │ └── README.md
+│ │
+│ ├── platform/ # Platform services
+│ │ ├── src/
+│ │ │ ├── auth/
+│ │ │ ├── storage/
+│ │ │ └── config/
+│ │ ├── tests/
+│ │ ├── project.json # With tags ⚡ ENHANCED
+│ │ └── README.md
+│ │
+│ ├── infrastructure/ # Infrastructure utilities
+│ │ ├── src/
+│ │ │ ├── database/
+│ │ │ ├── cache/
+│ │ │ └── messaging/
+│ │ ├── project.json # With tags ⚡ ENHANCED
+│ │ └── README.md
+│ │
+│ ├── game-engine/ # Game logic library
+│ │ ├── src/
+│ │ │ ├── core/
+│ │ │ ├── mechanics/
+│ │ │ ├── ai/
+│ │ │ └── simulation/
+│ │ ├── tests/
+│ │ ├── project.json # With tags ⚡ ENHANCED
+│ │ └── README.md
+│ │
+│ ├── testing/ # Shared test utilities
+│ │ ├── src/
+│ │ │ ├── fixtures/
+│ │ │ │ ├── user-fixtures.ts
+│ │ │ │ ├── game-state-fixtures.ts
+│ │ │ │ ├── api-response-fixtures.ts
+│ │ │ │ └── database-fixtures.ts
+│ │ │ ├── mocks/
+│ │ │ │ ├── api-mocks.ts
+│ │ │ │ ├── service-mocks.ts
+│ │ │ │ ├── websocket-mocks.ts
+│ │ │ │ └── storage-mocks.ts
+│ │ │ ├── helpers/
+│ │ │ │ ├── test-environment.ts
+│ │ │ │ ├── async-helpers.ts
+│ │ │ │ ├── dom-helpers.ts
+│ │ │ │ └── assertion-helpers.ts
+│ │ │ ├── factories/
+│ │ │ │ ├── user-factory.ts
+│ │ │ │ ├── game-factory.ts
+│ │ │ │ ├── event-factory.ts
+│ │ │ │ └── entity-factory.ts
+│ │ │ └── index.ts
+│ │ ├── tests/
+│ │ ├── project.json
+│ │ ├── tsconfig.json
+│ │ └── README.md
+│ │
+│ ├── observability/ # OpenTelemetry setup ✨ NEW
+│ │ ├── src/
+│ │ │ ├── tracing/
+│ │ │ │ ├── tracer.ts
+│ │ │ │ ├── span-processor.ts
+│ │ │ │ ├── context-propagation.ts
+│ │ │ │ └── instrumentation.ts
+│ │ │ ├── metrics/
+│ │ │ │ ├── meter.ts
+│ │ │ │ ├── counters.ts
+│ │ │ │ ├── gauges.ts
+│ │ │ │ ├── histograms.ts
+│ │ │ │ └── custom-metrics.ts
+│ │ │ ├── logging/
+│ │ │ │ ├── structured-logger.ts
+│ │ │ │ ├── log-formatter.ts
+│ │ │ │ ├── log-levels.ts
+│ │ │ │ └── correlation.ts
+│ │ │ ├── exporters/
+│ │ │ │ ├── jaeger-exporter.ts
+│ │ │ │ ├── prometheus-exporter.ts
+│ │ │ │ ├── console-exporter.ts
+│ │ │ │ └── otlp-exporter.ts
+│ │ │ └── index.ts
+│ │ ├── tests/
+│ │ ├── project.json
+│ │ ├── tsconfig.json
+│ │ └── README.md
+│ │
+│ ├── feature-flags/ # Feature flag system ✨ NEW
+│ │ ├── src/
+│ │ │ ├── config/
+│ │ │ │ ├── flag-definitions.ts
+│ │ │ │ ├── environments.ts
+│ │ │ │ └── default-flags.json
+│ │ │ ├── providers/
+│ │ │ │ ├── local-provider.ts
+│ │ │ │ ├── remote-provider.ts
+│ │ │ │ ├── launchdarkly-provider.ts
+│ │ │ │ └── split-provider.ts
+│ │ │ ├── hooks/
+│ │ │ │ ├── use-feature-flag.ts
+│ │ │ │ ├── use-flag-value.ts
+│ │ │ │ └── use-variation.ts
+│ │ │ ├── client/
+│ │ │ │ ├── flag-client.ts
+│ │ │ │ ├── cache.ts
+│ │ │ │ └── evaluator.ts
+│ │ │ └── index.ts
+│ │ ├── tests/
+│ │ ├── project.json
+│ │ ├── tsconfig.json
+│ │ └── README.md
+│ │
+│ ├── i18n/ # Internationalization ✨ NEW
+│ │ ├── src/
+│ │ │ ├── messages/
+│ │ │ │ ├── en/
+│ │ │ │ │ ├── common.json
+│ │ │ │ │ ├── game.json
+│ │ │ │ │ ├── auth.json
+│ │ │ │ │ └── errors.json
+│ │ │ │ ├── es/
+│ │ │ │ │ ├── common.json
+│ │ │ │ │ ├── game.json
+│ │ │ │ │ ├── auth.json
+│ │ │ │ │ └── errors.json
+│ │ │ │ ├── fr/
+│ │ │ │ │ ├── common.json
+│ │ │ │ │ ├── game.json
+│ │ │ │ │ ├── auth.json
+│ │ │ │ │ └── errors.json
+│ │ │ │ └── de/
+│ │ │ │ ├── common.json
+│ │ │ │ ├── game.json
+│ │ │ │ ├── auth.json
+│ │ │ │ └── errors.json
+│ │ │ ├── locales/
+│ │ │ │ ├── locale-config.ts
+│ │ │ │ ├── date-formats.ts
+│ │ │ │ ├── number-formats.ts
+│ │ │ │ └── currency-formats.ts
+│ │ │ ├── extraction/
+│ │ │ │ ├── extract-messages.ts
+│ │ │ │ ├── compile-messages.ts
+│ │ │ │ └── validate-translations.ts
+│ │ │ ├── hooks/
+│ │ │ │ ├── use-translation.ts
+│ │ │ │ ├── use-locale.ts
+│ │ │ │ └── use-format.ts
+│ │ │ └── index.ts
+│ │ ├── tests/
+│ │ ├── project.json
+│ │ ├── tsconfig.json
+│ │ └── README.md
+│ │
+│ ├── domain-governance/ # Governance domain ✨ NEW (vertical slice)
+│ │ ├── src/
+│ │ │ ├── entities/
+│ │ │ │ ├── proposal.entity.ts
+│ │ │ │ ├── vote.entity.ts
+│ │ │ │ ├── committee.entity.ts
+│ │ │ │ └── motion.entity.ts
+│ │ │ ├── use-cases/
+│ │ │ │ ├── create-proposal.use-case.ts
+│ │ │ │ ├── cast-vote.use-case.ts
+│ │ │ │ ├── tally-votes.use-case.ts
+│ │ │ │ └── amend-proposal.use-case.ts
+│ │ │ ├── repositories/
+│ │ │ │ ├── proposal.repository.ts
+│ │ │ │ ├── vote.repository.ts
+│ │ │ │ └── committee.repository.ts
+│ │ │ ├── value-objects/
+│ │ │ │ ├── vote-count.vo.ts
+│ │ │ │ ├── quorum.vo.ts
+│ │ │ │ └── voting-period.vo.ts
+│ │ │ └── index.ts
+│ │ ├── tests/
+│ │ │ ├── unit/
+│ │ │ └── integration/
+│ │ ├── project.json
+│ │ ├── tsconfig.json
+│ │ └── README.md
+│ │
+│ ├── domain-election/ # Election domain ✨ NEW (vertical slice)
+│ │ ├── src/
+│ │ │ ├── entities/
+│ │ │ │ ├── election.entity.ts
+│ │ │ │ ├── candidate.entity.ts
+│ │ │ │ ├── ballot.entity.ts
+│ │ │ │ └── constituency.entity.ts
+│ │ │ ├── use-cases/
+│ │ │ │ ├── create-election.use-case.ts
+│ │ │ │ ├── register-candidate.use-case.ts
+│ │ │ │ ├── cast-ballot.use-case.ts
+│ │ │ │ ├── count-ballots.use-case.ts
+│ │ │ │ └── certify-results.use-case.ts
+│ │ │ ├── repositories/
+│ │ │ │ ├── election.repository.ts
+│ │ │ │ ├── candidate.repository.ts
+│ │ │ │ └── ballot.repository.ts
+│ │ │ ├── value-objects/
+│ │ │ │ ├── electoral-system.vo.ts
+│ │ │ │ ├── vote-share.vo.ts
+│ │ │ │ └── term-length.vo.ts
+│ │ │ └── index.ts
+│ │ ├── tests/
+│ │ │ ├── unit/
+│ │ │ └── integration/
+│ │ ├── project.json
+│ │ ├── tsconfig.json
+│ │ └── README.md
+│ │
+│ ├── domain-legislation/ # Legislation domain ✨ NEW (vertical slice)
+│ │ ├── src/
+│ │ │ ├── entities/
+│ │ │ │ ├── bill.entity.ts
+│ │ │ │ ├── law.entity.ts
+│ │ │ │ ├── amendment.entity.ts
+│ │ │ │ └── statute.entity.ts
+│ │ │ ├── use-cases/
+│ │ │ │ ├── draft-bill.use-case.ts
+│ │ │ │ ├── propose-amendment.use-case.ts
+│ │ │ │ ├── pass-legislation.use-case.ts
+│ │ │ │ └── repeal-law.use-case.ts
+│ │ │ ├── repositories/
+│ │ │ │ ├── bill.repository.ts
+│ │ │ │ ├── law.repository.ts
+│ │ │ │ └── amendment.repository.ts
+│ │ │ ├── value-objects/
+│ │ │ │ ├── reading-stage.vo.ts
+│ │ │ │ ├── legal-text.vo.ts
+│ │ │ │ └── effective-date.vo.ts
+│ │ │ └── index.ts
+│ │ ├── tests/
+│ │ │ ├── unit/
+│ │ │ └── integration/
+│ │ ├── project.json
+│ │ ├── tsconfig.json
+│ │ └── README.md
+│ │ ├── tests/
+│ │ ├── project.json
+│ │ └── README.md
+│ │
+│ ├── data-user/ # User data layer ✨ NEW (vertical slice)
+│ │ ├── src/
+│ │ │ ├── repositories/
+│ │ │ │ ├── user.repository.ts
+│ │ │ │ ├── profile.repository.ts
+│ │ │ │ ├── preferences.repository.ts
+│ │ │ │ └── session.repository.ts
+│ │ │ ├── models/
+│ │ │ │ ├── user.model.ts
+│ │ │ │ ├── profile.model.ts
+│ │ │ │ ├── role.model.ts
+│ │ │ │ └── permission.model.ts
+│ │ │ ├── migrations/
+│ │ │ │ ├── 001-create-users-table.ts
+│ │ │ │ ├── 002-add-roles.ts
+│ │ │ │ ├── 003-add-profiles.ts
+│ │ │ │ └── index.ts
+│ │ │ ├── queries/
+│ │ │ │ ├── find-user-by-id.query.ts
+│ │ │ │ ├── search-users.query.ts
+│ │ │ │ └── get-user-stats.query.ts
+│ │ │ └── index.ts
+│ │ ├── tests/
+│ │ │ ├── unit/
+│ │ │ └── integration/
+│ │ ├── project.json
+│ │ ├── tsconfig.json
+│ │ └── README.md
+│ │
+│ ├── data-game-state/ # Game state data ✨ NEW (vertical slice)
+│ │ ├── src/
+│ │ │ ├── repositories/
+│ │ │ │ ├── game-state.repository.ts
+│ │ │ │ ├── player-state.repository.ts
+│ │ │ │ ├── world-state.repository.ts
+│ │ │ │ └── event.repository.ts
+│ │ │ ├── models/
+│ │ │ │ ├── game-state.model.ts
+│ │ │ │ ├── player-state.model.ts
+│ │ │ │ ├── world-state.model.ts
+│ │ │ │ └── snapshot.model.ts
+│ │ │ ├── event-sourcing/
+│ │ │ │ ├── event-store.ts
+│ │ │ │ ├── event-handlers/
+│ │ │ │ │ ├── player-action.handler.ts
+│ │ │ │ │ ├── world-event.handler.ts
+│ │ │ │ │ └── system-event.handler.ts
+│ │ │ │ ├── projections/
+│ │ │ │ │ ├── game-state.projection.ts
+│ │ │ │ │ ├── player-stats.projection.ts
+│ │ │ │ │ └── world-summary.projection.ts
+│ │ │ │ ├── snapshots/
+│ │ │ │ │ ├── snapshot-manager.ts
+│ │ │ │ │ └── snapshot-strategy.ts
+│ │ │ │ └── index.ts
+│ │ │ ├── queries/
+│ │ │ │ ├── get-game-state.query.ts
+│ │ │ │ ├── replay-events.query.ts
+│ │ │ │ └── aggregate-stats.query.ts
+│ │ │ └── index.ts
+│ │ ├── tests/
+│ │ │ ├── unit/
+│ │ │ └── integration/
+│ │ ├── project.json
+│ │ ├── tsconfig.json
+│ │ └── README.md
+│ │
+│ └── README.md
+│
+├── docs/ # Documentation
+│ ├── 00-foundation/
+│ │ ├── business/
+│ │ │ ├── business-model-overview.md
+│ │ │ ├── market-brief.md
+│ │ │ ├── revenue-streams.md
+│ │ │ └── competitive-analysis.md
+│ │ ├── product/
+│ │ │ ├── product-principles.md
+│ │ │ ├── personas-and-use-cases.md
+│ │ │ ├── stakeholder-map.md
+│ │ │ ├── user-journeys.md
+│ │ │ └── value-proposition.md
+│ │ ├── standards/
+│ │ │ ├── standards-overview.md
+│ │ │ ├── glossary-domain-concepts.md
+│ │ │ ├── coding-standards.md
+│ │ │ ├── accessibility-standards.md
+│ │ │ └── security-standards.md
+│ │ ├── vision-mission.md
+│ │ ├── core-values-ethics.md
+│ │ ├── success-metrics-north-star.md
+│ │ └── README.md
+│ │
+│ ├── 01-strategy/
+│ │ ├── roadmap/
+│ │ │ ├── strategic-roadmap-03-12-36-months.md
+│ │ │ ├── risked-assumptions-and-bets.md
+│ │ │ ├── feature-prioritization.md
+│ │ │ ├── technical-debt-strategy.md
+│ │ │ └── innovation-backlog.md
+│ │ ├── partnerships/
+│ │ │ ├── partnerships-and-education-strategy.md
+│ │ │ ├── internationalization-localization-strategy.md
+│ │ │ ├── vendor-management.md
+│ │ │ └── ecosystem-development.md
+│ │ ├── market/
+│ │ │ ├── go-to-market-strategy.md
+│ │ │ ├── user-acquisition.md
+│ │ │ └── growth-strategy.md
+│ │ ├── product-strategy.md
+│ │ ├── objectives-and-key-results-okrs.md
+│ │ ├── ai-strategy-and-differentiation.md
+│ │ └── README.md
+│ │
+│ ├── 02-governance/
+│ │ ├── rfcs/
+│ │ │ ├── template.md
+│ │ │ ├── 001-feature-flags.md
+│ │ │ └── index.md
+│ │ ├── policies/
+│ │ │ ├── code-review-policy.md
+│ │ │ ├── change-management-policy.md
+│ │ │ ├── incident-response-policy.md
+│ │ │ └── data-governance-policy.md
+│ │ ├── committees/
+│ │ │ ├── technical-governance-committee.md
+│ │ │ ├── security-council.md
+│ │ │ └── architecture-review-board.md
+│ │ ├── processes/
+│ │ │ ├── decision-making-process.md
+│ │ │ ├── escalation-procedures.md
+│ │ │ └── approval-workflows.md
+│ │ ├── governance-charter.md
+│ │ ├── decision-rights-matrix.md
+│ │ ├── roles-and-responsibilities-raci.md
+│ │ └── README.md
+│ │
+│ ├── 03-legal-and-compliance/
+│ │ ├── ai-compliance/
+│ │ │ ├── ai-ethics-framework.md
+│ │ │ ├── algorithmic-transparency.md
+│ │ │ ├── bias-mitigation.md
+│ │ │ └── ai-audit-requirements.md
+│ │ ├── data-protection/
+│ │ │ ├── gdpr-compliance.md
+│ │ │ ├── ccpa-compliance.md
+│ │ │ ├── privacy-by-design.md
+│ │ │ ├── data-minimization.md
+│ │ │ ├── consent-management.md
+│ │ │ └── cross-border-transfers.md
+│ │ ├── licensing-and-ip/
+│ │ │ ├── open-source-licenses.md
+│ │ │ ├── third-party-attributions.md
+│ │ │ ├── patent-strategy.md
+│ │ │ └── trademark-guidelines.md
+│ │ ├── DPIAs/
+│ │ │ ├── template.md
+│ │ │ ├── user-profile-dpia.md
+│ │ │ ├── ai-recommendation-dpia.md
+│ │ │ └── index.md
+│ │ ├── ROPAs/
+│ │ │ ├── user-data-ropa.md
+│ │ │ ├── analytics-ropa.md
+│ │ │ └── index.md
+│ │ ├── accessibility/
+│ │ │ ├── wcag-compliance-report.md
+│ │ │ ├── accessibility-statement.md
+│ │ │ └── remediation-plan.md
+│ │ ├── contracts/
+│ │ │ ├── data-processing-agreement-template.md
+│ │ │ ├── vendor-agreements.md
+│ │ │ └── sla-templates.md
+│ │ ├── compliance.md
+│ │ ├── privacy-policy.md
+│ │ ├── terms-of-service.md
+│ │ ├── cookie-policy.md
+│ │ ├── data-retention-maps.md
+│ │ ├── regulatory-register.md
+│ │ └── README.md
+│ │
+│ ├── 04-architecture/
+│ │ ├── api-architecture/
+│ │ │ ├── rest-api-design.md
+│ │ │ ├── graphql-schema.md
+│ │ │ ├── websocket-protocol.md
+│ │ │ ├── api-versioning.md
+│ │ │ ├── rate-limiting.md
+│ │ │ └── authentication-flows.md
+│ │ ├── data-architecture/
+│ │ │ ├── database-schema.md
+│ │ │ ├── data-models.md
+│ │ │ ├── caching-strategy.md
+│ │ │ ├── data-migration-strategy.md
+│ │ │ └── event-sourcing.md
+│ │ ├── decisions/
+│ │ │ ├── template.md
+│ │ │ ├── 001-monorepo-structure.md
+│ │ │ ├── 002-module-federation.md
+│ │ │ ├── 003-testing-strategy.md
+│ │ │ └── index.md
+│ │ ├── frontend-architecture/
+│ │ │ ├── component-architecture.md
+│ │ │ ├── state-management.md
+│ │ │ ├── routing-strategy.md
+│ │ │ └── module-federation.md
+│ │ ├── backend-architecture/
+│ │ │ ├── microservices-overview.md
+│ │ │ ├── service-boundaries.md
+│ │ │ ├── message-queues.md
+│ │ │ └── background-jobs.md
+│ │ ├── infrastructure-architecture/
+│ │ │ ├── cloud-architecture.md
+│ │ │ ├── networking.md
+│ │ │ ├── containerization.md
+│ │ │ └── orchestration.md
+│ │ ├── integration-architecture/
+│ │ │ ├── third-party-integrations.md
+│ │ │ ├── webhook-handlers.md
+│ │ │ └── external-apis.md
+│ │ ├── architecture.md
+│ │ ├── system-overview.md
+│ │ ├── domain-driven-design-map.md
+│ │ ├── c4-model-diagrams.md
+│ │ └── README.md
+│ │
+│ ├── 05-engineering-and-devops/
+│ │ ├── development/
+│ │ │ ├── backend.md
+│ │ │ ├── testing.md
+│ │ │ ├── quality.md
+│ │ │ ├── code-review-guidelines.md
+│ │ │ ├── git-workflow.md
+│ │ │ ├── branching-strategy.md
+│ │ │ └── debugging-guide.md
+│ │ ├── languages/
+│ │ │ ├── typescript.md
+│ │ │ ├── react.md
+│ │ │ ├── node.md
+│ │ │ └── sql.md
+│ │ ├── ui/
+│ │ │ ├── ux-accessibility.md
+│ │ │ ├── design-system.md
+│ │ │ ├── component-library.md
+│ │ │ └── responsive-design.md
+│ │ ├── ci-cd/
+│ │ │ ├── pipeline-overview.md
+│ │ │ ├── continuous-integration.md
+│ │ │ ├── continuous-deployment.md
+│ │ │ ├── release-management.md
+│ │ │ ├── artifact-management.md
+│ │ │ └── README.md
+│ │ ├── infrastructure-as-code/
+│ │ │ ├── terraform-standards.md
+│ │ │ ├── kubernetes-patterns.md
+│ │ │ ├── docker-best-practices.md
+│ │ │ └── configuration-management.md
+│ │ ├── testing/
+│ │ │ ├── unit-testing.md
+│ │ │ ├── integration-testing.md
+│ │ │ ├── e2e-testing.md
+│ │ │ ├── performance-testing.md
+│ │ │ ├── security-testing.md
+│ │ │ ├── accessibility-testing.md
+│ │ │ └── test-data-management.md
+│ │ ├── tools/
+│ │ │ ├── nx-monorepo-guide.md
+│ │ │ ├── vite-configuration.md
+│ │ │ ├── vitest-setup.md
+│ │ │ └── development-environment.md
+│ │ ├── performance/
+│ │ │ ├── optimization-strategies.md
+│ │ │ ├── performance-budgets.md
+│ │ │ ├── monitoring.md
+│ │ │ └── profiling.md
+│ │ ├── monorepo-standards-nx.md
+│ │ ├── architectural-alignment-audit.md
+│ │ └── README.md
+│ │
+│ ├── 06-security-and-risk/
+│ │ ├── audits/
+│ │ │ ├── END-TO-END-AUDIT-2025-10-29.md
+│ │ │ ├── security-audit-template.md
+│ │ │ ├── penetration-test-reports/
+│ │ │ └── vulnerability-assessments/
+│ │ ├── incident-response/
+│ │ │ ├── incident-response-plan.md
+│ │ │ ├── runbooks/
+│ │ │ │ ├── data-breach-runbook.md
+│ │ │ │ ├── ddos-runbook.md
+│ │ │ │ └── unauthorized-access-runbook.md
+│ │ │ ├── post-mortems/
+│ │ │ └── escalation-matrix.md
+│ │ ├── threat-modeling/
+│ │ │ ├── threat-modeling-stride.md
+│ │ │ ├── attack-trees.md
+│ │ │ ├── threat-scenarios.md
+│ │ │ └── mitigation-strategies.md
+│ │ ├── security-controls/
+│ │ │ ├── authentication.md
+│ │ │ ├── authorization.md
+│ │ │ ├── encryption.md
+│ │ │ ├── secrets-management.md
+│ │ │ ├── network-security.md
+│ │ │ └── application-security.md
+│ │ ├── compliance-frameworks/
+│ │ │ ├── owasp-asvs.md
+│ │ │ ├── nist-800-53.md
+│ │ │ ├── iso-27001.md
+│ │ │ └── soc2.md
+│ │ ├── vulnerability-management/
+│ │ │ ├── vulnerability-disclosure-policy.md
+│ │ │ ├── patch-management.md
+│ │ │ ├── dependency-scanning.md
+│ │ │ └── remediation-tracking.md
+│ │ ├── security.md
+│ │ ├── risk-register.md
+│ │ ├── security-policies.md
+│ │ ├── acceptable-use-policy.md
+│ │ └── README.md
+│ │
+│ ├── 07-ai-and-simulation/
+│ │ ├── model-inventory-and-system-cards/
+│ │ │ ├── recommendation-model-card.md
+│ │ │ ├── content-moderation-model-card.md
+│ │ │ ├── npc-behavior-model-card.md
+│ │ │ └── index.md
+│ │ ├── ai-governance/
+│ │ │ ├── ai-governance.md
+│ │ │ ├── ai-governance-framework.md
+│ │ │ ├── ethical-guidelines.md
+│ │ │ ├── bias-monitoring.md
+│ │ │ └── human-oversight.md
+│ │ ├── ai-development/
+│ │ │ ├── model-training.md
+│ │ │ ├── model-evaluation.md
+│ │ │ ├── mlops-pipeline.md
+│ │ │ ├── feature-engineering.md
+│ │ │ └── model-versioning.md
+│ │ ├── ai-deployment/
+│ │ │ ├── model-serving.md
+│ │ │ ├── a-b-testing.md
+│ │ │ ├── canary-deployments.md
+│ │ │ └── rollback-procedures.md
+│ │ ├── simulation-engine/
+│ │ │ ├── simulation-architecture.md
+│ │ │ ├── agent-behaviors.md
+│ │ │ ├── economic-modeling.md
+│ │ │ └── political-dynamics.md
+│ │ ├── responsible-ai/
+│ │ │ ├── fairness-metrics.md
+│ │ │ ├── transparency-requirements.md
+│ │ │ ├── explainability.md
+│ │ │ └── privacy-preserving-ml.md
+│ │ ├── multi-agent-orchestration.md
+│ │ ├── ai-testing-validation.md
+│ │ └── README.md
+│ │
+│ ├── 08-game-design-and-mechanics/
+│ │ ├── mechanics/
+│ │ │ ├── economy-and-budgets.md
+│ │ │ ├── elections-policy-and-mechanics.md
+│ │ │ ├── lawmaking-and-procedure-engine.md
+│ │ │ ├── media-press-and-public-opinion-system.md
+│ │ │ ├── voting-systems.md
+│ │ │ ├── coalition-building.md
+│ │ │ ├── crisis-management.md
+│ │ │ └── diplomacy-mechanics.md
+│ │ ├── systems/
+│ │ │ ├── ai-npc-behaviours-and-tuning.md
+│ │ │ ├── parties-caucuses-and-factions.md
+│ │ │ ├── roles-and-progressions.md
+│ │ │ ├── world-and-institutions-blueprint.md
+│ │ │ ├── reputation-system.md
+│ │ │ ├── influence-mechanics.md
+│ │ │ └── event-system.md
+│ │ ├── balance/
+│ │ │ ├── game-balance-philosophy.md
+│ │ │ ├── power-scaling.md
+│ │ │ ├── economic-balance.md
+│ │ │ └── playtesting-feedback.md
+│ │ ├── progression/
+│ │ │ ├── player-progression.md
+│ │ │ ├── skill-trees.md
+│ │ │ ├── achievements.md
+│ │ │ └── unlock-systems.md
+│ │ ├── narrative/
+│ │ │ ├── story-framework.md
+│ │ │ ├── scenario-design.md
+│ │ │ ├── character-development.md
+│ │ │ └── world-lore.md
+│ │ ├── multiplayer/
+│ │ │ ├── matchmaking.md
+│ │ │ ├── session-management.md
+│ │ │ ├── player-interaction.md
+│ │ │ └── anti-griefing.md
+│ │ ├── game-design-document.md
+│ │ └── README.md
+│ │
+│ ├── 09-observability-and-ops/
+│ │ ├── monitoring/
+│ │ │ ├── metrics-strategy.md
+│ │ │ ├── dashboard-design.md
+│ │ │ ├── alerting-rules.md
+│ │ │ ├── slo-sli-definitions.md
+│ │ │ └── service-health-checks.md
+│ │ ├── logging/
+│ │ │ ├── logging-strategy.md
+│ │ │ ├── structured-logging.md
+│ │ │ ├── log-aggregation.md
+│ │ │ ├── log-retention.md
+│ │ │ └── audit-logging.md
+│ │ ├── tracing/
+│ │ │ ├── distributed-tracing.md
+│ │ │ ├── opentelemetry-setup.md
+│ │ │ ├── trace-sampling.md
+│ │ │ └── performance-analysis.md
+│ │ ├── deployment/
+│ │ │ ├── deployment-strategies.md
+│ │ │ ├── blue-green-deployment.md
+│ │ │ ├── canary-releases.md
+│ │ │ ├── rollback-procedures.md
+│ │ │ └── feature-flags.md
+│ │ ├── disaster-recovery/
+│ │ │ ├── backup-strategy.md
+│ │ │ ├── recovery-procedures.md
+│ │ │ ├── business-continuity-plan.md
+│ │ │ └── failover-testing.md
+│ │ ├── capacity-planning/
+│ │ │ ├── resource-planning.md
+│ │ │ ├── scaling-strategy.md
+│ │ │ ├── cost-optimization.md
+│ │ │ └── performance-forecasting.md
+│ │ ├── sre/
+│ │ │ ├── on-call-procedures.md
+│ │ │ ├── incident-management.md
+│ │ │ ├── post-mortem-template.md
+│ │ │ └── error-budgets.md
+│ │ ├── operations.md
+│ │ ├── runbook-template.md
+│ │ └── README.md
+│ │
+│ ├── 10-user-experience/
+│ │ ├── research/
+│ │ │ ├── user-research-findings.md
+│ │ │ ├── usability-testing.md
+│ │ │ ├── user-interviews.md
+│ │ │ └── analytics-insights.md
+│ │ ├── design/
+│ │ │ ├── design-principles.md
+│ │ │ ├── visual-language.md
+│ │ │ ├── iconography.md
+│ │ │ └── typography.md
+│ │ ├── interaction/
+│ │ │ ├── interaction-patterns.md
+│ │ │ ├── micro-interactions.md
+│ │ │ ├── animations.md
+│ │ │ └── feedback-mechanisms.md
+│ │ ├── accessibility/
+│ │ │ ├── accessibility-guidelines.md
+│ │ │ ├── screen-reader-support.md
+│ │ │ ├── keyboard-navigation.md
+│ │ │ └── color-contrast.md
+│ │ └── README.md
+│ │
+│ ├── 11-communications-and-brand/
+│ │ ├── brand/
+│ │ │ ├── brand-guidelines.md
+│ │ │ ├── voice-and-tone.md
+│ │ │ ├── visual-identity.md
+│ │ │ └── messaging-framework.md
+│ │ ├── content/
+│ │ │ ├── content-strategy.md
+│ │ │ ├── writing-guidelines.md
+│ │ │ ├── localization.md
+│ │ │ └── seo-strategy.md
+│ │ ├── community/
+│ │ │ ├── community-management.md
+│ │ │ ├── moderation-guidelines.md
+│ │ │ ├── user-engagement.md
+│ │ │ └── social-media-strategy.md
+│ │ ├── marketing/
+│ │ │ ├── marketing-strategy.md
+│ │ │ ├── campaign-planning.md
+│ │ │ ├── user-acquisition.md
+│ │ │ └── analytics-tracking.md
+│ │ └── README.md
+│ │
+│ ├── archive/
+│ │ ├── deprecated/
+│ │ ├── legacy-designs/
+│ │ └── historical-decisions/
+│ │
+│ ├── templates/
+│ │ ├── adr-template.md
+│ │ ├── rfc-template.md
+│ │ ├── dpia-template.md
+│ │ ├── ropa-template.md
+│ │ ├── runbook-template.md
+│ │ ├── post-mortem-template.md
+│ │ └── README.md
+│ │
+│ ├── quick-ref.md
+│ ├── TODO.md
+│ ├── STRUCTURE.md
+│ └── README.md
+│
+├── config/
+│ ├── env/
+│ │ ├── .env.example
+│ │ ├── .env.api.example
+│ │ ├── .env.web.example
+│ │ ├── .env.game-server.example
+│ │ ├── .env.worker.example
+│ │ └── .schema.env
+│ │
+│ ├── typescript/
+│ │ ├── tsconfig.base.json
+│ │ ├── tsconfig.app.json
+│ │ ├── tsconfig.lib.json
+│ │ └── tsconfig.spec.json
+│ │
+│ ├── eslint/
+│ │ ├── .eslintrc.base.json
+│ │ ├── .eslintrc.apps.json
+│ │ ├── .eslintrc.libs.json
+│ │ └── .eslintrc.tests.json
+│ │
+│ ├── vitest/
+│ │ ├── vitest.config.base.js
+│ │ ├── vitest.config.unit.js
+│ │ ├── vitest.config.integration.js
+│ │ └── vitest.config.e2e.js
+│ │
+│ ├── docker/
+│ │ ├── docker-compose.dev.yml
+│ │ ├── docker-compose.test.yml
+│ │ ├── docker-compose.prod.yml
+│ │ └── Dockerfile.base
+│ │
+│ └── README.md
+│
+├── infrastructure/
+│ ├── terraform/
+│ │ ├── environments/
+│ │ │ ├── dev/
+│ │ │ │ ├── main.tf
+│ │ │ │ ├── variables.tf
+│ │ │ │ └── outputs.tf
+│ │ │ ├── staging/
+│ │ │ │ ├── main.tf
+│ │ │ │ ├── variables.tf
+│ │ │ │ └── outputs.tf
+│ │ │ └── production/
+│ │ │ ├── main.tf
+│ │ │ ├── variables.tf
+│ │ │ └── outputs.tf
+│ │ └── modules/
+│ │ ├── networking/
+│ │ ├── compute/
+│ │ ├── database/
+│ │ └── storage/
+│ │
+│ ├── kubernetes/
+│ │ ├── base/
+│ │ │ ├── deployments/
+│ │ │ ├── services/
+│ │ │ ├── configmaps/
+│ │ │ ├── secrets/
+│ │ │ ├── ingress/
+│ │ │ ├── sidecars/
+│ │ │ │ ├── otel-collector.yaml
+│ │ │ │ └── log-forwarder.yaml
+│ │ │ └── kustomization.yaml
+│ │ └── overlays/
+│ │ ├── dev/
+│ │ │ └── kustomization.yaml
+│ │ ├── staging/
+│ │ │ └── kustomization.yaml
+│ │ └── production/
+│ │ └── kustomization.yaml
+│ │
+│ ├── docker/
+│ │ └── images/
+│ │ ├── api/
+│ │ │ └── Dockerfile
+│ │ ├── web/
+│ │ │ └── Dockerfile
+│ │ ├── game-server/
+│ │ │ └── Dockerfile
+│ │ └── worker/
+│ │ └── Dockerfile
+│ │
+│ ├── vault/
+│ │ ├── policies/
+│ │ │ ├── api-policy.hcl
+│ │ │ ├── web-policy.hcl
+│ │ │ └── admin-policy.hcl
+│ │ └── secrets/
+│ │ └── .gitkeep
+│ │
+│ ├── ansible/
+│ │ ├── playbooks/
+│ │ ├── roles/
+│ │ └── inventory/
+│ │
+│ └── README.md
+│
+├── scripts/
+│ ├── ci/
+│ │ ├── check-file-placement.mjs
+│ │ ├── enforce-naming.mjs
+│ │ ├── verify-github-config.mjs
+│ │ ├── guard-change-budget.mjs
+│ │ ├── generate-sbom.mjs
+│ │ ├── run-security-scans.sh
+│ │ └── build-attestation.sh
+│ │
+│ ├── db/
+│ │ ├── migrate.js
+│ │ ├── seed.js
+│ │ ├── rollback.js
+│ │ ├── backup.sh
+│ │ └── restore.sh
+│ │
+│ ├── dev/
+│ │ ├── setup-dev-environment.sh
+│ │ ├── cleanup-processes.sh
+│ │ ├── perf-monitor.sh
+│ │ ├── reset-local-db.sh
+│ │ └── generate-test-data.js
+│ │
+│ ├── testing/
+│ │ ├── run-vitest-coverage.js
+│ │ ├── test-per-app.js
+│ │ ├── run-e2e-tests.sh
+│ │ └── generate-test-report.js
+│ │
+│ ├── chaos/
+│ │ ├── network-latency.sh
+│ │ ├── pod-failure.sh
+│ │ ├── cpu-stress.sh
+│ │ └── memory-leak.sh
+│ │
+│ ├── deployment/
+│ │ ├── deploy-staging.sh
+│ │ ├── deploy-production.sh
+│ │ ├── smoke-tests.sh
+│ │ └── rollback.sh
+│ │
+│ └── README.md
+│
+├── .ai/
+│ ├── cache/
+│ │ ├── context-cache.json
+│ │ ├── response-cache.json
+│ │ └── workspace-state.json
+│ │
+│ ├── index/
+│ │ ├── codebase-index.json
+│ │ └── semantic-vectors.json
+│ │
+│ ├── knowledge/
+│ │ ├── architecture-overview.md
+│ │ ├── code-patterns.md
+│ │ ├── expert-knowledge.json
+│ │ └── troubleshooting-guide.md
+│ │
+│ ├── metrics/
+│ │ ├── ai-metrics.json
+│ │ ├── agent-performance.json
+│ │ └── quality-scores.json
+│ │
+│ ├── context-bundles/
+│ │ ├── core.md
+│ │ ├── api-service.md
+│ │ ├── frontend-service.md
+│ │ └── project-structure.md
+│ │
+│ ├── prompts/
+│ │ ├── code-review.md
+│ │ ├── refactoring.md
+│ │ ├── testing.md
+│ │ └── documentation.md
+│ │
+│ ├── patterns/
+│ │ ├── component-patterns.md
+│ │ ├── api-patterns.md
+│ │ └── testing-patterns.md
+│ │
+│ ├── history/
+│ │ ├── interactions/
+│ │ └── decisions/
+│ │
+│ ├── policies/
+│ │ ├── prompt-red-team-suites/
+│ │ │ ├── injection-tests.md
+│ │ │ ├── bias-tests.md
+│ │ │ └── safety-tests.md
+│ │ └── safety-guidelines.md
+│ │
+│ ├── evals/
+│ │ ├── regression-tests/
+│ │ │ ├── code-quality.test.js
+│ │ │ ├── documentation.test.js
+│ │ │ └── refactoring.test.js
+│ │ └── benchmarks/
+│ │ ├── accuracy-benchmarks.json
+│ │ └── performance-benchmarks.json
+│ │
+│ ├── tools/
+│ │ ├── ai-assistant.cjs
+│ │ ├── semantic-indexer.cjs
+│ │ ├── build-context.sh
+│ │ ├── refresh-knowledge.sh
+│ │ └── README.md
+│ │
+│ ├── ai-controls.json
+│ └── README.md
+│
+├── tools/
+│ ├── generators/
+│ │ ├── app-generator/
+│ │ ├── lib-generator/
+│ │ └── component-generator/
+│ │
+│ ├── executors/
+│ │ ├── deploy-executor/
+│ │ └── e2e-executor/
+│ │
+│ ├── demo/
+│ │ └── sample-data/
+│ │
+│ └── README.md
+│
+├── assets/
+│ ├── images/
+│ │ ├── ui/
+│ │ ├── game/
+│ │ └── marketing/
+│ │
+│ ├── audio/
+│ │ ├── sfx/
+│ │ └── music/
+│ │
+│ ├── fonts/
+│ │
+│ ├── config/
+│ │ ├── game-config.json
+│ │ └── feature-flags.json
+│ │
+│ ├── manifest.json
+│ └── README.md
+│
+├── .temp/
+│ ├── test-output/
+│ ├── debug-logs/
+│ └── .gitkeep
+│
+├── reports/
+│ ├── coverage/
+│ ├── test-results/
+│ ├── security/
+│ ├── sbom/
+│ │ └── sbom.json
+│ ├── ai/
+│ │ └── agent-performance.json
+│ └── .gitkeep
+│
+├── .editorconfig
+├── .gitignore
+├── .gitattributes
+├── .lefthook.yml
+├── .npmrc
+├── .prettierrc
+├── .prettierignore
+├── Makefile
+├── nx.json
+├── package.json
+├── package-lock.json
+├── tsconfig.json
+├── vitest.config.js
+│
+├── README.md
+├── CHANGELOG.md
+├── LICENSE
+├── CODE_OF_CONDUCT.md
+└── CONTRIBUTING.md
