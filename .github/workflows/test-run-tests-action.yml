@@ -1,4 +1,6 @@
 name: Test Run-Tests Action
+permissions:
+  contents: read
 
 on:
   workflow_dispatch:
