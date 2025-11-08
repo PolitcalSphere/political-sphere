@@ -5,8 +5,8 @@
 
 import crypto from "node:crypto";
 import express from "express";
-import jwt from "jsonwebtoken";
 import rateLimit from "express-rate-limit";
+import jwt from "jsonwebtoken";
 
 // These will be lazily loaded on first use to allow mocks to be set up first
 let bcrypt = null;

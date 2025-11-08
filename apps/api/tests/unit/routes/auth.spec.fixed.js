@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import request from "supertest";
 import express from "express";
+import request from "supertest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Use ESM imports and clean mocks. Tests in this repo run under ESM.
 vi.mock("@political-sphere/shared", () => ({
@@ -22,10 +22,10 @@ vi.mock("../../index.js", () => ({
 		users: {
 			create: vi.fn(),
 			const { getDatabase } = await import("../../modules/stores/index.js");
-			getById: vi.fn(),
-		},
+getById: vi.fn(),
+},
 	})),
-}));
+}))
 
 // Import the route under test (ensure .js extension for ESM resolution)
 import authRoutes from "../../routes/auth.js";
@@ -62,7 +62,7 @@ describe("Auth Routes (fixed)", () => {
 					email: "test@example.com",
 					password: "password123",
 			const { getDatabase } = await import("../../modules/stores/index.js");
-				.expect(200);
+			.expect(200)
 
 			expect(response.body.success).toBe(true);
 			expect(response.body.data).toHaveProperty("id", "user-123");
@@ -111,14 +111,14 @@ describe("Auth Routes (fixed)", () => {
 
 			mockDb.users.getByUsername.mockResolvedValue({
 			const { getDatabase } = await import("../../modules/stores/index.js");
-				username: "testuser",
-				email: "test@example.com",
+			username: "testuser", email;
+			: "test@example.com",
 				passwordHash: "hashed-password",
-			});
-			security.verifyPassword.mockResolvedValue(true);
-			security.generateToken.mockResolvedValue("jwt-token");
+		});
+		security.verifyPassword.mockResolvedValue(true);
+		security.generateToken.mockResolvedValue("jwt-token");
 
-			const response = await request(app)
+		const response = await request(app)
 				.post("/auth/login")
 				.send({
 					username: "testuser",
@@ -126,50 +126,50 @@ describe("Auth Routes (fixed)", () => {
 				})
 				.expect(200);
 
-			expect(response.body.success).toBe(true);
-			const { getDatabase } = await import("../../modules/stores/index.js");
-			expect(response.body.data).toHaveProperty("user");
+		expect(response.body.success).toBe(true);
+		const { getDatabase } = await import("../../modules/stores/index.js");
+		expect(response.body.data).toHaveProperty("user");
+	});
+
+	it("should return 401 for invalid credentials", async () => {
+		const { getDatabase } = await import("../../index.js");
+		const mockDb = getDatabase();
+		mockDb.users.getByUsername.mockResolvedValue(null);
+
+		const response = await request(app)
+			.post("/auth/login")
+			.send({
+				username: "nonexistent",
+				password: "wrongpassword",
+			})
+			.expect(401);
+
+		expect(response.body.success).toBe(false);
+		expect(response.body.error).toBe("Invalid credentials");
+	});
+
+	it("should return 401 for wrong password", async () => {
+		const { getDatabase } = await import("../../index.js");
+		const mockDb = getDatabase();
+		const { security } = await import("@political-sphere/shared");
+
+		mockDb.users.getByUsername.mockResolvedValue({
+			id: "user-123",
+			username: "testuser",
+			passwordHash: "hashed-password",
 		});
+		security.verifyPassword.mockResolvedValue(false);
 
-		it("should return 401 for invalid credentials", async () => {
-			const { getDatabase } = await import("../../index.js");
-			const mockDb = getDatabase();
-			mockDb.users.getByUsername.mockResolvedValue(null);
-
-			const response = await request(app)
-				.post("/auth/login")
-				.send({
-					username: "nonexistent",
-					password: "wrongpassword",
-				})
-				.expect(401);
-
-			expect(response.body.success).toBe(false);
-			expect(response.body.error).toBe("Invalid credentials");
-		});
-
-		it("should return 401 for wrong password", async () => {
-			const { getDatabase } = await import("../../index.js");
-			const mockDb = getDatabase();
-			const { security } = await import("@political-sphere/shared");
-
-			mockDb.users.getByUsername.mockResolvedValue({
-				id: "user-123",
+		const response = await request(app)
+			.post("/auth/login")
+			.send({
 				username: "testuser",
-				passwordHash: "hashed-password",
-			});
-			security.verifyPassword.mockResolvedValue(false);
+				password: "wrongpassword",
+			})
+			.expect(401);
 
-			const response = await request(app)
-				.post("/auth/login")
-				.send({
-					username: "testuser",
-					password: "wrongpassword",
-				})
-				.expect(401);
-
-			expect(response.body.success).toBe(false);
-			expect(response.body.error).toBe("Invalid credentials");
-		});
+		expect(response.body.success).toBe(false);
+		expect(response.body.error).toBe("Invalid credentials");
 	});
 });
+})

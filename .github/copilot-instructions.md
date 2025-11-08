@@ -32,7 +32,7 @@ Political Sphere is a UK‑focused web multiplayer political simulation that res
 
 | Version | Date       | Author   | Key Changes                                                                                        | Impact              |
 | ------- | ---------- | -------- | -------------------------------------------------------------------------------------------------- | ------------------- |
-| 2.2.0   | 2025-11-07 | AI Agent | Updated project structure section to align with new file-structure.md Mermaid diagram design      | Documentation       |
+| 2.2.0   | 2025-11-07 | AI Agent | Updated project structure section to align with new file-structure.md Mermaid diagram design       | Documentation       |
 | 2.1.0   | 2025-11-06 | AI Agent | Added Function Feasibility and Implementation Status rules; Added external source usage guidelines | Quality enhancement |
 | 2.0.0   | 2025-11-05 | AI Agent | Complete restructure with testing infrastructure, AI persona, glossary                             | Major improvement   |
 | 1.7.0   | 2025-11-03 | AI Agent | Improved readability, rule organization                                                            | Documentation       |
@@ -73,7 +73,7 @@ Political Sphere is a UK‑focused web multiplayer political simulation that res
 - **Constitutional** - Highest-priority rules that can never be bypassed (ethics, safety, privacy)
 - **Zero-trust** - Security model assuming no implicit trust at any layer
 
-> **Note:** Technology-specific guidance is integrated into `docs/` (see [Path-Specific Instructions](#path-specific-instructions)).
+> **Note:** Technology-specific guidance is integrated into `docs/` (see [Path-Specific Instructions](copilot-instructions.md#path-specific-instructions)).
 
 ---
 
@@ -81,50 +81,50 @@ Political Sphere is a UK‑focused web multiplayer political simulation that res
 
 **Essential Reading:**
 
-- [Five Core Rules](#five-core-rules) - ⭐ START HERE
-- [Version History & Glossary](#version-history) - 📚 TERMINOLOGY
-- [Quick Reference Appendix](#quick-reference-appendix) - 🔍 CHEAT SHEET
+- [Five Core Rules](copilot-instructions.md#five-core-rules) - ⭐ START HERE
+- [Version History & Glossary](copilot-instructions.md#version-history) - 📚 TERMINOLOGY
+- [Quick Reference Appendix](copilot-instructions.md#quick-reference-appendix) - 🔍 CHEAT SHEET
 
 **Main Sections:**
 
-1. [Quick Reference Links](#quick-reference-links)
-2. [Project Context](#project-context)
+1. [Quick Reference Links](copilot-instructions.md#quick-reference-links)
+2. [Project Context](copilot-instructions.md#project-context)
    - What This Project Does
    - Technology Stack
    - Core Principles
-3. [Your Role as GitHub Copilot](#your-role-as-github-copilot)
+3. [Your Role as GitHub Copilot](copilot-instructions.md#your-role-as-github-copilot)
    - AI Persona & Interaction Style
    - High-Risk Patterns (Never Suggest)
    - Fail-Gracefully Strategy
    - Output Validation Checklist
-4. [Project Structure](#project-structure-and-organization)
+4. [Project Structure](copilot-instructions.md#project-structure-and-organization)
    - Directory Layout
    - Naming Conventions
-5. [Code Quality Standards](#code-quality-standards)
+5. [Code Quality Standards](copilot-instructions.md#code-quality-standards)
    - Definition of Done
    - Code Style
    - Function Feasibility and Implementation Status
-6. [Testing Infrastructure](#testing-infrastructure-core-principle) - ⭐ CORE PRINCIPLE
+6. [Testing Infrastructure](copilot-instructions.md#testing-infrastructure-core-principle) - ⭐ CORE PRINCIPLE
    - Test Pyramid Strategy
    - CI/CD Integration
    - Specialized Testing (MLOps, Database, Microservices)
-7. [Security and Privacy](#security-and-privacy)
+7. [Security and Privacy](copilot-instructions.md#security-and-privacy)
    - Zero-Trust Model
    - Secrets Management
    - Data Classification
-8. [Accessibility Requirements](#accessibility-requirements-mandatory) - ⚠️ MANDATORY
+8. [Accessibility Requirements](copilot-instructions.md#accessibility-requirements-mandatory) - ⚠️ MANDATORY
    - WCAG 2.2 AA Compliance
    - Code Examples
-9. [AI Governance and Ethics](#ai-governance-and-ethics)
+9. [AI Governance and Ethics](copilot-instructions.md#ai-governance-and-ethics)
    - Political Neutrality
    - Transparency & Human Oversight
-10. [Change Management](#change-management)
+10. [Change Management](copilot-instructions.md#change-management)
     - Execution Modes (Safe, Fast-Secure, Audit, R&D)
     - Risk Tier Examples
-11. [Collaboration and Communication](#collaboration-and-communication)
+11. [Collaboration and Communication](copilot-instructions.md#collaboration-and-communication)
     - When to Ask Questions
     - Constitutional Citation Requirements
-12. [Compliance and Auditability](#compliance-and-auditability)
+12. [Compliance and Auditability](copilot-instructions.md#compliance-and-auditability)
     - GDPR/CCPA Data Protection
     - Audit Readiness
 
@@ -264,6 +264,45 @@ Political Sphere is an advanced multiplayer simulation platform (set initially i
   - External information must be relevant, reputable, and non-influential (no opinion, speculation, or bias)
   - All externally sourced insights must be verified, attributed, and aligned with the project's governance and ethical standards
 
+### AI Recommendation Report Format
+
+When proposing significant changes, structure your response as:
+
+```markdown
+# AI RECOMMENDATION REPORT
+
+## Reasoning Summary
+
+[Brief explanation of why this approach was chosen]
+
+## Risks & Mitigation
+
+[Identified risks and how they're addressed]
+
+- Update the project's risk register where appropriate: `docs/06-security-and-risk/risk-register.md`
+
+## Security Considerations
+
+[Auth, validation, encryption, logging implications]
+
+## Test Suggestions
+
+[Specific test cases to implement]
+
+## File Placement
+
+[Where files should be located and why]
+
+## Related Standards
+
+[Relevant standards: WCAG 2.2 AA, OWASP ASVS 4.0.3, NIST SP 800-53 r5, etc.]
+[Reference: docs/standards-overview.md for complete compliance requirements]
+
+## Constitutional Check
+
+[For voting/speech/moderation/power: cite relevant governance principles]
+```
+
 ### What You Should Avoid
 
 - Never guess on security, privacy, or compliance requirements
@@ -320,7 +359,7 @@ function checkPermission(user: User, resource: Resource): boolean {
 - ✅ **No political content assumptions**: Neutral, unbiased examples and data
 - ✅ **Accessibility considered**: WCAG compliance for UI changes
 - ✅ **Constitutional compliance**: No violation of democratic integrity principles
-- ✅ **Feasibility validated**: All functions are implementable with available technology and resources (see [Function Feasibility](#function-feasibility-and-implementation-status))
+- ✅ **Feasibility validated**: All functions are implementable with available technology and resources (see [Function Feasibility](copilot-instructions.md#function-feasibility-and-implementation-status))
 
 ### AI Recommendation Report Format
 
@@ -372,17 +411,20 @@ The project follows industry-standard organization with clear separation of conc
 **Applications** (`/apps`) - 12+ specialized applications:
 
 **Core Services:**
+
 - `api/` - REST API and backend services
 - `game-server/` - Real-time simulation engine
 - `worker/` - Background job processing
 
 **Frontend Applications:**
+
 - `web/` - Main web application (React 19, Vite)
 - `shell/` - Module federation host
 - `feature-auth-remote/` - Authentication microfrontend
 - `feature-dashboard-remote/` - Dashboard microfrontend
 
 **Support & Infrastructure:**
+
 - `infrastructure/` - IaC (Terraform, Kubernetes manifests)
 - `load-test/` - Performance and load testing
 - `e2e/` - End-to-end testing suite
@@ -392,28 +434,33 @@ The project follows industry-standard organization with clear separation of conc
 **Libraries** (`/libs`) - 17+ reusable modules:
 
 **Shared Utilities:**
+
 - `shared/utils/` - Common utilities
 - `shared/types/` - Shared TypeScript types
 - `shared/constants/` - Application constants
 - `shared/config/` - Configuration management
 
 **Platform Services:**
+
 - `platform/auth/` - Authentication services
 - `platform/api-client/` - API client library
 - `platform/state/` - State management
 - `platform/routing/` - Routing utilities
 
 **Domain Logic:**
+
 - `game-engine/core/` - Game logic
 - `game-engine/simulation/` - Simulation algorithms
 - `game-engine/events/` - Event system
 
 **Data & Infrastructure:**
+
 - `infrastructure/database/` - Database utilities
 - `infrastructure/monitoring/` - Observability tools
 - `infrastructure/deployment/` - Deployment helpers
 
 **UI Components:**
+
 - `ui/components/` - Reusable React components
 - `ui/design-system/` - Design tokens and patterns
 - `ui/accessibility/` - Accessibility utilities
@@ -421,24 +468,29 @@ The project follows industry-standard organization with clear separation of conc
 **Documentation** (`/docs`) - 12+ organized sections:
 
 **Foundation & Strategy:**
+
 - `00-foundation/` - Core principles, organization, standards
 - `01-strategy/` - Product roadmap, vision, strategy
 
 **Governance & Legal:**
+
 - `02-governance/` - Governance framework, policies
 - `03-legal-and-compliance/` - Legal requirements, GDPR, CCPA
 
 **Technical Documentation:**
+
 - `04-architecture/` - System architecture, ADRs
 - `05-engineering-and-devops/` - Development guides, testing
 - `06-security-and-risk/` - Security policies, risk management
 
 **Product & Operations:**
+
 - `07-ai-and-simulation/` - AI governance, model docs
 - `08-game-design-and-mechanics/` - Game design documentation
 - `09-observability-and-ops/` - Operations, monitoring, runbooks
 
 **Meta Documentation:**
+
 - `audit-trail/` - Audit logs and compliance records
 - `document-control/` - Version control, review process
 
@@ -447,22 +499,26 @@ The project follows industry-standard organization with clear separation of conc
 **Infrastructure** (`/apps/infrastructure`):
 
 **Cloud Resources:**
+
 - `terraform/` - Infrastructure as Code
 - `kubernetes/` - K8s manifests and Helm charts
 - `docker/` - Dockerfile templates and compose files
 
 **Configuration:**
+
 - `environments/` - Environment-specific configs (dev, staging, prod)
 - `secrets/` - Secret management (encrypted, never committed)
 
 **AI Assets** (`/ai`) - AI development tools:
 
 **Context & Knowledge:**
+
 - `ai-cache/` - AI assistant cache
 - `ai-knowledge/` - Knowledge base articles
 - `context-bundles/` - Pre-built context packages
 
 **Tools & Metrics:**
+
 - `prompts/` - AI prompt templates
 - `patterns/` - Code patterns and examples
 - `metrics/` - AI performance metrics
@@ -471,11 +527,13 @@ The project follows industry-standard organization with clear separation of conc
 **Scripts & Tools** (`/scripts`, `/tools`):
 
 **Automation:**
+
 - `scripts/ci/` - CI/CD automation scripts
 - `scripts/migrations/` - Database and data migrations
 - `tools/scripts/` - Development utilities
 
 **Configuration:**
+
 - `tools/config/` - Tool configurations
 - `tools/docker/` - Docker utilities
 
@@ -484,6 +542,7 @@ The project follows industry-standard organization with clear separation of conc
 For a comprehensive visual overview of the entire project structure:
 
 📊 **See `file-structure.md`** - Interactive Mermaid diagrams showing:
+
 - Complete directory hierarchy with all subdirectories
 - Organized by functional area (Apps, Libs, Docs, Infrastructure)
 - Color-coded by component type (Core Services, Frontend, Support, etc.)
@@ -502,12 +561,14 @@ For a comprehensive visual overview of the entire project structure:
 **NEVER place files in repository root.** Always use structured locations:
 
 ✅ **Allowed in root** (standard project files only):
+
 - Documentation: `README.md`, `LICENSE`, `CHANGELOG.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`
 - Build configuration: `package.json`, `pnpm-workspace.yaml`, `nx.json`, `tsconfig.json`, `vitest.config.js`
 - Tooling: `.prettierrc`, `.eslintrc`, `.editorconfig`, `.gitignore`, `.lefthook.yml`
 - IDE/CI directories: `.github/`, `.vscode/`, `.devcontainer/`
 
 ❌ **Never in root** (use proper directories):
+
 - Application code → `/apps/{app-name}/`
 - Library code → `/libs/{category}/{lib-name}/`
 - Documentation → `/docs/{section}/`

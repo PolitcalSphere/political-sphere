@@ -1,7 +1,10 @@
 import type Database from "better-sqlite3";
 import { CacheService } from "../../utils/cache.js";
+import {
+  initializeDatabase,
+  runMigrations,
+} from "../../utils/migrations/index.js";
 import { BillStore } from "./bill-store.js";
-import { initializeDatabase, runMigrations } from "../../utils/migrations/index.js";
 import { PartyStore } from "./party-store.js";
 import { UserStore } from "./user-store.js";
 import { VoteStore } from "./vote-store.js";

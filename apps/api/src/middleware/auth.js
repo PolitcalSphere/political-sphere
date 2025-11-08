@@ -3,15 +3,15 @@
  * Implements JWT-based authentication with role-based access control
  */
 
-const jwt = require('jsonwebtoken');
-const logger = require('../utils/logger.js');
+const jwt = require("jsonwebtoken");
+const logger = require("../utils/logger.js");
 
 // JWT configuration
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || JWT_SECRET;
 
 if (!JWT_SECRET) {
-  throw new Error('JWT_SECRET environment variable is required');
+	throw new Error("JWT_SECRET environment variable is required");
 }
 
 /**
@@ -19,56 +19,59 @@ if (!JWT_SECRET) {
  * Validates JWT token and attaches user to request
  */
 function authenticate(req, res, next) {
-  try {
-    const authHeader = req.headers.authorization;
-    const token = authHeader?.startsWith('Bearer ')
-      ? authHeader.substring(7)
-      : req.cookies?.accessToken;
+	try {
+		const authHeader = req.headers.authorization;
+		const token = authHeader?.startsWith("Bearer ")
+			? authHeader.substring(7)
+			: req.cookies?.accessToken;
 
-    if (!token) {
-      return res.status(401).json({
-        success: false,
-        error: 'Access token required',
-        message: 'Please provide a valid access token'
-      });
-    }
+		if (!token) {
+			return res.status(401).json({
+				success: false,
+				error: "Access token required",
+				message: "Please provide a valid access token",
+			});
+		}
 
-    // Verify token
-    const decoded = jwt.verify(token, JWT_SECRET);
+		// Verify token
+		const decoded = jwt.verify(token, JWT_SECRET);
 
-    if (!decoded || decoded.type !== 'access') {
-      return res.status(401).json({
-        success: false,
-        error: 'Invalid token',
-        message: 'Token is invalid or expired'
-      });
-    }
+		if (!decoded || decoded.type !== "access") {
+			return res.status(401).json({
+				success: false,
+				error: "Invalid token",
+				message: "Token is invalid or expired",
+			});
+		}
 
-    // Attach user to request
-    req.user = {
-      id: decoded.userId,
-      email: decoded.email,
-      role: decoded.role
-    };
+		// Attach user to request
+		req.user = {
+			id: decoded.userId,
+			email: decoded.email,
+			role: decoded.role,
+		};
 
-    logger.debug('User authenticated', { userId: req.user.id, path: req.path });
-    next();
-  } catch (error) {
-    if (error.name === 'TokenExpiredError') {
-      return res.status(401).json({
-        success: false,
-        error: 'Token expired',
-        message: 'Access token has expired'
-      });
-    }
+		logger.debug("User authenticated", { userId: req.user.id, path: req.path });
+		next();
+	} catch (error) {
+		if (error.name === "TokenExpiredError") {
+			return res.status(401).json({
+				success: false,
+				error: "Token expired",
+				message: "Access token has expired",
+			});
+		}
 
-    logger.error('Authentication failed', { error: error.message, path: req.path });
-    return res.status(401).json({
-      success: false,
-      error: 'Authentication failed',
-      message: 'Invalid authentication credentials'
-    });
-  }
+		logger.error("Authentication failed", {
+			error: error.message,
+			path: req.path,
+		});
+		return res.status(401).json({
+			success: false,
+			error: "Authentication failed",
+			message: "Invalid authentication credentials",
+		});
+	}
 }
 
 /**
@@ -77,35 +80,37 @@ function authenticate(req, res, next) {
  * @returns {Function} Middleware function
  */
 function requireRole(requiredRoles) {
-  return (req, res, next) => {
-    if (!req.user) {
-      return res.status(401).json({
-        success: false,
-        error: 'Authentication required',
-        message: 'User must be authenticated'
-      });
-    }
+	return (req, res, next) => {
+		if (!req.user) {
+			return res.status(401).json({
+				success: false,
+				error: "Authentication required",
+				message: "User must be authenticated",
+			});
+		}
 
-    const userRole = req.user.role;
-    const roles = Array.isArray(requiredRoles) ? requiredRoles : [requiredRoles];
+		const userRole = req.user.role;
+		const roles = Array.isArray(requiredRoles)
+			? requiredRoles
+			: [requiredRoles];
 
-    if (!roles.includes(userRole)) {
-      logger.warn('Access denied', {
-        userId: req.user.id,
-        userRole,
-        requiredRoles: roles,
-        path: req.path
-      });
+		if (!roles.includes(userRole)) {
+			logger.warn("Access denied", {
+				userId: req.user.id,
+				userRole,
+				requiredRoles: roles,
+				path: req.path,
+			});
 
-      return res.status(403).json({
-        success: false,
-        error: 'Insufficient permissions',
-        message: `Required role: ${roles.join(' or ')}`
-      });
-    }
+			return res.status(403).json({
+				success: false,
+				error: "Insufficient permissions",
+				message: `Required role: ${roles.join(" or ")}`,
+			});
+		}
 
-    next();
-  };
+		next();
+	};
 }
 
 /**
@@ -113,41 +118,41 @@ function requireRole(requiredRoles) {
  * Attaches user if token is present, but doesn't require it
  */
 function optionalAuth(req, _res, next) {
-  try {
-    const authHeader = req.headers.authorization;
-    const token = authHeader?.startsWith('Bearer ')
-      ? authHeader.substring(7)
-      : req.cookies?.accessToken;
+	try {
+		const authHeader = req.headers.authorization;
+		const token = authHeader?.startsWith("Bearer ")
+			? authHeader.substring(7)
+			: req.cookies?.accessToken;
 
-    if (token) {
-      const decoded = jwt.verify(token, JWT_SECRET);
-      if (decoded && decoded.type === 'access') {
-        req.user = {
-          id: decoded.userId,
-          email: decoded.email,
-          role: decoded.role
-        };
-      }
-    }
-  } catch (_error) {
-    // Ignore auth errors for optional auth
-  }
+		if (token) {
+			const decoded = jwt.verify(token, JWT_SECRET);
+			if (decoded && decoded.type === "access") {
+				req.user = {
+					id: decoded.userId,
+					email: decoded.email,
+					role: decoded.role,
+				};
+			}
+		}
+	} catch (_error) {
+		// Ignore auth errors for optional auth
+	}
 
-  next();
+	next();
 }
 
 /**
  * Admin-only Authorization Middleware
  */
 function requireAdmin(req, res, next) {
-  return requireRole('ADMIN')(req, res, next);
+	return requireRole("ADMIN")(req, res, next);
 }
 
 /**
  * Moderator Authorization Middleware (Admin or Moderator)
  */
 function requireModerator(req, res, next) {
-  return requireRole(['ADMIN', 'MODERATOR'])(req, res, next);
+	return requireRole(["ADMIN", "MODERATOR"])(req, res, next);
 }
 
 /**
@@ -155,44 +160,46 @@ function requireModerator(req, res, next) {
  * For token refresh endpoints
  */
 function authenticateRefreshToken(req, res, next) {
-  try {
-    const { refreshToken } = req.body;
+	try {
+		const { refreshToken } = req.body;
 
-    if (!refreshToken) {
-      return res.status(401).json({
-        success: false,
-        error: 'Refresh token required',
-        message: 'Please provide a refresh token'
-      });
-    }
+		if (!refreshToken) {
+			return res.status(401).json({
+				success: false,
+				error: "Refresh token required",
+				message: "Please provide a refresh token",
+			});
+		}
 
-    const decoded = jwt.verify(refreshToken, JWT_REFRESH_SECRET);
+		const decoded = jwt.verify(refreshToken, JWT_REFRESH_SECRET);
 
-    if (!decoded || decoded.type !== 'refresh') {
-      return res.status(401).json({
-        success: false,
-        error: 'Invalid refresh token',
-        message: 'Refresh token is invalid'
-      });
-    }
+		if (!decoded || decoded.type !== "refresh") {
+			return res.status(401).json({
+				success: false,
+				error: "Invalid refresh token",
+				message: "Refresh token is invalid",
+			});
+		}
 
-    req.user = { id: decoded.userId };
-    next();
-  } catch (error) {
-    logger.error('Refresh token authentication failed', { error: error.message });
-    return res.status(401).json({
-      success: false,
-      error: 'Invalid refresh token',
-      message: 'Refresh token verification failed'
-    });
-  }
+		req.user = { id: decoded.userId };
+		next();
+	} catch (error) {
+		logger.error("Refresh token authentication failed", {
+			error: error.message,
+		});
+		return res.status(401).json({
+			success: false,
+			error: "Invalid refresh token",
+			message: "Refresh token verification failed",
+		});
+	}
 }
 
 module.exports = {
-  authenticate,
-  authenticateRefreshToken,
-  optionalAuth,
-  requireAdmin,
-  requireModerator,
-  requireRole,
+	authenticate,
+	authenticateRefreshToken,
+	optionalAuth,
+	requireAdmin,
+	requireModerator,
+	requireRole,
 };

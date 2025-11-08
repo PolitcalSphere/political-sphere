@@ -1,7 +1,7 @@
 import express from "express";
+import { getDatabase } from "../modules/stores/index.js";
 // Use local CJS shim for shared schemas in test/runtime
 import { CreateVoteSchema } from "../shared-shim.js";
-import { getDatabase } from "../modules/stores/index.js";
 
 const router = express.Router();
 
