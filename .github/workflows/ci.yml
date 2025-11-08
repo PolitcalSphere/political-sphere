@@ -699,39 +699,92 @@ jobs:
     steps:
       - name: Check if all jobs passed
         run: |
+          # Debug: Print all job results
+          echo "=== Job Results Debug ==="
+          echo "lint-and-typecheck: ${{ needs.lint-and-typecheck.result }}"
+          echo "security-scan: ${{ needs.security-scan.result }}"
+          echo "test: ${{ needs.test.result }}"
+          echo "build: ${{ needs.build.result }}"
+          echo "integration-test: ${{ needs.integration-test.result }}"
+          echo "e2e-test: ${{ needs.e2e-test.result }}"
+          echo "accessibility-test: ${{ needs.accessibility-test.result }}"
+          echo "ci-performance-monitoring: ${{ needs.ci-performance-monitoring.result }}"
+          echo "======================="
+          
           # For fork PRs, allow skipped jobs that require secrets
           IS_FORK_PR=false
           if [[ "${{ github.event_name }}" == "pull_request" ]] && [[ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]]; then
             IS_FORK_PR=true
+            echo "Detected fork PR - allowing skipped jobs for secret-dependent tasks"
           fi
 
-          # Check required jobs
-          if [[ "${{ needs.lint-and-typecheck.result }}" != "success" ]] || \
-             [[ "${{ needs.security-scan.result }}" != "success" ]]; then
-            echo "❌ One or more CI checks failed"
-            exit 1
+          # Check required jobs (these should never be skipped)
+          FAILED=false
+          
+          if [[ "${{ needs.lint-and-typecheck.result }}" != "success" ]]; then
+            echo "❌ lint-and-typecheck failed or was skipped"
+            FAILED=true
+          fi
+          
+          if [[ "${{ needs.security-scan.result }}" != "success" ]]; then
+            echo "❌ security-scan failed or was skipped"
+            FAILED=true
           fi
 
           # For fork PRs, allow skipped for jobs requiring secrets
           if [[ "$IS_FORK_PR" == "true" ]]; then
-            if [[ "${{ needs.test.result }}" != "success" && "${{ needs.test.result }}" != "skipped" ]] || \
-               [[ "${{ needs.build.result }}" != "success" && "${{ needs.build.result }}" != "skipped" ]] || \
-               [[ "${{ needs.integration-test.result }}" != "success" && "${{ needs.integration-test.result }}" != "skipped" ]] || \
-               [[ "${{ needs.e2e-test.result }}" != "success" && "${{ needs.e2e-test.result }}" != "skipped" ]] || \
-               [[ "${{ needs.accessibility-test.result }}" != "success" && "${{ needs.accessibility-test.result }}" != "skipped" ]]; then
-              echo "❌ One or more CI checks failed"
-              exit 1
-            fi
+            # Check if jobs are either success or skipped
+            for job in test build integration-test e2e-test accessibility-test; do
+              case $job in
+                test) result="${{ needs.test.result }}" ;;
+                build) result="${{ needs.build.result }}" ;;
+                integration-test) result="${{ needs.integration-test.result }}" ;;
+                e2e-test) result="${{ needs.e2e-test.result }}" ;;
+                accessibility-test) result="${{ needs.accessibility-test.result }}" ;;
+              esac
+              
+              if [[ "$result" != "success" && "$result" != "skipped" ]]; then
+                echo "❌ $job failed (result: $result)"
+                FAILED=true
+              fi
+            done
           else
             # For non-fork PRs and pushes, require all jobs to succeed
-            if [[ "${{ needs.test.result }}" != "success" ]] || \
-               [[ "${{ needs.build.result }}" != "success" ]] || \
-               [[ "${{ needs.integration-test.result }}" != "success" ]] || \
-               [[ "${{ needs.e2e-test.result }}" != "success" ]] || \
-               [[ "${{ needs.accessibility-test.result }}" != "success" ]]; then
-              echo "❌ One or more CI checks failed"
-              exit 1
+            if [[ "${{ needs.test.result }}" != "success" ]]; then
+              echo "❌ test failed or was skipped (result: ${{ needs.test.result }})"
+              FAILED=true
             fi
+            
+            if [[ "${{ needs.build.result }}" != "success" ]]; then
+              echo "❌ build failed or was skipped (result: ${{ needs.build.result }})"
+              FAILED=true
+            fi
+            
+            if [[ "${{ needs.integration-test.result }}" != "success" ]]; then
+              echo "❌ integration-test failed or was skipped (result: ${{ needs.integration-test.result }})"
+              FAILED=true
+            fi
+            
+            if [[ "${{ needs.e2e-test.result }}" != "success" ]]; then
+              echo "❌ e2e-test failed or was skipped (result: ${{ needs.e2e-test.result }})"
+              FAILED=true
+            fi
+            
+            if [[ "${{ needs.accessibility-test.result }}" != "success" ]]; then
+              echo "❌ accessibility-test failed or was skipped (result: ${{ needs.accessibility-test.result }})"
+              FAILED=true
+            fi
+          fi
+          
+          # ci-performance-monitoring can be skipped
+          if [[ "${{ needs.ci-performance-monitoring.result }}" != "success" && "${{ needs.ci-performance-monitoring.result }}" != "skipped" ]]; then
+            echo "⚠️  ci-performance-monitoring failed (result: ${{ needs.ci-performance-monitoring.result }})"
+            # Not failing the build for monitoring issues
+          fi
+
+          if [[ "$FAILED" == "true" ]]; then
+            echo "❌ One or more CI checks failed"
+            exit 1
           fi
 
           echo "✅ All CI checks passed successfully!"
