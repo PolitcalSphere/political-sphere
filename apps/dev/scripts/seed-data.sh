@@ -33,6 +33,14 @@ else
   echo "package.json not found; skipping application migrations." >&2
 fi
 
+# Run TypeScript seeding script
+if [[ -f apps/dev/scripts/seed-dev-data.ts ]]; then
+  echo "Running TypeScript seed script..."
+  npx tsx apps/dev/scripts/seed-dev-data.ts "$@"
+else
+  echo "TypeScript seed script not found; skipping." >&2
+fi
+
 cat <<MSG
 Seed complete.
  - Database URL: $DATABASE_URL
