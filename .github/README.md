@@ -9,9 +9,6 @@ graph LR
     GitHub[📁 .github/]
 
     GitHub --> .gi_actions[📁 actions/]
-        .gi_actions --> act_actions[📁 actions/]
-            act_actions --> act_setup_terraform[📁 setup-terraform/]
-                act_setup_terraform --> set_action_yaml[📄 action.yaml]
         .gi_actions --> act_deploy[📁 deploy/]
             act_deploy --> dep_test[📁 test/]
                 dep_test --> tes_integration_tests_sh[📄 integration-tests.sh]
@@ -62,31 +59,28 @@ graph LR
     GitHub --> .gi_scripts[📁 scripts/]
         .gi_scripts --> scr_generate_diagram_mjs[📄 generate-diagram.mjs]
     GitHub --> .gi_workflows[📁 workflows/]
-        .gi_workflows --> wor_workflows[📁 workflows/]
-            wor_workflows --> wor_application_release_yaml[📄 application-release.yaml]
-            wor_workflows --> wor_build_and_test_yaml[📄 build-and-test.yaml]
-            wor_workflows --> wor_deploy_argocd_yaml[📄 deploy-argocd.yaml]
-            wor_workflows --> wor_iac_plan_yaml[📄 iac-plan.yaml]
-            wor_workflows --> wor_migrate_yml[📄 migrate.yml]
-            wor_workflows --> wor_security_scan_yaml[📄 security-scan.yaml]
-            wor_workflows --> wor_vault_client_yml[📄 vault-client.yml]
+        .gi_workflows --> wor_application_release_yaml[📄 application-release.yaml]
         .gi_workflows --> wor_audit_yml[📄 audit.yml]
+        .gi_workflows --> wor_build_and_test_yaml[📄 build-and-test.yaml]
+        .gi_workflows --> wor_CHANGELOG[📄 CHANGELOG]
         .gi_workflows --> wor_ci_yml[📄 ci.yml]
+        .gi_workflows --> wor_deploy_argocd_yaml[📄 deploy-argocd.yaml]
         .gi_workflows --> wor_docker_yml[📄 docker.yml]
+        .gi_workflows --> wor_iac_plan_yaml[📄 iac-plan.yaml]
+        .gi_workflows --> wor_migrate_yml[📄 migrate.yml]
         .gi_workflows --> wor_release_yml[📄 release.yml]
+        .gi_workflows --> wor_security_scan_yaml[📄 security-scan.yaml]
         .gi_workflows --> wor_security_yml[📄 security.yml]
         .gi_workflows --> wor_test_run_tests_action_yml[📄 test-run-tests-action.yml]
         .gi_workflows --> wor_test_setup_node_action_yml[📄 test-setup-node-action.yml]
         .gi_workflows --> wor_update_github_diagram_yml[📄 update-github-diagram.yml]
+        .gi_workflows --> wor_vault_client_yml[📄 vault-client.yml]
     GitHub --> .gi_copilot_instructions_md[📄 copilot-instructions.md]
     GitHub --> .gi_dependabot_yml[📄 dependabot.yml]
     GitHub --> .gi_README_md[📄 README.md]
 
     style GitHub fill:#FF6F00,stroke:#E65100,stroke-width:3px,color:#fff
     style .gi_actions fill:#1565C0,stroke:#0D47A1,stroke-width:2px,color:#fff
-    style act_actions fill:#1565C0,stroke:#0D47A1,stroke-width:2px,color:#fff
-    style act_setup_terraform fill:#1565C0,stroke:#0D47A1,stroke-width:2px,color:#fff
-    style set_action_yaml fill:#90CAF9,stroke:#42A5F5,stroke-width:1px
     style act_deploy fill:#1565C0,stroke:#0D47A1,stroke-width:2px,color:#fff
     style dep_test fill:#1565C0,stroke:#0D47A1,stroke-width:2px,color:#fff
     style tes_integration_tests_sh fill:#90CAF9,stroke:#42A5F5,stroke-width:1px
@@ -137,22 +131,22 @@ graph LR
     style .gi_scripts fill:#1565C0,stroke:#0D47A1,stroke-width:2px,color:#fff
     style scr_generate_diagram_mjs fill:#BCAAA4,stroke:#8D6E63,stroke-width:1px
     style .gi_workflows fill:#2E7D32,stroke:#1B5E20,stroke-width:2px,color:#fff
-    style wor_workflows fill:#2E7D32,stroke:#1B5E20,stroke-width:2px,color:#fff
     style wor_application_release_yaml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
+    style wor_audit_yml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
     style wor_build_and_test_yaml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
+    style wor_CHANGELOG fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
+    style wor_ci_yml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
     style wor_deploy_argocd_yaml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
+    style wor_docker_yml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
     style wor_iac_plan_yaml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
     style wor_migrate_yml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
-    style wor_security_scan_yaml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
-    style wor_vault_client_yml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
-    style wor_audit_yml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
-    style wor_ci_yml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
-    style wor_docker_yml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
     style wor_release_yml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
+    style wor_security_scan_yaml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
     style wor_security_yml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
     style wor_test_run_tests_action_yml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
     style wor_test_setup_node_action_yml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
     style wor_update_github_diagram_yml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
+    style wor_vault_client_yml fill:#A5D6A7,stroke:#66BB6A,stroke-width:1px
     style .gi_copilot_instructions_md fill:#F48FB1,stroke:#EC407A,stroke-width:1px
     style .gi_dependabot_yml fill:#BCAAA4,stroke:#8D6E63,stroke-width:1px
     style .gi_README_md fill:#B0BEC5,stroke:#78909C,stroke-width:1px
