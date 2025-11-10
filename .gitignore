@@ -103,3 +103,6 @@ ai/ai-knowledge/semantic-index-*.json
 !.ai/write/history/templates/
 !.ai/write/cache/.gitkeep
 !.ai/write/evals/.gitkeep
+
+# Migration reports (temporary)
+reports/reorganization-log.json
