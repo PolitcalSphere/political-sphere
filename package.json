@@ -153,7 +153,7 @@
     "mcp-framework": "^0.2.15",
     "nx": "^22.0.2",
     "playwright": "^1.56.1",
-    "puppeteer": "^24.29.0",
+    "puppeteer": "^24.29.1",
     "supertest": "^7.1.4",
     "tsx": "^4.20.6",
     "typescript": "^5.3.0",
