@@ -105,7 +105,7 @@
     "@types/cors": "^2.8.19",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
-    "@types/sqlite3": "^3.1.11",
+    "@types/sqlite3": "^5.1.0",
     "@vitejs/plugin-react": "^5.1.0",
     "bcrypt": "^6.0.0",
     "better-sqlite3": "^12.4.1",
