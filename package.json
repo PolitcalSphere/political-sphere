@@ -134,7 +134,7 @@
     "@modelcontextprotocol/sdk": "^1.21.1",
     "@playwright/mcp": "^0.0.45",
     "@playwright/test": "^1.40.0",
-    "@swc/core": "^1.15.0",
+    "@swc/core": "^1.15.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
