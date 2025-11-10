@@ -6,7 +6,7 @@ export APP_NAME="game-server"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 APP_DIR="${PROJECT_ROOT}/apps/${APP_NAME}"
-AUDIT_DIR="${PROJECT_ROOT}/app-audit/${APP_NAME}"
+AUDIT_DIR="${PROJECT_ROOT}/reports/app-audit/${APP_NAME}"
 
 source "${SCRIPT_DIR}/app-audit-base.sh"
 

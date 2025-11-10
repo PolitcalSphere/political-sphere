@@ -76,9 +76,9 @@ jobs:
         with:
           name: infrastructure-audit-results
           path: |
-            github-audit/
-            devcontainer-audit/
-            openapi-audit/
+            reports/github-audit/
+            reports/devcontainer-audit/
+            reports/openapi-audit/
           retention-days: 30
 
   app-audit:
@@ -138,7 +138,7 @@ jobs:
         if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: app-audit/${{ matrix.app }}/audit-results.sarif
+          sarif_file: reports/app-audit/${{ matrix.app }}/audit-results.sarif
           category: app-audit-${{ matrix.app }}
 
       - name: Upload app audit results
@@ -146,13 +146,13 @@ jobs:
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: app-audit-${{ matrix.app }}
-          path: app-audit/${{ matrix.app }}/
+          path: reports/app-audit/${{ matrix.app }}/
           retention-days: 30
 
       - name: Check audit thresholds
         run: |
-          CRITICAL=$(jq -r '.summary.critical' app-audit/${{ matrix.app }}/audit-results.json)
-          HIGH=$(jq -r '.summary.high' app-audit/${{ matrix.app }}/audit-results.json)
+          CRITICAL=$(jq -r '.summary.critical' reports/app-audit/${{ matrix.app }}/audit-results.json)
+          HIGH=$(jq -r '.summary.high' reports/app-audit/${{ matrix.app }}/audit-results.json)
 
           echo "Critical: $CRITICAL, High: $HIGH"
 

@@ -1,0 +1,87 @@
+{
+  "timestamp": "2025-11-10T15:33:22.159Z",
+  "dryRun": false,
+  "operations": [
+    {
+      "level": "info",
+      "message": "================================================================================"
+    },
+    {
+      "level": "info",
+      "message": "REPOSITORY STRUCTURE ALIGNMENT"
+    },
+    {
+      "level": "info",
+      "message": "Target: file-structure.md v2.4.0"
+    },
+    {
+      "level": "info",
+      "message": "Mode: EXECUTE"
+    },
+    {
+      "level": "info",
+      "message": "================================================================================"
+    },
+    {
+      "level": "info",
+      "message": "\n=== Restructuring libs/ ===\n"
+    },
+    {
+      "level": "warn",
+      "message": "Directory already exists: libs/shared/utils"
+    },
+    {
+      "level": "warn",
+      "message": "Directory already exists: libs/shared/constants"
+    },
+    {
+      "level": "warn",
+      "message": "Directory already exists: libs/shared/config"
+    },
+    {
+      "level": "warn",
+      "message": "Directory already exists: libs/platform/auth"
+    },
+    {
+      "level": "warn",
+      "message": "Directory already exists: libs/platform/api-client"
+    },
+    {
+      "level": "warn",
+      "message": "Directory already exists: libs/platform/state"
+    },
+    {
+      "level": "warn",
+      "message": "Directory already exists: libs/platform/routing"
+    },
+    {
+      "level": "warn",
+      "message": "Directory already exists: libs/ui/components"
+    },
+    {
+      "level": "warn",
+      "message": "Directory already exists: libs/ui/design-system"
+    },
+    {
+      "level": "warn",
+      "message": "Directory already exists: libs/ui/accessibility"
+    },
+    {
+      "level": "warn",
+      "message": "Directory already exists: libs/game-engine/core"
+    },
+    {
+      "level": "warn",
+      "message": "Directory already exists: libs/game-engine/simulation"
+    },
+    {
+      "level": "warn",
+      "message": "Directory already exists: libs/game-engine/events"
+    }
+  ],
+  "errors": [],
+  "summary": {
+    "total": 19,
+    "errors": 0
+  }
+}

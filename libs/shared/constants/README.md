@@ -1,0 +1,3 @@
+# constants
+
+TODO: Add documentation

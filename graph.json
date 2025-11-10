@@ -10,11 +10,7 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "apps/feature-dashboard-remote/src",
           "projectType": "application",
-          "tags": [
-            "scope:frontend",
-            "type:ui",
-            "module:federation"
-          ],
+          "tags": ["scope:frontend", "type:ui", "module:federation"],
           "targets": {
             "build": {
               "executor": "nx:run-commands",
@@ -23,13 +19,8 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "inputs": [
-                "production",
-                "^production"
-              ],
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
               "cache": true
             },
             "serve": {
@@ -53,9 +44,7 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "apps/feature-auth-remote/src",
           "projectType": "application",
-          "tags": [
-            "app"
-          ],
+          "tags": ["app"],
           "targets": {
             "build": {
               "executor": "nx:run-commands",
@@ -64,13 +53,8 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "inputs": [
-                "production",
-                "^production"
-              ],
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
               "cache": true
             },
             "serve": {
@@ -89,14 +73,12 @@
         "name": "infrastructure",
         "type": "lib",
         "data": {
-          "root": "infrastructure/terraform",
+          "root": "apps/infrastructure/terraform",
           "name": "infrastructure",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "libs/infrastructure",
           "projectType": "library",
-          "tags": [
-            "infra"
-          ],
+          "tags": ["infra"],
           "targets": {
             "plan": {
               "executor": "nx:run-commands",
@@ -139,9 +121,7 @@
             },
             "test": {
               "executor": "nx:run-commands",
-              "outputs": [
-                "{workspaceRoot}/coverage/libs/infrastructure"
-              ],
+              "outputs": ["{workspaceRoot}/coverage/libs/infrastructure"],
               "options": {
                 "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
               },
@@ -184,18 +164,11 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "libs/domain-governance/src",
           "projectType": "library",
-          "tags": [
-            "scope:domain",
-            "type:domain",
-            "type:library",
-            "governance"
-          ],
+          "tags": ["scope:domain", "type:domain", "type:library", "governance"],
           "targets": {
             "build": {
               "executor": "@nx/js:tsc",
-              "outputs": [
-                "{options.outputPath}"
-              ],
+              "outputs": ["{options.outputPath}"],
               "options": {
                 "outputPath": "libs/domain-governance/dist",
                 "main": "libs/domain-governance/src/index.ts",
@@ -204,20 +177,13 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "inputs": [
-                "production",
-                "^production"
-              ],
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
               "cache": true
             },
             "lint": {
               "executor": "@nx/eslint:lint",
-              "outputs": [
-                "{options.outputFile}"
-              ],
+              "outputs": ["{options.outputFile}"],
               "options": {
                 "lintFilePatterns": [
                   "libs/domain-governance/**/*.{ts,tsx,js,jsx}"
@@ -235,9 +201,7 @@
             },
             "test": {
               "executor": "nx:run-commands",
-              "outputs": [
-                "{workspaceRoot}/coverage/libs/domain-governance"
-              ],
+              "outputs": ["{workspaceRoot}/coverage/libs/domain-governance"],
               "options": {
                 "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
               },
@@ -280,18 +244,11 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "libs/data-game-state/src",
           "projectType": "library",
-          "tags": [
-            "scope:data",
-            "type:data",
-            "type:library",
-            "game-state"
-          ],
+          "tags": ["scope:data", "type:data", "type:library", "game-state"],
           "targets": {
             "build": {
               "executor": "@nx/js:tsc",
-              "outputs": [
-                "{options.outputPath}"
-              ],
+              "outputs": ["{options.outputPath}"],
               "options": {
                 "outputPath": "libs/data-game-state/dist",
                 "main": "libs/data-game-state/src/index.ts",
@@ -300,20 +257,13 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "inputs": [
-                "production",
-                "^production"
-              ],
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
               "cache": true
             },
             "lint": {
               "executor": "@nx/eslint:lint",
-              "outputs": [
-                "{options.outputFile}"
-              ],
+              "outputs": ["{options.outputFile}"],
               "options": {
                 "lintFilePatterns": [
                   "libs/data-game-state/**/*.{ts,tsx,js,jsx}"
@@ -331,9 +281,7 @@
             },
             "test": {
               "executor": "nx:run-commands",
-              "outputs": [
-                "{workspaceRoot}/coverage/libs/data-game-state"
-              ],
+              "outputs": ["{workspaceRoot}/coverage/libs/data-game-state"],
               "options": {
                 "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
               },
@@ -376,18 +324,11 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "libs/domain-election/src",
           "projectType": "library",
-          "tags": [
-            "scope:domain",
-            "type:domain",
-            "type:library",
-            "election"
-          ],
+          "tags": ["scope:domain", "type:domain", "type:library", "election"],
           "targets": {
             "build": {
               "executor": "@nx/js:tsc",
-              "outputs": [
-                "{options.outputPath}"
-              ],
+              "outputs": ["{options.outputPath}"],
               "options": {
                 "outputPath": "libs/domain-election/dist",
                 "main": "libs/domain-election/src/index.ts",
@@ -396,20 +337,13 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "inputs": [
-                "production",
-                "^production"
-              ],
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
               "cache": true
             },
             "lint": {
               "executor": "@nx/eslint:lint",
-              "outputs": [
-                "{options.outputFile}"
-              ],
+              "outputs": ["{options.outputFile}"],
               "options": {
                 "lintFilePatterns": [
                   "libs/domain-election/**/*.{ts,tsx,js,jsx}"
@@ -427,9 +361,7 @@
             },
             "test": {
               "executor": "nx:run-commands",
-              "outputs": [
-                "{workspaceRoot}/coverage/libs/domain-election"
-              ],
+              "outputs": ["{workspaceRoot}/coverage/libs/domain-election"],
               "options": {
                 "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
               },
@@ -472,34 +404,21 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "apps/game-server/src",
           "projectType": "application",
-          "tags": [
-            "scope:game-server",
-            "type:service",
-            "app"
-          ],
+          "tags": ["scope:game-server", "type:service", "app"],
           "targets": {
             "build": {
               "executor": "@nx/js:tsc",
-              "outputs": [
-                "{options.outputPath}"
-              ],
+              "outputs": ["{options.outputPath}"],
               "options": {
                 "outputPath": "dist/apps/game-server",
                 "main": "apps/game-server/src/server.ts",
                 "tsConfig": "apps/game-server/tsconfig.json",
-                "assets": [
-                  "apps/game-server/src/assets"
-                ]
+                "assets": ["apps/game-server/src/assets"]
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "inputs": [
-                "production",
-                "^production"
-              ],
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
               "cache": true
             },
             "serve": {
@@ -512,9 +431,7 @@
             },
             "test": {
               "executor": "@nx/jest:jest",
-              "outputs": [
-                "{workspaceRoot}/coverage/{projectRoot}"
-              ],
+              "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
               "options": {
                 "jestConfig": "apps/game-server/jest.config.ts"
               },
@@ -551,18 +468,11 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "libs/data-user/src",
           "projectType": "library",
-          "tags": [
-            "scope:data",
-            "type:data",
-            "type:library",
-            "user"
-          ],
+          "tags": ["scope:data", "type:data", "type:library", "user"],
           "targets": {
             "build": {
               "executor": "@nx/js:tsc",
-              "outputs": [
-                "{options.outputPath}"
-              ],
+              "outputs": ["{options.outputPath}"],
               "options": {
                 "outputPath": "libs/data-user/dist",
                 "main": "libs/data-user/src/index.ts",
@@ -571,24 +481,15 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "inputs": [
-                "production",
-                "^production"
-              ],
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
               "cache": true
             },
             "lint": {
               "executor": "@nx/eslint:lint",
-              "outputs": [
-                "{options.outputFile}"
-              ],
+              "outputs": ["{options.outputFile}"],
               "options": {
-                "lintFilePatterns": [
-                  "libs/data-user/**/*.{ts,tsx,js,jsx}"
-                ]
+                "lintFilePatterns": ["libs/data-user/**/*.{ts,tsx,js,jsx}"]
               },
               "configurations": {},
               "parallelism": true,
@@ -602,9 +503,7 @@
             },
             "test": {
               "executor": "nx:run-commands",
-              "outputs": [
-                "{workspaceRoot}/coverage/libs/data-user"
-              ],
+              "outputs": ["{workspaceRoot}/coverage/libs/data-user"],
               "options": {
                 "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
               },
@@ -647,9 +546,7 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "libs/platform",
           "projectType": "library",
-          "tags": [
-            "platform"
-          ],
+          "tags": ["platform"],
           "targets": {
             "deploy": {
               "executor": "nx:run-commands",
@@ -684,9 +581,7 @@
             },
             "test": {
               "executor": "nx:run-commands",
-              "outputs": [
-                "{workspaceRoot}/coverage/libs/platform"
-              ],
+              "outputs": ["{workspaceRoot}/coverage/libs/platform"],
               "options": {
                 "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
               },
@@ -755,9 +650,7 @@
           "targets": {
             "build": {
               "executor": "@nx/js:tsc",
-              "outputs": [
-                "{options.outputPath}"
-              ],
+              "outputs": ["{options.outputPath}"],
               "options": {
                 "outputPath": "libs/shared/dist",
                 "main": "libs/shared/src/index.ts",
@@ -766,24 +659,15 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "inputs": [
-                "production",
-                "^production"
-              ],
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
               "cache": true
             },
             "lint": {
               "executor": "@nx/eslint:lint",
-              "outputs": [
-                "{options.outputFile}"
-              ],
+              "outputs": ["{options.outputFile}"],
               "options": {
-                "lintFilePatterns": [
-                  "libs/shared/**/*.{ts,tsx,js,jsx}"
-                ]
+                "lintFilePatterns": ["libs/shared/**/*.{ts,tsx,js,jsx}"]
               },
               "configurations": {},
               "parallelism": true,
@@ -797,9 +681,7 @@
             },
             "test": {
               "executor": "nx:run-commands",
-              "outputs": [
-                "{workspaceRoot}/coverage/libs/shared"
-              ],
+              "outputs": ["{workspaceRoot}/coverage/libs/shared"],
               "options": {
                 "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
               },
@@ -844,11 +726,7 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "apps/worker/src",
           "projectType": "application",
-          "tags": [
-            "scope:worker",
-            "type:service",
-            "platform:node"
-          ],
+          "tags": ["scope:worker", "type:service", "platform:node"],
           "targets": {
             "build": {
               "executor": "nx:run-commands",
@@ -857,13 +735,8 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "inputs": [
-                "production",
-                "^production"
-              ],
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
               "cache": true
             },
             "serve": {
@@ -927,9 +800,7 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "apps/shell/src",
           "projectType": "application",
-          "tags": [
-            "app"
-          ],
+          "tags": ["app"],
           "targets": {
             "build": {
               "executor": "nx:run-commands",
@@ -938,13 +809,8 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "inputs": [
-                "production",
-                "^production"
-              ],
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
               "cache": true
             },
             "serve": {
@@ -968,35 +834,21 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "apps/data/src",
           "projectType": "application",
-          "tags": [
-            "type:app",
-            "scope:data",
-            "platform:node"
-          ],
+          "tags": ["type:app", "scope:data", "platform:node"],
           "targets": {
             "build": {
               "executor": "@nx/js:tsc",
-              "outputs": [
-                "{options.outputPath}"
-              ],
+              "outputs": ["{options.outputPath}"],
               "options": {
                 "outputPath": "dist/apps/data",
                 "main": "apps/data/src/server.ts",
                 "tsConfig": "apps/data/tsconfig.json",
-                "assets": [
-                  "apps/data/*.md",
-                  "apps/data/.env.example"
-                ]
+                "assets": ["apps/data/*.md", "apps/data/.env.example"]
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "inputs": [
-                "production",
-                "^production"
-              ],
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
               "cache": true
             },
             "serve": {
@@ -1009,13 +861,9 @@
             },
             "lint": {
               "executor": "@nx/eslint:lint",
-              "outputs": [
-                "{options.outputFile}"
-              ],
+              "outputs": ["{options.outputFile}"],
               "options": {
-                "lintFilePatterns": [
-                  "apps/data/**/*.ts"
-                ]
+                "lintFilePatterns": ["apps/data/**/*.ts"]
               },
               "configurations": {},
               "parallelism": true,
@@ -1029,9 +877,7 @@
             },
             "test": {
               "executor": "@nx/vite:test",
-              "outputs": [
-                "{options.reportsDirectory}"
-              ],
+              "outputs": ["{options.reportsDirectory}"],
               "options": {
                 "passWithNoTests": true,
                 "reportsDirectory": "../../coverage/apps/data"
@@ -1077,9 +923,7 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "apps/docs",
           "projectType": "application",
-          "tags": [
-            "docs"
-          ],
+          "tags": ["docs"],
           "targets": {
             "build": {
               "executor": "nx:run-commands",
@@ -1088,13 +932,8 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "inputs": [
-                "production",
-                "^production"
-              ],
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
               "cache": true
             },
             "serve": {
@@ -1133,10 +972,7 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "apps/load-test/src",
           "projectType": "application",
-          "tags": [
-            "scope:testing",
-            "type:performance"
-          ],
+          "tags": ["scope:testing", "type:performance"],
           "targets": {
             "test:load": {
               "executor": "nx:run-commands",
@@ -1159,34 +995,21 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "apps/api/src",
           "projectType": "application",
-          "tags": [
-            "scope:api",
-            "type:service",
-            "app"
-          ],
+          "tags": ["scope:api", "type:service", "app"],
           "targets": {
             "build": {
               "executor": "@nx/js:tsc",
-              "outputs": [
-                "{options.outputPath}"
-              ],
+              "outputs": ["{options.outputPath}"],
               "options": {
                 "outputPath": "dist/apps/api",
                 "main": "apps/api/src/app.js",
                 "tsConfig": "apps/api/tsconfig.app.json",
-                "assets": [
-                  "apps/api/src/assets"
-                ]
+                "assets": ["apps/api/src/assets"]
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "inputs": [
-                "production",
-                "^production"
-              ],
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
               "cache": true
             },
             "serve": {
@@ -1199,13 +1022,9 @@
             },
             "lint": {
               "executor": "@nx/eslint:lint",
-              "outputs": [
-                "{options.outputFile}"
-              ],
+              "outputs": ["{options.outputFile}"],
               "options": {
-                "lintFilePatterns": [
-                  "apps/api/**/*.{ts,tsx,js,jsx}"
-                ]
+                "lintFilePatterns": ["apps/api/**/*.{ts,tsx,js,jsx}"]
               },
               "configurations": {},
               "parallelism": true,
@@ -1219,14 +1038,10 @@
             },
             "test": {
               "executor": "nx:run-commands",
-              "outputs": [
-                "{workspaceRoot}/coverage/{projectRoot}"
-              ],
+              "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
               "options": {
                 "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose",
-                "dependsOn": [
-                  "@political-sphere/shared:build"
-                ]
+                "dependsOn": ["@political-sphere/shared:build"]
               },
               "configurations": {
                 "watch": {
@@ -1266,10 +1081,7 @@
           "name": "ci-automation",
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "projectType": "application",
-          "tags": [
-            "ci",
-            "automation"
-          ],
+          "tags": ["ci", "automation"],
           "targets": {
             "lint": {
               "executor": "nx:run-commands",
@@ -1340,12 +1152,7 @@
               "options": {
                 "command": "make ci-checks"
               },
-              "dependsOn": [
-                "lint",
-                "typecheck",
-                "test",
-                "lint-boundaries"
-              ],
+              "dependsOn": ["lint", "typecheck", "test", "lint-boundaries"],
               "configurations": {},
               "parallelism": true
             }
@@ -1362,11 +1169,7 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "apps/web/src",
           "projectType": "application",
-          "tags": [
-            "scope:frontend",
-            "type:ui",
-            "platform:node"
-          ],
+          "tags": ["scope:frontend", "type:ui", "platform:node"],
           "targets": {
             "build": {
               "executor": "nx:run-commands",
@@ -1375,13 +1178,8 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "inputs": [
-                "production",
-                "^production"
-              ],
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
               "cache": true
             },
             "serve": {
@@ -1420,9 +1218,7 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "libs/ui",
           "projectType": "library",
-          "tags": [
-            "ui"
-          ],
+          "tags": ["ui"],
           "targets": {
             "build": {
               "executor": "nx:run-commands",
@@ -1431,20 +1227,13 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "inputs": [
-                "production",
-                "^production"
-              ],
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
               "cache": true
             },
             "test": {
               "executor": "nx:run-commands",
-              "outputs": [
-                "{workspaceRoot}/coverage/libs/ui"
-              ],
+              "outputs": ["{workspaceRoot}/coverage/libs/ui"],
               "options": {
                 "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
               },
@@ -1487,9 +1276,7 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "apps/dev",
           "projectType": "application",
-          "tags": [
-            "app"
-          ],
+          "tags": ["app"],
           "targets": {
             "build": {
               "executor": "nx:run-commands",
@@ -1498,13 +1285,8 @@
               },
               "configurations": {},
               "parallelism": true,
-              "dependsOn": [
-                "^build"
-              ],
-              "inputs": [
-                "production",
-                "^production"
-              ],
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
               "cache": true
             },
             "start": {
@@ -1525,9 +1307,7 @@
             },
             "test": {
               "executor": "nx:run-commands",
-              "outputs": [
-                "{workspaceRoot}/coverage/{projectRoot}"
-              ],
+              "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
               "options": {
                 "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
               },
@@ -1573,10 +1353,7 @@
           "$schema": "../../node_modules/nx/schemas/project-schema.json",
           "sourceRoot": "apps/e2e",
           "projectType": "application",
-          "tags": [
-            "scope:testing",
-            "type:test"
-          ],
+          "tags": ["scope:testing", "type:test"],
           "targets": {
             "test:e2e": {
               "executor": "nx:run-commands",
@@ -1585,10 +1362,7 @@
               },
               "configurations": {},
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production"
-              ],
+              "inputs": ["default", "^production"],
               "cache": true
             }
           },

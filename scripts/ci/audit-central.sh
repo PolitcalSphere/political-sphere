@@ -184,8 +184,8 @@ run_audit() {
             json_path="${OPENAPI_AUDIT_DIR}/openapi-audit-results.json"
             ;;
         App:*)
-            output_dir="${PROJECT_ROOT}/app-audit"
-            # For apps we expect path like app-audit/<app>/audit-results.json
+            output_dir="${PROJECT_ROOT}/reports/app-audit"
+            # For apps we expect path like reports/app-audit/<app>/audit-results.json
             if [[ -n "$explicit_json_rel_path" ]]; then
                 json_path="${PROJECT_ROOT}/${explicit_json_rel_path}"
             else
