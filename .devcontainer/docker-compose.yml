@@ -1,4 +1,5 @@
-version: "3.8"
+# Docker Compose for Political Sphere Development Environment
+# Note: No version field needed for Docker Compose v2+
 
 services:
   dev:
@@ -15,9 +16,7 @@ services:
       - DOCKER_HOST=unix:///var/run/docker.sock
     security_opt:
       - no-new-privileges:true
-    read_only: true
-    tmpfs:
-      - /tmp
+    # Note: read_only removed - breaks npm/node operations
     networks:
       - political-sphere-dev
     logging:
@@ -27,10 +26,15 @@ services:
         max-file: "3"
         labels: "service,environment"
         env: "NODE_ENV"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
-  # Database services for development
+  # PostgreSQL database for development
   postgres:
-    image: postgres:15-alpine
+    image: postgres:16-alpine
     environment:
       POSTGRES_DB: political_sphere_dev
       POSTGRES_USER: dev
@@ -54,12 +58,14 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 10s
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
 
+  # Redis cache for development
   redis:
     image: redis:7-alpine
     ports:
@@ -78,6 +84,7 @@ services:
       interval: 10s
       timeout: 3s
       retries: 3
+      start_period: 5s
     logging:
       driver: "json-file"
       options:
@@ -86,13 +93,16 @@ services:
 
 volumes:
   postgres_data:
+    driver: local
   redis_data:
+    driver: local
 
 secrets:
   postgres_password:
-    file: .devcontainer/secrets/postgres_password.txt
+    file: ./secrets/postgres_password.txt
 
 networks:
   political-sphere-dev:
     driver: bridge
-    enable_ipv6: true
+    # Note: IPv6 disabled by default for better compatibility
+    # enable_ipv6: false
