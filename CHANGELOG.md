@@ -7,6 +7,15 @@ The format follows Keep a Changelog (https://keepachangelog.com/en/1.0.0/) and t
 ## [Unreleased]
 
 ### Fixed
+- **CI/CD:** Fixed empty game-server Dockerfile causing Docker build failures (2025-11-11)
+  - Created complete multi-stage Dockerfile for game-server service
+  - Includes development, builder, and production stages matching api/worker patterns
+  - Uses Node.js 25-alpine base with dumb-init for signal handling
+  - BuildKit caching optimizations for npm dependencies
+  - Non-root user (nodejs:1001) for security
+  - Health checks on port 3000
+  - Resolves: "ERROR: failed to build: failed to solve: the Dockerfile cannot be empty"
+  - Docker workflow was failing after 25 seconds with empty Dockerfile
 - **CI/CD:** Fixed YAML syntax errors and workflow permission configuration (2025-11-11)
   - Fixed unclosed string in `deploy-argocd.yml` DATABASE_URL description field
   - Fixed typo in `deploy-argocd.yml` workflow name field (`tname` → `name`)
