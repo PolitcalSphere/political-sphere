@@ -1,13 +1,13 @@
 {
-  "timestamp": "2025-11-11T21:40:45Z",
+  "timestamp": "2025-11-11T22:09:43Z",
   "version": "1.4.0",
   "summary": {
     "critical": 0,
     "high": 4,
     "medium": 14,
     "low": 0,
-    "info": 67,
-    "pass": 133,
+    "info": 57,
+    "pass": 142,
     "autoFixed": 0
   },
   "findings": [
@@ -261,13 +261,6 @@
       "code": "PERF-002",
       "message": "Consider adding concurrency control",
       "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/docker.yml",
-      "line": 0
-    },
-    {
-      "severity": "info",
-      "code": "PERF-001",
-      "message": "Workflow could benefit from dependency caching",
-      "file": "/Users/morganlowman/GitHub/political-sphere/.github/workflows/ci.yml",
       "line": 0
     },
     {

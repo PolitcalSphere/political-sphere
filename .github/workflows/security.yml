@@ -74,12 +74,14 @@ jobs:
           bash scripts/validate-workflows.sh
 
       - name: Install actionlint
+        env:
+          ACTIONLINT_VERSION: '1.7.4'
+          ACTIONLINT_SHA256: 'fc0a6886bbb9a23a39eeec4b176193cadb54ddbe77cdbb19b637933919545395'
         run: |
-          ACTIONLINT_VERSION="1.7.4"
           echo "Installing actionlint ${ACTIONLINT_VERSION}..."
-          curl -fsSL "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" \
-            -o actionlint.tar.gz
-          tar xzf actionlint.tar.gz
+          curl -sSL -o actionlint.tar.gz "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz"
+          echo "${ACTIONLINT_SHA256}  actionlint.tar.gz" | sha256sum -c -
+          tar -xzf actionlint.tar.gz actionlint
           sudo mv actionlint /usr/local/bin/
           rm actionlint.tar.gz
           actionlint -version
@@ -113,6 +115,8 @@ jobs:
     name: SAST Scanning
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      security-events: write
     container:
       image: returntocorp/semgrep:1.67.0
     steps:
@@ -182,6 +186,8 @@ jobs:
     name: CodeQL Analysis
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    permissions:
+      security-events: write
     if: github.event_name == 'push' || github.event_name == 'schedule'
     steps:
       - name: Checkout repository
@@ -244,8 +250,15 @@ jobs:
           deny-licenses: GPL-2.0, GPL-3.0
 
       - name: Install Trivy
+        env:
+          TRIVY_VERSION: '0.67.2'
+          TRIVY_SHA256: '546511a5514afc813c0b72e4abeea2c16a32228a13a1e5114d927c190e76b1f9'
         run: |
-          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
+          curl -sSL -o trivy.tar.gz "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz"
+          echo "${TRIVY_SHA256}  trivy.tar.gz" | sha256sum -c -
+          tar -xzf trivy.tar.gz trivy
+          sudo mv trivy /usr/local/bin/trivy
+          rm trivy.tar.gz
 
       - name: Run Trivy filesystem scan
         run: |
@@ -281,6 +294,9 @@ jobs:
     name: Supply Chain Security
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      id-token: write
+      attestations: write
     steps:
       - name: Checkout code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0

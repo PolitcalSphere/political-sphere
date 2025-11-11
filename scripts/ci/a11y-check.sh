@@ -38,11 +38,11 @@ EOF
 # Install axe-core if not present
 if ! npm list @axe-core/playwright >/dev/null 2>&1; then
   echo "Installing @axe-core/playwright..."
-  npm install --no-save @axe-core/playwright
+  npm install --no-save @axe-core/playwright@4.11.0
 fi
 
 # Run the test
-npx playwright test /tmp/a11y-test.mjs --reporter=json --output="$REPORT_FILE" || {
+npx playwright@1.56.1 test /tmp/a11y-test.mjs --reporter=json --output="$REPORT_FILE" || {
   echo "Accessibility violations detected. See $REPORT_FILE for details."
   exit 1
 }

@@ -1,34 +1,26 @@
 {
-  "version": "2.1.0",
-  "timestamp": "2025-11-11T21:35:06Z",
-  "autofix": false,
-  "outputFormat": "full",
-  "summary": {
-    "total": 13,
-    "passed": 0,
-    "failed": 13,
-    "critical": 6,
-    "high": 19,
-    "medium": 57,
-    "low": 14,
-    "status": "NOT_PRODUCTION_READY: Critical/High issues present",
-    "reason": "Critical or High severity issues found",
-    "production_ready": false
-  },
-  "apps": [
-    { "app": "api", "critical": 4, "high": 2, "medium": 9, "low": 1 },
-    { "app": "feature-auth-remote", "critical": 0, "high": 2, "medium": 7, "low": 2 },
-    { "app": "feature-dashboard-remote", "critical": 0, "high": 2, "medium": 7, "low": 2 },
-    { "app": "game-server", "critical": 1, "high": 2, "medium": 4, "low": 2 },
-    { "app": "shell", "critical": 0, "high": 2, "medium": 6, "low": 2 },
-    { "app": "web", "critical": 1, "high": 1, "medium": 3, "low": 1 },
-    { "app": "worker", "critical": 0, "high": 3, "medium": 6, "low": 2 }
-  ],
-  "audit_directories": {
-    "github": "/Users/morganlowman/GitHub/political-sphere/github-audit",
-    "devcontainer": "/Users/morganlowman/GitHub/political-sphere/devcontainer-audit",
-    "openapi": "/Users/morganlowman/GitHub/political-sphere/openapi-audit",
-    "apps": "/Users/morganlowman/GitHub/political-sphere/app-audit"
-  },
-  "trail": "/Users/morganlowman/GitHub/political-sphere/docs/audit-trail"
+    "version": "2.1.0",
+    "timestamp": "2025-11-11T22:09:32Z",
+    "autofix": false,
+    "outputFormat": "full",
+    "summary": {
+        "total": 13,
+        "passed": 1,
+        "failed": 12,
+        "critical": 6,
+        "high": 19,
+        "medium": 59,
+        "low": 14,
+        "status": "NOT_PRODUCTION_READY: Critical/High issues present",
+        "reason": "Critical or High severity issues found",
+        "production_ready": false
+    },
+    "apps": [{"app":"api","critical":4,"high":2,"medium":9,"low":1},{"app":"feature-auth-remote","critical":0,"high":2,"medium":7,"low":2},{"app":"feature-dashboard-remote","critical":0,"high":2,"medium":7,"low":2},{"app":"game-server","critical":1,"high":2,"medium":4,"low":2},{"app":"shell","critical":0,"high":2,"medium":6,"low":2},{"app":"web","critical":1,"high":1,"medium":3,"low":1},{"app":"worker","critical":0,"high":3,"medium":6,"low":2}],
+    "audit_directories": {
+        "github": "/Users/morganlowman/GitHub/political-sphere/github-audit",
+        "devcontainer": "/Users/morganlowman/GitHub/political-sphere/devcontainer-audit",
+        "openapi": "/Users/morganlowman/GitHub/political-sphere/openapi-audit",
+        "apps": "/Users/morganlowman/GitHub/political-sphere/app-audit"
+    },
+    "trail": "/Users/morganlowman/GitHub/political-sphere/docs/audit-trail"
 }

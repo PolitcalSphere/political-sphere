@@ -6,6 +6,7 @@ set -euo pipefail
 # packages with prisma and runs `npx prisma migrate deploy` in each.
 
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+PRISMA_VERSION="${PRISMA_VERSION:-5.20.0}"
 
 echo "🔍 Scanning workspaces for Prisma migrations..."
 
@@ -45,7 +46,7 @@ while IFS= read -r pkg; do
       
       if npm run | grep -q "prisma"; then
         echo "   Running Prisma migrate deploy..."
-        if npx prisma migrate deploy; then
+        if npx "prisma@${PRISMA_VERSION}" migrate deploy; then
           echo "   ✅ Migrations completed for $dir"
           MIGRATION_COUNT=$((MIGRATION_COUNT + 1))
         else

@@ -1,6 +1,6 @@
 # Dev Keycloak image: adds curl for reliable healthchecks in local development
 # Based on Keycloak official image. This image is for development only.
-FROM quay.io/keycloak/keycloak:23.0
+FROM quay.io/keycloak/keycloak:23.0@sha256:14e99d6f5dd0516a5bdc82537b732cb85469ecdb15ad7fe5f11ff67521544db8
 
 # Install a minimal HTTP client (curl). Different base images may provide
 # different package managers; detect and use the available one.

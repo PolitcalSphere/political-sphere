@@ -189,9 +189,10 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Validate YAML
+        env:
+          YAML_LINT_VERSION: '1.2.4'
         run: |
-          npm install -g yaml-lint
-          yaml-lint .github/actions/run-tests/action.yml
+          npx "yaml-lint@${YAML_LINT_VERSION}" .github/actions/run-tests/action.yml
 
       - name: Validate Bash Syntax
         run: |

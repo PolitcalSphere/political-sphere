@@ -54,9 +54,10 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p fixture
-          printf '%s\n' '{' '  "name": "setup-node-fixture",' '  "version": "0.0.0",' '  "private": true' '}' > fixture/package.json
+          printf '%s\n' '{' '  "name": "setup-node-fixture",' '  "version": "0.0.0",' '  "private": true,' '  "dependencies": {"chalk": "5.3.0"}' '}' > fixture/package.json
           cd fixture
-          npm install chalk@5.3.0 --no-audit --no-fund --progress=false
+          npm install --package-lock-only --no-audit --no-fund --progress=false
+          npm ci --include=optional --no-audit --no-fund --progress=false --legacy-peer-deps
           node -e "console.log(require('chalk').green('chalk ok'))"
 
       - name: Capture environment diagnostics

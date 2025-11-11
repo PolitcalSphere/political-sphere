@@ -1,0 +1,15 @@
+DevContainer Audit Summary
+Generated: 2025-11-11T22:09:49Z
+================================================================================
+
+Findings Summary:
+  Critical: 0
+  High:     0
+  Medium:   2
+  Low:      0
+  Info:     18
+  Pass:     25
+  
+Auto-fixes Applied: 0
+
+Output Directory: /Users/morganlowman/GitHub/political-sphere/devcontainer-audit

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="GitHub Actions Audit" tests="220" failures="4" time="0">
-  <testsuite name="Security Checks" tests="85" failures="4" time="0">
+<testsuites name="GitHub Actions Audit" tests="219" failures="4" time="0">
+  <testsuite name="Security Checks" tests="75" failures="4" time="0">
     <testcase name="ACTIONLINT-001" classname="GitHub.Actions.Audit" time="0">
       
       <system-out>actionlint found workflow issues</system-out>
@@ -181,11 +181,6 @@
       <system-out>Consider adding concurrency control</system-out>
       <system-err>File: /Users/morganlowman/GitHub/political-sphere/.github/workflows/docker.yml, Line: 0</system-err>
     </testcase>
-    <testcase name="PERF-001" classname="GitHub.Actions.Audit" time="0">
-      
-      <system-out>Workflow could benefit from dependency caching</system-out>
-      <system-err>File: /Users/morganlowman/GitHub/political-sphere/.github/workflows/ci.yml, Line: 0</system-err>
-    </testcase>
     <testcase name="PERF-002" classname="GitHub.Actions.Audit" time="0">
       
       <system-out>Consider adding concurrency control</system-out>
@@ -341,5 +336,14 @@
     <testcase name="PASS-133" classname="GitHub.Actions.Audit" time="0"/>
     <testcase name="PASS-134" classname="GitHub.Actions.Audit" time="0"/>
     <testcase name="PASS-135" classname="GitHub.Actions.Audit" time="0"/>
+    <testcase name="PASS-136" classname="GitHub.Actions.Audit" time="0"/>
+    <testcase name="PASS-137" classname="GitHub.Actions.Audit" time="0"/>
+    <testcase name="PASS-138" classname="GitHub.Actions.Audit" time="0"/>
+    <testcase name="PASS-139" classname="GitHub.Actions.Audit" time="0"/>
+    <testcase name="PASS-140" classname="GitHub.Actions.Audit" time="0"/>
+    <testcase name="PASS-141" classname="GitHub.Actions.Audit" time="0"/>
+    <testcase name="PASS-142" classname="GitHub.Actions.Audit" time="0"/>
+    <testcase name="PASS-143" classname="GitHub.Actions.Audit" time="0"/>
+    <testcase name="PASS-144" classname="GitHub.Actions.Audit" time="0"/>
   </testsuite>
 </testsuites>

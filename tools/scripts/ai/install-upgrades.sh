@@ -33,11 +33,11 @@ echo "   - @xenova/transformers (local AI embeddings)"
 echo ""
 
 npm install --save-dev \
-  tree-sitter \
-  tree-sitter-javascript \
-  tree-sitter-typescript \
-  tree-sitter-python \
-  @xenova/transformers
+  tree-sitter@0.21.0 \
+  tree-sitter-javascript@0.21.0 \
+  tree-sitter-typescript@0.21.0 \
+  tree-sitter-python@0.21.0 \
+  @xenova/transformers@2.9.0
 
 echo ""
 echo "${GREEN}✅ Phase 1 complete${NC}"
@@ -53,7 +53,7 @@ read -p "Install Phase 2 dependencies? (y/N) " -n 1 -r
 echo ""
 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-  npm install --save-dev chokidar vectordb
+  npm install --save-dev chokidar@3.5.3 vectordb@0.4.0
   echo ""
   echo "${GREEN}✅ Phase 2 complete${NC}"
 else
