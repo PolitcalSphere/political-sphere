@@ -51,7 +51,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.qc-cache.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm ci --include=optional
 
       - name: Run ESLint (strict)
         run: npm run lint:ci
