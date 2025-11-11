@@ -34,8 +34,8 @@
 
 ### Priority 1: Utilities (Low dependency)
 
-- [ ] `/apps/api/src/utils/log-sanitizer.js`
-- [ ] `/apps/api/src/utils/http-utils.js`
+- [x] `/apps/api/src/utils/http-utils.js` → `.mjs` (Converted 2025-11-11)
+- [ ] `/apps/api/src/utils/log-sanitizer.js` (Blocked: consumed by CommonJS app.js)
 - [ ] `/apps/api/src/utils/config.js`
 - [ ] `/apps/api/src/utils/database-connection.js`
 - [ ] `/apps/api/src/utils/database-performance-monitor.js`

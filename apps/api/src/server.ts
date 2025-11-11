@@ -29,7 +29,7 @@ import {
   readJsonBody,
   sendError,
   sendJson,
-} from './utils/http-utils.js';
+} from './utils/http-utils.mjs';
 
 function parsePositiveInt(value: string | undefined | null, fallback: number): number {
   const parsed = Number.parseInt(value ?? '', 10);
@@ -71,7 +71,7 @@ const RATE_LIMIT_WINDOW_SECONDS = Math.max(1, Math.floor(RATE_LIMIT_OPTIONS.wind
 const RATE_LIMIT_POLICY = `${RATE_LIMIT_OPTIONS.maxRequests};w=${RATE_LIMIT_WINDOW_SECONDS}`;
 const MAX_BODY_BYTES = parsePositiveInt(process.env.API_MAX_BODY_BYTES, 1024 * 1024);
 
-const corsOptions: { exposedHeaders: string[] } = {
+const _corsOptions: { exposedHeaders: string[] } = {
   exposedHeaders: [
     'X-RateLimit-Limit',
     'X-RateLimit-Remaining',

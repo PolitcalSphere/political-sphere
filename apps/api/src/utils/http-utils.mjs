@@ -1,3 +1,9 @@
+/**
+ * HTTP utility functions for request/response handling
+ *
+ * ESM Module - Converted from CommonJS 2025-11-11
+ */
+
 const DEFAULT_MAX_JSON_BYTES = 1024 * 1024; // 1 MiB
 const DEFAULT_ALLOWED_CONTENT_TYPES = ['application/json', 'application/merge-patch+json'];
 
@@ -5,7 +11,7 @@ function isAllowedJsonContentType(contentType, allowedTypes) {
   return allowedTypes.some(type => contentType.startsWith(type));
 }
 
-async function readJsonBody(req, options = {}) {
+export async function readJsonBody(req, options = {}) {
   const { limit = DEFAULT_MAX_JSON_BYTES, allowedContentTypes = DEFAULT_ALLOWED_CONTENT_TYPES } =
     options;
 
@@ -49,7 +55,7 @@ async function readJsonBody(req, options = {}) {
   }
 }
 
-function sendJson(res, statusCode, payload, headers = {}) {
+export function sendJson(res, statusCode, payload, headers = {}) {
   const body = JSON.stringify(payload);
   res.writeHead(statusCode, {
     'Content-Type': 'application/json; charset=utf-8',
@@ -59,7 +65,7 @@ function sendJson(res, statusCode, payload, headers = {}) {
   res.end(body);
 }
 
-function sendError(res, statusCode, message, details, headers = {}) {
+export function sendError(res, statusCode, message, details, headers = {}) {
   sendJson(
     res,
     statusCode,
@@ -74,18 +80,10 @@ function sendError(res, statusCode, message, details, headers = {}) {
   );
 }
 
-function notFound(res, path) {
+export function notFound(res, path) {
   sendError(res, 404, `Route ${path} not found`);
 }
 
-function methodNotAllowed(res) {
+export function methodNotAllowed(res) {
   sendError(res, 405, 'Method not allowed');
 }
-
-module.exports = {
-  readJsonBody,
-  sendJson,
-  sendError,
-  notFound,
-  methodNotAllowed,
-};

@@ -1,6 +1,8 @@
 /**
  * Log sanitization utilities to prevent log injection attacks
  * Reference: OWASP A03:2021 Injection, CWE-117
+ *
+ * ESM Module - Converted from CommonJS 2025-11-11
  */
 
 /**
@@ -10,7 +12,7 @@
  * @param {number} maxLength - Maximum length (default: 1000)
  * @returns {string} Sanitized value safe for logging
  */
-function sanitizeLogString(value, maxLength = 1000) {
+export function sanitizeLogString(value, maxLength = 1000) {
   if (typeof value !== 'string') {
     return String(value);
   }
@@ -46,7 +48,7 @@ function sanitizeLogString(value, maxLength = 1000) {
  * @param {number} maxLength - Maximum string length
  * @returns {Object} Sanitized object safe for logging
  */
-function sanitizeLogObject(obj, maxLength = 1000) {
+export function sanitizeLogObject(obj, maxLength = 1000) {
   if (!obj || typeof obj !== 'object') {
     return obj;
   }
@@ -73,7 +75,7 @@ function sanitizeLogObject(obj, maxLength = 1000) {
  * @param {Object} req - Express request object
  * @returns {Object} Sanitized request data
  */
-function sanitizeRequestForLog(req) {
+export function sanitizeRequestForLog(req) {
   return {
     method: req.method, // Safe: HTTP method is controlled
     url: sanitizeLogString(req.url, 500), // Sanitize: user-controlled
@@ -82,9 +84,3 @@ function sanitizeRequestForLog(req) {
     requestId: req.requestId, // Safe: generated server-side
   };
 }
-
-module.exports = {
-  sanitizeLogString,
-  sanitizeLogObject,
-  sanitizeRequestForLog,
-};
