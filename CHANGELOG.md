@@ -6,7 +6,22 @@ The format follows Keep a Changelog (https://keepachangelog.com/en/1.0.0/) and t
 
 ## [Unreleased]
 
+### Changed
+- Pre-commit environment validation now scans only staged files and skips lockfiles (2025-11-11)
+  - Updated `.lefthook.yml` to pass staged file paths to validator (`--files {staged_files}`)
+  - Enhanced `tools/scripts/validation/validate-environment.mjs` to accept `--files` and ignore lockfiles
+  - Added safe patterns to exclude regex pattern definitions and validation scripts from secret detection
+  - Refined `detect-secrets` hook to exclude pattern definitions and the validator itself
+  - Eliminates thousands of false positives from entropy scanning across the workspace (e.g., package-lock.json)
+  - Keeps `gitleaks` as the primary staged secret gate; full workspace scans still available in CI via strict mode
+
 ### Fixed
+- **CI/CD:** Fixed missing ESLint dependencies causing lint job failures (2025-11-11)
+  - Added ESLint and all required plugins to package.json devDependencies
+  - Installed: eslint, @typescript-eslint/eslint-plugin, @typescript-eslint/parser, eslint-config-prettier, eslint-plugin-filenames, eslint-plugin-import, eslint-plugin-prettier, eslint-plugin-react, eslint-plugin-react-hooks, typescript-eslint, @vitest/eslint-plugin, globals, prettier, @eslint/js
+  - All packages were previously marked as "extraneous" (installed but not declared)
+  - Resolves: "sh: 1: eslint: not found" in Lint & Type Check job
+  - Ensures consistent linting across all environments (local, CI, containers)
 - **CI/CD:** Fixed empty game-server Dockerfile causing Docker build failures (2025-11-11)
   - Created complete multi-stage Dockerfile for game-server service
   - Includes development, builder, and production stages matching api/worker patterns
