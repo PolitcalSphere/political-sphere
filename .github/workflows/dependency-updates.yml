@@ -8,6 +8,9 @@
 # This workflow will automatically update dependencies and create PRs.
 
 name: Dependency Updates
+permissions:
+  contents: read
+  pull-requests: write
 
 on:
   schedule:
