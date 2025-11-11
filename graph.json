@@ -1,0 +1,1397 @@
+{
+  "graph": {
+    "nodes": {
+      "feature-dashboard-remote": {
+        "name": "feature-dashboard-remote",
+        "type": "app",
+        "data": {
+          "root": "apps/feature-dashboard-remote",
+          "name": "feature-dashboard-remote",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "apps/feature-dashboard-remote/src",
+          "projectType": "application",
+          "tags": ["scope:frontend", "type:ui", "module:federation"],
+          "targets": {
+            "build": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "echo 'TODO: implement module federation build for dashboard remote'"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "cache": true
+            },
+            "serve": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "echo 'TODO: implement dev server for dashboard remote'"
+              },
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "feature-auth-remote": {
+        "name": "feature-auth-remote",
+        "type": "app",
+        "data": {
+          "root": "apps/feature-auth-remote",
+          "name": "feature-auth-remote",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "apps/feature-auth-remote/src",
+          "projectType": "application",
+          "tags": ["app"],
+          "targets": {
+            "build": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "echo 'Build remote app (copy Module Federation config into your builder)'"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "cache": true
+            },
+            "serve": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "echo 'Serve remote app (configure webpack-dev-server with MF)'"
+              },
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "infrastructure": {
+        "name": "infrastructure",
+        "type": "lib",
+        "data": {
+          "root": "apps/infrastructure/terraform",
+          "name": "infrastructure",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/infrastructure",
+          "projectType": "library",
+          "tags": ["infra"],
+          "targets": {
+            "plan": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "cd libs/infrastructure && terraform plan"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "apply": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "cd libs/infrastructure && terraform apply"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "validate": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "cd libs/infrastructure && terraform validate"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "cd libs/infrastructure && tflint"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore",
+                "{workspaceRoot}/eslint.config.js"
+              ],
+              "cache": true
+            },
+            "test": {
+              "executor": "nx:run-commands",
+              "outputs": ["{workspaceRoot}/coverage/libs/infrastructure"],
+              "options": {
+                "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
+              },
+              "configurations": {
+                "watch": {
+                  "command": "vitest --config ../../vitest.config.js --watch"
+                },
+                "coverage": {
+                  "command": "vitest run --config ../../vitest.config.js --coverage"
+                },
+                "ci": {
+                  "coverageThreshold": {
+                    "global": {
+                      "branches": 80,
+                      "functions": 80,
+                      "lines": 80,
+                      "statements": 80
+                    }
+                  }
+                }
+              },
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "@political-sphere/domain-governance": {
+        "name": "@political-sphere/domain-governance",
+        "type": "lib",
+        "data": {
+          "root": "libs/domain-governance",
+          "name": "@political-sphere/domain-governance",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/domain-governance/src",
+          "projectType": "library",
+          "tags": ["scope:domain", "type:domain", "type:library", "governance"],
+          "targets": {
+            "build": {
+              "executor": "@nx/js:tsc",
+              "outputs": ["{options.outputPath}"],
+              "options": {
+                "outputPath": "libs/domain-governance/dist",
+                "main": "libs/domain-governance/src/index.ts",
+                "tsConfig": "libs/domain-governance/tsconfig.lib.json",
+                "assets": []
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "cache": true
+            },
+            "lint": {
+              "executor": "@nx/eslint:lint",
+              "outputs": ["{options.outputFile}"],
+              "options": {
+                "lintFilePatterns": [
+                  "libs/domain-governance/**/*.{ts,tsx,js,jsx}"
+                ]
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore",
+                "{workspaceRoot}/eslint.config.js"
+              ],
+              "cache": true
+            },
+            "test": {
+              "executor": "nx:run-commands",
+              "outputs": ["{workspaceRoot}/coverage/libs/domain-governance"],
+              "options": {
+                "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
+              },
+              "configurations": {
+                "watch": {
+                  "command": "vitest --config ../../vitest.config.js --watch"
+                },
+                "coverage": {
+                  "command": "vitest run --config ../../vitest.config.js --coverage"
+                },
+                "ci": {
+                  "coverageThreshold": {
+                    "global": {
+                      "branches": 80,
+                      "functions": 80,
+                      "lines": 80,
+                      "statements": 80
+                    }
+                  }
+                }
+              },
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "@political-sphere/data-game-state": {
+        "name": "@political-sphere/data-game-state",
+        "type": "lib",
+        "data": {
+          "root": "libs/data-game-state",
+          "name": "@political-sphere/data-game-state",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/data-game-state/src",
+          "projectType": "library",
+          "tags": ["scope:data", "type:data", "type:library", "game-state"],
+          "targets": {
+            "build": {
+              "executor": "@nx/js:tsc",
+              "outputs": ["{options.outputPath}"],
+              "options": {
+                "outputPath": "libs/data-game-state/dist",
+                "main": "libs/data-game-state/src/index.ts",
+                "tsConfig": "libs/data-game-state/tsconfig.lib.json",
+                "assets": []
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "cache": true
+            },
+            "lint": {
+              "executor": "@nx/eslint:lint",
+              "outputs": ["{options.outputFile}"],
+              "options": {
+                "lintFilePatterns": [
+                  "libs/data-game-state/**/*.{ts,tsx,js,jsx}"
+                ]
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore",
+                "{workspaceRoot}/eslint.config.js"
+              ],
+              "cache": true
+            },
+            "test": {
+              "executor": "nx:run-commands",
+              "outputs": ["{workspaceRoot}/coverage/libs/data-game-state"],
+              "options": {
+                "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
+              },
+              "configurations": {
+                "watch": {
+                  "command": "vitest --config ../../vitest.config.js --watch"
+                },
+                "coverage": {
+                  "command": "vitest run --config ../../vitest.config.js --coverage"
+                },
+                "ci": {
+                  "coverageThreshold": {
+                    "global": {
+                      "branches": 80,
+                      "functions": 80,
+                      "lines": 80,
+                      "statements": 80
+                    }
+                  }
+                }
+              },
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "@political-sphere/domain-election": {
+        "name": "@political-sphere/domain-election",
+        "type": "lib",
+        "data": {
+          "root": "libs/domain-election",
+          "name": "@political-sphere/domain-election",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/domain-election/src",
+          "projectType": "library",
+          "tags": ["scope:domain", "type:domain", "type:library", "election"],
+          "targets": {
+            "build": {
+              "executor": "@nx/js:tsc",
+              "outputs": ["{options.outputPath}"],
+              "options": {
+                "outputPath": "libs/domain-election/dist",
+                "main": "libs/domain-election/src/index.ts",
+                "tsConfig": "libs/domain-election/tsconfig.lib.json",
+                "assets": []
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "cache": true
+            },
+            "lint": {
+              "executor": "@nx/eslint:lint",
+              "outputs": ["{options.outputFile}"],
+              "options": {
+                "lintFilePatterns": [
+                  "libs/domain-election/**/*.{ts,tsx,js,jsx}"
+                ]
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore",
+                "{workspaceRoot}/eslint.config.js"
+              ],
+              "cache": true
+            },
+            "test": {
+              "executor": "nx:run-commands",
+              "outputs": ["{workspaceRoot}/coverage/libs/domain-election"],
+              "options": {
+                "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
+              },
+              "configurations": {
+                "watch": {
+                  "command": "vitest --config ../../vitest.config.js --watch"
+                },
+                "coverage": {
+                  "command": "vitest run --config ../../vitest.config.js --coverage"
+                },
+                "ci": {
+                  "coverageThreshold": {
+                    "global": {
+                      "branches": 80,
+                      "functions": 80,
+                      "lines": 80,
+                      "statements": 80
+                    }
+                  }
+                }
+              },
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "game-server": {
+        "name": "game-server",
+        "type": "app",
+        "data": {
+          "root": "apps/game-server",
+          "name": "game-server",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "apps/game-server/src",
+          "projectType": "application",
+          "tags": ["scope:game-server", "type:service", "app"],
+          "targets": {
+            "build": {
+              "executor": "@nx/js:tsc",
+              "outputs": ["{options.outputPath}"],
+              "options": {
+                "outputPath": "dist/apps/game-server",
+                "main": "apps/game-server/src/server.ts",
+                "tsConfig": "apps/game-server/tsconfig.json",
+                "assets": ["apps/game-server/src/assets"]
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "cache": true
+            },
+            "serve": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "node dist/apps/game-server/server.js"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "test": {
+              "executor": "@nx/jest:jest",
+              "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+              "options": {
+                "jestConfig": "apps/game-server/jest.config.ts"
+              },
+              "configurations": {
+                "ci": {
+                  "coverageThreshold": {
+                    "global": {
+                      "branches": 80,
+                      "functions": 80,
+                      "lines": 80,
+                      "statements": 80
+                    }
+                  }
+                }
+              },
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "@political-sphere/data-user": {
+        "name": "@political-sphere/data-user",
+        "type": "lib",
+        "data": {
+          "root": "libs/data-user",
+          "name": "@political-sphere/data-user",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/data-user/src",
+          "projectType": "library",
+          "tags": ["scope:data", "type:data", "type:library", "user"],
+          "targets": {
+            "build": {
+              "executor": "@nx/js:tsc",
+              "outputs": ["{options.outputPath}"],
+              "options": {
+                "outputPath": "libs/data-user/dist",
+                "main": "libs/data-user/src/index.ts",
+                "tsConfig": "libs/data-user/tsconfig.lib.json",
+                "assets": []
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "cache": true
+            },
+            "lint": {
+              "executor": "@nx/eslint:lint",
+              "outputs": ["{options.outputFile}"],
+              "options": {
+                "lintFilePatterns": ["libs/data-user/**/*.{ts,tsx,js,jsx}"]
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore",
+                "{workspaceRoot}/eslint.config.js"
+              ],
+              "cache": true
+            },
+            "test": {
+              "executor": "nx:run-commands",
+              "outputs": ["{workspaceRoot}/coverage/libs/data-user"],
+              "options": {
+                "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
+              },
+              "configurations": {
+                "watch": {
+                  "command": "vitest --config ../../vitest.config.js --watch"
+                },
+                "coverage": {
+                  "command": "vitest run --config ../../vitest.config.js --coverage"
+                },
+                "ci": {
+                  "coverageThreshold": {
+                    "global": {
+                      "branches": 80,
+                      "functions": 80,
+                      "lines": 80,
+                      "statements": 80
+                    }
+                  }
+                }
+              },
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "platform": {
+        "name": "platform",
+        "type": "lib",
+        "data": {
+          "root": "libs/platform",
+          "name": "platform",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/platform",
+          "projectType": "library",
+          "tags": ["platform"],
+          "targets": {
+            "deploy": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "cd libs/platform && kubectl apply -f ."
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "validate": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "cd libs/platform && kubectl apply --dry-run=client -f ."
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "cd libs/platform && yamllint argo-apps/*.yaml charts/**/*.yaml namespaces/*.yaml policies/*.yaml || true"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore",
+                "{workspaceRoot}/eslint.config.js"
+              ],
+              "cache": true
+            },
+            "test": {
+              "executor": "nx:run-commands",
+              "outputs": ["{workspaceRoot}/coverage/libs/platform"],
+              "options": {
+                "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
+              },
+              "configurations": {
+                "watch": {
+                  "command": "vitest --config ../../vitest.config.js --watch"
+                },
+                "coverage": {
+                  "command": "vitest run --config ../../vitest.config.js --coverage"
+                },
+                "ci": {
+                  "coverageThreshold": {
+                    "global": {
+                      "branches": 80,
+                      "functions": 80,
+                      "lines": 80,
+                      "statements": 80
+                    }
+                  }
+                }
+              },
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "@political-sphere/shared": {
+        "name": "@political-sphere/shared",
+        "type": "lib",
+        "data": {
+          "root": "libs/shared",
+          "name": "@political-sphere/shared",
+          "projectType": "library",
+          "tags": [
+            "npm:public",
+            "scope:shared",
+            "type:util",
+            "type:library",
+            "shared"
+          ],
+          "metadata": {
+            "targetGroups": {},
+            "description": "Shared utilities and libraries for Political Sphere applications",
+            "js": {
+              "packageName": "@political-sphere/shared",
+              "packageVersion": "0.0.1",
+              "packageExports": {
+                ".": {
+                  "import": "./dist/index.js",
+                  "require": "./cjs-shared.cjs",
+                  "default": "./dist/index.js",
+                  "types": "./dist/index.d.ts"
+                }
+              },
+              "packageMain": "./dist/index.js",
+              "isInPackageManagerWorkspaces": false
+            }
+          },
+          "targets": {
+            "build": {
+              "executor": "@nx/js:tsc",
+              "outputs": ["{options.outputPath}"],
+              "options": {
+                "outputPath": "libs/shared/dist",
+                "main": "libs/shared/src/index.ts",
+                "tsConfig": "libs/shared/tsconfig.lib.json",
+                "assets": []
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "cache": true
+            },
+            "lint": {
+              "executor": "@nx/eslint:lint",
+              "outputs": ["{options.outputFile}"],
+              "options": {
+                "lintFilePatterns": ["libs/shared/**/*.{ts,tsx,js,jsx}"]
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore",
+                "{workspaceRoot}/eslint.config.js"
+              ],
+              "cache": true
+            },
+            "test": {
+              "executor": "nx:run-commands",
+              "outputs": ["{workspaceRoot}/coverage/libs/shared"],
+              "options": {
+                "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
+              },
+              "configurations": {
+                "watch": {
+                  "command": "vitest --config ../../vitest.config.js --watch"
+                },
+                "coverage": {
+                  "command": "vitest run --config ../../vitest.config.js --coverage"
+                },
+                "ci": {
+                  "coverageThreshold": {
+                    "global": {
+                      "branches": 80,
+                      "functions": 80,
+                      "lines": 80,
+                      "statements": 80
+                    }
+                  }
+                }
+              },
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "cache": true
+            }
+          },
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/shared/src",
+          "implicitDependencies": []
+        }
+      },
+      "worker": {
+        "name": "worker",
+        "type": "app",
+        "data": {
+          "root": "apps/worker",
+          "name": "worker",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "apps/worker/src",
+          "projectType": "application",
+          "tags": ["scope:worker", "type:service", "platform:node"],
+          "targets": {
+            "build": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "echo \"No build pipeline for worker yet; skipping.\""
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "cache": true
+            },
+            "serve": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "npm run start:worker"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "eslint apps/worker/src --ext .js"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore",
+                "{workspaceRoot}/eslint.config.js"
+              ],
+              "cache": true
+            },
+            "test": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "node --test apps/worker/tests/**/*.test.js"
+              },
+              "configurations": {
+                "ci": {
+                  "coverageThreshold": {
+                    "global": {
+                      "branches": 80,
+                      "functions": 80,
+                      "lines": 80,
+                      "statements": 80
+                    }
+                  }
+                }
+              },
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "shell": {
+        "name": "shell",
+        "type": "app",
+        "data": {
+          "root": "apps/shell",
+          "name": "shell",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "apps/shell/src",
+          "projectType": "application",
+          "tags": ["app"],
+          "targets": {
+            "build": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "echo 'Build host app (copy Module Federation config into your builder)'"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "cache": true
+            },
+            "serve": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "echo 'Serve host app (configure webpack-dev-server with MF)'"
+              },
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "data": {
+        "name": "data",
+        "type": "app",
+        "data": {
+          "root": "data/apps",
+          "name": "data",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "apps/data/src",
+          "projectType": "application",
+          "tags": ["type:app", "scope:data", "platform:node"],
+          "targets": {
+            "build": {
+              "executor": "@nx/js:tsc",
+              "outputs": ["{options.outputPath}"],
+              "options": {
+                "outputPath": "dist/apps/data",
+                "main": "apps/data/src/server.ts",
+                "tsConfig": "apps/data/tsconfig.json",
+                "assets": ["apps/data/*.md", "apps/data/.env.example"]
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "cache": true
+            },
+            "serve": {
+              "executor": "@nx/js:node",
+              "options": {
+                "buildTarget": "data:build"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "lint": {
+              "executor": "@nx/eslint:lint",
+              "outputs": ["{options.outputFile}"],
+              "options": {
+                "lintFilePatterns": ["apps/data/**/*.ts"]
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore",
+                "{workspaceRoot}/eslint.config.js"
+              ],
+              "cache": true
+            },
+            "test": {
+              "executor": "@nx/vite:test",
+              "outputs": ["{options.reportsDirectory}"],
+              "options": {
+                "passWithNoTests": true,
+                "reportsDirectory": "../../coverage/apps/data"
+              },
+              "configurations": {
+                "ci": {
+                  "coverageThreshold": {
+                    "global": {
+                      "branches": 80,
+                      "functions": 80,
+                      "lines": 80,
+                      "statements": 80
+                    }
+                  }
+                }
+              },
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "cache": true
+            },
+            "type-check": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "tsc --noEmit -p apps/data/tsconfig.json"
+              },
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "docs": {
+        "name": "docs",
+        "type": "app",
+        "data": {
+          "root": "docs/apps",
+          "name": "docs",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "apps/docs",
+          "projectType": "application",
+          "tags": ["docs"],
+          "targets": {
+            "build": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "cd apps/docs && npm run build"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "cache": true
+            },
+            "serve": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "cd apps/docs && npm run serve"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "npm run docs:lint"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore",
+                "{workspaceRoot}/eslint.config.js"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "load-test": {
+        "name": "load-test",
+        "type": "app",
+        "data": {
+          "root": "load-test",
+          "name": "load-test",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "apps/load-test/src",
+          "projectType": "application",
+          "tags": ["scope:testing", "type:performance"],
+          "targets": {
+            "test:load": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "echo 'TODO: implement k6/Artillery load tests'"
+              },
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "api": {
+        "name": "api",
+        "type": "app",
+        "data": {
+          "root": "apps/api",
+          "name": "api",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "apps/api/src",
+          "projectType": "application",
+          "tags": ["scope:api", "type:service", "app"],
+          "targets": {
+            "build": {
+              "executor": "@nx/js:tsc",
+              "outputs": ["{options.outputPath}"],
+              "options": {
+                "outputPath": "dist/apps/api",
+                "main": "apps/api/src/app.js",
+                "tsConfig": "apps/api/tsconfig.app.json",
+                "assets": ["apps/api/src/assets"]
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "cache": true
+            },
+            "serve": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "node apps/api/src/app.js"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "lint": {
+              "executor": "@nx/eslint:lint",
+              "outputs": ["{options.outputFile}"],
+              "options": {
+                "lintFilePatterns": ["apps/api/**/*.{ts,tsx,js,jsx}"]
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore",
+                "{workspaceRoot}/eslint.config.js"
+              ],
+              "cache": true
+            },
+            "test": {
+              "executor": "nx:run-commands",
+              "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+              "options": {
+                "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose",
+                "dependsOn": ["@political-sphere/shared:build"]
+              },
+              "configurations": {
+                "watch": {
+                  "command": "vitest --config ../../vitest.config.js --watch"
+                },
+                "coverage": {
+                  "command": "vitest run --config ../../vitest.config.js --coverage"
+                },
+                "ci": {
+                  "coverageThreshold": {
+                    "global": {
+                      "branches": 80,
+                      "functions": 80,
+                      "lines": 80,
+                      "statements": 80
+                    }
+                  }
+                }
+              },
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "ci-automation": {
+        "name": "ci-automation",
+        "type": "app",
+        "data": {
+          "root": "tools/ci",
+          "name": "ci-automation",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "projectType": "application",
+          "tags": ["ci", "automation"],
+          "targets": {
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "npm run lint"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore",
+                "{workspaceRoot}/eslint.config.js"
+              ],
+              "cache": true
+            },
+            "typecheck": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "npm run typecheck"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "test": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "npm run test"
+              },
+              "configurations": {
+                "ci": {
+                  "coverageThreshold": {
+                    "global": {
+                      "branches": 80,
+                      "functions": 80,
+                      "lines": 80,
+                      "statements": 80
+                    }
+                  }
+                }
+              },
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "cache": true
+            },
+            "lint-boundaries": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "npm run lint:import-boundaries"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "security-scan": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "make security-scan"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "ci-checks": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "make ci-checks"
+              },
+              "dependsOn": ["lint", "typecheck", "test", "lint-boundaries"],
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "web": {
+        "name": "web",
+        "type": "app",
+        "data": {
+          "root": "apps/web",
+          "name": "web",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "apps/web/src",
+          "projectType": "application",
+          "tags": ["scope:frontend", "type:ui", "platform:node"],
+          "targets": {
+            "build": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "echo \"No build pipeline for frontend yet; skipping.\""
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "cache": true
+            },
+            "serve": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "npm run start:frontend"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "lint": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "eslint apps/frontend/src --ext .js"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore",
+                "{workspaceRoot}/eslint.config.js"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "ui": {
+        "name": "ui",
+        "type": "lib",
+        "data": {
+          "root": "libs/ui",
+          "name": "ui",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/ui",
+          "projectType": "library",
+          "tags": ["ui"],
+          "targets": {
+            "build": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "echo 'Build UI library'"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "cache": true
+            },
+            "test": {
+              "executor": "nx:run-commands",
+              "outputs": ["{workspaceRoot}/coverage/libs/ui"],
+              "options": {
+                "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
+              },
+              "configurations": {
+                "watch": {
+                  "command": "vitest --config ../../vitest.config.js --watch"
+                },
+                "coverage": {
+                  "command": "vitest run --config ../../vitest.config.js --coverage"
+                },
+                "ci": {
+                  "coverageThreshold": {
+                    "global": {
+                      "branches": 80,
+                      "functions": 80,
+                      "lines": 80,
+                      "statements": 80
+                    }
+                  }
+                }
+              },
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "dev": {
+        "name": "dev",
+        "type": "app",
+        "data": {
+          "root": "dev",
+          "name": "dev",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "apps/dev",
+          "projectType": "application",
+          "tags": ["app"],
+          "targets": {
+            "build": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "echo 'Dev environment does not require build (Docker-based)'"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "dependsOn": ["^build"],
+              "inputs": ["production", "^production"],
+              "cache": true
+            },
+            "start": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "./apps/dev/scripts/dev-up.sh"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "stop": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "./apps/dev/scripts/dev-down.sh"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "test": {
+              "executor": "nx:run-commands",
+              "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+              "options": {
+                "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
+              },
+              "configurations": {
+                "watch": {
+                  "command": "vitest --config ../../vitest.config.js --watch"
+                },
+                "coverage": {
+                  "command": "vitest run --config ../../vitest.config.js --coverage"
+                },
+                "e2e": {
+                  "command": "npm run test:e2e"
+                },
+                "ci": {
+                  "coverageThreshold": {
+                    "global": {
+                      "branches": 80,
+                      "functions": 80,
+                      "lines": 80,
+                      "statements": 80
+                    }
+                  }
+                }
+              },
+              "parallelism": true,
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js"
+              ],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      },
+      "e2e": {
+        "name": "e2e",
+        "type": "e2e",
+        "data": {
+          "root": "e2e",
+          "name": "e2e",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "apps/e2e",
+          "projectType": "application",
+          "tags": ["scope:testing", "type:test"],
+          "targets": {
+            "test:e2e": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "echo 'TODO: implement Playwright/Cypress E2E tests'"
+              },
+              "configurations": {},
+              "parallelism": true,
+              "inputs": ["default", "^production"],
+              "cache": true
+            }
+          },
+          "implicitDependencies": []
+        }
+      }
+    },
+    "dependencies": {
+      "feature-dashboard-remote": [],
+      "feature-auth-remote": [],
+      "infrastructure": [],
+      "@political-sphere/domain-governance": [],
+      "@political-sphere/data-game-state": [],
+      "@political-sphere/domain-election": [],
+      "game-server": [],
+      "@political-sphere/data-user": [],
+      "platform": [],
+      "@political-sphere/shared": [],
+      "worker": [],
+      "shell": [],
+      "data": [],
+      "docs": [],
+      "load-test": [],
+      "api": [],
+      "ci-automation": [],
+      "web": [],
+      "ui": [],
+      "dev": [],
+      "e2e": []
+    }
+  }
+}
