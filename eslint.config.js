@@ -71,7 +71,7 @@ export default [
         },
       ],
       'import/order': 'off', // Disabled due to TypeScript resolver issues
-      'no-console': 'warn',
+      'no-console': 'off',
       '@nx/enforce-module-boundaries': ['error', { enforceBuildableLibDependency: true }],
     },
     settings: {

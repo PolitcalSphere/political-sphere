@@ -117,3 +117,29 @@
 {"timestamp":"2025-11-11T22:40:33Z","audit":"App: E2E","status":"warn","critical":0,"high":0,"medium":0,"low":0}
 {"timestamp":"2025-11-11T22:40:33Z","audit":"App: LoadTest","status":"warn","critical":0,"high":0,"medium":0,"low":0}
 {"timestamp":"2025-11-11T22:40:33Z","audit":"App: Infrastructure","status":"warn","critical":0,"high":0,"medium":0,"low":0}
+{"timestamp":"2025-11-11T23:31:21Z","audit":"GitHub","status":"warn","critical":0,"high":4,"medium":14,"low":0}
+{"timestamp":"2025-11-11T23:31:21Z","audit":"DevContainer","status":"pass","critical":0,"high":0,"medium":2,"low":0}
+{"timestamp":"2025-11-11T23:31:21Z","audit":"OpenAPI","status":"pass","critical":0,"high":0,"medium":1,"low":3}
+{"timestamp":"2025-11-11T23:31:21Z","audit":"App: API","status":"fail","critical":4,"high":2,"medium":8,"low":1}
+{"timestamp":"2025-11-11T23:31:21Z","audit":"App: Web","status":"fail","critical":1,"high":1,"medium":3,"low":1}
+{"timestamp":"2025-11-11T23:31:21Z","audit":"App: Worker","status":"fail","critical":0,"high":3,"medium":6,"low":2}
+{"timestamp":"2025-11-11T23:31:21Z","audit":"App: GameServer","status":"fail","critical":1,"high":2,"medium":4,"low":2}
+{"timestamp":"2025-11-11T23:31:21Z","audit":"App: Shell","status":"fail","critical":0,"high":2,"medium":6,"low":2}
+{"timestamp":"2025-11-11T23:31:21Z","audit":"App: AuthRemote","status":"fail","critical":0,"high":2,"medium":7,"low":2}
+{"timestamp":"2025-11-11T23:31:21Z","audit":"App: DashboardRemote","status":"fail","critical":0,"high":2,"medium":7,"low":2}
+{"timestamp":"2025-11-11T23:31:21Z","audit":"App: E2E","status":"warn","critical":0,"high":0,"medium":0,"low":0}
+{"timestamp":"2025-11-11T23:31:21Z","audit":"App: LoadTest","status":"warn","critical":0,"high":0,"medium":0,"low":0}
+{"timestamp":"2025-11-11T23:31:21Z","audit":"App: Infrastructure","status":"warn","critical":0,"high":0,"medium":0,"low":0}
+{"timestamp":"2025-11-11T23:35:24Z","audit":"GitHub","status":"warn","critical":0,"high":4,"medium":14,"low":0}
+{"timestamp":"2025-11-11T23:35:24Z","audit":"DevContainer","status":"pass","critical":0,"high":0,"medium":2,"low":0}
+{"timestamp":"2025-11-11T23:35:24Z","audit":"OpenAPI","status":"pass","critical":0,"high":0,"medium":1,"low":3}
+{"timestamp":"2025-11-11T23:35:24Z","audit":"App: API","status":"fail","critical":4,"high":2,"medium":8,"low":1}
+{"timestamp":"2025-11-11T23:35:24Z","audit":"App: Web","status":"fail","critical":1,"high":1,"medium":3,"low":1}
+{"timestamp":"2025-11-11T23:35:24Z","audit":"App: Worker","status":"fail","critical":0,"high":3,"medium":6,"low":2}
+{"timestamp":"2025-11-11T23:35:24Z","audit":"App: GameServer","status":"fail","critical":1,"high":2,"medium":4,"low":2}
+{"timestamp":"2025-11-11T23:35:24Z","audit":"App: Shell","status":"fail","critical":0,"high":2,"medium":6,"low":2}
+{"timestamp":"2025-11-11T23:35:24Z","audit":"App: AuthRemote","status":"fail","critical":0,"high":2,"medium":7,"low":2}
+{"timestamp":"2025-11-11T23:35:24Z","audit":"App: DashboardRemote","status":"fail","critical":0,"high":2,"medium":7,"low":2}
+{"timestamp":"2025-11-11T23:35:24Z","audit":"App: E2E","status":"warn","critical":0,"high":0,"medium":0,"low":0}
+{"timestamp":"2025-11-11T23:35:24Z","audit":"App: LoadTest","status":"warn","critical":0,"high":0,"medium":0,"low":0}
+{"timestamp":"2025-11-11T23:35:24Z","audit":"App: Infrastructure","status":"warn","critical":0,"high":0,"medium":0,"low":0}

@@ -32,7 +32,7 @@ export function initializeDatabase(): Database.Database {
     const dir = path.dirname(DB_PATH);
     try {
       fs.mkdirSync(dir, { recursive: true });
-    } catch (_e) {
+    } catch {
       // If for some reason directory creation fails, let better-sqlite3 report the error
     }
   }
@@ -45,7 +45,7 @@ export function initializeDatabase(): Database.Database {
   if (DB_PATH !== ':memory:') {
     try {
       db.pragma('journal_mode = WAL');
-    } catch (_e) {
+    } catch {
       // Ignore pragma failures; concurrency will be lower but tests should proceed.
     }
   }
@@ -53,7 +53,7 @@ export function initializeDatabase(): Database.Database {
   // Always enable foreign keys enforcement where supported.
   try {
     db.pragma('foreign_keys = ON');
-  } catch (_e) {
+  } catch {
     // Ignore if pragma not supported in some environments
   }
 

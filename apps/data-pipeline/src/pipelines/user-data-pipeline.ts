@@ -19,7 +19,7 @@ export class UserDataPipeline {
   /**
    * Execute the user data pipeline
    */
-  async execute(data: unknown): Promise<PipelineResult> {
+  async execute(_data: unknown): Promise<PipelineResult> {
     // TODO: Implement user data pipeline logic
     // 1. Validate input data
     // 2. Normalize user fields

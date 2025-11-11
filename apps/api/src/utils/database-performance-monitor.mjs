@@ -1,5 +1,7 @@
-const { getConnection } = require('./database-connection');
-const logger = require('./logger');
+import dbConnection from './database-connection.mjs';
+import logger from './logger.js';
+
+const getConnection = () => dbConnection.getConnection();
 
 /**
  * Database Performance Monitor
@@ -376,7 +378,4 @@ if (process.env.NODE_ENV === 'development') {
   performanceMonitor.enable();
 }
 
-module.exports = {
-  DatabasePerformanceMonitor,
-  performanceMonitor,
-};
+export { DatabasePerformanceMonitor, performanceMonitor };

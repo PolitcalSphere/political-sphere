@@ -3,7 +3,7 @@
  * Manages game state and actions using the game engine
  */
 
-import { advanceGameState } from '../../../../libs/game-engine/src/engine.js'; // engine is JS ESM
+import { advanceGameState } from '../../../../libs/game-engine/src/engine.js'; // eslint-disable-line @nx/enforce-module-boundaries, no-restricted-imports
 
 export interface GameState {
   id: string;

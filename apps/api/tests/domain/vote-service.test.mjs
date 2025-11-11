@@ -106,7 +106,7 @@ describe('VoteService', () => {
       await voteService.castVote(input);
 
       await expect(voteService.castVote(input)).rejects.toThrow(
-        /User has already voted on this bill/
+        /User has already voted on this bill/,
       );
     });
   });
@@ -144,8 +144,8 @@ describe('VoteService', () => {
       const votes = await voteService.getBillVotes(bill.id);
 
       expect(votes.length).toBe(2);
-      expect(votes.some(v => v.id === vote1.id)).toBe(true);
-      expect(votes.some(v => v.id === vote2.id)).toBe(true);
+      expect(votes.some((v) => v.id === vote1.id)).toBe(true);
+      expect(votes.some((v) => v.id === vote2.id)).toBe(true);
     });
   });
 
@@ -192,9 +192,9 @@ describe('VoteService', () => {
 
       const counts = await voteService.getVoteCounts(bill.id);
 
-      assert.strictEqual(counts.aye, 2);
-      assert.strictEqual(counts.nay, 1);
-      assert.strictEqual(counts.abstain, 0);
+      expect(counts.aye).toBe(2);
+      expect(counts.nay).toBe(1);
+      expect(counts.abstain).toBe(0);
     });
   });
 });

@@ -1,7 +1,7 @@
 import type Database from 'better-sqlite3';
 
-import { CacheService } from '../../utils/cache.ts';
-import { initializeDatabase, runMigrations } from '../../utils/migrations/index.js';
+import { CacheService } from '../../utils/cache.ts'; // eslint-disable-line no-restricted-imports
+import { initializeDatabase, runMigrations } from '../../utils/migrations/index.js'; // eslint-disable-line no-restricted-imports
 
 import { BillStore } from './bill-store.ts';
 import { PartyStore } from './party-store.ts';

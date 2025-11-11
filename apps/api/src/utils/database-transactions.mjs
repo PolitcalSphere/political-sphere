@@ -1,5 +1,7 @@
-const { getConnection } = require('./database-connection');
-const logger = require('./logger');
+import dbConnection from './database-connection.mjs';
+import logger from './logger.js';
+
+const getConnection = () => dbConnection.getConnection();
 
 /**
  * Database Transaction Manager
@@ -259,9 +261,4 @@ function createTransactionalQuery(transaction) {
   };
 }
 
-module.exports = {
-  Transaction,
-  withTransaction,
-  executeInTransaction,
-  createTransactionalQuery,
-};
+export { Transaction, withTransaction, executeInTransaction, createTransactionalQuery };

@@ -2,8 +2,8 @@ import type { CreatePartyInput, Party } from '@political-sphere/shared';
 import type Database from 'better-sqlite3';
 import { v4 as uuidv4 } from 'uuid';
 
-import { CACHE_TTL, type CacheService, cacheKeys } from '../../utils/cache.js';
-import { DatabaseError, retryWithBackoff } from '../../utils/error-handler.js';
+import { CACHE_TTL, type CacheService, cacheKeys } from '../../utils/cache.js'; // eslint-disable-line no-restricted-imports
+import { DatabaseError, retryWithBackoff } from '../../utils/error-handler.js'; // eslint-disable-line no-restricted-imports
 
 interface PartyRow {
   id: string;

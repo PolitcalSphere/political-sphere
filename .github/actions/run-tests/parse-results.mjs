@@ -35,7 +35,7 @@ function log(level, message, context = {}) {
     context,
   };
 
-  console.error(JSON.stringify(logEntry)); // eslint-disable-line no-console
+  console.error(JSON.stringify(logEntry));
 
   // Also output human-readable format
   const prefix =
@@ -46,7 +46,7 @@ function log(level, message, context = {}) {
       SUCCESS: '\x1b[32m[SUCCESS]\x1b[0m',
     }[level] || `[${level}]`;
 
-  console.error(`${prefix} ${message}`); // eslint-disable-line no-console
+  console.error(`${prefix} ${message}`);
 }
 
 /**
@@ -61,7 +61,7 @@ function createAnnotation(type, file, line, col, message, title = '') {
   if (title) params.push(`title=${title}`);
 
   const annotation = `::${type} ${params.join(',')}::${message}`;
-  console.log(annotation); // eslint-disable-line no-console
+  console.log(annotation);
 }
 
 /**

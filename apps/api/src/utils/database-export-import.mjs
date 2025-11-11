@@ -1,15 +1,14 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import archiver from 'archiver';
 
-const {
-  validateTableName,
-  validateFilename,
-  safeJoin,
-} = require('../../../libs/shared/src/path-security');
+import { validateTableName, validateFilename, safeJoin } from '@political-sphere/shared';
 
-const { getConnection } = require('./database-connection');
-const { withTransaction } = require('./database-transactions');
-const logger = require('./logger');
+import dbConnection from './database-connection.mjs';
+import { withTransaction } from './database-transactions.mjs';
+import logger from './logger.js';
+
+const getConnection = () => dbConnection.getConnection();
 
 /**
  * Database Export/Import Manager
@@ -496,7 +495,6 @@ class DatabaseExportImportManager {
   }
 
   async createZipArchive(files, zipPath) {
-    const archiver = require('archiver');
     const output = fs.createWriteStream(zipPath);
     const archive = archiver('zip', { zlib: { level: 9 } });
 
@@ -592,7 +590,4 @@ class DatabaseExportImportManager {
 // Create singleton instance
 const exportImportManager = new DatabaseExportImportManager();
 
-module.exports = {
-  DatabaseExportImportManager,
-  exportImportManager,
-};
+export { DatabaseExportImportManager, exportImportManager };
