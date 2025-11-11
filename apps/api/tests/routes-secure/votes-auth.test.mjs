@@ -2,10 +2,10 @@ import express from 'express';
 import request from 'supertest';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
+import { closeDatabase, getDatabase } from '../../src/modules/stores/index.ts';
 import authRouter from '../../src/routes/auth.js';
-import votesRouter from '../../src/routes/votes.js';
 import billsRouter from '../../src/routes/bills.js';
-import { closeDatabase, getDatabase } from '../index.js';
+import votesRouter from '../../src/routes/votes.js';
 
 async function registerAndLogin(app, email = `vote+${Date.now()}@example.com`) {
   const username = `voter_${Date.now()}`;

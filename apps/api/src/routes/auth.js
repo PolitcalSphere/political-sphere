@@ -1,18 +1,12 @@
-import bcrypt from "bcrypt";
-import express from "express";
-import jwt from "jsonwebtoken";
+import express from 'express';
 
-import logger from "../logger.js";
-import { getDatabase } from "../modules/stores/index.ts";
+import { authService } from '../auth/auth.service.ts';
+import logger from '../logger.js';
 
 const router = express.Router();
 
-function getUserStore() {
-  return getDatabase().users;
-}
-
 // POST /register - Register new user
-router.post("/register", async (req, res) => {
+router.post('/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
@@ -20,23 +14,18 @@ router.post("/register", async (req, res) => {
     if (!username || !email || !password) {
       return res.status(400).json({
         success: false,
-        error: "Username, email, and password are required",
+        error: 'Username, email, and password are required',
       });
     }
 
-    // Hash password
-    const passwordHash = await bcrypt.hash(password, 10);
-
-    // Create user
-    const store = getUserStore();
-    const user = await store.create({
+    // Use centralized authService for registration
+    const { user, tokens } = await authService.register({
       username,
       email,
-      passwordHash,
-      role: "VIEWER",
+      password,
     });
 
-    logger.info("User registered successfully", { userId: user.id, username });
+    logger.info('User registered successfully', { userId: user.id, username });
 
     res.status(201).json({
       success: true,
@@ -44,71 +33,53 @@ router.post("/register", async (req, res) => {
         id: user.id,
         username: user.username,
         email: user.email,
+        token: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
       },
     });
   } catch (error) {
-    logger.error("Registration error:", error);
+    logger.error('Registration error:', error);
 
     // Handle duplicate user
-    if (error.message?.includes("UNIQUE constraint")) {
+    if (error.message?.includes('already exists')) {
       return res.status(409).json({
         success: false,
-        error: "User already exists",
+        error: 'User already exists',
       });
     }
 
     res.status(500).json({
       success: false,
-      error: "Registration failed",
+      error: error.message || 'Registration failed',
     });
   }
 });
 
 // POST /login - Login user
-router.post("/login", async (req, res) => {
+router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
       return res.status(400).json({
         success: false,
-        error: "Email and password required",
+        error: 'Email and password required',
       });
     }
 
-    // Get user with password hash for authentication
-    const store = getUserStore();
-    const user = await store.getUserForAuth?.(email);
+    // Use centralized authService for login
+    const { user, tokens } = await authService.login({
+      username: email, // authService uses username, but we accept email
+      password,
+    });
 
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        error: "Invalid credentials",
-      });
-    }
-
-    // Verify password
-    const isValidPassword = await bcrypt.compare(password, user.passwordHash);
-    if (!isValidPassword) {
-      return res.status(401).json({
-        success: false,
-        error: "Invalid credentials",
-      });
-    }
-
-    // Generate JWT token
-    const token = jwt.sign(
-      { userId: user.id, username: user.username },
-      process.env.JWT_SECRET || "default-secret",
-      { expiresIn: "7d" },
-    );
-
-    logger.info("User logged in", { userId: user.id, username: user.username });
+    logger.info('User logged in', { userId: user.id, username: user.username });
 
     res.json({
       success: true,
       data: {
-        token,
+        token: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
         user: {
           id: user.id,
           username: user.username,
@@ -117,19 +88,19 @@ router.post("/login", async (req, res) => {
       },
     });
   } catch (error) {
-    logger.error("Login error:", error);
-    res.status(500).json({
+    logger.error('Login error:', error);
+    res.status(401).json({
       success: false,
-      error: "Login failed",
+      error: error.message || 'Login failed',
     });
   }
 });
 
 // POST /logout - Logout user
-router.post("/logout", (_req, res) => {
+router.post('/logout', (_req, res) => {
   res.json({
     success: true,
-    message: "Logged out successfully",
+    message: 'Logged out successfully',
   });
 });
 

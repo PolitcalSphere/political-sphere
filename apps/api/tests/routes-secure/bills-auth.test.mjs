@@ -2,9 +2,9 @@ import express from 'express';
 import request from 'supertest';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
+import { closeDatabase, getDatabase } from '../../src/modules/stores/index.ts';
 import authRouter from '../../src/routes/auth.js';
 import billsRouter from '../../src/routes/bills.js';
-import { closeDatabase, getDatabase } from '../index.js';
 
 // Helper to register + login and return { token, user }
 async function registerAndLogin(app, email = `user+${Date.now()}@example.com`) {
