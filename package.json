@@ -170,7 +170,7 @@
     "js-yaml": "^4.1.0",
     "jsdom": "^27.1.0",
     "json-schema-to-typescript": "^15.0.4",
-    "lefthook": "^2.0.2",
+    "lefthook": "^2.0.3",
     "mcp-framework": "^0.2.15",
     "nx": "^22.0.2",
     "playwright": "^1.56.1",
