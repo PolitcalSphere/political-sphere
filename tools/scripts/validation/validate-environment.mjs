@@ -274,6 +274,9 @@ const SAFE_PATTERNS = [
   /process\.env\./, // Environment variable references
   /pattern:\s*\//, // Regex pattern definitions in code
   /-----BEGIN.*PRIVATE KEY-----/, // Pattern definitions for key detection
+  /\b(ACTIONLINT_SHA256|TRIVY_SHA256|GRYPE_SHA256)\b/, // integrity checksum variables (not secrets)
+  /sha256sum\s+-c\b/, // checksum verification lines
+  /integrity checksum/i, // annotated integrity comments nearby
 ];
 
 function isSafeContext(line) {

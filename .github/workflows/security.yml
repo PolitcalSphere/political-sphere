@@ -33,13 +33,7 @@ on:
     - cron: '0 2 * * 1' # Weekly on Mondays at 2 AM UTC
   workflow_dispatch:
 
-permissions:
-  contents: read
-  security-events: write
-  pull-requests: write
-  checks: write
-  id-token: write
-  attestations: write
+permissions: read-all
 
 concurrency:
   group: security-${{ github.workflow }}-${{ github.ref }}
@@ -76,6 +70,9 @@ jobs:
       - name: Install actionlint
         env:
           ACTIONLINT_VERSION: '1.7.4'
+          # NOTE: Integrity checksum for actionlint release archive.
+          # Not a credential; flagged by automated audit as potential secret.
+          # security-false-positive: checksum value only.
           ACTIONLINT_SHA256: 'fc0a6886bbb9a23a39eeec4b176193cadb54ddbe77cdbb19b637933919545395'
         run: |
           echo "Installing actionlint ${ACTIONLINT_VERSION}..."
@@ -252,6 +249,9 @@ jobs:
       - name: Install Trivy
         env:
           TRIVY_VERSION: '0.67.2'
+          # NOTE: Integrity checksum for Trivy release archive.
+          # Not a credential; flagged by automated audit as potential secret.
+          # security-false-positive: checksum value only.
           TRIVY_SHA256: '546511a5514afc813c0b72e4abeea2c16a32228a13a1e5114d927c190e76b1f9'
         run: |
           curl -sSL -o trivy.tar.gz "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz"
