@@ -112,14 +112,20 @@ function applyHeaders(
   }
 }
 
-const logLevelString = process.env.LOG_LEVEL as "debug" | "info" | "warn" | "error" | undefined;
+const allowedLogLevels = ["debug", "info", "warn", "error"] as const;
+const logLevelString = process.env.LOG_LEVEL;
+if (logLevelString && !allowedLogLevels.includes(logLevelString)) {
+  throw new Error(
+    `Invalid LOG_LEVEL: "${logLevelString}". Allowed values are: ${allowedLogLevels.join(", ")}`
+  );
+}
 const logLevelMap = {
   debug: 0,
   info: 1,
   warn: 2,
   error: 3,
 } as const;
-const logLevel = logLevelString ? logLevelMap[logLevelString] : undefined;
+const logLevel = logLevelString ? logLevelMap[logLevelString as typeof allowedLogLevels[number]] : undefined;
 const logFile = process.env.LOG_FILE;
 const logger = getLogger({
   service: "api",
