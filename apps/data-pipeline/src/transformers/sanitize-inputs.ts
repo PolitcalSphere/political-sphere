@@ -1,8 +1,14 @@
 /**
  * Sanitize Inputs Transformer
  *
- * Sanitizes user inputs to prevent XSS, SQL injection, and other
- * security vulnerabilities. Applies strict validation rules.
+ * Sanitizes user inputs for safe output in specific contexts (HTML, URLs, etc.).
+ * This transformer DOES NOT handle SQL injection prevention - that must be done
+ * at the database layer using parameterized queries/prepared statements.
+ *
+ * SQL Injection Prevention:
+ * - Use Prisma's parameterized queries (default behavior)
+ * - NEVER concatenate user input into SQL strings
+ * - See: https://www.prisma.io/docs/concepts/components/prisma-client/raw-database-access
  *
  * @module transformers/sanitize-inputs
  */
@@ -12,7 +18,11 @@ export class SanitizeInputsTransformer {
   private readonly allowedHtmlTags = ["b", "i", "em", "strong", "p", "br"];
 
   /**
-   * Sanitize a single string value
+   * Sanitize a single string value for safe HTML output
+   * This prevents XSS attacks when displaying user content.
+   * 
+   * NOTE: This does NOT prevent SQL injection. Use parameterized queries
+   * at the database layer for that protection.
    */
   sanitizeString(input: string): string {
     // TODO: Implement comprehensive sanitization
@@ -95,30 +105,6 @@ export class SanitizeInputsTransformer {
     }
 
     return sanitized;
-  }
-
-  /**
-   * Validate and sanitize SQL-like strings
-   */
-  sanitizeSqlString(input: string): string {
-    // TODO: Use parameterized queries in production
-    // This is a basic safeguard
-
-    // Remove common SQL injection patterns
-    const dangerous = [
-      /'/gi, // Single quotes
-      /--/gi, // SQL comments
-      /%7C/gi, // URL encoded pipe
-      /[;\x7C`\\<>^[\]{}]/gi, // Special characters
-      /(\bUNION\b|\bSELECT\b|\bDROP\b|\bINSERT\b|\bDELETE\b|\bUPDATE\b)/gi,
-    ];
-
-    let sanitized = input;
-    for (const pattern of dangerous) {
-      sanitized = sanitized.replace(pattern, "");
-    }
-
-    return sanitized.trim();
   }
 
   /**
