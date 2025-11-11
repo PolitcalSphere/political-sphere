@@ -1,4 +1,4 @@
-he; /**
+/**
  * Single World Political Simulation E2E Tests
  * Tests interaction with the single shared game world
  *
