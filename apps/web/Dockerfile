@@ -54,12 +54,12 @@ RUN --mount=type=cache,target=/home/nodejs/.npm,uid=1001,gid=1001 \
     npm cache clean --force
 
 # Copy source code
-COPY --chown=nodejs:nodejs apps/frontend ./apps/frontend
+COPY --chown=nodejs:nodejs apps/web ./apps/web
 COPY --chown=nodejs:nodejs libs ./libs
 COPY --chown=nodejs:nodejs tsconfig*.json nx.json ./
 
 # Build the frontend application (creates dist/ or build/)
-RUN npm run build -w apps/frontend
+RUN npm run build -w apps/web
 
 # ============================================================================
 # Development Stage - Hot reload with Vite dev server
@@ -77,7 +77,7 @@ RUN --mount=type=cache,target=/home/nodejs/.npm,uid=1001,gid=1001 \
     npm cache clean --force
 
 # Copy all source code
-COPY --chown=nodejs:nodejs apps/frontend ./apps/frontend
+COPY --chown=nodejs:nodejs apps/web ./apps/web
 COPY --chown=nodejs:nodejs libs ./libs
 COPY --chown=nodejs:nodejs tsconfig*.json nx.json ./
 
@@ -100,7 +100,7 @@ STOPSIGNAL SIGTERM
 ENTRYPOINT ["dumb-init", "--"]
 
 # Start Vite dev server with HMR
-CMD ["npm", "run", "dev", "-w", "apps/frontend"]
+CMD ["npm", "run", "dev", "-w", "apps/web"]
 
 # ============================================================================
 # Production Stage - Static SPA served by nginx
@@ -113,7 +113,7 @@ LABEL org.opencontainers.image.title="Political Sphere Frontend" \
       org.opencontainers.image.vendor="Political Sphere" \
       org.opencontainers.image.authors="Political Sphere Team" \
       org.opencontainers.image.source="https://github.com/PoliticalSphere/political-sphere" \
-      org.opencontainers.image.documentation="https://github.com/PoliticalSphere/political-sphere/tree/main/apps/frontend" \
+      org.opencontainers.image.documentation="https://github.com/PoliticalSphere/political-sphere/tree/main/apps/web" \
       org.opencontainers.image.revision="${REVISION}" \
       org.opencontainers.image.created="${CREATED}" \
       com.political-sphere.service="frontend" \
@@ -121,10 +121,10 @@ LABEL org.opencontainers.image.title="Political Sphere Frontend" \
 
 # Copy built static files from builder stage
 # Adjust path based on your build output (dist/ or build/)
-COPY --from=builder --chown=nginx:nginx /app/apps/frontend/dist /usr/share/nginx/html
+COPY --from=builder --chown=nginx:nginx /app/apps/web/dist /usr/share/nginx/html
 
 # Copy custom nginx configuration (if you have one)
-# COPY --chown=nginx:nginx apps/frontend/nginx.conf /etc/nginx/conf.d/default.conf
+# COPY --chown=nginx:nginx apps/web/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Create health check endpoint
 RUN echo '<!DOCTYPE html><html><body>OK</body></html>' > /usr/share/nginx/html/health.html
