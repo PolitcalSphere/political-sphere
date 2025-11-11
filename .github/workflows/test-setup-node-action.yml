@@ -102,7 +102,7 @@ jobs:
         run: |
           set -euo pipefail
           cd fixture
-          npm ci --no-audit --no-fund --progress=false
+          npm ci --include=optional --no-audit --no-fund --progress=false
 
   cache-verify:
     name: Cache verify (hit expected)

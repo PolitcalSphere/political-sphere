@@ -66,7 +66,7 @@ jobs:
           cache: ${{ inputs.pnpm_cache && 'pnpm' || 'npm' }}
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --include=optional
 
       - name: Cache Nx build artifacts
         uses: actions/cache@v4

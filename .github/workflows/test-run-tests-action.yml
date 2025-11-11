@@ -41,7 +41,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm ci --include=optional
 
       - name: Run Unit Tests (Basic)
         id: basic-test
@@ -84,7 +84,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm ci --include=optional
 
       - name: Run Tests with Coverage
         id: coverage-test
@@ -130,7 +130,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm ci --include=optional
 
       - name: Run Sharded Tests
         uses: ./.github/actions/run-tests
@@ -169,7 +169,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm ci --include=optional
 
       - name: Run Changed Tests Only
         uses: ./.github/actions/run-tests
