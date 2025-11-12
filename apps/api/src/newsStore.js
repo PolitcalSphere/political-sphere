@@ -1,5 +1,5 @@
-const fs = require('fs').promises;
-const path = require('path');
+const fs = require('node:fs').promises;
+const path = require('node:path');
 
 class JsonNewsStore {
   constructor(dataDir = path.join(__dirname, '../../data')) {
@@ -12,7 +12,7 @@ class JsonNewsStore {
       await fs.access(this.newsFile);
       const content = await fs.readFile(this.newsFile, 'utf8');
       return JSON.parse(content);
-    } catch (error) {
+    } catch {
       // If file doesn't exist, return empty structure
       return { news: [] };
     }

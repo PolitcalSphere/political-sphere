@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from 'react';
 
-const API_BASE_URL = "/api";
+const API_BASE_URL = '/api';
 
 function Dashboard() {
   const [news, setNews] = useState([]);
@@ -10,7 +10,7 @@ function Dashboard() {
     tags: {},
     latest: null,
   });
-  const [statusMessage, setStatusMessage] = useState("Loading...");
+  const [statusMessage, setStatusMessage] = useState('Loading...');
   const [loading, setLoading] = useState(true);
 
   const fetchData = useCallback(async () => {
@@ -35,12 +35,12 @@ function Dashboard() {
           categories: {},
           tags: {},
           latest: null,
-        },
+        }
       );
-      setStatusMessage("Live data retrieved from API.");
+      setStatusMessage('Live data retrieved from API.');
     } catch (error) {
       setStatusMessage(`API unavailable: ${error.message}`);
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
@@ -54,16 +54,16 @@ function Dashboard() {
     if (news.length === 0) {
       return <li>No stories yet. The data pipeline will populate this feed shortly.</li>;
     }
-    return news.map((item) => (
+    return news.map(item => (
       <li key={item.id}>
         <h2>{item.title}</h2>
-        <p>{item.excerpt || item.summary || ""}</p>
+        <p>{item.excerpt || item.summary || ''}</p>
         <p className="status">
-          Last updated:{" "}
+          Last updated:{' '}
           <time dateTime={item.updatedAt || item.createdAt}>
             {item.updatedAt || item.createdAt
               ? new Date(item.updatedAt || item.createdAt).toLocaleString()
-              : "n/a"}
+              : 'n/a'}
           </time>
         </p>
       </li>
@@ -111,10 +111,10 @@ function Dashboard() {
         {latestMarkup}
         <div
           style={{
-            display: "grid",
-            gap: "1rem",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            marginTop: "1rem",
+            display: 'grid',
+            gap: '1rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            marginTop: '1rem',
           }}
         >
           <div>
@@ -150,7 +150,7 @@ function Dashboard() {
           disabled={loading}
           aria-describedby="refresh-description"
         >
-          {loading ? "Refreshing..." : "Refresh"}
+          {loading ? 'Refreshing...' : 'Refresh'}
         </button>
         <div id="refresh-description" className="sr-only">
           Refresh the list of policy signals from the API

@@ -39,14 +39,14 @@ npm run ai:review
 
 Use the free Model Context Protocol servers to feed Copilot richer, real-time context without cloud calls. Each server runs via a simple npm script and streams results back to your editor.
 
-| Command | Purpose | Highlighted Tools |
-| --- | --- | --- |
-| `npm run mcp:code-intel` | TypeScript language service wrapper for local code intelligence. | `codeintel_definition`, `codeintel_references`, `codeintel_quickinfo` |
-| `npm run mcp:docs-search` | Ripgrep-backed search plus Markdown outline/excerpt helpers over `docs/`, apps, and config. | `docs_search`, `docs_outline`, `docs_excerpt` |
-| `npm run mcp:test-runner` | Runs vetted workflows like `lint:ci`, `test:fast`, or `vitest --run "<pattern>"`. | `tests_run_task`, `tests_run_vitest_pattern`, `tests_list_tasks` |
-| `npm run mcp:config` | Safe access to `.env*.example` templates and `config/features/feature-flags.json`. | `config_list_env_templates`, `config_read_env_template`, `config_feature_flag_details` |
-| `npm run mcp:sqlite` | Read-only SQLite queries plus dataset catalog lookups for `data/*.db`. | `sqlite_list_tables`, `sqlite_query`, `sqlite_dataset_metadata` |
-| `npm run mcp:issues` | Reads `data/issues/backlog.yml` so assistants can reference real backlog items. | `issues_query`, `issues_get`, `issues_summary` |
+| Command                   | Purpose                                                                                     | Highlighted Tools                                                                      |
+| ------------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `npm run mcp:code-intel`  | TypeScript language service wrapper for local code intelligence.                            | `codeintel_definition`, `codeintel_references`, `codeintel_quickinfo`                  |
+| `npm run mcp:docs-search` | Ripgrep-backed search plus Markdown outline/excerpt helpers over `docs/`, apps, and config. | `docs_search`, `docs_outline`, `docs_excerpt`                                          |
+| `npm run mcp:test-runner` | Runs vetted workflows like `lint:ci`, `test:fast`, or `vitest --run "<pattern>"`.           | `tests_run_task`, `tests_run_vitest_pattern`, `tests_list_tasks`                       |
+| `npm run mcp:config`      | Safe access to `.env*.example` templates and `config/features/feature-flags.json`.          | `config_list_env_templates`, `config_read_env_template`, `config_feature_flag_details` |
+| `npm run mcp:sqlite`      | Read-only SQLite queries plus dataset catalog lookups for `data/*.db`.                      | `sqlite_list_tables`, `sqlite_query`, `sqlite_dataset_metadata`                        |
+| `npm run mcp:issues`      | Reads `data/issues/backlog.yml` so assistants can reference real backlog items.             | `issues_query`, `issues_get`, `issues_summary`                                         |
 
 > Tip: launch whichever servers you need via `npm run mcp:<name>` and point your Copilot / MCP client at the resulting STDIO transport. The `docs_outline` and `tests_list_tasks` helpers were added as bonus utilities so assistants can quickly orient themselves even without a specific question.
 

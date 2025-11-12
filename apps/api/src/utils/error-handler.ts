@@ -2,48 +2,48 @@ import type { NextFunction, Request, Response } from 'express';
 
 import { sanitizeErrorForLog } from './log-sanitizer';
 
-export class ErrorHandler {
-  static handleError(err: Error, req: Request, res: Response, next: NextFunction): void {
-    // Security: Sanitize error data before logging to prevent log injection
-    const sanitizedError = sanitizeErrorForLog(err, req as unknown as Record<string, unknown>);
-    console.error('Error:', sanitizedError);
+export function handleError(err: Error, req: Request, res: Response, _next: NextFunction): void {
+  // Security: Sanitize error data before logging to prevent log injection
+  const sanitizedError = sanitizeErrorForLog(err, req as unknown as Record<string, unknown>);
+  console.error('Error:', sanitizedError);
 
-    // Don't leak internal errors
-    const isDevelopment = process.env.NODE_ENV === 'development';
-    const message = isDevelopment ? err.message : 'Internal server error';
+  // Don't leak internal errors
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  const message = isDevelopment ? err.message : 'Internal server error';
 
-    // Determine status code
-    let statusCode = 500;
-    if (err.name === 'ValidationError') {
-      statusCode = 400;
-    } else if (err.name === 'UnauthorizedError') {
-      statusCode = 401;
-    } else if (err.name === 'NotFoundError') {
-      statusCode = 404;
-    } else if (err.name === 'ConflictError') {
-      statusCode = 409;
-    } else if (err.name === 'RateLimitError') {
-      statusCode = 429;
-    } else if (err.name === 'DatabaseError') {
-      statusCode = 500;
-    } else if (err.name === 'ExternalServiceError') {
-      statusCode = 502;
-    }
-
-    res.status(statusCode).json({
-      error: {
-        type: err.name,
-        message,
-        ...(isDevelopment && { stack: err.stack }),
-      },
-    });
+  // Determine status code
+  let statusCode = 500;
+  if (err.name === 'ValidationError') {
+    statusCode = 400;
+  } else if (err.name === 'UnauthorizedError') {
+    statusCode = 401;
+  } else if (err.name === 'NotFoundError') {
+    statusCode = 404;
+  } else if (err.name === 'ConflictError') {
+    statusCode = 409;
+  } else if (err.name === 'RateLimitError') {
+    statusCode = 429;
+  } else if (err.name === 'DatabaseError') {
+    statusCode = 500;
+  } else if (err.name === 'ExternalServiceError') {
+    statusCode = 502;
   }
 
-  static asyncHandler(fn: Function) {
-    return (req: Request, res: Response, next: NextFunction) => {
-      Promise.resolve(fn(req, res, next)).catch(next);
-    };
-  }
+  res.status(statusCode).json({
+    error: {
+      type: err.name,
+      message,
+      ...(isDevelopment && { stack: err.stack }),
+    },
+  });
+}
+
+export function asyncHandler(
+  fn: (req: Request, res: Response, next: NextFunction) => Promise<void>
+) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    Promise.resolve(fn(req, res, next)).catch(next);
+  };
 }
 
 // Custom error classes
@@ -104,8 +104,7 @@ export class CircuitBreaker {
 
   constructor(
     private failureThreshold: number = 5,
-    private recoveryTimeout: number = 60000, // 1 minute
-    private monitoringPeriod: number = 60000 // 1 minute
+    private recoveryTimeout: number = 60000 // 1 minute
   ) {}
 
   async execute<T>(fn: () => Promise<T>): Promise<T> {
@@ -152,7 +151,7 @@ export const retryWithBackoff = async <T>(
   maxRetries: number = 3,
   baseDelay: number = 1000
 ): Promise<T> => {
-  let lastError: Error;
+  let lastError: Error | undefined;
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
@@ -169,5 +168,6 @@ export const retryWithBackoff = async <T>(
     }
   }
 
-  throw lastError!;
+  // This should never be reached, but TypeScript requires it
+  throw new Error('Unexpected error in retry mechanism');
 };

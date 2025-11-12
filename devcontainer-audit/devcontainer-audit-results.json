@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-11-11T23:35:47Z",
+  "timestamp": "2025-11-12T13:30:32Z",
   "summary": {
     "critical": 0,
     "high": 0,
@@ -10,33 +10,6 @@
     "autoFixed": 0
   },
   "findings": [
-    {
-      "severity": "medium",
-      "code": "RUNTIME-BUILD",
-      "message": "Failed to build temp image for runtime/enhanced checks",
-      "file": "/Users/morganlowman/GitHub/political-sphere/.devcontainer/Dockerfile",
-      "line": 0
-    },
-    {
-      "severity": "info",
-      "code": "DEVCONT-FEAT-003",
-      "message": "Consider Docker-in-Docker for container builds",
-      "file": "/Users/morganlowman/GitHub/political-sphere/.devcontainer/devcontainer.json",
-      "line": 0
-    },
-    {
-      "severity": "info",
-      "code": "EDGE-002",
-      "message": "Consider --platform for multi-arch support",
-      "file": "/Users/morganlowman/GitHub/political-sphere/.devcontainer/Dockerfile",
-      "line": 0
-    },
-    {
-      "severity": "medium",
-      "code": "EDGE-003",
-      "message": "Implement secrets management for sensitive data",
-      "file": "/Users/morganlowman/GitHub/political-sphere/.devcontainer/Dockerfile",
-      "line": 0
-    }
+    {"severity":"medium","code":"RUNTIME-BUILD","message":"Failed to build temp image for runtime/enhanced checks","file":"/Users/morganlowman/GitHub/political-sphere/.devcontainer/Dockerfile","line":0},{"severity":"info","code":"DEVCONT-FEAT-003","message":"Consider Docker-in-Docker for container builds","file":"/Users/morganlowman/GitHub/political-sphere/.devcontainer/devcontainer.json","line":0},{"severity":"info","code":"EDGE-002","message":"Consider --platform for multi-arch support","file":"/Users/morganlowman/GitHub/political-sphere/.devcontainer/Dockerfile","line":0},{"severity":"medium","code":"EDGE-003","message":"Implement secrets management for sensitive data","file":"/Users/morganlowman/GitHub/political-sphere/.devcontainer/Dockerfile","line":0}
   ]
 }

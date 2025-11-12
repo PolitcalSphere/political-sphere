@@ -245,7 +245,7 @@ name: OpenAPI Validation
 on:
   pull_request:
     paths:
-      - "apps/api/openapi/**"
+      - 'apps/api/openapi/**'
   push:
     branches: [main]
 
@@ -258,7 +258,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
 
       - name: Install dependencies
         run: |
@@ -294,7 +294,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "^[a-z][a-zA-Z0-9]*$"
+        match: '^[a-z][a-zA-Z0-9]*$'
 
   # Require examples in all schemas
   schema-examples:

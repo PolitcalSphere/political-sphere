@@ -8,7 +8,7 @@
  * in production code.
  */
 
-import { DatabaseConnection, getDatabase, closeDatabase } from '../modules/stores/index.ts';
+import { type DatabaseConnection, getDatabase, closeDatabase } from '../modules/stores/index.ts';
 
 /**
  * Database test interface

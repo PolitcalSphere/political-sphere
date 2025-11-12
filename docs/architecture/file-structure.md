@@ -1784,13 +1784,13 @@ This structure aligns with industry best practices and authoritative sources:
       on:
         push:
           paths:
-            - "apps/api/**"
-            - "libs/platform/**"
-            - "libs/shared/**"
+            - 'apps/api/**'
+            - 'libs/platform/**'
+            - 'libs/shared/**'
         pull_request:
           paths:
-            - "apps/api/**"
-            - "libs/platform/**"
+            - 'apps/api/**'
+            - 'libs/platform/**'
       ```
     - **Nx affected integration**: Build/test only changed packages
       ```bash

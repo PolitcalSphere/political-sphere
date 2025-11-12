@@ -36,7 +36,7 @@ export function sanitizeLogString(value, maxLength = 1000) {
 
   // Truncate to prevent log flooding
   if (sanitized.length > maxLength) {
-    sanitized = sanitized.substring(0, maxLength) + '... (truncated)';
+    sanitized = `${sanitized.substring(0, maxLength)}... (truncated)`;
   }
 
   return sanitized;

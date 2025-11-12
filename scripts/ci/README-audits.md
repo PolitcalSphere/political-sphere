@@ -453,8 +453,8 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "18"
-          cache: "npm"
+          node-version: '18'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
@@ -608,18 +608,15 @@ apt-get install jq  # Linux
    ```
 
 2. **Address critical/high findings immediately:**
-
    - Critical: Security vulnerabilities, exposed secrets
    - High: Best practice violations, injection risks
 
 3. **Use auto-fix judiciously:**
-
    - Review auto-fix changes before committing
    - Test thoroughly after auto-fixes
    - Backup files are preserved in output directory
 
 4. **Integrate into CI/CD:**
-
    - Run audits on pull requests
    - Block merges on critical findings
    - Generate audit reports as artifacts

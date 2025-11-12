@@ -3,11 +3,11 @@
 
 issues:
   - id: OPS-201
-    title: "Tighten API authentication audit logging"
+    title: 'Tighten API authentication audit logging'
     area: api
     severity: high
     status: in-progress
-    owner: "Platform Security"
+    owner: 'Platform Security'
     tags: [security, logging, compliance]
     summary: >
       We log authentication attempts in three different middlewares but the fields are
@@ -18,19 +18,19 @@ issues:
       - apps/api/src/middleware/auth.js
       - apps/api/src/logger.js
     acceptanceCriteria:
-      - "Single structured log payload for login + token refresh events"
-      - "Feature flag name recorded when auth experiments run"
-      - "Secrets (tokens, emails) masked before logging"
+      - 'Single structured log payload for login + token refresh events'
+      - 'Feature flag name recorded when auth experiments run'
+      - 'Secrets (tokens, emails) masked before logging'
     links:
       - type: doc
         path: docs/06-security-and-risk/risk-register.yml
 
   - id: WEB-148
-    title: "Improve civic feed rendering performance"
+    title: 'Improve civic feed rendering performance'
     area: web
     severity: medium
     status: backlog
-    owner: "Civic Experience"
+    owner: 'Civic Experience'
     tags: [performance, web, react]
     summary: >
       Feed rendering in apps/web spikes to 120ms on average because memoization is disabled
@@ -40,15 +40,15 @@ issues:
       - apps/web/src/components/feed/CivicCard.tsx
       - apps/web/src/hooks/useRealtimeFeed.ts
     acceptanceCriteria:
-      - "Render 95th percentile frame under 32ms locally"
-      - "Add performance vitals test to vitest suite"
+      - 'Render 95th percentile frame under 32ms locally'
+      - 'Add performance vitals test to vitest suite'
 
   - id: DATA-072
-    title: "Document SQLite datasets for assistants"
+    title: 'Document SQLite datasets for assistants'
     area: data
     severity: low
     status: backlog
-    owner: "Insights"
+    owner: 'Insights'
     tags: [data, documentation]
     summary: >
       Assistants query the datasets exposed via the SQLite MCP but there is no catalog.
@@ -57,15 +57,15 @@ issues:
       - data/README.md
       - tools/mcp-servers/sqlite/index.mjs
     acceptanceCriteria:
-      - "Each .db in data/ has a description and owner"
-      - "Expose new metadata resource through SQLite MCP"
+      - 'Each .db in data/ has a description and owner'
+      - 'Expose new metadata resource through SQLite MCP'
 
   - id: AI-311
-    title: "Guardrail tests for AI assistant MCP actions"
+    title: 'Guardrail tests for AI assistant MCP actions'
     area: ai
     severity: high
     status: review
-    owner: "AI Platform"
+    owner: 'AI Platform'
     tags: [ai, testing, governance]
     summary: >
       The AI orchestration scripts in tools/scripts/ai execute MCP actions without regression
@@ -74,15 +74,15 @@ issues:
       - tools/scripts/ai
       - tools/tests
     acceptanceCriteria:
-      - "Add vitest coverage for at least 3 high-risk AI flows"
-      - "Document how to run the guardrail suite locally"
+      - 'Add vitest coverage for at least 3 high-risk AI flows'
+      - 'Document how to run the guardrail suite locally'
 
   - id: OPS-219
-    title: "Stabilize reporting for nightly compliance job"
+    title: 'Stabilize reporting for nightly compliance job'
     area: ops
     severity: medium
     status: in-progress
-    owner: "Operations"
+    owner: 'Operations'
     tags: [ops, cron, reporting]
     summary: >
       Nightly compliance summary occasionally produces empty CSVs due to race conditions with
@@ -91,6 +91,6 @@ issues:
       - scripts/ci/audit/app-audit-compliance.sh
       - apps/api/scripts/smoke-phase1.ts
     acceptanceCriteria:
-      - "Job exits non-zero on missing rows"
-      - "Retry with backoff before giving up"
-      - "CSV includes generated timestamp in header"
+      - 'Job exits non-zero on missing rows'
+      - 'Retry with backoff before giving up'
+      - 'CSV includes generated timestamp in header'

@@ -10,7 +10,7 @@ services:
   # ==========================================================================
   # Core Infrastructure Services
   # ==========================================================================
-  
+
   postgres:
     image: postgres:15-alpine
     container_name: political-sphere-postgres
@@ -19,14 +19,15 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-political}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
       POSTGRES_DB: ${POSTGRES_DB:-political_dev}
-      POSTGRES_INITDB_ARGS: "-E UTF8 --locale=en_US.UTF-8"
+      POSTGRES_INITDB_ARGS: '-E UTF8 --locale=en_US.UTF-8'
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - '${POSTGRES_PORT:-5432}:5432'
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./apps/dev/scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-political} -d ${POSTGRES_DB:-political_dev}"]
+      test:
+        ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-political} -d ${POSTGRES_DB:-political_dev}']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -42,10 +43,10 @@ services:
           cpus: '0.5'
           memory: 512M
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: '10m'
+        max-file: '3'
 
   redis:
     image: redis:7-alpine
@@ -58,11 +59,11 @@ services:
       --maxmemory 256mb
       --maxmemory-policy allkeys-lru
     ports:
-      - "${REDIS_PORT:-6379}:6379"
+      - '${REDIS_PORT:-6379}:6379'
     volumes:
       - redis-data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-changeme}", "ping"]
+      test: ['CMD', 'redis-cli', '-a', '${REDIS_PASSWORD:-changeme}', 'ping']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -78,15 +79,15 @@ services:
           cpus: '0.25'
           memory: 256M
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: '10m'
+        max-file: '3'
 
   # ==========================================================================
   # Authentication Service
   # ==========================================================================
-  
+
   keycloak:
     # Build a small dev image which includes curl so we can use an HTTP
     # readiness probe in development. This avoids false-unhealthy states
@@ -117,13 +118,13 @@ services:
       KC_HEALTH_ENABLED: 'true'
       KC_METRICS_ENABLED: 'true'
     ports:
-      - "${KEYCLOAK_PORT:-8080}:8080"
+      - '${KEYCLOAK_PORT:-8080}:8080'
     depends_on:
       postgres:
         condition: service_healthy
     healthcheck:
       # Real HTTP readiness probe (uses curl installed in the dev image)
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/health/ready || exit 1"]
+      test: ['CMD-SHELL', 'curl -f http://localhost:8080/health/ready || exit 1']
       interval: 30s
       timeout: 10s
       retries: 5
@@ -139,15 +140,15 @@ services:
           cpus: '0.5'
           memory: 768M
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: '10m'
+        max-file: '3'
 
   # ==========================================================================
   # Application Services
   # ==========================================================================
-  
+
   api:
     build:
       context: .
@@ -161,15 +162,15 @@ services:
       NODE_ENV: development
       PORT: 4000
       API_PORT: 4000
-      DATABASE_URL: "postgresql://${POSTGRES_USER:-political}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-political_dev}?schema=public"
-      REDIS_URL: "redis://default:${REDIS_PASSWORD:-changeme}@redis:6379/0"
-      AUTH_URL: "http://keycloak:8080"
+      DATABASE_URL: 'postgresql://${POSTGRES_USER:-political}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-political_dev}?schema=public'
+      REDIS_URL: 'redis://default:${REDIS_PASSWORD:-changeme}@redis:6379/0'
+      AUTH_URL: 'http://keycloak:8080'
       JWT_SECRET: ${JWT_SECRET:-dev-secret-change-in-production}
       LOG_LEVEL: ${LOG_LEVEL:-debug}
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-http://localhost:4318}
       OTEL_SERVICE_NAME: political-sphere-api
     ports:
-      - "${API_PORT:-4000}:4000"
+      - '${API_PORT:-4000}:4000'
     volumes:
       - ./apps/api:/app/apps/api:cached
       - ./libs:/app/libs:cached
@@ -182,7 +183,7 @@ services:
       keycloak:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:4000/healthz || exit 1"]
+      test: ['CMD-SHELL', 'curl -f http://localhost:4000/healthz || exit 1']
       interval: 30s
       timeout: 10s
       retries: 3
@@ -198,10 +199,10 @@ services:
           cpus: '1.0'
           memory: 1G
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: '10m'
+        max-file: '3'
 
   frontend:
     build:
@@ -220,7 +221,7 @@ services:
       VITE_API_URL: http://localhost:4000
       VITE_AUTH_URL: http://localhost:8080
     ports:
-      - "${FRONTEND_PORT:-3000}:3000"
+      - '${FRONTEND_PORT:-3000}:3000'
     volumes:
       - ./apps/frontend:/app/apps/frontend:cached
       - ./libs:/app/libs:cached
@@ -229,7 +230,7 @@ services:
       api:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3000/healthz || exit 1"]
+      test: ['CMD-SHELL', 'curl -f http://localhost:3000/healthz || exit 1']
       interval: 30s
       timeout: 10s
       retries: 3
@@ -245,10 +246,10 @@ services:
           cpus: '1.0'
           memory: 1G
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: '10m'
+        max-file: '3'
 
   worker:
     build:
@@ -261,10 +262,10 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: development
-      DATABASE_URL: "postgresql://${POSTGRES_USER:-political}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-political_dev}?schema=public"
-      REDIS_URL: "redis://default:${REDIS_PASSWORD:-changeme}@redis:6379/0"
-      API_URL: "http://api:4000"
-      QUEUE_URL: "http://localstack:4566/000000000000/political-sphere"
+      DATABASE_URL: 'postgresql://${POSTGRES_USER:-political}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-political_dev}?schema=public'
+      REDIS_URL: 'redis://default:${REDIS_PASSWORD:-changeme}@redis:6379/0'
+      API_URL: 'http://api:4000'
+      QUEUE_URL: 'http://localstack:4566/000000000000/political-sphere'
       WORKER_INTERVAL_MS: ${WORKER_INTERVAL_MS:-15000}
       LOG_LEVEL: ${LOG_LEVEL:-debug}
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-http://localhost:4318}
@@ -294,15 +295,15 @@ services:
           cpus: '0.5'
           memory: 512M
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: '10m'
+        max-file: '3'
 
   # ==========================================================================
   # Development & Testing Services
   # ==========================================================================
-  
+
   localstack:
     image: localstack/localstack:3.0
     container_name: political-sphere-localstack
@@ -316,9 +317,9 @@ services:
       DATA_DIR: /tmp/localstack/data
       DOCKER_HOST: unix:///var/run/docker.sock
     ports:
-      - "${LOCALSTACK_PORT:-4566}:4566"
+      - '${LOCALSTACK_PORT:-4566}:4566'
     volumes:
-      - "${TMPDIR:-/tmp}/localstack:/var/lib/localstack"
+      - '${TMPDIR:-/tmp}/localstack:/var/lib/localstack'
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - political-sphere
@@ -331,18 +332,18 @@ services:
           cpus: '0.5'
           memory: 512M
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: '10m'
+        max-file: '3'
 
   mailhog:
     image: mailhog/mailhog:v1.0.1
     container_name: political-sphere-mailhog
     restart: unless-stopped
     ports:
-      - "${MAILHOG_SMTP_PORT:-1025}:1025"
-      - "${MAILHOG_HTTP_PORT:-8025}:8025"
+      - '${MAILHOG_SMTP_PORT:-1025}:1025'
+      - '${MAILHOG_HTTP_PORT:-8025}:8025'
     networks:
       - political-sphere
     deploy:
@@ -354,10 +355,10 @@ services:
           cpus: '0.1'
           memory: 128M
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: '10m'
+        max-file: '3'
 
   pgadmin:
     image: dpage/pgadmin4:8.6
@@ -369,7 +370,7 @@ services:
       PGADMIN_CONFIG_SERVER_MODE: 'False'
       PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
     ports:
-      - "${PGADMIN_PORT:-5050}:80"
+      - '${PGADMIN_PORT:-5050}:80'
     volumes:
       - pgadmin-data:/var/lib/pgadmin
     depends_on:
@@ -386,15 +387,15 @@ services:
           cpus: '0.25'
           memory: 256M
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: '10m'
+        max-file: '3'
 
   # ==========================================================================
   # Observability Stack
   # ==========================================================================
-  
+
   prometheus:
     image: prom/prometheus:v2.48.1
     container_name: political-sphere-prometheus
@@ -408,7 +409,7 @@ services:
       - '--web.enable-lifecycle'
       - '--web.enable-admin-api'
     ports:
-      - "${PROMETHEUS_PORT:-9090}:9090"
+      - '${PROMETHEUS_PORT:-9090}:9090'
     volumes:
       - ./apps/dev/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - ./apps/dev/monitoring/alerts:/etc/prometheus/alerts:ro
@@ -424,10 +425,10 @@ services:
           cpus: '0.25'
           memory: 256M
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: '10m'
+        max-file: '3'
 
   grafana:
     image: grafana/grafana:10.2.3
@@ -440,7 +441,7 @@ services:
       GF_SERVER_ROOT_URL: http://localhost:3001
       GF_INSTALL_PLUGINS: ''
     ports:
-      - "${GRAFANA_PORT:-3001}:3000"
+      - '${GRAFANA_PORT:-3001}:3000'
     volumes:
       - grafana-data:/var/lib/grafana
       - ./apps/dev/monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
@@ -458,10 +459,10 @@ services:
           cpus: '0.25'
           memory: 256M
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: '10m'
+        max-file: '3'
 
 # ============================================================================
 # NETWORKS

@@ -1,6 +1,6 @@
 # Central Audit System Report (v2.1.0)
 
-**Timestamp:** 2025-11-10T21:53:52Z  
+**Timestamp:** 2025-11-12T00:01:43Z  
 **Auto-Fix:** false  
 **Format:** full  
 **Production Ready:** false
@@ -10,11 +10,11 @@
 | Metric        | Value |
 | ------------- | ----- |
 | Total Audits  | 13    |
-| Passed        | 0     |
-| Failed/Issues | 13    |
-| Critical      | 10    |
-| High          | 21    |
-| Medium        | 43    |
+| Passed        | 1     |
+| Failed/Issues | 12    |
+| Critical      | 6     |
+| High          | 19    |
+| Medium        | 58    |
 | Low           | 14    |
 
 ## Production Readiness
@@ -26,13 +26,13 @@
 
 | App                      | Critical | High | Medium | Low |
 | ------------------------ | -------- | ---- | ------ | --- |
-| api                      | 6        | 3    | 9      | 1   |
+| api                      | 4        | 2    | 8      | 1   |
 | feature-auth-remote      | 0        | 2    | 7      | 2   |
 | feature-dashboard-remote | 0        | 2    | 7      | 2   |
-| game-server              | 1        | 3    | 4      | 2   |
+| game-server              | 1        | 2    | 4      | 2   |
 | shell                    | 0        | 2    | 6      | 2   |
-| web                      | 3        | 3    | 3      | 1   |
-| worker                   | 0        | 5    | 6      | 2   |
+| web                      | 1        | 1    | 3      | 1   |
+| worker                   | 0        | 3    | 6      | 2   |
 
 ## Directories
 

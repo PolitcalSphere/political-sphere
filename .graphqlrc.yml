@@ -1,10 +1,10 @@
-schema: "./apps/api/graphql/schema.graphql"
+schema: './apps/api/graphql/schema.graphql'
 documents:
-  - "apps/**/*.graphql"
-  - "apps/**/*.gql"
+  - 'apps/**/*.graphql'
+  - 'apps/**/*.gql'
 extensions:
   endpoints:
     default:
-      url: "http://localhost:3000/graphql"
+      url: 'http://localhost:3000/graphql'
       headers:
-        Authorization: "Bearer ${env:API_ACCESS_TOKEN:-}"
+        Authorization: 'Bearer ${env:API_ACCESS_TOKEN:-}'

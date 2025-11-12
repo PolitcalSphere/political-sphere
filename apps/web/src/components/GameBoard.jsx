@@ -4,10 +4,10 @@
  * Integrates accessibility and reporting features
  */
 
-import React, { useEffect, useState } from "react";
-import { useAccessibility } from "../hooks/useAccessibility.js";
-import ReportContent from "./ReportContent";
-import "./GameBoard.css"; // Assume CSS exists or create later
+import React, { useEffect, useState } from 'react';
+import { useAccessibility } from '../hooks/useAccessibility.js';
+import ReportContent from './ReportContent';
+import './GameBoard.css'; // Assume CSS exists or create later
 
 const GameBoard = ({ gameId, proposals, onProposalSubmit, onVote }) => {
   const [showReport, setShowReport] = useState(null);
@@ -27,36 +27,36 @@ const GameBoard = ({ gameId, proposals, onProposalSubmit, onVote }) => {
   } = useAccessibility();
 
   useEffect(() => {
-    announce(`Game board loaded with ${proposals.length} proposals`, "polite");
+    announce(`Game board loaded with ${proposals.length} proposals`, 'polite');
   }, [proposals, announce]);
 
   const handleVote = (proposalId, choice) => {
     if (onVote) {
       onVote({
-        type: "vote",
-        payload: { proposalId, playerId: "current", choice },
+        type: 'vote',
+        payload: { proposalId, playerId: 'current', choice },
       });
-      announce(`Voted ${choice} on proposal`, "polite");
+      announce(`Voted ${choice} on proposal`, 'polite');
     }
   };
 
-  const openReport = (proposal) => {
+  const openReport = proposal => {
     setShowReport(proposal);
     setIsModalOpen(true);
-    announce("Report dialog opened", "assertive");
+    announce('Report dialog opened', 'assertive');
   };
 
   const closeReport = () => {
     setIsModalOpen(false);
     setShowReport(null);
-    announce("Report dialog closed", "polite");
+    announce('Report dialog closed', 'polite');
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "ArrowDown") {
+  const handleKeyDown = e => {
+    if (e.key === 'ArrowDown') {
       e.preventDefault();
       focusNextElement();
-    } else if (e.key === "ArrowUp") {
+    } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       focusPreviousElement();
     }
@@ -64,7 +64,7 @@ const GameBoard = ({ gameId, proposals, onProposalSubmit, onVote }) => {
 
   useEffect(() => {
     if (isModalOpen) {
-      const modal = document.querySelector(".report-modal");
+      const modal = document.querySelector('.report-modal');
       if (modal) {
         const cleanup = trapFocus(modal);
         return cleanup;
@@ -74,10 +74,10 @@ const GameBoard = ({ gameId, proposals, onProposalSubmit, onVote }) => {
 
   return (
     <>
-      <nav aria-label="Skip links" className={`skip-links ${skipLinksVisible ? "is-visible" : ""}`}>
+      <nav aria-label="Skip links" className={`skip-links ${skipLinksVisible ? 'is-visible' : ''}`}>
         <button
           type="button"
-          onClick={(event) => {
+          onClick={event => {
             event.preventDefault();
             skipToContent();
           }}
@@ -91,9 +91,9 @@ const GameBoard = ({ gameId, proposals, onProposalSubmit, onVote }) => {
       <main
         id="main-content"
         tabIndex={-1}
-        className={`game-board ${highContrast ? "high-contrast" : ""} ${
-          largeText ? "large-text" : ""
-        } ${reducedMotion ? "reduced-motion" : ""}`}
+        className={`game-board ${highContrast ? 'high-contrast' : ''} ${
+          largeText ? 'large-text' : ''
+        } ${reducedMotion ? 'reduced-motion' : ''}`}
         aria-label="Game board"
         onKeyDown={handleKeyDown}
       >
@@ -121,28 +121,28 @@ const GameBoard = ({ gameId, proposals, onProposalSubmit, onVote }) => {
         <section aria-label="Proposals list">
           <h2>Current Proposals</h2>
           <ul>
-            {proposals.map((proposal) => (
+            {proposals.map(proposal => (
               <li key={proposal.id} aria-labelledby={`proposal-${proposal.id}-title`}>
                 <article id={`proposal-${proposal.id}`}>
                   <header>
                     <h3 id={`proposal-${proposal.id}-title`}>{proposal.title}</h3>
                     <p>{proposal.description}</p>
                     <span>Status: {proposal.status}</span>
-                    {proposal.moderationStatus === "flagged" && (
+                    {proposal.moderationStatus === 'flagged' && (
                       <span className="flagged">Flagged</span>
                     )}
                   </header>
                   <div className="proposal-actions">
                     <button
                       type="button"
-                      onClick={() => handleVote(proposal.id, "for")}
+                      onClick={() => handleVote(proposal.id, 'for')}
                       aria-label={`Vote for ${proposal.title}`}
                     >
                       For
                     </button>
                     <button
                       type="button"
-                      onClick={() => handleVote(proposal.id, "against")}
+                      onClick={() => handleVote(proposal.id, 'against')}
                       aria-label={`Vote against ${proposal.title}`}
                     >
                       Against
@@ -151,7 +151,7 @@ const GameBoard = ({ gameId, proposals, onProposalSubmit, onVote }) => {
                       type="button"
                       onClick={() => openReport(proposal)}
                       aria-label={`Report proposal ${proposal.title}`}
-                      disabled={proposal.moderationStatus === "flagged"}
+                      disabled={proposal.moderationStatus === 'flagged'}
                     >
                       Report
                     </button>
@@ -174,7 +174,7 @@ const GameBoard = ({ gameId, proposals, onProposalSubmit, onVote }) => {
               contentType="proposal"
               onClose={closeReport}
               onReportSubmitted={() => {
-                announce("Report submitted", "polite");
+                announce('Report submitted', 'polite');
                 // Optionally update proposal status
               }}
             />
@@ -185,11 +185,11 @@ const GameBoard = ({ gameId, proposals, onProposalSubmit, onVote }) => {
           <section aria-labelledby="new-proposal-heading" className="proposal-form">
             <h2 id="new-proposal-heading">Submit a Proposal</h2>
             <form
-              onSubmit={(event) => {
+              onSubmit={event => {
                 event.preventDefault();
                 const formData = new FormData(event.currentTarget);
-                const title = formData.get("proposalTitle");
-                const description = formData.get("proposalDescription");
+                const title = formData.get('proposalTitle');
+                const description = formData.get('proposalDescription');
 
                 if (title && description && onProposalSubmit) {
                   onProposalSubmit({
@@ -197,7 +197,7 @@ const GameBoard = ({ gameId, proposals, onProposalSubmit, onVote }) => {
                     description,
                     gameId,
                   });
-                  announce("Proposal submitted for review", "polite");
+                  announce('Proposal submitted for review', 'polite');
                   event.currentTarget.reset();
                 }
               }}

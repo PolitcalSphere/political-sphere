@@ -1,25 +1,25 @@
-const compression = require('compression');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-const express = require('express');
-const rateLimit = require('express-rate-limit');
-const helmet = require('helmet');
+import compression from 'compression';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import express from 'express';
+import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
 
-const { authenticate, requireRole } = require('./middleware/auth');
-const { csrfProtection, csrfTokenMiddleware } = require('./middleware/csrf');
-const requestId = require('./middleware/request-id');
-const ageVerificationRoutes = require('./routes/ageVerification');
-const authRoutes = require('./routes/auth');
-const billRoutes = require('./routes/bills');
-const complianceRoutes = require('./routes/compliance');
-const moderationRoutes = require('./routes/moderation');
-const newsRoutes = require('./routes/news');
-const partyRoutes = require('./routes/parties');
-const userRoutes = require('./routes/users');
-const voteRoutes = require('./routes/votes');
-const { sanitizeRequestForLog } = require('./utils/log-sanitizer');
+import { authenticate, requireRole } from './middleware/auth.js';
+import { csrfProtection, csrfTokenMiddleware } from './middleware/csrf.js';
+import requestId from './middleware/request-id.js';
+import ageVerificationRoutes from './routes/ageVerification.js';
+import authRoutes from './routes/auth.js';
+import billRoutes from './routes/bills.js';
+import complianceRoutes from './routes/compliance.js';
+import moderationRoutes from './routes/moderation.js';
+import newsRoutes from './routes/news.js';
+import partyRoutes from './routes/parties.js';
+import userRoutes from './routes/users.js';
+import voteRoutes from './routes/votes.js';
+import { sanitizeRequestForLog } from './utils/log-sanitizer.mjs';
 
-const { getDatabase } = require('./index');
+import { getDatabase } from './index.js';
 
 const app = express();
 const logger = console;
@@ -234,4 +234,4 @@ app.listen(PORT, HOST, () => {
   });
 });
 
-module.exports = app;
+export default app;

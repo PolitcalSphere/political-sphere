@@ -144,11 +144,7 @@
                 }
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
               "cache": true
             }
           },
@@ -185,9 +181,7 @@
               "executor": "@nx/eslint:lint",
               "outputs": ["{options.outputFile}"],
               "options": {
-                "lintFilePatterns": [
-                  "libs/domain-governance/**/*.{ts,tsx,js,jsx}"
-                ]
+                "lintFilePatterns": ["libs/domain-governance/**/*.{ts,tsx,js,jsx}"]
               },
               "configurations": {},
               "parallelism": true,
@@ -224,11 +218,7 @@
                 }
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
               "cache": true
             }
           },
@@ -265,9 +255,7 @@
               "executor": "@nx/eslint:lint",
               "outputs": ["{options.outputFile}"],
               "options": {
-                "lintFilePatterns": [
-                  "libs/data-game-state/**/*.{ts,tsx,js,jsx}"
-                ]
+                "lintFilePatterns": ["libs/data-game-state/**/*.{ts,tsx,js,jsx}"]
               },
               "configurations": {},
               "parallelism": true,
@@ -304,11 +292,7 @@
                 }
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
               "cache": true
             }
           },
@@ -345,9 +329,7 @@
               "executor": "@nx/eslint:lint",
               "outputs": ["{options.outputFile}"],
               "options": {
-                "lintFilePatterns": [
-                  "libs/domain-election/**/*.{ts,tsx,js,jsx}"
-                ]
+                "lintFilePatterns": ["libs/domain-election/**/*.{ts,tsx,js,jsx}"]
               },
               "configurations": {},
               "parallelism": true,
@@ -384,11 +366,7 @@
                 }
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
               "cache": true
             }
           },
@@ -448,11 +426,7 @@
                 }
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
               "cache": true
             }
           },
@@ -526,11 +500,7 @@
                 }
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
               "cache": true
             }
           },
@@ -604,11 +574,7 @@
                 }
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
               "cache": true
             }
           },
@@ -622,13 +588,7 @@
           "root": "libs/shared",
           "name": "@political-sphere/shared",
           "projectType": "library",
-          "tags": [
-            "npm:public",
-            "scope:shared",
-            "type:util",
-            "type:library",
-            "shared"
-          ],
+          "tags": ["npm:public", "scope:shared", "type:util", "type:library", "shared"],
           "metadata": {
             "targetGroups": {},
             "description": "Shared utilities and libraries for Political Sphere applications",
@@ -704,11 +664,7 @@
                 }
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
               "cache": true
             }
           },
@@ -780,11 +736,7 @@
                 }
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
               "cache": true
             }
           },
@@ -895,11 +847,7 @@
                 }
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
               "cache": true
             },
             "type-check": {
@@ -1062,11 +1010,7 @@
                 }
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
               "cache": true
             }
           },
@@ -1124,11 +1068,7 @@
                 }
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
               "cache": true
             },
             "lint-boundaries": {
@@ -1256,11 +1196,7 @@
                 }
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
               "cache": true
             }
           },
@@ -1333,11 +1269,7 @@
                 }
               },
               "parallelism": true,
-              "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js"
-              ],
+              "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
               "cache": true
             }
           },

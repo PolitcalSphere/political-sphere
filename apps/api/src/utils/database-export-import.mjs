@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import archiver from 'archiver';
 
 import { validateTableName, validateFilename, safeJoin } from '@political-sphere/shared';
@@ -465,7 +465,7 @@ class DatabaseExportImportManager {
       const columnNames = columns.map(col => col.name);
 
       if (includeHeaders) {
-        writeStream.write(columnNames.join(',') + '\n');
+        writeStream.write(`${columnNames.join(',')}\n`);
       }
 
       // Export data
@@ -478,11 +478,11 @@ class DatabaseExportImportManager {
           if (value === null || value === undefined) return '';
           const str = String(value);
           if (str.includes(',') || str.includes('"') || str.includes('\n')) {
-            return '"' + str.replace(/"/g, '""') + '"';
+            return `"${str.replace(/"/g, '""')}"`;
           }
           return str;
         });
-        writeStream.write(values.join(',') + '\n');
+        writeStream.write(`${values.join(',')}\n`);
         recordCount++;
       }
 

@@ -27,19 +27,19 @@ export interface Bill {
   /**
    * Current status of the bill in the legislative process
    */
-  status: "draft" | "proposed" | "active_voting" | "passed" | "rejected" | "withdrawn";
+  status: 'draft' | 'proposed' | 'active_voting' | 'passed' | 'rejected' | 'withdrawn';
   /**
    * Category or policy area of the bill
    */
   category?:
-    | "environment"
-    | "healthcare"
-    | "education"
-    | "economy"
-    | "justice"
-    | "infrastructure"
-    | "defense"
-    | "foreign_policy"
+    | 'environment'
+    | 'healthcare'
+    | 'education'
+    | 'economy'
+    | 'justice'
+    | 'infrastructure'
+    | 'defense'
+    | 'foreign_policy'
     | null;
   /**
    * ISO 8601 timestamp when voting begins

@@ -7,15 +7,15 @@
 
 ## Summary
 
-| Metric | Value |
-|--------|-------|
-| Total Audits | 13 |
-| Passed | 0 |
-| Failed/Issues | 13 |
-| Critical | 16 |
-| High | 25 |
-| Medium | 45 |
-| Low | 16 |
+| Metric        | Value |
+| ------------- | ----- |
+| Total Audits  | 13    |
+| Passed        | 0     |
+| Failed/Issues | 13    |
+| Critical      | 16    |
+| High          | 25    |
+| Medium        | 45    |
+| Low           | 16    |
 
 ## Production Readiness
 
@@ -24,26 +24,26 @@
 
 ## Per-App Severity
 
-| App | Critical | High | Medium | Low |
-|-----|----------|------|--------|-----|
-| api | 3 | 5 | 14 | 2 |
-| feature-auth-remote | 2 | 3 | 5 | 2 |
-| feature-dashboard-remote | 2 | 3 | 5 | 2 |
-| game-server | 3 | 4 | 5 | 2 |
-| shell | 2 | 3 | 4 | 2 |
-| web | 2 | 4 | 7 | 3 |
-| worker | 2 | 3 | 5 | 3 |
+| App                      | Critical | High | Medium | Low |
+| ------------------------ | -------- | ---- | ------ | --- |
+| api                      | 3        | 5    | 14     | 2   |
+| feature-auth-remote      | 2        | 3    | 5      | 2   |
+| feature-dashboard-remote | 2        | 3    | 5      | 2   |
+| game-server              | 3        | 4    | 5      | 2   |
+| shell                    | 2        | 3    | 4      | 2   |
+| web                      | 2        | 4    | 7      | 3   |
+| worker                   | 2        | 3    | 5      | 3   |
 
 ## Directories
 
-| Category | Path |
-|----------|------|
-| GitHub Workflows | /Users/morganlowman/GitHub/political-sphere/scripts/github-audit |
-| DevContainer | /Users/morganlowman/GitHub/political-sphere/scripts/devcontainer-audit |
-| OpenAPI | /Users/morganlowman/GitHub/political-sphere/scripts/openapi-audit |
-| Applications | /Users/morganlowman/GitHub/political-sphere/scripts/app-audit |
+| Category         | Path                                                                   |
+| ---------------- | ---------------------------------------------------------------------- |
+| GitHub Workflows | /Users/morganlowman/GitHub/political-sphere/scripts/github-audit       |
+| DevContainer     | /Users/morganlowman/GitHub/political-sphere/scripts/devcontainer-audit |
+| OpenAPI          | /Users/morganlowman/GitHub/political-sphere/scripts/openapi-audit      |
+| Applications     | /Users/morganlowman/GitHub/political-sphere/scripts/app-audit          |
 
-Audit trail directory: 
+Audit trail directory:
 /Users/morganlowman/GitHub/political-sphere/scripts/docs/audit-trail
 
 > Accessibility: This report uses textual severity indicators (no color dependency) complying with WCAG 2.2 AA.

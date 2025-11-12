@@ -3,14 +3,14 @@
   "files": {
     "includes": [
       "**",
-      "!**/node_modules/**",
-      "!**/dist/**",
-      "!**/coverage/**",
-      "!**/.nx/**",
-      "!**/.vitest/**",
-      "!reports/**",
-      "!test-results/**",
-      "!logs/**"
+      "!**/node_modules",
+      "!**/dist",
+      "!**/coverage",
+      "!**/.nx",
+      "!**/.vitest",
+      "!reports",
+      "!test-results",
+      "!logs"
     ]
   },
   "formatter": {
@@ -21,7 +21,8 @@
   "javascript": {
     "formatter": {
       "quoteStyle": "single",
-      "jsxQuoteStyle": "double"
+      "jsxQuoteStyle": "double",
+      "arrowParentheses": "asNeeded"
     }
   },
   "linter": {

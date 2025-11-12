@@ -15,7 +15,7 @@ Data transformation and normalization logic for sanitizing and validating user i
 ```typescript
 // Prisma automatically uses parameterized queries
 const user = await prisma.user.findUnique({
-  where: { email: userInput }
+  where: { email: userInput },
 });
 
 // For raw SQL, use parameterized queries

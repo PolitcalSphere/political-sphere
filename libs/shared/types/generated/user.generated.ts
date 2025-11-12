@@ -27,7 +27,7 @@ export interface User {
   /**
    * User's role in the system
    */
-  role?: "user" | "moderator" | "admin";
+  role?: 'user' | 'moderator' | 'admin';
   /**
    * Whether the user account is active
    */

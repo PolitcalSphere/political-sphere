@@ -19,7 +19,6 @@
 Political Sphere requires automated end-to-end (E2E) testing with Playwright to validate the full user experience from frontend to backend. The frontend application (`apps/web`) has two potential server implementations:
 
 1. **Vite Dev Server** (`vite --config apps/web/vite.config.js --port 5173`)
-
    - Modern development server with HMR (Hot Module Replacement)
    - Serves React application with real-time updates
    - Requires React 19, JSX/TSX compilation
