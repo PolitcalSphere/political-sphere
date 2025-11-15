@@ -197,7 +197,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "fishery": "^2.3.1",
     "globals": "^15.15.0",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^4.1.1",
     "jsdom": "^27.1.0",
     "json-schema-to-typescript": "^15.0.4",
     "lefthook": "^2.0.3",
